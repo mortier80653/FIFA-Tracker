@@ -1,0 +1,49 @@
+body {
+    font: 400 15px/1.8 Lato, sans-serif;
+    color: #686868;
+}
+
+.container {
+    padding: 80px 120px;
+}
+.nav-tabs li a {
+    color: #ffffff;
+}
+
+.navbar {
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 0;
+    background-color: #16181d;
+    border: 0;
+    font-size: 11px !important;
+    letter-spacing: 4px;
+    opacity: 0.8;
+}
+
+.navbar li a, .navbar { 
+    color: #d5d5d5 !important;
+}
+.navbar-nav li a:hover {
+    color: #fff !important;
+}
+.navbar-nav li.active a {
+    color: #fff !important;
+    background-color: #29292c !important;
+}
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+}
+
+.bg-1 {
+    background: #252830;
+    color: #bdbdbd;
+}
+
+footer {
+	background: #252830;
+}
+
+
+textarea {
+    resize: none;
+}

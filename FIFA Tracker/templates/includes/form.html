@@ -1,0 +1,18 @@
+{% load widget_tweaks %}
+
+{% for field in form %}
+	<div class="fieldWrapper">
+		{{ field.errors }}
+		<label class="cols-sm-2 control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+		<div class="clos-sm-10">
+			<div class="input-group">
+				{% for key, value in icons.items %}
+					{% if key == field.name %}
+						<span class="input-group-addon"><i class="glyphicon {{ value }} aria-hidden="true"></i></span>
+					{% endif %}
+				{% endfor %}
+				{{ field|add_class:'form-control'}}
+			</div>
+		</div>
+	</div>
+{% endfor %}

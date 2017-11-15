@@ -1,6 +1,13 @@
+html {
+	position: relative;
+	min-height: 100%;
+}
+
 body {
     font: 400 15px/1.8 Lato, sans-serif;
     color: #686868;
+	background: #252830;
+	margin-bottom: 30px;
 }
 
 .container {
@@ -35,13 +42,15 @@ body {
 }
 
 .bg-1 {
-    background: #252830;
     color: #bdbdbd;
 }
 
-footer {
-	background-color: #252830;
-	padding: 12px;
+.footer {
+	position:absolute;
+	bottom:0;
+	width:100%;
+	height:30px;   /* Height of the footer */
+	line-height: 30px; /* Vertically center the text there */
 }
 
 

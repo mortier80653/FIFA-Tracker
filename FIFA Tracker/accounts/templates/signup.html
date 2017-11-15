@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div id="SignUp" class="container">
+		<div class="main_row">
+			<h2>Sign up</h2>
+			<form method="post" novalidate>
+				{% csrf_token %}
+				{% include "includes/form.html" %}
+				<button type="submit" class="btn btn-primary">Create an account</button>
+			</form>
+		</div>
+  </div>
+{% endblock %}

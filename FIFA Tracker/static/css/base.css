@@ -22,13 +22,13 @@ body {
     margin-bottom: 0;
     background-color: #16181d;
     border: 0;
-    font-size: 11px !important;
+    font-size: 14px !important;
     letter-spacing: 4px;
     opacity: 0.8;
 }
 
 .navbar li a, .navbar { 
-    color: #d5d5d5 !important;
+    color: #efb7ae !important;
 }
 .navbar-nav li a:hover {
     color: #fff !important;
@@ -39,6 +39,20 @@ body {
 }
 .navbar-default .navbar-toggle {
     border-color: transparent;
+}
+
+.navbar-default .navbar-nav>.open>a, 
+.navbar-default .navbar-nav>.open>a:focus, 
+.navbar-default .navbar-nav>.open>a:hover {
+	color: #000 !important;
+	background-color: #0cc54a;
+}
+
+
+.dropdown-menu {
+	text-align: right;
+	background-color: #cb3f28;
+	min-width: 200px;
 }
 
 .bg-1 {

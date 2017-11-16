@@ -11,12 +11,15 @@
 		<div class="main_row">
 			<h2>Login</h2>
 			<form method="post" novalidate>
+			{% if form.errors %}
+				{{ form.non_field_errors }}
+			{% endif %}
 				{% csrf_token %}
 				{% include "includes/form.html" %}
 				<button type="submit" class="btn btn-primary">Login</button>
 			</form>
-			<p>Lost Password?</p>
-			<p align="text-center"><a href="{% url 'signup' %}">Create New Account</a> </p>
+			<p align="center">Lost Password?</p>
+			<p align="center"><a href="{% url 'signup' %}">Create New Account</a> </p>
 		</div>
   </div>
 {% endblock %}

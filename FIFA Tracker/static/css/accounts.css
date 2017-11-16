@@ -12,6 +12,12 @@ h2 {
 
 }
 
+.main_row  a {
+	color: #ddd;
+	text-decoration: underline;
+}
+
+
 .fieldWrapper {
 	padding: 0px 30px 10px 30px;
 }

@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^login/$', accounts_views.login_view, name='login_view'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
+    url(r'^players/', include('players.urls')),
     #url(r'^login/', user_views.login, name='login'),
     url(r'^admin/', admin.site.urls),
 ]

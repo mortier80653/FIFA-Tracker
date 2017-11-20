@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/players.css' %}">
+{% endblock %}
 
 {% block content %}
 	<div id="players_table" class="container">
 		<table style="width:100%">
 			<tr>
-				<th>NAME</th>
+				<th>PLAYER</th>
 				<th>RAT</th>
 				<th>POT</th>
 				<th>AGE</th>
@@ -13,7 +18,7 @@
 			</tr>
 		{% for p in data %}
 			<tr>
-				<td>{{ p.firstnameid }}</td>
+				<td><a href="{% url 'home' %}"><img src="{% static 'img\players\p0.png' %}" class="miniface"</a>{{ p.firstnameid }}</td>
 				<td>{{ p.overallrating }}</td>
 				<td>{{ p.potential }}</td>
 				<td>{{ p.birthdate }}</td>

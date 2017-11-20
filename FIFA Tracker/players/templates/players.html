@@ -1,1 +1,27 @@
 {% extends 'base.html' %}
+
+{% block content %}
+	<div id="players_table" class="container">
+		<table style="width:100%">
+			<tr>
+				<th>NAME</th>
+				<th>RAT</th>
+				<th>POT</th>
+				<th>AGE</th>
+				<th>CLUB</th>
+				<th>VALUE</th>
+			</tr>
+		{% for p in data %}
+			<tr>
+				<td>{{ p.firstnameid }}</td>
+				<td>{{ p.overallrating }}</td>
+				<td>{{ p.potential }}</td>
+				<td>{{ p.birthdate }}</td>
+				<td>CLUB</td>
+				<td>0 EURO</td>
+			</tr>
+			
+		{% endfor %}
+		</table>
+	</div>
+{% endblock %}

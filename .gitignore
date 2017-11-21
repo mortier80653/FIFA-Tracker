@@ -1,5 +1,3 @@
-secret_settings.py
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,3 +100,5 @@ ENV/
 
 # mypy
 .mypy_cache/
+secret_settings.py
+FIFA Tracker/static/img/assets/

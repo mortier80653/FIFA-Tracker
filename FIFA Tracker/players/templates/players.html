@@ -6,27 +6,40 @@
 {% endblock %}
 
 {% block content %}
-	<div id="players_table" class="container">
-		<table style="width:100%">
-			<tr>
-				<th>PLAYER</th>
-				<th>RAT</th>
-				<th>POT</th>
-				<th>AGE</th>
-				<th>CLUB</th>
-				<th>VALUE</th>
-			</tr>
-		{% for p in data %}
-			<tr>
-				<td><a href="{% url 'home' %}"><img src="{% static 'img\players\p0.png' %}" class="miniface"</a>{{ p.firstnameid }}</td>
-				<td>{{ p.overallrating }}</td>
-				<td>{{ p.potential }}</td>
-				<td>{{ p.birthdate }}</td>
-				<td>CLUB</td>
-				<td>0 EURO</td>
-			</tr>
-			
-		{% endfor %}
+	<div id="table-container" class="container">
+		<table>
+			<thead>
+				<tr>
+					<td colspan ="2">PLAYER</th>
+					<th>RAT</th>
+					<th>POT</th>
+					<th>AGE</th>
+					<th>CLUB</th>
+					<th>VALUE</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for p in data %}
+				<tr>
+					{% if p.playerid <= 240895 %}
+					<!-- Players -->
+					<td width="80px"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.playerid }}.png" class="miniface"</a></td>
+					<td width="80px"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/flags/f_{{ p.nationality.nationid }}.png" class="miniface"</a></td>
+					<td width="80px"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" class="miniface"</a></td>
+					<td>{{ p.firstname.name }} {{ p.lastname.name }}</td>
+					{% else %}
+					<!-- REGENS -->
+					<td><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/youthheads/notfound_0.png" class="miniface"</a></td>
+					<td>{{ p.firstname.name }} {{ p.lastname.name }}</td>
+					{% endif %}
+					<td>{{ p.overallrating }}</td>
+					<td>{{ p.potential }}</td>
+					<td>{{ p.birthdate }}</td>
+					<td>CLUB</td>
+					<td>0 EURO</td>
+				</tr>
+			{% endfor %}
+			</tbody>
 		</table>
 	</div>
 {% endblock %}

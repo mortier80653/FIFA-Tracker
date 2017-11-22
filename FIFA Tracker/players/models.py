@@ -1,10 +1,142 @@
 from django.db import models
 
+class Teams(models.Model):
+    assetid = models.IntegerField(blank=True, null=True)
+    balltype = models.IntegerField(blank=True, null=True)
+    teamcolor1g = models.IntegerField(blank=True, null=True)
+    teamcolor1r = models.IntegerField(blank=True, null=True)
+    clubworth = models.IntegerField(blank=True, null=True)
+    teamcolor2b = models.IntegerField(blank=True, null=True)
+    teamcolor2r = models.IntegerField(blank=True, null=True)
+    foundationyear = models.IntegerField(blank=True, null=True)
+    teamcolor3r = models.IntegerField(blank=True, null=True)
+    teamcolor1b = models.IntegerField(blank=True, null=True)
+    opponentweakthreshold = models.IntegerField(blank=True, null=True)
+    latitude = models.IntegerField(blank=True, null=True)
+    teamcolor3g = models.IntegerField(blank=True, null=True)
+    opponentstrongthreshold = models.IntegerField(blank=True, null=True)
+    teamcolor2g = models.IntegerField(blank=True, null=True)
+    teamname = models.CharField(max_length=60, blank=True, null=True)
+    adboardid = models.IntegerField(blank=True, null=True)
+    teamcolor3b = models.IntegerField(blank=True, null=True)
+    defmentality = models.IntegerField(blank=True, null=True)
+    powid = models.IntegerField(blank=True, null=True)
+    rightfreekicktakerid = models.IntegerField(blank=True, null=True)
+    domesticprestige = models.IntegerField(blank=True, null=True)
+    genericint2 = models.IntegerField(blank=True, null=True)
+    jerseytype = models.IntegerField(blank=True, null=True)
+    popularity = models.IntegerField(blank=True, null=True)
+    teamstadiumcapacity = models.IntegerField(blank=True, null=True)
+    iscompetitionscarfenabled = models.IntegerField(blank=True, null=True)
+    cityid = models.IntegerField(blank=True, null=True)
+    rivalteam = models.IntegerField(blank=True, null=True)
+    isbannerenabled = models.IntegerField(blank=True, null=True)
+    midfieldrating = models.IntegerField(blank=True, null=True)
+    matchdayoverallrating = models.IntegerField(blank=True, null=True)
+    matchdaymidfieldrating = models.IntegerField(blank=True, null=True)
+    attackrating = models.IntegerField(blank=True, null=True)
+    longitude = models.IntegerField(blank=True, null=True)
+    buspassing = models.IntegerField(blank=True, null=True)
+    matchdaydefenserating = models.IntegerField(blank=True, null=True)
+    defenserating = models.IntegerField(blank=True, null=True)
+    iscompetitionpoleflagenabled = models.IntegerField(blank=True, null=True)
+    skinnyflags = models.IntegerField(blank=True, null=True)
+    defteamwidth = models.IntegerField(blank=True, null=True)
+    longkicktakerid = models.IntegerField(blank=True, null=True)
+    bodytypeid = models.IntegerField(blank=True, null=True)
+    trait1vweak = models.IntegerField(blank=True, null=True)
+    busdribbling = models.IntegerField(blank=True, null=True)
+    rightcornerkicktakerid = models.IntegerField(blank=True, null=True)
+    suitvariationid = models.IntegerField(blank=True, null=True)
+    domesticcups = models.IntegerField(blank=True, null=True)
+    defaggression = models.IntegerField(blank=True, null=True)
+    ethnicity = models.IntegerField(blank=True, null=True)
+    leftcornerkicktakerid = models.IntegerField(blank=True, null=True)
+    youthdevelopment = models.IntegerField(blank=True, null=True)
+    teamid = models.IntegerField(primary_key=True)
+    trait1vequal = models.IntegerField(blank=True, null=True)
+    suittypeid = models.IntegerField(blank=True, null=True)
+    numtransfersin = models.IntegerField(blank=True, null=True)
+    stanchionflamethrower = models.IntegerField(blank=True, null=True)
+    captainid = models.IntegerField(blank=True, null=True)
+    personalityid = models.IntegerField(blank=True, null=True)
+    leftfreekicktakerid = models.IntegerField(blank=True, null=True)
+    leaguetitles = models.IntegerField(blank=True, null=True)
+    genericbanner = models.IntegerField(blank=True, null=True)
+    buspositioning = models.IntegerField(blank=True, null=True)
+    ccpositioning = models.IntegerField(blank=True, null=True)
+    busbuildupspeed = models.IntegerField(blank=True, null=True)
+    transferbudget = models.IntegerField(blank=True, null=True)
+    ccshooting = models.IntegerField(blank=True, null=True)
+    overallrating = models.IntegerField(blank=True, null=True)
+    ccpassing = models.IntegerField(blank=True, null=True)
+    profitability = models.IntegerField(blank=True, null=True)
+    utcoffset = models.IntegerField(blank=True, null=True)
+    penaltytakerid = models.IntegerField(blank=True, null=True)
+    freekicktakerid = models.IntegerField(blank=True, null=True)
+    crowdskintonecode = models.IntegerField(blank=True, null=True)
+    defdefenderline = models.IntegerField(blank=True, null=True)
+    internationalprestige = models.IntegerField(blank=True, null=True)
+    trainingstadium = models.IntegerField(blank=True, null=True)
+    form = models.IntegerField(blank=True, null=True)
+    genericint1 = models.IntegerField(blank=True, null=True)
+    cccrossing = models.IntegerField(blank=True, null=True)
+    trait1vstrong = models.IntegerField(blank=True, null=True)
+    matchdayattackrating = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'teams'
+
+class Nations(models.Model):
+    isocountrycode = models.CharField(max_length=2, blank=True, null=True)
+    nationname = models.CharField(max_length=255, blank=True, null=True)
+    confederation = models.IntegerField(blank=True, null=True)
+    top_tier = models.IntegerField(blank=True, null=True)
+    nationstartingfirstletter = models.IntegerField(blank=True, null=True)
+    groupid = models.IntegerField(blank=True, null=True)
+    nationid = models.IntegerField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nations'
+
+class Playernames(models.Model):
+    name = models.CharField(max_length=355, blank=True, null=True)
+    nameid = models.IntegerField(primary_key=True)
+    commentaryid = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'playernames'
+
+class Teamplayerlinks(models.Model):
+    leaguegoals = models.IntegerField(blank=True, null=True)
+    isamongtopscorers = models.IntegerField(blank=True, null=True)
+    yellows = models.IntegerField(blank=True, null=True)
+    isamongtopscorersinteam = models.IntegerField(blank=True, null=True)
+    jerseynumber = models.IntegerField(blank=True, null=True)
+    position = models.IntegerField(blank=True, null=True)
+    artificialkey = models.IntegerField(primary_key=True)
+    teamid = models.ForeignKey(Teams, db_column='teamid', on_delete=models.CASCADE)
+    leaguegoalsprevmatch = models.IntegerField(blank=True, null=True)
+    injury = models.IntegerField(blank=True, null=True)
+    leagueappearances = models.IntegerField(blank=True, null=True)
+    istopscorer = models.IntegerField(blank=True, null=True)
+    leaguegoalsprevthreematches = models.IntegerField(blank=True, null=True)
+    playerid = models.IntegerField(blank=True, null=True)
+    form = models.IntegerField(blank=True, null=True)
+    reds = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'teamplayerlinks'
+
 class Players(models.Model):
-    firstnameid = models.IntegerField(blank=True, null=True)
-    lastnameid = models.IntegerField(blank=True, null=True)
-    playerjerseynameid = models.IntegerField(blank=True, null=True)
-    commonnameid = models.IntegerField(blank=True, null=True)
+    firstname = models.ForeignKey(Playernames, related_name='player_firstname', db_column='firstnameid', on_delete=models.CASCADE)
+    lastname = models.ForeignKey(Playernames, related_name='player_lastname',  db_column='lastnameid', on_delete=models.CASCADE)
+    playerjerseyname = models.ForeignKey(Playernames, related_name='player_jerseyname', db_column='playerjerseynameid', on_delete=models.CASCADE)
+    commonname = models.ForeignKey(Playernames, related_name='player_commonname', db_column='commonnameid', on_delete=models.CASCADE)
     trait2 = models.IntegerField(blank=True, null=True)
     haircolorcode = models.IntegerField(blank=True, null=True)
     facialhairtypecode = models.IntegerField(blank=True, null=True)
@@ -85,7 +217,7 @@ class Players(models.Model):
     playerjointeamdate = models.IntegerField(blank=True, null=True)
     headclasscode = models.IntegerField(blank=True, null=True)
     defensiveworkrate = models.IntegerField(blank=True, null=True)
-    nationality = models.IntegerField(blank=True, null=True)
+    nationality = models.ForeignKey(Nations, db_column='nationality', on_delete=models.CASCADE)
     preferredfoot = models.IntegerField(blank=True, null=True)
     sideburnscode = models.IntegerField(blank=True, null=True)
     weakfootabilitytypecode = models.IntegerField(blank=True, null=True)
@@ -94,7 +226,7 @@ class Players(models.Model):
     tattoorightneck = models.IntegerField(blank=True, null=True)
     gkkickstyle = models.IntegerField(blank=True, null=True)
     stamina = models.IntegerField(blank=True, null=True)
-    playerid = models.IntegerField(blank=True, null=False, primary_key=True)
+    playerid = models.IntegerField(primary_key=True)
     marking = models.IntegerField(blank=True, null=True)
     accessorycolourcode4 = models.IntegerField(blank=True, null=True)
     gkpositioning = models.IntegerField(blank=True, null=True)
@@ -120,3 +252,6 @@ class Players(models.Model):
     class Meta:
         managed = False
         db_table = 'players'
+
+class YouthPlayer(Players):
+    pass

@@ -1,5 +1,16 @@
 from django.db import models
 
+class Editedplayernames(models.Model):
+    firstname = models.CharField(max_length=45, blank=True, null=True)
+    commonname = models.CharField(max_length=45, blank=True, null=True)
+    playerjerseyname = models.CharField(max_length=45, blank=True, null=True)
+    surname = models.CharField(max_length=45, blank=True, null=True)
+    playerid = models.IntegerField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'editedplayernames'
+
 class Teams(models.Model):
     assetid = models.IntegerField(blank=True, null=True)
     balltype = models.IntegerField(blank=True, null=True)

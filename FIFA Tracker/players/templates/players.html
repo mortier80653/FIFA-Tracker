@@ -10,33 +10,42 @@
 		<table>
 			<thead>
 				<tr>
-					<td colspan ="2">PLAYER</th>
-					<th>RAT</th>
-					<th>POT</th>
-					<th>AGE</th>
-					<th>CLUB</th>
-					<th>VALUE</th>
+					<td colspan ="3">PLAYER</th>
+					<th class="text-center">RAT</th>
+					<th class="text-center">POT</th>
+					<th class="text-center">AGE</th>
+					<th class="text-center">CLUB</th>
+					<th class="text-center">VALUE</th>
 				</tr>
 			</thead>
 			<tbody>
 			{% for p in data %}
 				<tr>
 					{% if p.playerid <= 240895 %}
-					<!-- Players -->
-					<td width="80px"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.playerid }}.png" class="miniface"</a></td>
-					<td width="80px"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/flags/f_{{ p.nationality.nationid }}.png" class="miniface"</a></td>
-					<td width="80px"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" class="miniface"</a></td>
-					<td>{{ p.firstname.name }} {{ p.lastname.name }}</td>
+					<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.playerid }}.png" title="{{ p.playerid }}" class="miniface"</a></td>
 					{% else %}
-					<!-- REGENS -->
-					<td><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/youthheads/notfound_0.png" class="miniface"</a></td>
-					<td>{{ p.firstname.name }} {{ p.lastname.name }}</td>
+					<td><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/youthheads/notfound_0.png" title="{{ p.playerid }}" class="miniface"</a></td>
 					{% endif %}
-					<td>{{ p.overallrating }}</td>
-					<td>{{ p.potential }}</td>
-					<td>{{ p.birthdate }}</td>
-					<td>CLUB</td>
-					<td>0 EURO</td>
+					<td class="text-center" width="65">{{ p.preferredposition1 }}</td>
+					<td width="250">
+						<div>
+							<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.nationality.nationid }}.png" class="flag">
+							{% if p.isnameedited %}
+							<a>{{ p.edited_firstname }} {{ p.edited_surname }}</a>
+							{% else %}
+							<a>{{ p.firstname.name }} {{ p.lastname.name }}</a>
+							{% endif %}
+						</div>
+						<div>
+							<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" class="crest">
+							{{ p.preferredposition1 }}{% if p.preferredposition2 != -1 %} | {{ p.preferredposition2 }}{% endif %}{% if p.preferredposition3 != -1 %} | {{ p.preferredposition3 }}{% endif %}{% if p.preferredposition4 != -1 %} | {{ p.preferredposition4 }}{% endif %}
+						</div>
+					</td>
+					<td class="text-center">{{ p.overallrating }}</td>
+					<td class="text-center">{{ p.potential }}</td>
+					<td class="text-center">{{ p.age }}</td>
+					<td class="text-center">{{ p.club }}</td>
+					<td class="text-center">0 EURO</td>
 				</tr>
 			{% endfor %}
 			</tbody>

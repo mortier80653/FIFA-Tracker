@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Players, Teamplayerlinks, Playernames, Editedplayernames
 
-from .fifa_utils import PlayerAge
+from .fifa_utils import PlayerAge, PlayerValue
 
 def calcAge(birtydaydate):
     currdate = date(2017, 1, 1)
@@ -33,9 +33,11 @@ def players(request):
             setattr(obj, 'edited_firstname', getnames.firstname)
             setattr(obj, 'edited_surname', getnames.surname)
 
-        pAge = PlayerAge(obj.birthdate)
-        setattr(obj, 'age', pAge.getAge())
-        
+        pAge = PlayerAge(obj.birthdate).age
+        setattr(obj, 'age', pAge)
+        pValue = PlayerValue(obj.overallrating, obj.potential, obj.age, obj.preferredposition1, currency=1).playervalue
+        setattr(obj, 'value', "{:,}".format(pValue))
+
         obj.preferredposition1 = positions[obj.preferredposition1]
         if obj.preferredposition2 > 0: obj.preferredposition2 = positions[obj.preferredposition2]
         if obj.preferredposition3 > 0: obj.preferredposition3 = positions[obj.preferredposition3]

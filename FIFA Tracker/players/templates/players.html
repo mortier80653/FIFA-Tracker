@@ -19,35 +19,35 @@
 				</tr>
 			</thead>
 			<tbody>
-			{% for p in data %}
-				<tr>
-					{% if p.playerid <= 240895 %}
-					<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.playerid }}.png" title="{{ p.playerid }}" class="miniface"</a></td>
-					{% else %}
-					<td><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/youthheads/notfound_0.png" title="{{ p.playerid }}" class="miniface"</a></td>
-					{% endif %}
-					<td class="text-center" width="65">{{ p.preferredposition1 }}</td>
-					<td width="250">
-						<div>
-							<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.nationality.nationid }}.png" class="flag">
-							{% if p.isnameedited %}
-							<a>{{ p.edited_firstname }} {{ p.edited_surname }}</a>
-							{% else %}
-							<a>{{ p.firstname.name }} {{ p.lastname.name }}</a>
-							{% endif %}
-						</div>
-						<div>
-							<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" class="crest">
-							{{ p.preferredposition1 }}{% if p.preferredposition2 != -1 %} | {{ p.preferredposition2 }}{% endif %}{% if p.preferredposition3 != -1 %} | {{ p.preferredposition3 }}{% endif %}{% if p.preferredposition4 != -1 %} | {{ p.preferredposition4 }}{% endif %}
-						</div>
-					</td>
-					<td class="text-center">{{ p.overallrating }}</td>
-					<td class="text-center">{{ p.potential }}</td>
-					<td class="text-center">{{ p.age }}</td>
-					<td class="text-center">{{ p.wage }}</td>
-					<td class="text-center">&euro; {{ p.value }}</td>
-				</tr>
-			{% endfor %}
+				{% for p in data %}
+					<tr>
+						{% if p.playerid <= 240895 %}
+						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.playerid }}.png" title="{{ p.playerid }}" class="miniface"</a></td>
+						{% else %}
+						<td><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/youthheads/notfound_0.png" title="{{ p.playerid }}" class="miniface"</a></td>
+						{% endif %}
+						<td class="text-center" width="65">{{ p.preferredposition1 }}</td>
+						<td width="250">
+							<div>
+								<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.nationality.nationid }}.png" class="flag">
+								{% if p.isnameedited %}
+								<a>{{ p.edited_firstname }} {{ p.edited_surname }}</a>
+								{% else %}
+								<a>{{ p.firstname.name }} {{ p.lastname.name }}</a>
+								{% endif %}
+							</div>
+							<div>
+								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" class="crest">
+								{{ p.preferredposition1 }}{% if p.preferredposition2 != -1 %} | {{ p.preferredposition2 }}{% endif %}{% if p.preferredposition3 != -1 %} | {{ p.preferredposition3 }}{% endif %}{% if p.preferredposition4 != -1 %} | {{ p.preferredposition4 }}{% endif %}
+							</div>
+						</td>
+						<td class="text-center">{{ p.overallrating }}</td>
+						<td class="text-center">{{ p.potential }}</td>
+						<td class="text-center">{{ p.age }}</td>
+						<td class="text-center">{{ p.wage }}</td>
+						<td class="text-center">&euro; {{ p.value }}</td>
+					</tr>
+				{% endfor %}
 			</tbody>
 		</table>
 	</div>

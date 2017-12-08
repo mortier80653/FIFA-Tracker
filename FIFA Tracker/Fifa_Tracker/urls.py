@@ -13,7 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls import url, include
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
@@ -22,6 +24,7 @@ from accounts import views as accounts_views
 
 urlpatterns = [
     url(r'^$', core_views.home, name='home'),
+    url(r'^upload/$', core_views.upload_career_save_file, name='upload_career_save_file'),
     url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^login/$', accounts_views.login_view, name='login_view'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
@@ -29,3 +32,6 @@ urlpatterns = [
     #url(r'^login/', user_views.login, name='login'),
     url(r'^admin/', admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

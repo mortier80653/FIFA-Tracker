@@ -2,9 +2,9 @@ from datetime import date
 from datetime import timedelta  
 
 class PlayerAge:
-    def __init__(self, birthdatedays, currdate=date(2020, 7, 16)):
+    def __init__(self, birthdatedays, currdate):
         self.birthdate = date(1582, 10, 14) + timedelta(days=birthdatedays)
-        self.currdate = currdate
+        self.currdate = date(int(str(currdate)[:4]), int(str(currdate)[4:6]), int(str(currdate)[6:]))
         self.age = self._getAge()
 
     def _getAge(self):
@@ -232,7 +232,17 @@ class PlayerValue:
         pos_mod = basevalue * self._position_factor(self.posid)
         pot_mod = basevalue * self._pot_factor(self.pot - self.ovr)
         age_mod = basevalue * self._age_factor(self.age, self.posid)
-        return self._sum_factors(basevalue, pos_mod, pot_mod, age_mod)
+        player_value = self._sum_factors(basevalue, pos_mod, pot_mod, age_mod)
+
+        if player_value < 0:
+            player_value = basevalue/10
+
+        if player_value < 1000:
+            player_value = 10000 # Player value can't be lower than 10 000    
+
+        return int(player_value)
+
+        return player_value
 
     def _round_to_player_value(self, summed_value):
         divisor = 0
@@ -252,7 +262,7 @@ class PlayerValue:
             divisor = 500000
         
         reminder = summed_value % divisor
-        if reminder >= divisor / 2:
+        if reminder > divisor / 2:
             return summed_value + (divisor - reminder)
         else:
             return summed_value - reminder

@@ -1,6 +1,13 @@
 from datetime import date  
 from datetime import timedelta  
 
+class PlayerJoinTeamDate:
+    def __init__(self, playerjointeamdate):
+        jointeamdate = date(1582, 10, 14) + timedelta(days=playerjointeamdate)
+        self.jointeamyear = jointeamdate.year
+        self.jointeammonth = jointeamdate.month
+        self.jointeamday = jointeamdate.day
+
 class PlayerAge:
     def __init__(self, birthdatedays, currdate):
         self.birthdate = date(1582, 10, 14) + timedelta(days=birthdatedays)
@@ -13,7 +20,7 @@ class PlayerAge:
 
 class PlayerWage:
     # All modifiers are defined in "playerwage.ini", "PlayerWageDomesticPrestigeMods.csv" and "PlayerWageProfitabilityMods.csv"
-    def __init__(self, ovr, age, posid, leagueid = 13, club_domestic_prestige = 5, club_profitability = 5):
+    def __init__(self, ovr, age, posid, leagueid, club_domestic_prestige, club_profitability):
         self.ovr = ovr
         self.age = age
         self.posid = posid
@@ -26,7 +33,12 @@ class PlayerWage:
         league_mod = self._ovr_factor(self.ovr) * ( self._league_factor(self.leagueid) * self._domestic_presitge(self.leagueid, self.club_domestic_prestige) * self._profitability(self.leagueid, self.club_profitability))
         age_mod = (league_mod * self._age_factor(self.age)) / 100.00
         pos_mod = (league_mod * self._position_factor(self.posid)) / 100.00
-        return int(self._round_to_player_wage(league_mod + age_mod + pos_mod))
+
+        player_wage = int(self._round_to_player_wage(league_mod + age_mod + pos_mod))
+
+        if player_wage < 500:
+            player_wage = 500
+        return player_wage
 
     def _league_factor(self, leagueid):
         factors = {
@@ -242,8 +254,6 @@ class PlayerValue:
 
         return int(player_value)
 
-        return player_value
-
     def _round_to_player_value(self, summed_value):
         divisor = 0
         if summed_value <= 5000.00:
@@ -285,7 +295,7 @@ class PlayerValue:
         if remaining_potential <= 0: return 0
         factors = (0, 15, 20, 25, 30, 35, 40, 45, 55, 65, 75, 90, 100, 120, 160, 190, 235)
         if remaining_potential > len(factors):
-            return (factors[-1:] / 100)
+            return (factors[-1] / 100)
 
         try:
             return (factors[remaining_potential] / 100)

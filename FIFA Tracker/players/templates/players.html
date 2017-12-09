@@ -14,7 +14,7 @@
 					<th class="text-center">RAT</th>
 					<th class="text-center">POT</th>
 					<th class="text-center">AGE</th>
-					<th class="text-center">CLUB</th>
+					<th class="text-center">CONTRACT</th>
 					<th class="text-center">VALUE</th>
 				</tr>
 			</thead>
@@ -30,22 +30,25 @@
 						<td width="250">
 							<div>
 								<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.nationality.nationid }}.png" class="flag">
-								{% if p.isnameedited %}
-								<a>{{ p.edited_firstname }} {{ p.edited_surname }}</a>
-								{% else %}
-								<a>{{ p.firstname.name }} {{ p.lastname.name }}</a>
-								{% endif %}
+								{{ p.playername}}
 							</div>
 							<div>
 								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" class="crest">
-								{{ p.preferredposition1 }}{% if p.preferredposition2 != -1 %} | {{ p.preferredposition2 }}{% endif %}{% if p.preferredposition3 != -1 %} | {{ p.preferredposition3 }}{% endif %}{% if p.preferredposition4 != -1 %} | {{ p.preferredposition4 }}{% endif %}
+								{{ p.preferredposition1 }}</strong>{% if p.preferredposition2 != -1 %} | {{ p.preferredposition2 }}{% endif %}{% if p.preferredposition3 != -1 %} | {{ p.preferredposition3 }}{% endif %}{% if p.preferredposition4 != -1 %} | {{ p.preferredposition4 }}{% endif %}
 							</div>
 						</td>
 						<td class="text-center">{{ p.overallrating }}</td>
 						<td class="text-center">{{ p.potential }}</td>
 						<td class="text-center">{{ p.age }}</td>
-						<td class="text-center">{{ p.wage }}</td>
-						<td class="text-center">&euro; {{ p.value }}</td>
+						<td class="text-center">{{ p.joined_year }} - {{p.contractvaliduntil}}</td>
+						<td class="text-center">
+							<div>
+								{{ p.value }} &euro;
+							</div>
+							<div>
+								{{ p.wage }} &euro;
+							</div>
+						</td>
 					</tr>
 				{% endfor %}
 			</tbody>

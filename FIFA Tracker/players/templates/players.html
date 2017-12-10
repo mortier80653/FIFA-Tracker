@@ -33,14 +33,23 @@
 								{{ p.playername}}
 							</div>
 							<div>
-								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" class="crest">
+								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" title="{{p.club}}"class="crest">
 								{{ p.preferredposition1 }}</strong>{% if p.preferredposition2 != -1 %} | {{ p.preferredposition2 }}{% endif %}{% if p.preferredposition3 != -1 %} | {{ p.preferredposition3 }}{% endif %}{% if p.preferredposition4 != -1 %} | {{ p.preferredposition4 }}{% endif %}
 							</div>
 						</td>
 						<td class="text-center">{{ p.overallrating }}</td>
 						<td class="text-center">{{ p.potential }}</td>
 						<td class="text-center">{{ p.age }}</td>
-						<td class="text-center">{{ p.joined_year }} - {{p.contractvaliduntil}}</td>
+						<td class="text-center">
+							<div>
+								{% if p.isloanedout %}
+								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.loanedto_clubid }}.png" title="On Loan at: {{p.loanedto_clubname}}"class="crest">
+								{% else %}
+								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" title="{{p.club}}"class="crest">
+								{% endif %}
+								{{ p.joined_year }} - {{p.contractvaliduntil}}
+							</div>
+						</td>
 						<td class="text-center">
 							<div>
 								{{ p.value }} &euro;

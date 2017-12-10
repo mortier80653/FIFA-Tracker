@@ -59,6 +59,65 @@ class DataUsersCareerUsers(models.Model):
         managed = False
         db_table = 'data_users_career_users'
 
+class DataUsersCareerPlayercontract(models.Model):
+    primary_key = models.BigAutoField(primary_key=True)
+    username = models.CharField(max_length=150, blank=True, null=True)
+    offered_wage = models.IntegerField(blank=True, null=True)
+    isperformancebonusachieved = models.IntegerField(blank=True, null=True)
+    salary_demand = models.IntegerField(blank=True, null=True)
+    offered_bonus = models.IntegerField(blank=True, null=True)
+    contract_status = models.IntegerField(blank=True, null=True)
+    performancebonuscount = models.IntegerField(blank=True, null=True)
+    contract_status_change_date = models.IntegerField(blank=True, null=True)
+    playerrole = models.IntegerField(blank=True, null=True)
+    wage = models.IntegerField(blank=True, null=True)
+    performancebonusvalue = models.IntegerField(blank=True, null=True)
+    performancebonustype = models.IntegerField(blank=True, null=True)
+    extension_years = models.IntegerField(blank=True, null=True)
+    currentrole = models.IntegerField(blank=True, null=True)
+    teamid = models.IntegerField(blank=True, null=True)
+    negotiation_status = models.IntegerField(blank=True, null=True)
+    bonus = models.IntegerField(blank=True, null=True)
+    negotiation_date = models.IntegerField(blank=True, null=True)
+    playerid = models.IntegerField(blank=True, null=True)
+    performancebonuscountachieved = models.IntegerField(blank=True, null=True)
+    was_years_accept = models.IntegerField(blank=True, null=True)
+
+    objects = UserDataManager()
+
+    class Meta:
+        managed = False
+        db_table = 'data_users_career_playercontract'
+
+class DataUsersCareerYouthplayers(models.Model):
+    primary_key = models.BigAutoField(primary_key=True)
+    username = models.CharField(max_length=150, blank=True, null=True)
+    playerid = models.IntegerField(blank=True, null=True)
+    playertier = models.IntegerField(blank=True, null=True)
+    playertype = models.IntegerField(blank=True, null=True)
+    swinglowpotential = models.IntegerField(blank=True, null=True)
+    potentialvariance = models.IntegerField(blank=True, null=True)
+    monthsinsquad = models.IntegerField(blank=True, null=True)
+
+    objects = UserDataManager()
+
+    class Meta:
+        managed = False
+        db_table = 'data_users_career_youthplayers'
+
+class DataUsersPlayerloans(models.Model):
+    primary_key = models.BigAutoField(primary_key=True)
+    username = models.CharField(max_length=150, blank=True, null=True)
+    teamidloanedfrom = models.IntegerField(blank=True, null=True)
+    playerid = models.IntegerField(blank=True, null=True)
+    loandateend = models.IntegerField(blank=True, null=True)
+
+    objects = UserDataManager()
+
+    class Meta:
+        managed = False
+        db_table = 'data_users_playerloans'
+
 class DataUsersTeams(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(max_length=150, blank=True, null=True)

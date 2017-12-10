@@ -5,6 +5,6 @@ def user_dir_path(instance, filename):
     return '{0}/{1}'.format(instance.user.username, 'CareerData')
 
 class CareerSaveFileModel(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploadedfile = models.FileField(upload_to=user_dir_path)

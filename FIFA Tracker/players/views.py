@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import DataUsersPlayers, DataUsersTeams, DataUsersTeamplayerlinks, DataPlayernames, DataUsersLeagueteamlinks, DataUsersEditedplayernames, DataUsersCareerCalendar, DataUsersCareerUsers
+from .models import *
 from django.db import connection
 
 from .fifa_utils import PlayerAge, PlayerValue, PlayerWage, PlayerJoinTeamDate
@@ -7,7 +7,7 @@ from .fifa_utils import PlayerAge, PlayerValue, PlayerWage, PlayerJoinTeamDate
 def players(request):
     positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         current_user = request.user
     else:
         current_user = "test123"
@@ -24,6 +24,7 @@ def players(request):
         for team in team_player_links:
             player_team = DataUsersTeams.objects.for_user(current_user).filter(teamid=team.teamid)[0]
             teamid = team.teamid
+            teamname = player_team.teamname
             if player_team.cityid > 0:   
                 break
         
@@ -39,10 +40,6 @@ def players(request):
                 setattr(obj, 'playername', getnames.commonname)
             else:
                 setattr(obj, 'playername', " ".join((getnames.firstname , getnames.surname)))
-
-        # Player Join Team Date
-        pJoinTeamDate = PlayerJoinTeamDate(obj.playerjointeamdate)
-        setattr(obj, 'joined_year', pJoinTeamDate.jointeamyear)
 
         # Player Age
         pAge = PlayerAge(obj.birthdate, currdate).age
@@ -63,8 +60,26 @@ def players(request):
         if obj.preferredposition3 >= 0: obj.preferredposition3 = positions[obj.preferredposition3]
         if obj.preferredposition4 >= 0: obj.preferredposition4 = positions[obj.preferredposition4]
 
-        setattr(obj, 'isregen', 0)
-        setattr(obj, 'club', player_team.teamname)
+        # Player Contract
+        
+        # Player Join Team Date
+        pJoinTeamDate = PlayerJoinTeamDate(obj.playerjointeamdate)
+        setattr(obj, 'joined_year', pJoinTeamDate.jointeamyear)
+
+        # Check if player is loaned out
+        try:
+            onloan = DataUsersPlayerloans.objects.for_user(current_user).get(playerid=obj.playerid)
+            loanedto_teamid = teamid
+            loanedto_teamname = teamname
+            teamid = onloan.teamidloanedfrom
+            teamname = DataUsersTeams.objects.for_user(current_user).get(teamid=teamid).teamname
+            setattr(obj, 'loanedto_clubid', loanedto_teamid)
+            setattr(obj, 'loanedto_clubname', loanedto_teamname)
+            setattr(obj, 'isloanedout', 1)
+        except DataUsersPlayerloans.DoesNotExist: 
+            setattr(obj, 'isloanedout', 0)
+
+        setattr(obj, 'club', teamname)
         setattr(obj, 'clubid', teamid)
     
     print ("Queries: {}".format(len(connection.queries)))

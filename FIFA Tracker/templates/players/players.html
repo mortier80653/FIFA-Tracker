@@ -30,7 +30,7 @@
 						<td width="250">
 							<div>
 								<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.nationality.nationid }}.png" class="flag">
-								{{ p.playername}}
+								<a href="{% url 'players' %}{{p.playerid}}">{{ p.playername}}</a>
 							</div>
 							<div>
 								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" title="{{p.club}}"class="crest">

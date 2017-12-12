@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from django.db import connection
 
@@ -83,4 +83,17 @@ def players(request):
         setattr(obj, 'clubid', teamid)
     
     print ("Queries: {}".format(len(connection.queries)))
-    return render(request, 'players.html', {'data':data})
+    return render(request, 'players/players.html', {'data':data})
+
+def player(request, playerid):
+    if request.user.is_authenticated:
+        current_user = request.user
+    else:
+        current_user = "test123"
+
+    try:
+        data = DataUsersPlayers.objects.for_user(current_user).get(playerid=playerid)
+    except DataUsersPlayers.DoesNotExist: 
+        return redirect('players')
+
+    return render(request, 'players/player.html', {'data':data})

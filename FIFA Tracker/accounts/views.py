@@ -19,7 +19,7 @@ def signup(request):
             return redirect('home')
     else:
         form = SignUpForm()
-    return render(request, 'signup.html', {'form': form, 'icons': icons })
+    return render(request, 'accounts/signup.html', {'form': form, 'icons': icons })
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -37,4 +37,4 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     
-    return render(request, 'login.html', {'form': form, 'icons': icons })
+    return render(request, 'accounts/login.html', {'form': form, 'icons': icons })

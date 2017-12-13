@@ -1,21 +1,33 @@
 from datetime import date  
 from datetime import timedelta  
 
-class PlayerJoinTeamDate:
-    def __init__(self, playerjointeamdate):
-        jointeamdate = date(1582, 10, 14) + timedelta(days=playerjointeamdate)
-        self.jointeamyear = jointeamdate.year
-        self.jointeammonth = jointeamdate.month
-        self.jointeamday = jointeamdate.day
+from .models import *
 
-class PlayerAge:
-    def __init__(self, birthdatedays, currdate):
-        self.birthdate = date(1582, 10, 14) + timedelta(days=birthdatedays)
-        self.currdate = date(int(str(currdate)[:4]), int(str(currdate)[4:6]), int(str(currdate)[6:]))
-        self.age = self._getAge()
+class FifaDate:
+    def __init__(self, fifa_date):
+        self.date = self.convert_to_py_date(fifa_date)
 
-    def _getAge(self):
-        return self.currdate.year - self.birthdate.year - ((self.currdate.month, self.currdate.day) < (self.birthdate.month, self.birthdate.day))
+    def convert_to_py_date(self, fifa_date):
+        """Convert FIFA Date format into python datetime.date format."""
+        return date(year=1582, month=10, day=14) + timedelta(days=fifa_date)
+
+class PlayerAge(FifaDate):
+    def __init__(self, birth_date, current_date=20170701):
+        self.birthdate = self.convert_to_py_date(birth_date)
+        self.current_date = self.convert_current_date(current_date)
+        self.age = self.get_age()
+
+    def convert_current_date(self, current_date):
+        """Convert Current date from FIFA Calendar table into python datetime.date format."""
+        current_date = str(current_date)
+        if len(current_date) != 8:
+            return date(year=2017, month=7, day=1)
+        else:
+            return date(int(current_date[:4]), int(current_date[4:6]), int(current_date[6:]))
+
+    def get_age(self):
+        """returns age of your player"""
+        return self.current_date.year - self.birthdate.year - ((self.current_date.month, self.current_date.day) < (self.birthdate.month, self.birthdate.day))
 
 
 class PlayerWage:
@@ -319,3 +331,114 @@ class PlayerValue:
             summed_value += a
 
         return int(self._round_to_player_value(summed_value))
+
+class FifaPlayer:
+    positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
+
+    def __init__(self, playerobj, username, current_date):
+        self.playerobj = playerobj
+        self.username = username
+        self.current_date = current_date
+        self.query_team_player_links = DataUsersTeamplayerlinks.objects.for_user(username).filter(playerid=playerobj.playerid)
+        self.teams = self.set_teams()
+        self.name = self.set_player_name()
+        print(self.name)
+
+    def set_teams(self):
+        query_teams = DataUsersTeams.objects.for_user(self.username)
+        teams = {}
+        for team in self.query_team_player_links:
+            try:
+                query_team_eval = query_teams.get(teamid=team.teamid)
+                if query_team_eval.cityid == 0:
+                    teams['national_team'] = vars(query_team_eval)
+                    teams['national_team']['stats'] = vars(team)
+                else:
+                    teams['club_team'] = vars(query_team_eval)
+                    teams['club_team']['stats'] = vars(team)
+            except DataUsersTeams.DoesNotExist:
+                pass    #TODO
+            except DataUsersTeams.MultipleObjectsReturned:
+                pass    #TODO
+
+        return teams
+
+    def set_player_name(self):
+        name = {}
+        try:
+            query_edited_player_names = DataUsersEditedplayernames.objects.for_user(self.username).get(playerid=self.playerobj.playerid)
+        except DataUsersEditedplayernames.DoesNotExist:
+            query_edited_player_names = None 
+            
+        if self.playerobj.firstname_id > 0:
+            # Get firstname from "players" table
+            try:
+                name['firstname'] = self.playerobj.firstname.name
+            except DataPlayernames.DoesNotExist:
+                name['firstname'] = self.playerobj.firstname_id
+        else:
+            # Get firstname from "editedplayernames" table
+            if query_edited_player_names is not None:
+                try:
+                    name['firstname'] = query_edited_player_names.firstname
+                except DataUsersEditedplayernames.DoesNotExist:
+                    name['firstname'] = None
+            else:
+                name['firstname'] = None
+
+        if self.playerobj.lastname_id > 0:
+            # Get lastname from "players" table
+            try:
+                name['lastname'] = self.playerobj.lastname.name
+            except DataPlayernames.DoesNotExist:
+                name['lastname'] = self.playerobj.lastname_id
+        else:
+            # Get lastname from "editedplayernames" table
+            if query_edited_player_names is not None:
+                try:
+                    name['lastname'] = query_edited_player_names.surname
+                except DataUsersEditedplayernames.DoesNotExist:
+                    name['lastname'] = None
+            else:
+                name['lastname'] = None
+
+        if self.playerobj.commonname_id > 0:
+            # Get commonname from "players" table
+            try:
+                name['commonname'] = self.playerobj.commonname.name
+            except DataPlayernames.DoesNotExist:
+                name['commonname'] = self.playerobj.commonname_id
+        else:
+            # Get commonname from "editedplayernames" table
+            if query_edited_player_names is not None:
+                try:
+                    name['commonname'] = query_edited_player_names.commonname
+                except DataUsersEditedplayernames.DoesNotExist:
+                    name['commonname'] = None
+            else:
+                name['commonname'] = None
+
+        if self.playerobj.playerjerseyname_id > 0:
+            # Get playerjerseyname from "players" table
+            try:
+                name['playerjerseyname'] = self.playerobj.playerjerseyname.name
+            except DataPlayernames.DoesNotExist:
+                name['playerjerseyname'] = self.playerobj.playerjerseyname_id
+        else:
+            # Get playerjerseyname from "editedplayernames" table
+            if query_edited_player_names is not None:
+                try:
+                    name['playerjerseyname'] = query_edited_player_names.playerjerseyname
+                except DataUsersEditedplayernames.DoesNotExist:
+                    name['playerjerseyname'] = None
+            else:
+                name['playerjerseyname'] = None
+
+        if name['commonname'] is not None:
+            name['knownas'] = name['commonname']
+        else:
+            name['knownas'] = " ".join((name['firstname'], name['lastname']))
+
+        return name
+            
+

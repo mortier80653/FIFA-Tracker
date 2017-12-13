@@ -20,6 +20,7 @@
 			</thead>
 			<tbody>
 				{% for p in data %}
+					{{ p.test.teams.club_team.stats.leaguegoalsprevthreematches }}
 					<tr>
 						{% if p.playerid <= 240895 %}
 						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.playerid }}.png" title="{{ p.playerid }}" class="miniface"</a></td>
@@ -30,7 +31,7 @@
 						<td width="250">
 							<div>
 								<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.nationality.nationid }}.png" class="flag">
-								<a href="{% url 'players' %}{{p.playerid}}">{{ p.playername}}</a>
+								<a href="{% url 'players' %}{{p.playerid}}">{{ p.test.name.knownas}}</a>
 							</div>
 							<div>
 								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" title="{{p.club}}"class="crest">

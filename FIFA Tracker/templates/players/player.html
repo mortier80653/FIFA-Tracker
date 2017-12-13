@@ -7,8 +7,8 @@
 
 {% block content %}
 	<div class="container">
-        <h1>Player TEST</h1>
-        <a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ data.playerid }}.png" title="{{ data.playerid }}" class="miniface"</a>
-    </div>
+    <h1>Player TEST</h1>
+    <a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ data.playerid }}.png" title="{{ data.playerid }}"</a>
+  </div>
 
 {% endblock %}

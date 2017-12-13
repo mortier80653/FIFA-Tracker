@@ -1,10 +1,13 @@
+import time
+
 from django.shortcuts import render, redirect
 from .models import *
 from django.db import connection
 
-from .fifa_utils import PlayerAge, PlayerValue, PlayerWage, PlayerJoinTeamDate
+from .fifa_utils import FifaPlayer, PlayerAge, PlayerValue, PlayerWage, FifaDate
 
 def players(request):
+    start = time.time()
     positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
 
     if request.user.is_authenticated:
@@ -12,14 +15,15 @@ def players(request):
     else:
         current_user = "test123"
 
-    data = DataUsersPlayers.objects.for_user(current_user).order_by('-potential')[:40]
+    data = DataUsersPlayers.objects.for_user(current_user).filter(preferredposition1=27).order_by('-overallrating')[:40]
 
-    # Current date in-game
-    currdate = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate   
+    # Current date according to in-game calendar
+    current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate   
     
     for obj in data:
+        fifa_player = FifaPlayer(obj,current_user, current_date)
+        setattr(obj, 'test', fifa_player)
         team_player_links = DataUsersTeamplayerlinks.objects.for_user(current_user).filter(playerid=obj.playerid)
-        
         # Team-Player links 
         for team in team_player_links:
             player_team = DataUsersTeams.objects.for_user(current_user).filter(teamid=team.teamid)[0]
@@ -35,14 +39,17 @@ def players(request):
             else:
                 setattr(obj, 'playername', " ".join((obj.firstname.name, obj.lastname.name)))
         except DataPlayernames.DoesNotExist:
-            getnames = DataUsersEditedplayernames.objects.for_user(current_user).filter(playerid=obj.playerid)[0]
-            if getnames.commonname:
-                setattr(obj, 'playername', getnames.commonname)
-            else:
-                setattr(obj, 'playername', " ".join((getnames.firstname , getnames.surname)))
+            try:
+                getnames = DataUsersEditedplayernames.objects.for_user(current_user).get(playerid=obj.playerid)
+                if getnames.commonname:
+                    setattr(obj, 'playername', getnames.commonname)
+                else:
+                    setattr(obj, 'playername', " ".join((getnames.firstname , getnames.surname)))
+            except DataUsersEditedplayernames.DoesNotExist:
+                setattr(obj, 'playername', obj.commonname_id)
 
         # Player Age
-        pAge = PlayerAge(obj.birthdate, currdate).age
+        pAge = PlayerAge(obj.birthdate, current_date).age
         setattr(obj, 'age', pAge)
 
         # Calculate player value
@@ -60,11 +67,12 @@ def players(request):
         if obj.preferredposition3 >= 0: obj.preferredposition3 = positions[obj.preferredposition3]
         if obj.preferredposition4 >= 0: obj.preferredposition4 = positions[obj.preferredposition4]
 
-        # Player Contract
-        
+        # Player Contract #
+
+
         # Player Join Team Date
-        pJoinTeamDate = PlayerJoinTeamDate(obj.playerjointeamdate)
-        setattr(obj, 'joined_year', pJoinTeamDate.jointeamyear)
+        pJoinTeamDate = FifaDate(obj.playerjointeamdate).date
+        setattr(obj, 'joined_year', pJoinTeamDate.year)
 
         # Check if player is loaned out
         try:
@@ -82,7 +90,8 @@ def players(request):
         setattr(obj, 'club', teamname)
         setattr(obj, 'clubid', teamid)
     
-    print ("Queries: {}".format(len(connection.queries)))
+    endtime = time.time() - start
+    print ("Loading time: {} Queries: {}".format(endtime, len(connection.queries)))
     return render(request, 'players/players.html', {'data':data})
 
 def player(request, playerid):

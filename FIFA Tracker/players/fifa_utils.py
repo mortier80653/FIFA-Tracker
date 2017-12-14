@@ -9,37 +9,43 @@ class FifaDate:
 
     def convert_to_py_date(self, fifa_date):
         """Convert FIFA Date format into python datetime.date format."""
-        return date(year=1582, month=10, day=14) + timedelta(days=fifa_date)
+        if len(str(fifa_date)) == 4:
+            return date(year=fifa_date, month=1, day=1)
+        else:
+            return date(year=1582, month=10, day=14) + timedelta(days=fifa_date)
 
 class PlayerAge(FifaDate):
     def __init__(self, birth_date, current_date=20170701):
-        self.birthdate = self.convert_to_py_date(birth_date)
+        self.birth_date = self.convert_to_py_date(birth_date)
         self.current_date = self.convert_current_date(current_date)
         self.age = self.get_age()
 
     def convert_current_date(self, current_date):
         """Convert Current date from FIFA Calendar table into python datetime.date format."""
         current_date = str(current_date)
-        if len(current_date) != 8:
-            return date(year=2017, month=7, day=1)
+        if len(current_date) == 8:
+            return date(int(current_date[:4]), int(current_date[4:6]), int(current_date[6:]))  
+        elif len(current_date) == 4:
+            return date(year=int(current_date), month=1, day=1)
         else:
-            return date(int(current_date[:4]), int(current_date[4:6]), int(current_date[6:]))
+            return date(year=2017, month=7, day=1)
 
     def get_age(self):
         """returns age of your player"""
-        return self.current_date.year - self.birthdate.year - ((self.current_date.month, self.current_date.day) < (self.birthdate.month, self.birthdate.day))
+        return self.current_date.year - self.birth_date.year - ((self.current_date.month, self.current_date.day) < (self.birth_date.month, self.birth_date.day))
 
 
 class PlayerWage:
     # All modifiers are defined in "playerwage.ini", "PlayerWageDomesticPrestigeMods.csv" and "PlayerWageProfitabilityMods.csv"
-    def __init__(self, ovr, age, posid, leagueid, club_domestic_prestige, club_profitability):
+    def __init__(self, ovr, age, posid, player_team):
         self.ovr = ovr
         self.age = age
         self.posid = posid
-        self.leagueid = leagueid
-        self.club_domestic_prestige = club_domestic_prestige
-        self.club_profitability = club_profitability
-        self.playerwage = self._calculate_player_wage()
+        self.leagueid = player_team['league']['leagueid']
+        self.club_domestic_prestige = player_team['domesticprestige']
+        self.club_profitability = player_team['profitability']
+        self.wage = self._calculate_player_wage()
+        self.formated_wage = "{:,}".format(self.wage)
 
     def _calculate_player_wage(self):
         league_mod = self._ovr_factor(self.ovr) * ( self._league_factor(self.leagueid) * self._domestic_presitge(self.leagueid, self.club_domestic_prestige) * self._profitability(self.leagueid, self.club_profitability))
@@ -249,7 +255,8 @@ class PlayerValue:
         '''
         currency_conversion = (1.12, 1.0, 0.88)
         self.currency = currency_conversion[currency]
-        self.playervalue = self._calculate_player_value()
+        self.value = self._calculate_player_value()
+        self.formated_value = "{:,}".format(self.value)
 
     def _calculate_player_value(self):
         basevalue = self._ovr_factor(self.ovr) * self.currency
@@ -333,49 +340,90 @@ class PlayerValue:
         return int(self._round_to_player_value(summed_value))
 
 class FifaPlayer:
-    positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
 
-    def __init__(self, playerobj, username, current_date):
-        self.playerobj = playerobj
+    def __init__(self, player, username, current_date):
+        self.player = player
         self.username = username
         self.current_date = current_date
-        self.query_team_player_links = DataUsersTeamplayerlinks.objects.for_user(username).filter(playerid=playerobj.playerid)
-        self.teams = self.set_teams()
-        self.name = self.set_player_name()
-        print(self.name)
+        
+        self.player_teams = self.set_teams()
+        self.player_name = self.set_player_name()
+        self.player_age = PlayerAge(self.player.birthdate, current_date)
+        self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, currency=1)
+        self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'])
+        self.player_contract = self.set_contract()
+        self.update_positions()
+
+
+    def update_positions(self):
+        available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
+        if -1 < self.player.preferredposition1 < len(available_positions):
+            self.player.preferredposition1 = available_positions[self.player.preferredposition1]
+
+        if -1 < self.player.preferredposition2 < len(available_positions):
+            self.player.preferredposition2 = available_positions[self.player.preferredposition2]
+
+        if -1 < self.player.preferredposition3 < len(available_positions):
+            self.player.preferredposition3 = available_positions[self.player.preferredposition3]
+
+        if -1 < self.player.preferredposition4 < len(available_positions):
+            self.player.preferredposition4 = available_positions[self.player.preferredposition4]
+
+    def set_contract(self):
+        contract = {}
+
+        contract['jointeamdate'] = FifaDate(self.player.playerjointeamdate).date
+        contract['enddate'] = FifaDate(self.player.contractvaliduntil).date
+        try:
+            query_player_loans = DataUsersPlayerloans.objects.for_user(self.username).get(playerid=self.player.playerid)
+            contract['isloanedout'] = 1
+            contract['loan'] = vars(query_player_loans)
+            contract['enddate']  = FifaDate(query_player_loans.loandateend).date
+            contract['loanedto_clubid'] = self.player_teams['club_team']['teamid']
+            contract['loanedto_clubname'] = self.player_teams['club_team']['teamname']
+            main_team = DataUsersTeams.objects.for_user(self.username).get(teamid=query_player_loans.teamidloanedfrom)
+            self.player_teams['club_team'] = vars(main_team)
+        except (DataUsersPlayerloans.DoesNotExist, DataUsersPlayerloans.MultipleObjectsReturned, DataUsersTeams.DoesNotExist, DataUsersTeams.MultipleObjectsReturned):
+            contract['isloanedout'] = 0 
+
+        return contract
+
 
     def set_teams(self):
         query_teams = DataUsersTeams.objects.for_user(self.username)
+        query_league_team_links = DataUsersLeagueteamlinks.objects.for_user(self.username)
+        query_team_player_links = DataUsersTeamplayerlinks.objects.for_user(self.username).filter(playerid=self.player.playerid)
         teams = {}
-        for team in self.query_team_player_links:
+        for team in query_team_player_links:
             try:
                 query_team_eval = query_teams.get(teamid=team.teamid)
+                query_league_team_links_eval = query_league_team_links.get(teamid=team.teamid)
                 if query_team_eval.cityid == 0:
                     teams['national_team'] = vars(query_team_eval)
+                    teams['national_team']['league'] = vars(query_league_team_links_eval)
                     teams['national_team']['stats'] = vars(team)
                 else:
                     teams['club_team'] = vars(query_team_eval)
+                    teams['club_team']['league'] = vars(query_league_team_links_eval)
                     teams['club_team']['stats'] = vars(team)
-            except DataUsersTeams.DoesNotExist:
-                pass    #TODO
-            except DataUsersTeams.MultipleObjectsReturned:
-                pass    #TODO
+            except (DataUsersTeams.DoesNotExist, DataUsersTeams.MultipleObjectsReturned, DataUsersLeagueteamlinks.DoesNotExist, DataUsersLeagueteamlinks.MultipleObjectsReturned) as error:
+                print("set_teams erorr: [{}] [{}]".format(erorr, error.args) )    #TODO
 
         return teams
 
     def set_player_name(self):
         name = {}
         try:
-            query_edited_player_names = DataUsersEditedplayernames.objects.for_user(self.username).get(playerid=self.playerobj.playerid)
+            query_edited_player_names = DataUsersEditedplayernames.objects.for_user(self.username).get(playerid=self.player.playerid)
         except DataUsersEditedplayernames.DoesNotExist:
             query_edited_player_names = None 
             
-        if self.playerobj.firstname_id > 0:
+        if self.player.firstname_id > 0:
             # Get firstname from "players" table
             try:
-                name['firstname'] = self.playerobj.firstname.name
+                name['firstname'] = self.player.firstname.name
             except DataPlayernames.DoesNotExist:
-                name['firstname'] = self.playerobj.firstname_id
+                name['firstname'] = self.player.firstname_id
         else:
             # Get firstname from "editedplayernames" table
             if query_edited_player_names is not None:
@@ -386,12 +434,12 @@ class FifaPlayer:
             else:
                 name['firstname'] = None
 
-        if self.playerobj.lastname_id > 0:
+        if self.player.lastname_id > 0:
             # Get lastname from "players" table
             try:
-                name['lastname'] = self.playerobj.lastname.name
+                name['lastname'] = self.player.lastname.name
             except DataPlayernames.DoesNotExist:
-                name['lastname'] = self.playerobj.lastname_id
+                name['lastname'] = self.player.lastname_id
         else:
             # Get lastname from "editedplayernames" table
             if query_edited_player_names is not None:
@@ -402,12 +450,12 @@ class FifaPlayer:
             else:
                 name['lastname'] = None
 
-        if self.playerobj.commonname_id > 0:
+        if self.player.commonname_id > 0:
             # Get commonname from "players" table
             try:
-                name['commonname'] = self.playerobj.commonname.name
+                name['commonname'] = self.player.commonname.name
             except DataPlayernames.DoesNotExist:
-                name['commonname'] = self.playerobj.commonname_id
+                name['commonname'] = self.player.commonname_id
         else:
             # Get commonname from "editedplayernames" table
             if query_edited_player_names is not None:
@@ -418,12 +466,12 @@ class FifaPlayer:
             else:
                 name['commonname'] = None
 
-        if self.playerobj.playerjerseyname_id > 0:
+        if self.player.playerjerseyname_id > 0:
             # Get playerjerseyname from "players" table
             try:
-                name['playerjerseyname'] = self.playerobj.playerjerseyname.name
+                name['playerjerseyname'] = self.player.playerjerseyname.name
             except DataPlayernames.DoesNotExist:
-                name['playerjerseyname'] = self.playerobj.playerjerseyname_id
+                name['playerjerseyname'] = self.player.playerjerseyname_id
         else:
             # Get playerjerseyname from "editedplayernames" table
             if query_edited_player_names is not None:
@@ -437,7 +485,7 @@ class FifaPlayer:
         if name['commonname'] is not None:
             name['knownas'] = name['commonname']
         else:
-            name['knownas'] = " ".join((name['firstname'], name['lastname']))
+            name['knownas'] = " ".join((str(name['firstname']), str(name['lastname'])))
 
         return name
             

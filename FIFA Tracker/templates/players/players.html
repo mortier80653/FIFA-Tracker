@@ -19,44 +19,39 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for p in data %}
-					{{ p.test.teams.club_team.stats.leaguegoalsprevthreematches }}
+				{% for p in players %}
 					<tr>
-						{% if p.playerid <= 240895 %}
-						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.playerid }}.png" title="{{ p.playerid }}" class="miniface"</a></td>
-						{% else %}
-						<td><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/youthheads/notfound_0.png" title="{{ p.playerid }}" class="miniface"</a></td>
-						{% endif %}
-						<td class="text-center" width="65">{{ p.preferredposition1 }}</td>
+						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.player.playerid }}.png" title="{{ p.player.playerid }}" class="miniface"</a></td>
+						<td class="text-center" width="65">{{ p.player.preferredposition1 }}</td>
 						<td width="250">
 							<div>
-								<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.nationality.nationid }}.png" class="flag">
-								<a href="{% url 'players' %}{{p.playerid}}">{{ p.test.name.knownas}}</a>
+								<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" class="flag">
+								<a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
 							</div>
 							<div>
-								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" title="{{p.club}}"class="crest">
-								{{ p.preferredposition1 }}</strong>{% if p.preferredposition2 != -1 %} | {{ p.preferredposition2 }}{% endif %}{% if p.preferredposition3 != -1 %} | {{ p.preferredposition3 }}{% endif %}{% if p.preferredposition4 != -1 %} | {{ p.preferredposition4 }}{% endif %}
+								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" title="{{ p.player_teams.club_team.teamname }}" class="crest">
+								{{ p.player.preferredposition1 }}{% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}{% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
 							</div>
 						</td>
-						<td class="text-center">{{ p.overallrating }}</td>
-						<td class="text-center">{{ p.potential }}</td>
-						<td class="text-center">{{ p.age }}</td>
+						<td class="text-center">{{ p.player.overallrating }}</td>
+						<td class="text-center">{{ p.player.potential }}</td>
+						<td class="text-center">{{ p.player_age.age }}</td>
 						<td class="text-center">
 							<div>
-								{% if p.isloanedout %}
-								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.loanedto_clubid }}.png" title="On Loan at: {{p.loanedto_clubname}}"class="crest">
+								{% if p.player_contract.isloanedout %}
+								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}}" class="crest">
 								{% else %}
-								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.clubid }}.png" title="{{p.club}}"class="crest">
+								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" title="{{ p.player_teams.club_team.teamname }}" class="crest">
 								{% endif %}
-								{{ p.joined_year }} - {{p.contractvaliduntil}}
+								{{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
 							</div>
 						</td>
 						<td class="text-center">
 							<div>
-								{{ p.value }} &euro;
+								{{ p.player_value.formated_value }} &euro;
 							</div>
 							<div>
-								{{ p.wage }} &euro;
+								{{ p.player_wage.formated_wage }} &euro;
 							</div>
 						</td>
 					</tr>

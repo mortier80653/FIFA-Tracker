@@ -31,7 +31,11 @@ urlpatterns = [
     url(r'^players/', include('players.urls')),
     #url(r'^login/', user_views.login, name='login'),
     url(r'^admin/', admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    import debug_toolbar
+    urlpatterns += [
+        url(r'^debug/', include(debug_toolbar.urls)),
+    ] 
+

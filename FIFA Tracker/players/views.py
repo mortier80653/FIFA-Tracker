@@ -14,8 +14,8 @@ def players(request):
     else:
         current_user = "test123"
 
-    data = DataUsersPlayers.objects.for_user(current_user).filter(preferredposition1=27).order_by('-overallrating')[:50]
-
+    #data = list(DataUsersPlayers.objects.for_user(current_user).filter(preferredposition1=23).order_by('-overallrating')[:50].iterator())
+    data = DataUsersPlayers.objects.for_user(current_user).filter(preferredposition1=23).order_by('-overallrating')[:50]
     # Current date according to in-game calendar
     current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
 
@@ -34,9 +34,6 @@ def player(request, playerid):
     else:
         current_user = "test123"
 
-    try:
-        data = DataUsersPlayers.objects.for_user(current_user).get(playerid=playerid)
-    except DataUsersPlayers.DoesNotExist: 
-        return redirect('players')
-
+    data = DataUsersPlayerloans.objects.for_user(current_user).get(playerid=playerid)
+    #print(dir(data))
     return render(request, 'players/player.html', {'data':data})

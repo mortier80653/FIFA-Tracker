@@ -1,3 +1,6 @@
+from django.db.models import Q
+
+from functools import reduce
 from datetime import date  
 from datetime import timedelta  
 
@@ -354,7 +357,6 @@ class FifaPlayer:
         self.player_contract = self.set_contract()
         self.update_positions()
 
-
     def update_positions(self):
         available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
         if -1 < self.player.preferredposition1 < len(available_positions):
@@ -390,24 +392,20 @@ class FifaPlayer:
 
 
     def set_teams(self):
-        query_teams = DataUsersTeams.objects.for_user(self.username)
-        query_league_team_links = DataUsersLeagueteamlinks.objects.for_user(self.username)
-        query_team_player_links = DataUsersTeamplayerlinks.objects.for_user(self.username).filter(playerid=self.player.playerid)
         teams = {}
-        for team in query_team_player_links:
-            try:
-                query_team_eval = query_teams.get(teamid=team.teamid)
-                query_league_team_links_eval = query_league_team_links.get(teamid=team.teamid)
-                if query_team_eval.cityid == 0:
-                    teams['national_team'] = vars(query_team_eval)
-                    teams['national_team']['league'] = vars(query_league_team_links_eval)
-                    teams['national_team']['stats'] = vars(team)
-                else:
-                    teams['club_team'] = vars(query_team_eval)
-                    teams['club_team']['league'] = vars(query_league_team_links_eval)
-                    teams['club_team']['stats'] = vars(team)
-            except (DataUsersTeams.DoesNotExist, DataUsersTeams.MultipleObjectsReturned, DataUsersLeagueteamlinks.DoesNotExist, DataUsersLeagueteamlinks.MultipleObjectsReturned) as error:
-                print("set_teams erorr: [{}] [{}]".format(erorr, error.args) )    #TODO
+        q_team_player_links = list(DataUsersTeamplayerlinks.objects.for_user(self.username).filter(playerid=self.player.playerid).iterator())
+        q_teams = list(DataUsersTeams.objects.for_user(self.username).filter(reduce(lambda x, y: x | y, [Q(teamid=team.teamid) for team in q_team_player_links])).iterator())
+        q_league_team_links = list(DataUsersLeagueteamlinks.objects.for_user(self.username).filter(reduce(lambda x, y: x | y, [Q(teamid=team.teamid) for team in q_team_player_links])).iterator())
+        
+        for i in range(len(q_team_player_links)):
+            if q_teams[i].cityid == 0:
+                teams['national_team'] = vars(q_teams[i])
+                teams['national_team']['league'] = vars(q_league_team_links[i])
+                teams['national_team']['stats'] = vars(q_team_player_links[i])
+            else:
+                teams['club_team'] = vars(q_teams[i])
+                teams['club_team']['league'] = vars(q_league_team_links[i])
+                teams['club_team']['stats'] = vars(q_team_player_links[i])
 
         return teams
 

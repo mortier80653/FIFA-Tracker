@@ -131,3 +131,16 @@ LOGOUT_REDIRECT_URL = 'home'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+# Django Debug Toolbar
+# https://django-debug-toolbar.readthedocs.io/en/stable/index.html#
+if DEBUG:
+    INTERNAL_IPS = ('127.0.0.1', )
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+    
+

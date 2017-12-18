@@ -1,10 +1,5 @@
-from django.db.models import Q
-
-from functools import reduce
 from datetime import date  
 from datetime import timedelta  
-
-from .models import *
 
 class FifaDate:
     def __init__(self, fifa_date):
@@ -344,11 +339,16 @@ class PlayerValue:
 
 class FifaPlayer:
 
-    def __init__(self, player, username, current_date):
+    def __init__(self, player, username, current_date, dict_cached_queries):
         self.player = player
         self.username = username
         self.current_date = current_date
-        
+        self.team_player_links = dict_cached_queries['q_team_player_links']
+        self.q_teams = dict_cached_queries['q_teams']
+        self.league_team_links = dict_cached_queries['q_league_team_links']
+        self.query_player_loans = dict_cached_queries['q_player_loans']
+        self.edited_player_names = dict_cached_queries['q_edited_player_names']
+
         self.player_teams = self.set_teams()
         self.player_name = self.set_player_name()
         self.player_age = PlayerAge(self.player.birthdate, current_date)
@@ -376,115 +376,79 @@ class FifaPlayer:
 
         contract['jointeamdate'] = FifaDate(self.player.playerjointeamdate).date
         contract['enddate'] = FifaDate(self.player.contractvaliduntil).date
-        try:
-            query_player_loans = DataUsersPlayerloans.objects.for_user(self.username).get(playerid=self.player.playerid)
-            contract['isloanedout'] = 1
-            contract['loan'] = vars(query_player_loans)
-            contract['enddate']  = FifaDate(query_player_loans.loandateend).date
-            contract['loanedto_clubid'] = self.player_teams['club_team']['teamid']
-            contract['loanedto_clubname'] = self.player_teams['club_team']['teamname']
-            main_team = DataUsersTeams.objects.for_user(self.username).get(teamid=query_player_loans.teamidloanedfrom)
-            self.player_teams['club_team'] = vars(main_team)
-        except (DataUsersPlayerloans.DoesNotExist, DataUsersPlayerloans.MultipleObjectsReturned, DataUsersTeams.DoesNotExist, DataUsersTeams.MultipleObjectsReturned):
-            contract['isloanedout'] = 0 
+
+        contract['isloanedout'] = 0 
+        for i in range(len(self.query_player_loans)):
+            if self.query_player_loans[i].playerid == self.player.playerid:
+                contract['isloanedout'] = 1
+                contract['loan'] = vars(self.query_player_loans[i])
+                contract['enddate']  = FifaDate(self.query_player_loans[i].loandateend).date
+                contract['loanedto_clubid'] = self.player_teams['club_team']['teamid']
+                contract['loanedto_clubname'] = self.player_teams['club_team']['teamname']
+                for j in range(len(self.q_teams)):
+                    if self.query_player_loans[i].teamidloanedfrom == self.q_teams[j].teamid:
+                        self.player_teams['club_team'] = vars(self.q_teams[j])
+                        break
+                break
 
         return contract
 
 
     def set_teams(self):
         teams = {}
-        q_team_player_links = list(DataUsersTeamplayerlinks.objects.for_user(self.username).filter(playerid=self.player.playerid).iterator())
-        q_teams = list(DataUsersTeams.objects.for_user(self.username).filter(reduce(lambda x, y: x | y, [Q(teamid=team.teamid) for team in q_team_player_links])).iterator())
-        q_league_team_links = list(DataUsersLeagueteamlinks.objects.for_user(self.username).filter(reduce(lambda x, y: x | y, [Q(teamid=team.teamid) for team in q_team_player_links])).iterator())
-        
-        for i in range(len(q_team_player_links)):
-            if q_teams[i].cityid == 0:
-                teams['national_team'] = vars(q_teams[i])
-                teams['national_team']['league'] = vars(q_league_team_links[i])
-                teams['national_team']['stats'] = vars(q_team_player_links[i])
-            else:
-                teams['club_team'] = vars(q_teams[i])
-                teams['club_team']['league'] = vars(q_league_team_links[i])
-                teams['club_team']['stats'] = vars(q_team_player_links[i])
 
+        for i in range(len(self.team_player_links)):
+            if self.team_player_links[i].playerid == self.player.playerid:
+                for j in range(len(self.q_teams)):
+                    if self.q_teams[j].teamid == self.team_player_links[i].teamid:
+                        if self.q_teams[j].cityid == 0:
+                            teams['national_team'] = vars(self.q_teams[j])
+                            teams['national_team']['league'] = vars(self.league_team_links[j])
+                            teams['national_team']['stats'] = vars(self.team_player_links[j])
+                        else:
+                            teams['club_team'] = vars(self.q_teams[j])
+                            teams['club_team']['league'] = vars(self.league_team_links[j])
+                            teams['club_team']['stats'] = vars(self.team_player_links[j])
+        
         return teams
 
     def set_player_name(self):
         name = {}
-        try:
-            query_edited_player_names = DataUsersEditedplayernames.objects.for_user(self.username).get(playerid=self.player.playerid)
-        except DataUsersEditedplayernames.DoesNotExist:
-            query_edited_player_names = None 
-            
-        if self.player.firstname_id > 0:
-            # Get firstname from "players" table
-            try:
+
+        if self.player.firstname_id == 0 and self.player.lastname_id == 0:
+            for i in range(len(self.edited_player_names)):
+                if self.edited_player_names[i].playerid == self.player.playerid:
+                    name['firstname'] = self.edited_player_names[i].firstname
+                    name['lastname'] = self.edited_player_names[i].surname
+                    name['commonname'] = self.edited_player_names[i].commonname 
+                    name['playerjerseyname'] = self.edited_player_names[i].playerjerseyname
+                    break
+        else: 
+            try:    
                 name['firstname'] = self.player.firstname.name
-            except DataPlayernames.DoesNotExist:
+            except AttributeError:
                 name['firstname'] = self.player.firstname_id
-        else:
-            # Get firstname from "editedplayernames" table
-            if query_edited_player_names is not None:
-                try:
-                    name['firstname'] = query_edited_player_names.firstname
-                except DataUsersEditedplayernames.DoesNotExist:
-                    name['firstname'] = None
-            else:
-                name['firstname'] = None
 
-        if self.player.lastname_id > 0:
-            # Get lastname from "players" table
-            try:
+            try:    
                 name['lastname'] = self.player.lastname.name
-            except DataPlayernames.DoesNotExist:
+            except AttributeError:
                 name['lastname'] = self.player.lastname_id
-        else:
-            # Get lastname from "editedplayernames" table
-            if query_edited_player_names is not None:
-                try:
-                    name['lastname'] = query_edited_player_names.surname
-                except DataUsersEditedplayernames.DoesNotExist:
-                    name['lastname'] = None
-            else:
-                name['lastname'] = None
 
-        if self.player.commonname_id > 0:
-            # Get commonname from "players" table
-            try:
+            try:    
                 name['commonname'] = self.player.commonname.name
-            except DataPlayernames.DoesNotExist:
+            except AttributeError:
                 name['commonname'] = self.player.commonname_id
-        else:
-            # Get commonname from "editedplayernames" table
-            if query_edited_player_names is not None:
-                try:
-                    name['commonname'] = query_edited_player_names.commonname
-                except DataUsersEditedplayernames.DoesNotExist:
-                    name['commonname'] = None
-            else:
-                name['commonname'] = None
-
-        if self.player.playerjerseyname_id > 0:
-            # Get playerjerseyname from "players" table
-            try:
+            
+            try:    
                 name['playerjerseyname'] = self.player.playerjerseyname.name
-            except DataPlayernames.DoesNotExist:
+            except AttributeError:
                 name['playerjerseyname'] = self.player.playerjerseyname_id
-        else:
-            # Get playerjerseyname from "editedplayernames" table
-            if query_edited_player_names is not None:
-                try:
-                    name['playerjerseyname'] = query_edited_player_names.playerjerseyname
-                except DataUsersEditedplayernames.DoesNotExist:
-                    name['playerjerseyname'] = None
-            else:
-                name['playerjerseyname'] = None
 
-        if name['commonname'] is not None:
+
+        # This name will be displayed on website
+        if name['commonname'] is not 0 and name['commonname'] is not None:
             name['knownas'] = name['commonname']
         else:
             name['knownas'] = " ".join((str(name['firstname']), str(name['lastname'])))
 
         return name
-            
-

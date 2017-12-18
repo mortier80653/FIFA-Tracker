@@ -1,7 +1,4 @@
 from django.db import models
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
-from django.utils.functional import cached_property
 
 class UserDataQuerySet(models.QuerySet):
     def for_user(self, user):
@@ -350,10 +347,10 @@ class DataUsersManager(models.Model):
 class DataUsersPlayers(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    firstname = models.ForeignKey(DataPlayernames, related_name='firstname', db_column='firstnameid', on_delete=models.CASCADE)
-    lastname = models.ForeignKey(DataPlayernames, related_name='lastname',  db_column='lastnameid', on_delete=models.CASCADE)
-    playerjerseyname = models.ForeignKey(DataPlayernames, related_name='playerjerseyname', db_column='playerjerseynameid', on_delete=models.CASCADE)
-    commonname = models.ForeignKey(DataPlayernames, related_name='commonname', db_column='commonnameid', on_delete=models.CASCADE)
+    firstname = models.ForeignKey(DataPlayernames, related_name='firstname', db_column='firstnameid', null=True, on_delete=models.CASCADE)
+    lastname = models.ForeignKey(DataPlayernames, related_name='lastname',  db_column='lastnameid', null=True, on_delete=models.CASCADE)
+    playerjerseyname = models.ForeignKey(DataPlayernames, related_name='playerjerseyname', db_column='playerjerseynameid', null=True, on_delete=models.CASCADE)
+    commonname = models.ForeignKey(DataPlayernames, related_name='commonname', db_column='commonnameid', null=True, on_delete=models.CASCADE)
     trait2 = models.IntegerField(blank=True, null=True)
     haircolorcode = models.IntegerField(blank=True, null=True)
     facialhairtypecode = models.IntegerField(blank=True, null=True)
@@ -480,11 +477,6 @@ class DataUsersPlayerloans(models.Model):
     loandateend = models.IntegerField(blank=True, null=True)
 
     objects = UserDataManager()
-
-    @cached_property
-    def player(self):
-        return DataUsersPlayers.objects.for_user(self.username).get(playerid=self.playerid)
-    
 
     class Meta:
         managed = False

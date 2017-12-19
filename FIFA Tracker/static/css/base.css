@@ -10,9 +10,10 @@ body {
 	margin-bottom: 30px;
 }
 
-.container {
-    padding: 80px 120px;
+.top-container {
+    padding-top: 80px;
 }
+
 .nav-tabs li a {
     color: #ffffff;
 }

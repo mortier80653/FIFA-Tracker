@@ -317,6 +317,8 @@ class DataUsersLeagues(models.Model):
     leaguetimeslice = models.IntegerField(blank=True, null=True)
     iswithintransferwindow = models.IntegerField(blank=True, null=True)
 
+    objects = UserDataManager()
+    
     class Meta:
         managed = False
         db_table = 'data_users_leagues'

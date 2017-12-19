@@ -1,0 +1,44 @@
+h2, .h2 {
+    margin: 0 auto 20px;
+    color: #fff;
+    display: block;
+    text-align: center;
+    padding: 0 0 10px;
+    font-size: 24px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    text-transform: capitalize;
+}
+
+.largeface {
+    width: 150px;
+    height: 150px;
+	border-radius: 50%;
+	background-color: lightblue;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flag {
+	width: 27px;
+    height: 27px;
+}
+
+.crest {
+	width: 27px;
+    height: 27px;
+}
+
+/*
+.player-info {
+    background-color: rgb(176, 46, 180);
+}
+*/
+
+#playerinfo-header {
+    column-span: 2;
+    text-align: center;
+
+}

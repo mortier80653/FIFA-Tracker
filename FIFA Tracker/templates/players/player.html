@@ -2,15 +2,167 @@
 {% load static %}
 
 {% block stylesheet %}
-  <link rel="stylesheet" href="{% static 'css/players.css' %}">
+  <link rel="stylesheet" href="{% static 'css/player.css' %}">
 {% endblock %}
 
 {% block content %}
-	<div class="container">
-    <h1>Player TEST</h1>
-    {{ data.player.nationality}}
-    {{ data.player.playerid }}
-    <a href="{% url 'players' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ data.playerid }}.png" title="{{ data.playerid }}"</a>
+	<div class="container top-container">
+    <div class="row">
+      <div class="col-sm-4 text-right hidden-xs">
+        <div class="row">
+          <div class="col-xs-12">
+            <dl>
+              <dt>Nationality</dt>
+              <dd>{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" class="flag"></dd>
+            </dl>
+          </div>
+          <div class="col-xs-12">
+              <dl>
+                <dt>League</dt>
+                <dd>{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" class="crest"></dd>
+              </dl>
+          </div>
+          <div class="col-xs-12">
+              <dl>
+                <dt>Club</dt>
+                <dd>{{p.player_teams.club_team.teamname}} <img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" class="crest"></dd>
+              </dl>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 text-center">
+        <div><img src="{% get_static_prefix %}img/assets/heads/p{{ p.player.playerid }}.png" title="PlayerID: {{ p.player.playerid }}" class="largeface"></div>
+      </div>
+      <div class="col-sm-4 text-left hidden-xs">
+        <div class="row">
+          <div class="col-xs-12">
+            <dl>
+              <dt>Rating & Potential</dt>
+              <dd>{{ p.player.overallrating }} / {{ p.player.potential }}</dd>
+            </dl>
+          </div>
+          <div class="col-xs-12">
+            <dl>
+              <dt>Birthdate</dt>
+              <dd>{{p.player_age.birth_date}} ({{p.player_age.age}} yo.)</td></dd>
+            </dl>
+          </div>
+          <div class="col-xs-12">
+            <dl>
+              <dt>Position(s)</dt>
+              <dd>{{ p.player.preferredposition1 }}{% if p.player.preferredposition2 != -1 %} / {{ p.player.preferredposition2 }}{% endif %}{% if p.player.preferredposition3 != -1 %} / {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} / {{ p.player.preferredposition4 }}{% endif %}</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <h1 >{{ p.player_name.knownas}}</h1>
+    <h3>#{{ p.player.playerid}}</h3>
+  </div>
+  <div class="container">
+    <h2 align="center">Player Info</h2>
+    <div class="row player-info">
+        <div class="col-md-6">
+          <table width="100%" class="info-table">
+            <tbody>
+              <tr>
+                <td>First Name:</td>
+                <td align="right">{{p.player_name.firstname}}</td>
+              </tr>
+              <tr>
+                <td>Last Name:</td>
+                <td align="right">{{p.player_name.lastname}}</td>
+              </tr>
+              {% if p.player_name.commonname %}
+              <tr>
+                <td>Common name:</td>
+                <td align="right">{{p.player_name.commonname}}</td>
+              </tr>
+              {% endif %}
+              {% if p.player_name.playerjerseyname %}
+              <tr>
+                <td>Jersey name:</td>
+                <td align="right">{{p.player_name.playerjerseyname}}</td>
+              </tr>
+              {% endif %}
+              <tr>
+                <td>Birthdate:</td>
+                <td align="right">{{p.player_age.birth_date}} ({{p.player_age.age}} yo.)</td>
+              </tr>
+              <tr>
+                <td>Position:</td>
+                <td align="right">{{p.player.preferredposition1}}</td>
+              </tr>
+              {% if p.player.preferredposition2 != -1 %}
+              <tr>
+                <td>Other Positions:</td>
+                <td align="right">{{ p.player.preferredposition2 }}{% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}</td>
+              </tr>
+              {% endif %}
+              <tr>
+                <td>Nationality:</td>
+                <td align="right">{{p.player.nationality.nationname}} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" class="flag"></td>
+              </tr>
+              <tr>
+                <td>League:</td>
+                <td align="right">{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" class="crest"></td>
+              </tr>
+              <tr>
+                <td>Club:</td>
+                <td align="right">{{p.player_teams.club_team.teamname}} <img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" class="crest"></td>
+              </tr>
+              <tr>
+                <td>Contract:</td>
+                <td align="right">{{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table width="100%" class="info-table">
+            <tbody>
+              <tr>
+                <td>Overall: </td>
+                <td align="right">{{ p.player.overallrating }}</td>
+              </tr>
+              <tr>
+                <td>Potential: </td>
+                <td align="right">{{ p.player.potential }} </td>
+              </tr>
+              <tr>
+                <td>Strong Foot:</td>
+                <td align="right">{{ p.player.preferredfoot }}</td>
+              </tr>
+              <tr>
+                <td>Workrates:</td>
+                <td align="right"> {{ p.player.attackingworkrate }} / {{ p.player.defensiveworkrate }}</td>
+              </tr>
+              <tr>
+                <td>Skill moves:</td>
+                <td align="right"> {{ p.player.skillmoves }}</td>
+              </tr>
+              <tr>
+                <td>Weak foot:</td>
+                <td align="right"> {{ p.player.weakfootabilitytypecode }}</td>
+              </tr>
+              <tr>
+                <td>Int. Reputation:</td>
+                <td align="right"> {{ p.player.internationalrep }} </td>
+              </tr>
+              <tr>
+                <td>Value:</td>
+                <td align="right">{{ p.player_value.formated_value }} &euro;</td>
+              </tr>
+              <tr>
+                <td>Wage:</td>
+                <td align="right">{{ p.player_wage.formated_wage }} &euro;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
   </div>
 
 {% endblock %}

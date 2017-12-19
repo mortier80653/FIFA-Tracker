@@ -348,6 +348,7 @@ class FifaPlayer:
         self.league_team_links = dict_cached_queries['q_league_team_links']
         self.query_player_loans = dict_cached_queries['q_player_loans']
         self.edited_player_names = dict_cached_queries['q_edited_player_names']
+        self.leagues = dict_cached_queries['q_leagues']
 
         self.player_teams = self.set_teams()
         self.player_name = self.set_player_name()
@@ -403,11 +404,13 @@ class FifaPlayer:
                     if self.q_teams[j].teamid == self.team_player_links[i].teamid:
                         if self.q_teams[j].cityid == 0:
                             teams['national_team'] = vars(self.q_teams[j])
-                            teams['national_team']['league'] = vars(self.league_team_links[j])
+                            teams['national_team']['league'] = vars(self.get_league(self.league_team_links[j].leagueid))
+                            teams['national_team']['league']['teamstats'] = vars(self.league_team_links[j])
                             teams['national_team']['stats'] = vars(self.team_player_links[j])
                         else:
                             teams['club_team'] = vars(self.q_teams[j])
-                            teams['club_team']['league'] = vars(self.league_team_links[j])
+                            teams['club_team']['league'] = vars(self.get_league(self.league_team_links[j].leagueid))
+                            teams['club_team']['league']['teamstats'] = vars(self.league_team_links[j])
                             teams['club_team']['stats'] = vars(self.team_player_links[j])
         
         return teams
@@ -452,3 +455,8 @@ class FifaPlayer:
             name['knownas'] = " ".join((str(name['firstname']), str(name['lastname'])))
 
         return name
+
+    def get_league(self, leagueid):
+        for i in range(len(self.leagues)):
+            if self.leagues[i].leagueid == leagueid:
+                return self.leagues[i]

@@ -17,7 +17,7 @@ def players(request):
     else:
         current_user = "test123"
 
-    data = list(DataUsersPlayers.objects.for_user(current_user).filter(preferredposition1=5).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',).order_by('-potential')[:100].iterator())
+    data = list(DataUsersPlayers.objects.for_user(current_user).filter(preferredposition1=18).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',).order_by('-potential')[:100].iterator())
 
     if len(data) <= 0:
         return render(request, 'players/players.html')

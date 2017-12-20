@@ -354,9 +354,12 @@ class FifaPlayer:
         self.player_name = self.set_player_name()
         self.player_age = PlayerAge(self.player.birthdate, current_date)
         self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, currency=1)
-        self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'])
+        try:
+            self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'])
+        except KeyError:
+            self.player_wage = 500
         self.player_contract = self.set_contract()
-        self.update_positions()
+        #self.update_positions()
 
     def update_positions(self):
         available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')

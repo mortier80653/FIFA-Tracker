@@ -249,7 +249,7 @@ class DataUsersTeamplayerlinks(models.Model):
     jerseynumber = models.IntegerField(blank=True, null=True)
     position = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
-    teamid = models.IntegerField(blank=True, null=True) #models.ForeignKey(DataUsersTeams, to_field='faf', db_column='teamid', on_delete=models.CASCADE)
+    teamid = models.IntegerField(blank=True, null=True)
     leaguegoalsprevmatch = models.IntegerField(blank=True, null=True)
     injury = models.IntegerField(blank=True, null=True)
     leagueappearances = models.IntegerField(blank=True, null=True)

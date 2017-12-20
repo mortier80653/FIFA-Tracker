@@ -58,7 +58,7 @@
     </div>
   </div>
   <div class="text-center">
-    <h1 >{{ p.player_name.knownas}}</h1>
+    <h1>{{ p.player_name.knownas}}</h1>
     <h3>#{{ p.player.playerid}}</h3>
   </div>
   <div class="container">
@@ -68,53 +68,53 @@
           <table width="100%" class="info-table">
             <tbody>
               <tr>
-                <td>First Name:</td>
-                <td align="right">{{p.player_name.firstname}}</td>
-              </tr>
-              <tr>
-                <td>Last Name:</td>
-                <td align="right">{{p.player_name.lastname}}</td>
+                <td>Name</td>
+                <td align="right">{{p.player_name.firstname}} {{p.player_name.lastname}}</td>
               </tr>
               {% if p.player_name.commonname %}
               <tr>
-                <td>Common name:</td>
+                <td>Common name</td>
                 <td align="right">{{p.player_name.commonname}}</td>
               </tr>
               {% endif %}
               {% if p.player_name.playerjerseyname %}
               <tr>
-                <td>Jersey name:</td>
+                <td>Jersey name</td>
                 <td align="right">{{p.player_name.playerjerseyname}}</td>
               </tr>
               {% endif %}
               <tr>
-                <td>Birthdate:</td>
+                <td>Birthdate</td>
                 <td align="right">{{p.player_age.birth_date}} ({{p.player_age.age}} yo.)</td>
               </tr>
               <tr>
-                <td>Position:</td>
+                <td>Height & Weight</td>
+                <td align="right">{{ p.player.height }} cm / {{ p.player.weight }} kg</td>
+              </tr>
+              <tr>
+                <td>Position</td>
                 <td align="right">{{p.player.preferredposition1}}</td>
               </tr>
               {% if p.player.preferredposition2 != -1 %}
               <tr>
-                <td>Other Positions:</td>
+                <td>Other Positions</td>
                 <td align="right">{{ p.player.preferredposition2 }}{% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}</td>
               </tr>
               {% endif %}
               <tr>
-                <td>Nationality:</td>
+                <td>Nationality</td>
                 <td align="right">{{p.player.nationality.nationname}} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" class="flag"></td>
               </tr>
               <tr>
-                <td>League:</td>
+                <td>League</td>
                 <td align="right">{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" class="crest"></td>
               </tr>
               <tr>
-                <td>Club:</td>
+                <td>Club</td>
                 <td align="right">{{p.player_teams.club_team.teamname}} <img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" class="crest"></td>
               </tr>
               <tr>
-                <td>Contract:</td>
+                <td>Contract</td>
                 <td align="right">{{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}</td>
               </tr>
             </tbody>
@@ -124,44 +124,261 @@
           <table width="100%" class="info-table">
             <tbody>
               <tr>
-                <td>Overall: </td>
+                <td>Overall </td>
                 <td align="right">{{ p.player.overallrating }}</td>
               </tr>
               <tr>
-                <td>Potential: </td>
+                <td>Potential </td>
                 <td align="right">{{ p.player.potential }} </td>
               </tr>
               <tr>
-                <td>Strong Foot:</td>
+                <td>Strong Foot</td>
                 <td align="right">{{ p.player.preferredfoot }}</td>
               </tr>
               <tr>
-                <td>Workrates:</td>
+                <td>Workrates</td>
                 <td align="right"> {{ p.player.attackingworkrate }} / {{ p.player.defensiveworkrate }}</td>
               </tr>
               <tr>
-                <td>Skill moves:</td>
+                <td>Skill moves</td>
                 <td align="right"> {{ p.player.skillmoves }}</td>
               </tr>
               <tr>
-                <td>Weak foot:</td>
+                <td>Weak foot</td>
                 <td align="right"> {{ p.player.weakfootabilitytypecode }}</td>
               </tr>
               <tr>
-                <td>Int. Reputation:</td>
+                <td>Int. Reputation</td>
                 <td align="right"> {{ p.player.internationalrep }} </td>
               </tr>
               <tr>
-                <td>Value:</td>
+                <td>Value</td>
                 <td align="right">{{ p.player_value.formated_value }} &euro;</td>
               </tr>
               <tr>
-                <td>Wage:</td>
+                <td>Wage</td>
                 <td align="right">{{ p.player_wage.formated_wage }} &euro;</td>
               </tr>
             </tbody>
           </table>
         </div>
+    </div>
+  </div>
+  <div class="container" style="padding-top: 20px">
+    <h2 align="center">Player Attributes</h2>
+    <div class="row player-attributes">
+      {% if p.player.preferredposition1 == 0 %}
+      <div class="col-md-4 col-sm-6">
+        <h3 class="attrib-title">GOALKEEPER</h3>
+        <table width="100%" class="attrib-table">
+          <tbody>
+            <tr>
+              <td>GK Diving</td>
+              <td align="right"> {{ p.player.gkdiving }} </td>
+            </tr>
+            <tr>
+              <td>GK Handling</td>
+              <td align="right"> {{ p.player.gkhandling }} </td>
+            </tr>
+            <tr>
+              <td>GK Kicking</td>
+              <td align="right"> {{ p.player.gkkicking }} </td>
+            </tr>
+            <tr>
+              <td>GK Positioning</td>
+              <td align="right"> {{ p.player.gkpositioning }} </td>
+            </tr>
+            <tr>
+              <td>GK Reflex</td>
+              <td align="right"> {{ p.player.gkreflexes }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="col-md-4 col-sm-6">
+        <h3 class="attrib-title">ATTACK</h3>
+        <table width="100%" class="attrib-table">
+          <tbody>
+            <tr>
+              <td>Crossing</td>
+              <td align="right"> {{ p.player.crossing }} </td>
+            </tr>
+            <tr>
+              <td>Finishing</td>
+              <td align="right"> {{ p.player.finishing }} </td>
+            </tr>
+            <tr>
+              <td>Heading Accuracy</td>
+              <td align="right"> {{ p.player.headingaccuracy }} </td>
+            </tr>
+            <tr>
+              <td>Short Passing</td>
+              <td align="right"> {{ p.player.shortpassing }} </td>
+            </tr>
+            <tr>
+              <td>Volleys</td>
+              <td align="right"> {{ p.player.volleys }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+      <div class="col-md-4 col-sm-6">
+        <h3 class="attrib-title">DEFENDING</h3>
+		    <table width="100%" class="attrib-table">
+          <tbody>
+            <tr>
+              <td>Marking</td>
+              <td align="right"> {{ p.player.marking }} </td>
+            </tr>
+            <tr>
+              <td>Standing Tackle</td>
+              <td align="right"> {{ p.player.standingtackle }} </td>
+            </tr>
+            <tr>
+              <td>Sliding Tackle</td>
+              <td align="right"> {{ p.player.slidingtackle }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <h3 class="attrib-title">SKILL</h3>
+		    <table width="100%" class="attrib-table">
+          <tbody>
+            <tr>
+              <td>Dribbling</td>
+              <td align="right"> {{ p.player.dribbling }} </td>
+            </tr>
+            <tr>
+              <td>Curve</td>
+              <td align="right"> {{ p.player.curve }} </td>
+            </tr>
+            <tr>
+              <td>Free Kick Accuracy</td>
+              <td align="right"> {{ p.player.freekickaccuracy }} </td>
+            </tr>
+            <tr>
+              <td>Long Passing</td>
+              <td align="right"> {{ p.player.longpassing }} </td>
+            </tr>
+            <tr>
+              <td>Ball Control</td>
+              <td align="right"> {{ p.player.ballcontrol }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <h3 class="attrib-title">POWER</h3>
+		    <table width="100%" class="attrib-table">
+          <tbody>
+            <tr>
+              <td>Shot Power</td>
+              <td align="right"> {{ p.player.shotpower }} </td>
+            </tr>
+            <tr>
+              <td>Jumping</td>
+              <td align="right"> {{ p.player.jumping }} </td>
+            </tr>
+            <tr>
+              <td>Stamina</td>
+              <td align="right"> {{ p.player.stamina }} </td>
+            </tr>
+            <tr>
+              <td>Strength</td>
+              <td align="right"> {{ p.player.strength }} </td>
+            </tr>
+            <tr>
+              <td>Long Shots</td>
+              <td align="right"> {{ p.player.longshots }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <h3 class="attrib-title">MOVEMENT</h3>
+		    <table width="100%" class="attrib-table">
+          <tbody>
+            <tr>
+              <td>Acceleration</td>
+              <td align="right"> {{ p.player.acceleration }} </td>
+            </tr>
+            <tr>
+              <td>Spring Speed</td>
+              <td align="right"> {{ p.player.sprintspeed }} </td>
+            </tr>
+            <tr>
+              <td>Agility</td>
+              <td align="right"> {{ p.player.agility }} </td>
+            </tr>
+            <tr>
+              <td>Reactions</td>
+              <td align="right"> {{ p.player.reactions }} </td>
+            </tr>
+            <tr>
+              <td>Balance</td>
+              <td align="right"> {{ p.player.balance }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <h3 class="attrib-title">MENTALITY</h3>
+		    <table width="100%" class="attrib-table">
+          <tbody>
+            <tr>
+              <td>Aggression</td>
+              <td align="right"> {{ p.player.aggression }} </td>
+            </tr>
+            <tr>
+              <td>Composure</td>
+              <td align="right"> {{ p.player.composure }} </td>
+            </tr>
+            <tr>
+              <td>Interceptions</td>
+              <td align="right"> {{ p.player.interceptions }} </td>
+            </tr>
+            <tr>
+              <td>Attack Positioning</td>
+              <td align="right"> {{ p.player.positioning }} </td>
+            </tr>
+            <tr>
+              <td>Vision</td>
+              <td align="right"> {{ p.player.vision }} </td>
+            </tr>
+			      <tr>
+              <td>Penalties</td>
+              <td align="right"> {{ p.player.penalties }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <h2 align="center">Player Statistics</h2>
+    <div class="row player-statistics">
+        <div class="col-md-6">
+          <table width="100%">
+            <tbody>
+              <tr>
+                <td>League - Goals</td>
+                <td align="right"> {{ p.player_teams.club_team.stats.leaguegoals }} </td>
+              </tr>
+              <tr>
+                <td>League - Yellow Cards</td>
+                <td align="right"> {{ p.player_teams.club_team.stats.yellows }} </td>
+              </tr>
+              <tr>
+                <td>League - Red Cards</td>
+                <td align="right"> {{ p.player_teams.club_team.stats.reds }} </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 

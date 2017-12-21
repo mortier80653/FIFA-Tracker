@@ -11,6 +11,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="{% static 'js\FIFA_TRACKER.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
 	{% block stylesheet %}{% endblock %}
 </head>	
@@ -57,9 +58,12 @@
 	</footer>	
 <script>
 $(document).ready(function(){  
+	updatePositions();
+	updateStrongFoot();
+	updateWorkrates();
   // Add smooth scrolling to all links in navbar + footer link
   $(".navbar a, footer a[href="{% url 'home' %}"]").on('click', function(event) {
-
+		
     // Make sure this.hash has a value before overriding default behavior
     if (this.hash !== "") {
 

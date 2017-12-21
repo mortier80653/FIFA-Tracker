@@ -35,14 +35,17 @@ class PlayerAge(FifaDate):
 
 class PlayerWage:
     # All modifiers are defined in "playerwage.ini", "PlayerWageDomesticPrestigeMods.csv" and "PlayerWageProfitabilityMods.csv"
-    def __init__(self, ovr, age, posid, player_team):
-        self.ovr = ovr
-        self.age = age
-        self.posid = posid
-        self.leagueid = player_team['league']['leagueid']
-        self.club_domestic_prestige = player_team['domesticprestige']
-        self.club_profitability = player_team['profitability']
-        self.wage = self._calculate_player_wage()
+    def __init__(self, ovr = 0, age = 0, posid = 0, player_team = {}):
+        if player_team:
+            self.ovr = ovr
+            self.age = age
+            self.posid = posid
+            self.leagueid = player_team['league']['leagueid']
+            self.club_domestic_prestige = player_team['domesticprestige']
+            self.club_profitability = player_team['profitability']
+            self.wage = self._calculate_player_wage()
+        else:
+            self.wage = 500
         self.formated_wage = "{:,}".format(self.wage)
 
     def _calculate_player_wage(self):
@@ -357,7 +360,13 @@ class FifaPlayer:
         try:
             self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'])
         except KeyError:
-            self.player_wage = 500
+            self.player_teams['club_team'] = dict()
+            self.player_teams['club_team']['league'] = dict()
+            self.player_teams['club_team']['teamname'] = "Not Found"
+            self.player_teams['club_team']['teamid'] = 0
+            self.player_teams['club_team']['league']['leaguename'] = "Not Found"
+            self.player_teams['club_team']['league']['leagueid'] = 0
+            self.player_wage = PlayerWage()
         self.player_contract = self.set_contract()
         #self.update_positions()
 

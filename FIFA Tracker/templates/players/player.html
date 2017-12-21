@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="col-sm-4 text-center">
-        <div><img src="{% get_static_prefix %}img/assets/heads/p{{ p.player.playerid }}.png" title="PlayerID: {{ p.player.playerid }}" class="largeface"></div>
+        <div><img src="{% get_static_prefix %}img/assets/heads/p{{ p.player.playerid }}.png" title="PlayerID: {{ p.player.playerid }}" class="largeface" onerror="faceNotFound(this, {% get_static_prefix %});"></div>
       </div>
       <div class="col-sm-4 text-left hidden-xs">
         <div class="row">
@@ -50,7 +50,7 @@
           <div class="col-xs-12">
             <dl>
               <dt>Position(s)</dt>
-              <dd>{{ p.player.preferredposition1 }}{% if p.player.preferredposition2 != -1 %} / {{ p.player.preferredposition2 }}{% endif %}{% if p.player.preferredposition3 != -1 %} / {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} / {{ p.player.preferredposition4 }}{% endif %}</dd>
+              <dd class="player-position">{{ p.player.preferredposition1 }}{% if p.player.preferredposition2 != -1 %} / {{ p.player.preferredposition2 }}{% endif %}{% if p.player.preferredposition3 != -1 %} / {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} / {{ p.player.preferredposition4 }}{% endif %}</dd>
             </dl>
           </div>
         </div>
@@ -93,12 +93,12 @@
               </tr>
               <tr>
                 <td>Position</td>
-                <td align="right">{{p.player.preferredposition1}}</td>
+                <td class="player-position" align="right">{{p.player.preferredposition1}}</td>
               </tr>
               {% if p.player.preferredposition2 != -1 %}
               <tr>
                 <td>Other Positions</td>
-                <td align="right">{{ p.player.preferredposition2 }}{% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}</td>
+                <td class="player-position" align="right">{{ p.player.preferredposition2 }}{% if p.player.preferredposition3 != -1 %} / {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} / {{ p.player.preferredposition4 }}{% endif %}</td>
               </tr>
               {% endif %}
               <tr>
@@ -133,23 +133,23 @@
               </tr>
               <tr>
                 <td>Strong Foot</td>
-                <td align="right">{{ p.player.preferredfoot }}</td>
+                <td class="strong-foot" align="right">{{ p.player.preferredfoot }}</td>
               </tr>
               <tr>
                 <td>Workrates</td>
-                <td align="right"> {{ p.player.attackingworkrate }} / {{ p.player.defensiveworkrate }}</td>
+                <td align="right"> <span class="workrate">{{ p.player.attackingworkrate }}</span> / <span class="workrate">{{ p.player.defensiveworkrate }}</span></td>
               </tr>
               <tr>
                 <td>Skill moves</td>
-                <td align="right"> {{ p.player.skillmoves }}</td>
+                <td align="right"> {{ p.player.skillmoves|add:1 }} <span style="color:yellow">&starf;</span></td>
               </tr>
               <tr>
                 <td>Weak foot</td>
-                <td align="right"> {{ p.player.weakfootabilitytypecode }}</td>
+                <td align="right"> {{ p.player.weakfootabilitytypecode }} <span style="color:yellow">&starf;</span></td>
               </tr>
               <tr>
                 <td>Int. Reputation</td>
-                <td align="right"> {{ p.player.internationalrep }} </td>
+                <td align="right"> {{ p.player.internationalrep }} <span style="color:yellow">&starf;</span></td>
               </tr>
               <tr>
                 <td>Value</td>

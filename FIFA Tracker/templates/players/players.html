@@ -21,14 +21,14 @@
 			<tbody>
 				{% for p in players %}
 					<tr>
-						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.player.playerid }}.png" title="{{ p.player.playerid }}" class="miniface"</a></td>
-						<td class="text-center" width="65">{{ p.player.preferredposition1 }}</td>
+						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.player.playerid }}.png" title="{{ p.player.playerid }}" class="miniface" onerror="faceNotFound(this, {% get_static_prefix %});"</a></td>
+						<td class="player-position text-center" width="65">{{ p.player.preferredposition1 }}</td>
 						<td width="250">
 							<div>
 								<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" class="flag">
 								<a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
 							</div>
-							<div>
+							<div class="player-position">
 								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" title="{{ p.player_teams.club_team.teamname }}" class="crest">
 								{{ p.player.preferredposition1 }}{% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}{% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
 							</div>

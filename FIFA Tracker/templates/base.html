@@ -11,7 +11,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="{% static 'js\FIFA_TRACKER.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
 	{% block stylesheet %}{% endblock %}
 </head>	
@@ -49,14 +48,16 @@
 		</div>
 	  </div>
 	</nav>
-	<div id="main" class="bg-1">
+	<div id="main" class="container bg-1">
 		{% block content %}
 		{% endblock %}
 	</div>
 	<footer class="footer text-center">
 		<p>&copy; FIFA Tracker 2017 | All FIFA assets are property of EA Sports | <a href="https://github.com/xAranaktu/FIFA-Tracker">GitHub</a> </p> 
 	</footer>	
+<script src="{% static 'js\FIFA_TRACKER.js' %}"></script>
 <script>
+
 $(document).ready(function(){  
 	updatePositions();
 	updateStrongFoot();

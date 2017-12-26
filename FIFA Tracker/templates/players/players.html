@@ -6,7 +6,21 @@
 {% endblock %}
 
 {% block content %}
-	<div id="table-container" class="container">
+	<div class="container-fluid top-container">
+		<form id="player_search" method="get">
+			<div class="row">
+				<div class="col-md-6">
+					<input type="text" name="name" placeholder="First name">
+				</div>
+				<div class="col-md-6">
+					<button class="btn btn-primary btn-search">Search <span class="glyphicon glyphicon-search"></span></button>
+					<button class="btn btn-primary btn-search-adv">More <span class="glyphicon glyphicon-chevron-down"></span></button>
+				</div>
+			</div>
+		</form>	
+	</div>
+
+	<div id="table-container" class="container-fluid">
 		<table>
 			<thead>
 				<tr>
@@ -21,7 +35,7 @@
 			<tbody>
 				{% for p in players %}
 					<tr>
-						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/heads/p{{ p.player.playerid }}.png" title="{{ p.player.playerid }}" class="miniface" onerror="faceNotFound(this, {% get_static_prefix %});"</a></td>
+						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" title="{{ p.player.playerid }}" class="miniface" onerror="faceNotFound(this, {% get_static_prefix %});"</a></td>
 						<td class="player-position text-center" width="65">{{ p.player.preferredposition1 }}</td>
 						<td width="250">
 							<div>

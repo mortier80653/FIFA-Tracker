@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="col-sm-4 text-center">
-        <div><img src="{% get_static_prefix %}img/assets/heads/p{{ p.player.playerid }}.png" title="PlayerID: {{ p.player.playerid }}" class="largeface" onerror="faceNotFound(this, {% get_static_prefix %});"></div>
+        <div><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" title="PlayerID: {{ p.player.playerid }}" class="largeface" onerror="faceNotFound(this, {% get_static_prefix %});"></div>
       </div>
       <div class="col-sm-4 text-left hidden-xs">
         <div class="row">

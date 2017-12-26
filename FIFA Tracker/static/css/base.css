@@ -17,6 +17,9 @@ body {
 .nav-tabs li a {
     color: #ffffff;
 }
+#player_search input {
+    width: 100%;
+}
 
 .navbar {
     font-family: Montserrat, sans-serif;

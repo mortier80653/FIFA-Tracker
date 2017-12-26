@@ -24,7 +24,7 @@ class PlayerAge(FifaDate):
         if len(current_date) == 8:
             return date(int(current_date[:4]), int(current_date[4:6]), int(current_date[6:]))  
         elif len(current_date) == 4:
-            return date(year=int(current_date), month=1, day=1)
+            return date(year=int(current_date), month=6, day=1)
         else:
             return date(year=2017, month=7, day=1)
 
@@ -368,7 +368,14 @@ class FifaPlayer:
             self.player_teams['club_team']['league']['leagueid'] = 0
             self.player_wage = PlayerWage()
         self.player_contract = self.set_contract()
+        self.headshot = self.set_headshot()
         #self.update_positions()
+
+    def set_headshot(self):
+        if self.player.playerid < 240895:
+            return "heads/p{playerid}.png".format(playerid=self.player.playerid)
+        else:
+            return "youthheads/p{headtypecode}{haircolorcode:02d}.png".format(headtypecode=self.player.headtypecode, haircolorcode=self.player.haircolorcode) 
 
     def update_positions(self):
         available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')

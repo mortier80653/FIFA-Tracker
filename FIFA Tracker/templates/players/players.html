@@ -5,20 +5,139 @@
   <link rel="stylesheet" href="{% static 'css/players.css' %}">
 {% endblock %}
 
+{% block script %}
+	<script>
+		$( function() {
+		$( "#tabs" ).tabs();
+		} );
+		$( function() {
+			$(".slider-range-attrib").slider({
+				range: true,
+				min: 1,
+				max: 99,
+				values: [1, 99],
+			});
+
+			// Filter Player Rating //
+
+			$("#slider-range-ovr").slider({
+				slide: function (event, ui) {
+					$("input[name='overallrating__gte']").val(ui.values[0]);
+					$("input[name='overallrating__lte']").val(ui.values[1]);
+				}
+			});
+			$("input[name='overallrating__gte']").on("change input keyup", function() {
+				$("#slider-range-ovr").slider('values',0,this.value);
+			});
+			$("input[name='overallrating__lte']").on("change input keyup", function() {
+				$("#slider-range-ovr").slider('values',1,this.value);
+			});
+			
+			$("#slider-range-ovr").slider('values',0,$("input[name='overallrating__gte']").val());
+			$("#slider-range-ovr").slider('values',1,$("input[name='overallrating__lte']").val());
+
+			// Filter Player Potential //
+
+			$("#slider-range-pot").slider({
+				slide: function (event, ui) {
+					$("input[name='potential__gte']").val(ui.values[0]);
+					$("input[name='potential__lte']").val(ui.values[1]);
+				}
+			});
+			$("input[name='potential__gte']").on("input keyup", function() {
+				$("#slider-range-pot").slider('values',0,this.valueAsNumber);
+			});
+			$("input[name='potential__lte']").on("input keyup", function() {
+				$("#slider-range-pot").slider('values',1,this.valueAsNumber);
+			});
+
+			$("#slider-range-pot").slider('values',0,$("input[name='potential__gte']").val());
+			$("#slider-range-pot").slider('values',1,$("input[name='potential__lte']").val());
+
+		  } );
+	</script>
+{% endblock %}
+
 {% block content %}
 	<div class="container-fluid top-container">
-		<form id="player_search" method="get">
-			<div class="row">
-				<div class="col-md-6">
-					<input type="text" name="name" placeholder="First name">
+		<form method="get">
+			<div class="well">
+				<h4 style="margin-top: 0">Filter Players</h4>
+				<div id="tabs">
+					<ul>
+						<li>
+							<a href="#tabs-1">Player Info</a>
+						</li>
+						<li>
+							<a href="#tabs-2">Player Attributes</a>
+						</li>
+						<li>
+							<a href="#tabs-3">For Geeks</a>
+						</li>
+					</ul>
+					<div id="tabs-1">
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="pull-left">
+									<label>OVR:</label>
+								</div>
+								<div class="pull-right">
+									<input class="input-small input-attrib" type="number" min="1" max="99" name="overallrating__gte" value="{{ request_query_dict.overallrating__gte }}" placeholder="Min">
+									<input class="input-small input-attrib" type="number" min="1" max="99" name="overallrating__lte" value="{{ request_query_dict.overallrating__lte }}" placeholder="Max">
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="slider-range-attrib" id="slider-range-ovr"></div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="pull-left">
+									<label>POT:</label>
+								</div>
+								<div class="pull-right">
+									<input class="input-small input-attrib" type="number" min="1" max="99" name="potential__gte" value="{{ request_query_dict.potential__gte }}" placeholder="Min">
+									<input class="input-small input-attrib" type="number" min="1" max="99" name="potential__lte" value="{{ request_query_dict.potential__lte }}" placeholder="Max">
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="slider-range-attrib" id="slider-range-pot"></div>
+							</div>
+						</div>
+					</div>
+					<div id="tabs-2">
+						<div class="row">
+						</div>
+					</div>
+					<div id="tabs-3">
+						<div class="row">
+						</div>
+					</div>
 				</div>
-				<div class="col-md-6">
+				<button type="submit" class="btn btn-primary">
+					<span class="glyphicon glyphicon-search"></span> Search
+				</button>
+			</div>
+		</form>
+	</div> 
+	{% comment %} 		
+	<form id="player_filter">
+			<div class="row">
+				<div class="col-md-6 col-xs-4">
+					<input type="text" name="name" placeholder="Name...">
+				</div>
+				<div class="col-md-6 col-xs-8">
 					<button class="btn btn-primary btn-search">Search <span class="glyphicon glyphicon-search"></span></button>
 					<button class="btn btn-primary btn-search-adv">More <span class="glyphicon glyphicon-chevron-down"></span></button>
 				</div>
 			</div>
 		</form>	
-	</div>
+	{% endcomment %}
+	
 
 	<div id="table-container" class="container-fluid">
 		<table>
@@ -44,7 +163,10 @@
 							</div>
 							<div class="player-position">
 								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" title="{{ p.player_teams.club_team.teamname }}" class="crest">
-								{{ p.player.preferredposition1 }}{% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}{% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
+								{{ p.player.preferredposition1 }}
+								{% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
+								{% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
+								{% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
 							</div>
 						</td>
 						<td class="text-center">{{ p.player.overallrating }}</td>

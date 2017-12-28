@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.db import connection
 
 from .models import DataUsersPlayers, DataUsersTeamplayerlinks, DataUsersPlayerloans, DataUsersEditedplayernames, DataUsersTeams, DataUsersLeagueteamlinks, DataUsersCareerCalendar, DataUsersLeagues
+from .filters import DataUsersPlayersFilter
 from .fifa_utils import FifaPlayer
 
 
@@ -17,8 +18,9 @@ def players(request):
     else:
         current_user = "test123"
 
-    data = list(DataUsersPlayers.objects.for_user(current_user).filter(preferredposition1=25).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',).order_by('-potential')[:100].iterator())
-
+    player_filter = DataUsersPlayersFilter(request.GET, queryset=DataUsersPlayers.objects.for_user(current_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',).order_by('-potential'))
+    data = list(player_filter.qs[:100].iterator())
+    
     if len(data) <= 0:
         return render(request, 'players/players.html')
 
@@ -39,8 +41,7 @@ def players(request):
 
     endtime = time.time() - start # DEBUG
     print ("Loading time: {} Queries: {}".format(endtime, len(connection.queries))) #DEBUG
-    return render(request, 'players/players.html', {'players':players})
-
+    return render(request, 'players/players.html', {'players':players, 'request_query_dict': request.GET, })
 
 def player(request, playerid):
     if request.user.is_authenticated:

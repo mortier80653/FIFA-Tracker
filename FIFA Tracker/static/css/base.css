@@ -14,11 +14,12 @@ body {
     padding-top: 80px;
 }
 
+.input-small {
+    width: 50px;
+}
+
 .nav-tabs li a {
     color: #ffffff;
-}
-#player_search input {
-    width: 100%;
 }
 
 .navbar {
@@ -70,7 +71,6 @@ body {
 	height:30px;   /* Height of the footer */
 	line-height: 30px; /* Vertically center the text there */
 }
-
 
 textarea {
     resize: none;

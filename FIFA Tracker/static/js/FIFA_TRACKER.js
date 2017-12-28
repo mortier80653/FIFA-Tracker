@@ -1,6 +1,8 @@
-$( ".btn-advanced" ).click(function() {
-    alert( "Handler for .click() called." );
-  });
+$(document).ready(function(){
+  updatePositions();
+  updateStrongFoot();
+  updateWorkrates();
+})
 
 function updatePositions() {
     var available_positions = ['GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW']

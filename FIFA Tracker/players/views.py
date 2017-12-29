@@ -4,6 +4,7 @@ from functools import reduce
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.db import connection
+from django.http import QueryDict
 
 from .models import DataUsersPlayers, DataUsersTeamplayerlinks, DataUsersPlayerloans, DataUsersEditedplayernames, DataUsersTeams, DataUsersLeagueteamlinks, DataUsersCareerCalendar, DataUsersLeagues
 from .filters import DataUsersPlayersFilter
@@ -18,7 +19,8 @@ def players(request):
     else:
         current_user = "test123"
 
-    player_filter = DataUsersPlayersFilter(request.GET, queryset=DataUsersPlayers.objects.for_user(current_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',).order_by('-potential'))
+    player_filter = DataUsersPlayersFilter(request.GET.copy(), queryset=DataUsersPlayers.objects.for_user(current_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',))
+    print(dir(player_filter))
     data = list(player_filter.qs[:100].iterator())
     
     if len(data) <= 0:

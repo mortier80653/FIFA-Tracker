@@ -18,6 +18,10 @@ body {
     width: 50px;
 }
 
+.input-small {
+    width: 150px;
+}
+
 .nav-tabs li a {
     color: #ffffff;
 }

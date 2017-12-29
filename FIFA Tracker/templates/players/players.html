@@ -2,15 +2,65 @@
 {% load static %}
 
 {% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/selectize.default.css' %}">
   <link rel="stylesheet" href="{% static 'css/players.css' %}">
 {% endblock %}
 
 {% block script %}
+    <script src="{% static 'js\selectize.min.js' %}"></script>
 	<script>
 		$( function() {
-		$( "#tabs" ).tabs();
-		} );
-		$( function() {
+			$("#positions-input").selectize({
+				delimiter: ',',
+				persist: false,
+				valueField: 'posid',
+				labelField: 'position',
+				searchField: ['posid', 'position'],
+				options: [
+					{ position: 'GK', 	posid: '0'},
+					{ position: 'SW', 	posid: '1'},
+					{ position: 'RWB', 	posid: '2'},
+					{ position: 'RB', 	posid: '3'},
+					{ position: 'RCB', 	posid: '4'},
+					{ position: 'CB', 	posid: '5'},
+					{ position: 'LCB', 	posid: '6'},
+					{ position: 'LB', 	posid: '7'},
+					{ position: 'LWB', 	posid: '8'},
+					{ position: 'RDM', 	posid: '9'},
+					{ position: 'CDM', 	posid: '10'},
+					{ position: 'LDM', 	posid: '11'},
+					{ position: 'RM', 	posid: '12'},
+					{ position: 'RCM', 	posid: '13'},
+					{ position: 'CM', 	posid: '14'},
+					{ position: 'LCM', 	posid: '15'},
+					{ position: 'LM', 	posid: '16'},
+					{ position: 'RAM', 	posid: '17'},
+					{ position: 'CAM', 	posid: '18'},
+					{ position: 'LAM', 	posid: '19'},
+					{ position: 'RF', 	posid: '20'},
+					{ position: 'CF', 	posid: '21'},
+					{ position: 'LF', 	posid: '22'},
+					{ position: 'RW', 	posid: '23'},
+					{ position: 'RS', 	posid: '24'},
+					{ position: 'ST', 	posid: '25'},
+					{ position: 'LS', 	posid: '26'},
+					{ position: 'LW', 	posid: '27'},
+				],
+				render: {
+					item: function(item, escape) {
+						return '<div>' +
+							(item.position ? '<span class="position">' + escape(item.position) + '</span>' : '') +
+							'/div';
+					},
+					option: function (item, escape) {
+						return '<div>' +
+							(item.position ? '<span class="caption">' + escape(item.position) + '</span>' : '') +
+							'</div>';
+					},
+				},
+			});
+
+			$( "#tabs" ).tabs();
 			$(".slider-range-attrib").slider({
 				range: true,
 				min: 1,
@@ -106,6 +156,11 @@
 						<div class="form-group row">
 							<div class="col-md-6">
 								<div class="slider-range-attrib" id="slider-range-pot"></div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<input class="input-medium" id='positions-input' name="preferredpositions" placeholder="Position(s)">
 							</div>
 						</div>
 					</div>

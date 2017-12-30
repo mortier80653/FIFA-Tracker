@@ -192,7 +192,24 @@
 			</div>
 		</form>	
 	{% endcomment %}
+
+	<div class="pagination">
+		<span class="step-links">
+			{% if paginator.has_previous %}
+				<a href="?page=1{{ paginator.request_filters }}">&laquo; first</a>
+				<a href="?page={{ paginator.previous_page_number }}{{ paginator.request_filters }}">previous</a>
+			{% endif %}
 	
+			<span class="current">
+				Page {{ paginator.page }} of {{ paginator.last_page_number }}.
+			</span>
+	
+			{% if paginator.has_next %}
+				<a href="?page={{ paginator.next_page_number }}{{ paginator.request_filters }}">next</a>
+				<a href="?page={{ paginator.last_page_number }}{{ paginator.request_filters }}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
 
 	<div id="table-container" class="container-fluid">
 		<table>

@@ -1,32 +1,38 @@
 from datetime import date  
 from datetime import timedelta  
 
-class FifaDate:
-    def __init__(self, fifa_date):
-        self.date = self.convert_to_py_date(fifa_date)
+class FifaDate():
+
+    def convert_days_to_py_date(self, days):
+        """Convert birthdate or playerjointeamdate into python datetime.date format."""
+
+        return date(year=1582, month=10, day=14) + timedelta(days=int(days))
 
     def convert_to_py_date(self, fifa_date):
         """Convert FIFA Date format into python datetime.date format."""
-        if len(str(fifa_date)) == 4:
-            return date(year=fifa_date, month=1, day=1)
-        else:
-            return date(year=1582, month=10, day=14) + timedelta(days=fifa_date)
-
-class PlayerAge(FifaDate):
-    def __init__(self, birth_date, current_date=20170701):
-        self.birth_date = self.convert_to_py_date(birth_date)
-        self.current_date = self.convert_current_date(current_date)
-        self.age = self.get_age()
-
-    def convert_current_date(self, current_date):
-        """Convert Current date from FIFA Calendar table into python datetime.date format."""
-        current_date = str(current_date)
-        if len(current_date) == 8:
-            return date(int(current_date[:4]), int(current_date[4:6]), int(current_date[6:]))  
-        elif len(current_date) == 4:
-            return date(year=int(current_date), month=6, day=1)
+        fifa_date = str(fifa_date)
+        if len(fifa_date) == 4:
+            # Date contains only year 
+            return date(year=int(fifa_date), month=7, day=1)
+        elif len(fifa_date) == 8:
+            return date(int(fifa_date[:4]), int(fifa_date[4:6]), int(fifa_date[6:]))  
         else:
             return date(year=2017, month=7, day=1)
+
+    def convert_age_to_birthdate(self, current_date, age):
+        """Convert Player Age to birthdate for futher database query"""
+
+        start_date = date(year=1582, month=10, day=14)
+        current_date = self.convert_to_py_date(fifa_date=current_date)
+
+        birthdate = date(year=current_date.year - int(age), month=current_date.month, day=current_date.day) 
+        return (birthdate - start_date).days
+
+class PlayerAge():
+    def __init__(self, birth_date=141279, current_date=20170701):
+        self.birth_date = FifaDate().convert_days_to_py_date(days=birth_date)
+        self.current_date = FifaDate().convert_to_py_date(fifa_date=current_date)
+        self.age = self.get_age()
 
     def get_age(self):
         """returns age of your player"""
@@ -340,7 +346,7 @@ class PlayerValue:
 
         return int(self._round_to_player_value(summed_value))
 
-class FifaPlayer:
+class FifaPlayer():
 
     def __init__(self, player, username, current_date, dict_cached_queries):
         self.player = player
@@ -393,16 +399,16 @@ class FifaPlayer:
 
     def set_contract(self):
         contract = {}
-
-        contract['jointeamdate'] = FifaDate(self.player.playerjointeamdate).date
-        contract['enddate'] = FifaDate(self.player.contractvaliduntil).date
+        
+        contract['jointeamdate'] = FifaDate().convert_days_to_py_date(days=self.player.playerjointeamdate)
+        contract['enddate'] = FifaDate().convert_to_py_date(fifa_date=self.player.playerjointeamdate)
 
         contract['isloanedout'] = 0 
         for i in range(len(self.query_player_loans)):
             if self.query_player_loans[i].playerid == self.player.playerid:
                 contract['isloanedout'] = 1
                 contract['loan'] = vars(self.query_player_loans[i])
-                contract['enddate']  = FifaDate(self.query_player_loans[i].loandateend).date
+                contract['enddate']  = FifaDate().convert_to_py_date(fifa_date=self.query_player_loans[i].loandateend)
                 contract['loanedto_clubid'] = self.player_teams['club_team']['teamid']
                 contract['loanedto_clubname'] = self.player_teams['club_team']['teamname']
                 for j in range(len(self.q_teams)):

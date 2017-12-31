@@ -67,6 +67,24 @@
 				max: 99,
 				values: [1, 99],
 			});
+			$(".slider-range-height").slider({
+				range: true,
+				min: 130,
+				max: 215,
+				values: [130, 215],
+			});
+			$(".slider-range-weight").slider({
+				range: true,
+				min: 30,
+				max: 115,
+				values: [30, 115],
+			});
+			$(".slider-range-age").slider({
+				range: true,
+				min: 1,
+				max: 99,
+				values: [15, 45],
+			});
 
 			// Filter Player Rating //
 
@@ -103,6 +121,60 @@
 
 			$("#slider-range-pot").slider('values',0,$("input[name='potential__gte']").val());
 			$("#slider-range-pot").slider('values',1,$("input[name='potential__lte']").val());
+
+			// Filter Player HEIGHT //
+
+			$("#slider-range-height").slider({
+				slide: function (event, ui) {
+					$("input[name='height__gte']").val(ui.values[0]);
+					$("input[name='height__lte']").val(ui.values[1]);
+				}
+			});
+			$("input[name='height__gte']").on("change input keyup", function () {
+				$("#slider-range-height").slider('values', 0, this.value);
+			});
+			$("input[name='height__lte']").on("change input keyup", function () {
+				$("#slider-range-height").slider('values', 1, this.value);
+			});
+
+			$("#slider-range-height").slider('values', 0, $("input[name='height__gte']").val());
+			$("#slider-range-height").slider('values', 1, $("input[name='height__lte']").val());
+
+			// Filter Player WEIGHT //
+
+			$("#slider-range-weight").slider({
+				slide: function (event, ui) {
+					$("input[name='weight__gte']").val(ui.values[0]);
+					$("input[name='weight__lte']").val(ui.values[1]);
+				}
+			});
+			$("input[name='weight__gte']").on("change input keyup", function () {
+				$("#slider-range-weight").slider('values', 0, this.value);
+			});
+			$("input[name='weight__lte']").on("change input keyup", function () {
+				$("#slider-range-weight").slider('values', 1, this.value);
+			});
+
+			$("#slider-range-weight").slider('values', 0, $("input[name='weight__gte']").val());
+			$("#slider-range-weight").slider('values', 1, $("input[name='weight__lte']").val());
+
+			// Filter Player AGE //
+
+			$("#slider-range-age").slider({
+				slide: function (event, ui) {
+					$("input[name='age_min']").val(ui.values[0]);
+					$("input[name='age_max']").val(ui.values[1]);
+				}
+			});
+			$("input[name='age_min']").on("change input keyup", function () {
+				$("#slider-range-age").slider('values', 0, this.value);
+			});
+			$("input[name='age_max']").on("change input keyup", function () {
+				$("#slider-range-age").slider('values', 1, this.value);
+			});
+
+			$("#slider-range-age").slider('values', 0, $("input[name='age_min']").val());
+			$("#slider-range-age").slider('values', 1, $("input[name='age_max']").val());
 
 		  } );
 	</script>
@@ -161,6 +233,54 @@
 						<div class="form-group row">
 							<div class="col-md-6">
 								<input class="input-medium" id='positions-input' name="preferredpositions" placeholder="Position(s)">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="pull-left">
+									<label>HEIGHT:</label>
+								</div>
+								<div class="pull-right">
+									<input class="input-small input-attrib" type="number" min="130" max="215" name="height__gte" value="{{ request_query_dict.height__gte }}" placeholder="Min">
+									<input class="input-small input-attrib" type="number" min="130" max="215" name="height__lte" value="{{ request_query_dict.height__lte }}" placeholder="Max">
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="slider-range-height" id="slider-range-height"></div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="pull-left">
+									<label>WEIGHT:</label>
+								</div>
+								<div class="pull-right">
+									<input class="input-small input-attrib" type="number" min="30" max="115" name="weight__gte" value="{{ request_query_dict.weight__gte }}" placeholder="Min">
+									<input class="input-small input-attrib" type="number" min="30" max="115" name="weight__lte" value="{{ request_query_dict.weight__lte }}" placeholder="Max">
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="slider-range-weight" id="slider-range-weight"></div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="pull-left">
+									<label>AGE:</label>
+								</div>
+								<div class="pull-right">
+									<input class="input-small input-attrib" type="number" min="1" max="99" name="age_min" value="{{ request_query_dict.age_min }}" placeholder="Min">
+									<input class="input-small input-attrib" type="number" min="1" max="99" name="age_max" value="{{ request_query_dict.age_max }}" placeholder="Max">
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<div class="slider-range-attrib" id="slider-range-age"></div>
 							</div>
 						</div>
 					</div>

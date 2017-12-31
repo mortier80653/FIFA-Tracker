@@ -16,7 +16,7 @@ class MyPaginator():
         request = self.request.dict()
         qs_filters = ""
         for field in request:
-            qs_filters += "&" + str(field) + "=" + str(request[field])
+            qs_filters += "&{field}={field_value}".format(field=str(field), field_value=str(request[field]))
 
         return re.sub('&page=[\d]+', '', qs_filters).replace(',', "%2C")
     

@@ -20,7 +20,10 @@ def players(request):
     else:
         current_user = "test123"
 
-    player_filter = DataUsersPlayersFilter(request.GET.copy(), queryset=DataUsersPlayers.objects.for_user(current_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',))
+    # Current date according to in-game calendar
+    current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+
+    player_filter = DataUsersPlayersFilter(request.GET.copy(), queryset=DataUsersPlayers.objects.for_user(current_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',), current_date=current_date)
 
 
     paginator = MyPaginator(player_filter.qs.count(), request=request.GET.copy(), max_per_page=100)
@@ -43,9 +46,6 @@ def players(request):
 
     dict_cached_queries['q_teams'] = list(DataUsersTeams.objects.for_user(current_user).filter(f_teamid).iterator())
     dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(f_teamid).iterator())
-
-    # Current date according to in-game calendar
-    current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
 
     players_list = list()
     for player in data:

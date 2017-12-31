@@ -1,8 +1,10 @@
 from django.db.models import Q
+from .fifa_utils import FifaDate
 
 class DataUsersPlayersFilter:
-    def __init__(self, request_dict, queryset):
+    def __init__(self, request_dict, queryset, current_date):
         self.request_dict = request_dict
+        self.current_date = current_date
         queryset = self.filter(queryset)
         queryset = self.order(queryset)
         self.qs = queryset
@@ -26,6 +28,27 @@ class DataUsersPlayersFilter:
                 queryset = queryset.filter(
                     Q(preferredposition1__in=value) | Q(preferredposition2__in=value) | Q(preferredposition3__in=value) | Q(preferredposition4__in=value)
                 )
+        except ValueError:
+            pass
+
+        try:
+            if 'height__gte' and 'height__lte' in self.request_dict:
+                queryset = queryset.filter(Q(height__gte=self.request_dict['height__gte']), Q(height__lte=self.request_dict['height__lte']))
+        except ValueError:
+            pass
+
+        try:
+            if 'weight__gte' and 'weight__lte' in self.request_dict:
+                queryset = queryset.filter(Q(weight__gte=self.request_dict['weight__gte']), Q(weight__lte=self.request_dict['weight__lte']))
+        except ValueError:
+            pass
+
+        try:
+            if 'age_min' and 'age_max' in self.request_dict:
+                birthdate_max = FifaDate().convert_age_to_birthdate(self.current_date, age=self.request_dict['age_min'])
+                birthdate_min = FifaDate().convert_age_to_birthdate(self.current_date, age=self.request_dict['age_max']) - 365
+                
+                queryset = queryset.filter(Q(birthdate__gte=birthdate_min), Q(birthdate__lte=birthdate_max))
         except ValueError:
             pass
         

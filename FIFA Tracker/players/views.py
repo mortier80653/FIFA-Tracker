@@ -4,13 +4,23 @@ from functools import reduce
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.db import connection
-from django.http import QueryDict
+from django.core import serializers
+from django.http import QueryDict, JsonResponse
 
-from .models import DataUsersPlayers, DataUsersTeamplayerlinks, DataUsersPlayerloans, DataUsersEditedplayernames, DataUsersTeams, DataUsersLeagueteamlinks, DataUsersCareerCalendar, DataUsersLeagues
-from .filters import DataUsersPlayersFilter
-from .fifa_utils import FifaPlayer
+from core.filters import DataUsersPlayersFilter
+from core.fifa_utils import FifaPlayer
+
+from .models import DataUsersPlayers, DataUsersTeamplayerlinks, DataUsersPlayerloans, DataUsersEditedplayernames, DataUsersTeams
+from .models import DataUsersLeagueteamlinks, DataUsersCareerCalendar, DataUsersLeagues, DataNations
+
 from .paginator import MyPaginator
 
+
+def ajax_nationality(request):
+    data = {
+        'nations': list(DataNations.objects.all().values())
+    }
+    return JsonResponse(data)
 
 def players(request):
     start = time.time()

@@ -401,7 +401,7 @@ class FifaPlayer():
         contract = {}
         
         contract['jointeamdate'] = FifaDate().convert_days_to_py_date(days=self.player.playerjointeamdate)
-        contract['enddate'] = FifaDate().convert_to_py_date(fifa_date=self.player.playerjointeamdate)
+        contract['enddate'] = FifaDate().convert_to_py_date(fifa_date=self.player.contractvaliduntil)
 
         contract['isloanedout'] = 0 
         for i in range(len(self.query_player_loans)):

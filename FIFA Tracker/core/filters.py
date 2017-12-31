@@ -32,6 +32,14 @@ class DataUsersPlayersFilter:
             pass
 
         try:
+            if 'nationalityid' in self.request_dict:
+                value = list(self.request_dict['nationalityid'].split(','))
+                
+                queryset = queryset.filter( Q(nationality__in=value) )
+        except ValueError:
+            pass
+
+        try:
             if 'height__gte' and 'height__lte' in self.request_dict:
                 queryset = queryset.filter(Q(height__gte=self.request_dict['height__gte']), Q(height__lte=self.request_dict['height__lte']))
         except ValueError:

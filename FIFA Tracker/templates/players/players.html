@@ -88,6 +88,34 @@
 				}
 			});
 
+			$("#teams-input").selectize({
+				valueField: 'teamid',
+				labelField: 'teamname',
+				searchField: 'teamname',
+				options: [],
+				create: false,
+				render: {
+					option: function (item, escape) {
+						return '<div>' +
+							(item.teamname ? '<span class="teamname">' + escape(item.teamname) + '</span>' : '') +
+							'</div>';
+					}
+				},
+				load: function (query, callback) {
+					if (!query.length) return callback();
+					$.ajax({
+						url: 'ajax/teams/',
+						dataType: 'json',
+						error: function () {
+							callback();
+						},
+						success: function (res) {
+							callback(res.teams);
+						}
+					});
+				}
+			});
+
 			$( "#tabs" ).tabs();
 			$(".slider-range-attrib").slider({
 				range: true,
@@ -265,7 +293,12 @@
 						</div>
 						<div class="form-group row">
 							<div class="col-md-6">
-								<input class="input-medium" id='nationality-input' name="nationalityid" placeholder="Nationality">
+								<input class="input-medium" id='nationality-input' name="nationalityid" placeholder="Nationality...">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-6">
+								<input class="input-medium" id='teams-input' name="teamid" placeholder="Team...">
 							</div>
 						</div>
 						<div class="form-group row">

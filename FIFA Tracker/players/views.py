@@ -4,8 +4,7 @@ from functools import reduce
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.db import connection
-from django.core import serializers
-from django.http import QueryDict, JsonResponse
+from django.http import JsonResponse
 
 from core.filters import DataUsersPlayersFilter
 from core.fifa_utils import FifaPlayer
@@ -15,6 +14,12 @@ from .models import DataUsersLeagueteamlinks, DataUsersCareerCalendar, DataUsers
 
 from .paginator import MyPaginator
 
+
+def ajax_teams(request):
+    data = {
+        'teams': list(DataUsersTeams.objects.for_user("test123").all().values())
+    }
+    return JsonResponse(data)
 
 def ajax_nationality(request):
     data = {
@@ -33,8 +38,7 @@ def players(request):
     # Current date according to in-game calendar
     current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
 
-    player_filter = DataUsersPlayersFilter(request.GET.copy(), queryset=DataUsersPlayers.objects.for_user(current_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',), current_date=current_date)
-
+    player_filter = DataUsersPlayersFilter(request, for_user=current_user, current_date=current_date)
 
     paginator = MyPaginator(player_filter.qs.count(), request=request.GET.copy(), max_per_page=100)
 

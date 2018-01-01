@@ -1,15 +1,53 @@
 from django.db.models import Q
 from .fifa_utils import FifaDate
+from players.models import DataUsersPlayers, DataUsersTeams, DataUsersTeamplayerlinks
+
+class DataUsersTeamsFilter:
+    def __init__(self, for_user, list_teams):
+        self.list_teams = list_teams
+        self.for_user = for_user
+
+        queryset = DataUsersTeams.objects.for_user(self.for_user).all()
+        queryset = self.filter(queryset)
+        self.qs = queryset
+
+    def filter(self, queryset):
+        value = list(self.list_teams.split(','))
+        return queryset.filter(Q(teamid__in=value)) 
+
+    def get_player_ids(self):
+        eval_DataUsersTeams_qs = list(self.qs.iterator())
+        list_filtered_teams = list()
+        for team in eval_DataUsersTeams_qs:
+            list_filtered_teams.append(team.teamid)
+
+        teamplayerlinks = list(DataUsersTeamplayerlinks.objects.for_user(self.for_user).filter(teamid__in=list_filtered_teams).iterator())
+        list_players = list()
+
+        for player in teamplayerlinks:
+            list_players.append(player.playerid)
+
+        return list_players
 
 class DataUsersPlayersFilter:
-    def __init__(self, request_dict, queryset, current_date):
-        self.request_dict = request_dict
+    def __init__(self, request, for_user, current_date):
+        self.request_dict = request.GET.copy()
+        self.for_user = for_user
         self.current_date = current_date
+        
+        queryset = DataUsersPlayers.objects.for_user(self.for_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',)
         queryset = self.filter(queryset)
         queryset = self.order(queryset)
         self.qs = queryset
 
     def filter(self, queryset):
+        try:
+            if 'teamid' in self.request_dict:
+                list_playerids = DataUsersTeamsFilter(for_user=self.for_user, list_teams=self.request_dict['teamid']).get_player_ids()
+                queryset = queryset.filter(Q(playerid__in=list_playerids))
+        except ValueError:
+            pass
+
         try:
             if 'overallrating__gte' and 'overallrating__lte' in self.request_dict:
                 queryset = queryset.filter(Q(overallrating__gte=self.request_dict['overallrating__gte']), Q(overallrating__lte=self.request_dict['overallrating__lte']))

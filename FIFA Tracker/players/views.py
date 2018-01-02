@@ -48,7 +48,7 @@ def players(request):
         return render(request, 'players/players.html')
 
     dict_cached_queries = dict()
-    dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).iterator())
+    dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
     
     f_playerid = reduce(lambda x, y: x | y, [Q(playerid=player.playerid) for player in data])
 

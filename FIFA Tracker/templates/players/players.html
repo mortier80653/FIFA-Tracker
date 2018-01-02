@@ -387,7 +387,7 @@
 			{% endif %}
 	
 			<span class="current">
-				Page {{ paginator.page }} of {{ paginator.last_page_number }}.
+				Page {{ paginator.page }} of {{ paginator.last_page_number }} (Total: {{ paginator.num_of_objects }})
 			</span>
 	
 			{% if paginator.has_next %}

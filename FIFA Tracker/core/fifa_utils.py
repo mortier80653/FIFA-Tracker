@@ -375,7 +375,6 @@ class FifaPlayer():
             self.player_wage = PlayerWage()
         self.player_contract = self.set_contract()
         self.headshot = self.set_headshot()
-        #self.update_positions()
 
     def set_headshot(self):
         if self.player.playerid < 240895:
@@ -414,14 +413,14 @@ class FifaPlayer():
                 for j in range(len(self.q_teams)):
                     if self.query_player_loans[i].teamidloanedfrom == self.q_teams[j].teamid:
                         self.player_teams['club_team'] = vars(self.q_teams[j])
-                        break
-                break
+                        return contract
 
         return contract
 
 
     def set_teams(self):
         teams = {}
+        max_teams = 2
 
         for i in range(len(self.team_player_links)):
             if self.team_player_links[i].playerid == self.player.playerid:
@@ -429,21 +428,43 @@ class FifaPlayer():
                     if self.q_teams[j].teamid == self.team_player_links[i].teamid:
                         if self.q_teams[j].cityid == 0:
                             teams['national_team'] = vars(self.q_teams[j])
-                            teams['national_team']['league'] = vars(self.get_league(self.league_team_links[j].leagueid))
-                            teams['national_team']['league']['teamstats'] = vars(self.league_team_links[j])
+
+                            league = self.get_league(self.q_teams[j].teamid)
+                            teams['national_team']['league'] = vars(league[0])
+                            teams['national_team']['league']['teamstats'] = vars(league[1])
                             teams['national_team']['stats'] = vars(self.team_player_links[j])
                         else:
                             teams['club_team'] = vars(self.q_teams[j])
-                            teams['club_team']['league'] = vars(self.get_league(self.league_team_links[j].leagueid))
-                            teams['club_team']['league']['teamstats'] = vars(self.league_team_links[j])
+
+                            league = self.get_league(self.q_teams[j].teamid)
+                            teams['club_team']['league'] = vars(league[0])
+                            teams['club_team']['league']['teamstats'] = vars(league[1])
                             teams['club_team']['stats'] = vars(self.team_player_links[j])
+                        
+                        if len(teams) >= max_teams:
+                            return teams
         
         return teams
 
-    def set_player_name(self):
-        name = {}
 
-        if self.player.firstname_id == 0 and self.player.lastname_id == 0:
+    def get_league(self, teamid):
+        for i in range(len(self.league_team_links)):
+            if self.league_team_links[i].teamid == teamid:
+                for j in range(len(self.leagues)):
+                    if self.leagues[j].leagueid == self.league_team_links[i].leagueid:
+                        return self.leagues[j], self.league_team_links[i]
+
+
+    def set_player_name(self):
+        name = {
+            'firstname': int(self.player.firstname_id or 0),
+            'lastname': int(self.player.lastname_id or 0),
+            'commonname': int(self.player.commonname_id or 0),
+            'playerjerseyname': int(self.player.playerjerseyname_id or 0),
+        }
+
+
+        if name['firstname'] == 0 or name['lastname'] == 0:
             for i in range(len(self.edited_player_names)):
                 if self.edited_player_names[i].playerid == self.player.playerid:
                     name['firstname'] = self.edited_player_names[i].firstname
@@ -455,33 +476,28 @@ class FifaPlayer():
             try:    
                 name['firstname'] = self.player.firstname.name
             except AttributeError:
-                name['firstname'] = self.player.firstname_id
+                name['firstname'] = int(self.player.firstname_id or 0)
 
             try:    
                 name['lastname'] = self.player.lastname.name
             except AttributeError:
-                name['lastname'] = self.player.lastname_id
+                name['lastname'] = int(self.player.lastname_id or 0)
 
             try:    
-                name['commonname'] = self.player.commonname.name
+                name['commonname'] = self.player.commonname.name          
             except AttributeError:
-                name['commonname'] = self.player.commonname_id
-            
+                name['commonname'] = int(self.player.commonname_id or 0)
+
             try:    
                 name['playerjerseyname'] = self.player.playerjerseyname.name
             except AttributeError:
-                name['playerjerseyname'] = self.player.playerjerseyname_id
+                name['playerjerseyname'] = int(self.player.playerjerseyname_id or 0)
 
 
         # This name will be displayed on website
-        if name['commonname'] is not 0 and name['commonname'] is not None:
+        if name['commonname']:
             name['knownas'] = name['commonname']
         else:
             name['knownas'] = " ".join((str(name['firstname']), str(name['lastname'])))
 
         return name
-
-    def get_league(self, leagueid):
-        for i in range(len(self.leagues)):
-            if self.leagues[i].leagueid == leagueid:
-                return self.leagues[i]

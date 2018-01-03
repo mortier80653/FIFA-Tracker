@@ -473,25 +473,10 @@ class FifaPlayer():
                     name['playerjerseyname'] = self.edited_player_names[i].playerjerseyname
                     break
         else: 
-            try:    
-                name['firstname'] = self.player.firstname.name
-            except AttributeError:
-                name['firstname'] = int(self.player.firstname_id or 0)
-
-            try:    
-                name['lastname'] = self.player.lastname.name
-            except AttributeError:
-                name['lastname'] = int(self.player.lastname_id or 0)
-
-            try:    
-                name['commonname'] = self.player.commonname.name          
-            except AttributeError:
-                name['commonname'] = int(self.player.commonname_id or 0)
-
-            try:    
-                name['playerjerseyname'] = self.player.playerjerseyname.name
-            except AttributeError:
-                name['playerjerseyname'] = int(self.player.playerjerseyname_id or 0)
+            for key in name:
+                get_attr = getattr(self.player, key, None)
+                if get_attr is not None:
+                    name[key] = get_attr.name
 
 
         # This name will be displayed on website

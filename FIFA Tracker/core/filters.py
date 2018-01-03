@@ -41,22 +41,61 @@ class DataUsersPlayersFilter:
         self.qs = queryset
 
     def filter(self, queryset):
+        range_fields = [
+            'overallrating',
+            'potential',
+            'height',
+            'weight',
+            'crossing',
+            'finishing',
+            'headingaccuracy',
+            'shortpassing',
+            'volleys',
+            'marking',
+            'standingtackle',
+            'slidingtackle',
+            'dribbling',
+            'curve',
+            'freekickaccuracy',
+            'longpassing',
+            'ballcontrol',
+            'shotpower',
+            'jumping',
+            'stamina',
+            'strength',
+            'longshots',
+            'acceleration',
+            'sprintspeed',
+            'agility',
+            'reactions',
+            'balance',
+            'aggression',
+            'composure',
+            'interceptions',
+            'positioning',
+            'vision',
+            'penalties',
+            'gkdiving',
+            'gkhandling',
+            'gkkicking',
+            'gkpositioning',
+            'gkreflexes',
+        ]
+
+        for field in range(len(range_fields)):
+            gte = range_fields[field] + "__gte" 
+            lte = range_fields[field] + "__lte"
+
+            try:
+                if (gte in self.request_dict) and (lte in self.request_dict):
+                    queryset = queryset.filter(Q((gte, self.request_dict[gte])), Q((lte, self.request_dict[lte])))
+            except ValueError:
+                pass
+
         try:
             if 'teamid' in self.request_dict:
                 list_playerids = DataUsersTeamsFilter(for_user=self.for_user, list_teams=self.request_dict['teamid']).get_player_ids()
                 queryset = queryset.filter(Q(playerid__in=list_playerids))
-        except ValueError:
-            pass
-
-        try:
-            if 'overallrating__gte' and 'overallrating__lte' in self.request_dict:
-                queryset = queryset.filter(Q(overallrating__gte=self.request_dict['overallrating__gte']), Q(overallrating__lte=self.request_dict['overallrating__lte']))
-        except ValueError:
-            pass
-
-        try:
-            if 'potential__gte' and 'potential__lte' in self.request_dict:
-                queryset = queryset.filter(Q(potential__gte=self.request_dict['potential__gte']), Q(potential__lte=self.request_dict['potential__lte']))
         except ValueError:
             pass
 
@@ -78,18 +117,6 @@ class DataUsersPlayersFilter:
             pass
 
         try:
-            if 'height__gte' and 'height__lte' in self.request_dict:
-                queryset = queryset.filter(Q(height__gte=self.request_dict['height__gte']), Q(height__lte=self.request_dict['height__lte']))
-        except ValueError:
-            pass
-
-        try:
-            if 'weight__gte' and 'weight__lte' in self.request_dict:
-                queryset = queryset.filter(Q(weight__gte=self.request_dict['weight__gte']), Q(weight__lte=self.request_dict['weight__lte']))
-        except ValueError:
-            pass
-
-        try:
             if 'age_min' and 'age_max' in self.request_dict:
                 birthdate_max = FifaDate().convert_age_to_birthdate(self.current_date, age=self.request_dict['age_min'])
                 birthdate_min = FifaDate().convert_age_to_birthdate(self.current_date, age=self.request_dict['age_max']) - 365
@@ -99,6 +126,7 @@ class DataUsersPlayersFilter:
             pass
         
         return queryset
+    
     
     def order(self, queryset):
         return queryset.order_by('-potential')

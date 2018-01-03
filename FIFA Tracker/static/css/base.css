@@ -14,12 +14,12 @@ body {
     padding-top: 80px;
 }
 
-.input-small {
-    width: 50px;
+.input-group.justified {
+    width: 100%;
 }
 
-.input-small {
-    width: 150px;
+.input-group.justified>input {
+    width: 50%;
 }
 
 .nav-tabs li a {

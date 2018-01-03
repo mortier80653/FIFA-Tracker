@@ -117,121 +117,6 @@
 			});
 
 			$( "#tabs" ).tabs();
-			$(".slider-range-attrib").slider({
-				range: true,
-				min: 1,
-				max: 99,
-				values: [1, 99],
-			});
-			$(".slider-range-height").slider({
-				range: true,
-				min: 130,
-				max: 215,
-				values: [130, 215],
-			});
-			$(".slider-range-weight").slider({
-				range: true,
-				min: 30,
-				max: 115,
-				values: [30, 115],
-			});
-			$(".slider-range-age").slider({
-				range: true,
-				min: 1,
-				max: 99,
-				values: [15, 45],
-			});
-
-			// Filter Player Rating //
-
-			$("#slider-range-ovr").slider({
-				slide: function (event, ui) {
-					$("input[name='overallrating__gte']").val(ui.values[0]);
-					$("input[name='overallrating__lte']").val(ui.values[1]);
-				}
-			});
-			$("input[name='overallrating__gte']").on("change input keyup", function() {
-				$("#slider-range-ovr").slider('values',0,this.value);
-			});
-			$("input[name='overallrating__lte']").on("change input keyup", function() {
-				$("#slider-range-ovr").slider('values',1,this.value);
-			});
-			
-			$("#slider-range-ovr").slider('values',0,$("input[name='overallrating__gte']").val());
-			$("#slider-range-ovr").slider('values',1,$("input[name='overallrating__lte']").val());
-
-			// Filter Player Potential //
-
-			$("#slider-range-pot").slider({
-				slide: function (event, ui) {
-					$("input[name='potential__gte']").val(ui.values[0]);
-					$("input[name='potential__lte']").val(ui.values[1]);
-				}
-			});
-			$("input[name='potential__gte']").on("input keyup", function() {
-				$("#slider-range-pot").slider('values',0,this.valueAsNumber);
-			});
-			$("input[name='potential__lte']").on("input keyup", function() {
-				$("#slider-range-pot").slider('values',1,this.valueAsNumber);
-			});
-
-			$("#slider-range-pot").slider('values',0,$("input[name='potential__gte']").val());
-			$("#slider-range-pot").slider('values',1,$("input[name='potential__lte']").val());
-
-			// Filter Player HEIGHT //
-
-			$("#slider-range-height").slider({
-				slide: function (event, ui) {
-					$("input[name='height__gte']").val(ui.values[0]);
-					$("input[name='height__lte']").val(ui.values[1]);
-				}
-			});
-			$("input[name='height__gte']").on("change input keyup", function () {
-				$("#slider-range-height").slider('values', 0, this.value);
-			});
-			$("input[name='height__lte']").on("change input keyup", function () {
-				$("#slider-range-height").slider('values', 1, this.value);
-			});
-
-			$("#slider-range-height").slider('values', 0, $("input[name='height__gte']").val());
-			$("#slider-range-height").slider('values', 1, $("input[name='height__lte']").val());
-
-			// Filter Player WEIGHT //
-
-			$("#slider-range-weight").slider({
-				slide: function (event, ui) {
-					$("input[name='weight__gte']").val(ui.values[0]);
-					$("input[name='weight__lte']").val(ui.values[1]);
-				}
-			});
-			$("input[name='weight__gte']").on("change input keyup", function () {
-				$("#slider-range-weight").slider('values', 0, this.value);
-			});
-			$("input[name='weight__lte']").on("change input keyup", function () {
-				$("#slider-range-weight").slider('values', 1, this.value);
-			});
-
-			$("#slider-range-weight").slider('values', 0, $("input[name='weight__gte']").val());
-			$("#slider-range-weight").slider('values', 1, $("input[name='weight__lte']").val());
-
-			// Filter Player AGE //
-
-			$("#slider-range-age").slider({
-				slide: function (event, ui) {
-					$("input[name='age_min']").val(ui.values[0]);
-					$("input[name='age_max']").val(ui.values[1]);
-				}
-			});
-			$("input[name='age_min']").on("change input keyup", function () {
-				$("#slider-range-age").slider('values', 0, this.value);
-			});
-			$("input[name='age_max']").on("change input keyup", function () {
-				$("#slider-range-age").slider('values', 1, this.value);
-			});
-
-			$("#slider-range-age").slider('values', 0, $("input[name='age_min']").val());
-			$("#slider-range-age").slider('values', 1, $("input[name='age_max']").val());
-
 		  } );
 	</script>
 {% endblock %}
@@ -255,103 +140,236 @@
 					</ul>
 					<div id="tabs-1">
 						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="pull-left">
-									<label>OVR:</label>
+							<div class="col-md-4">
+								<label for="overallrating__gte">Overall</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="overallrating__gte" value="{{ request_query_dict.overallrating__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="overallrating__lte" value="{{ request_query_dict.overallrating__lte }}" placeholder="Max">
 								</div>
-								<div class="pull-right">
-									<input class="input-small input-attrib" type="number" min="1" max="99" name="overallrating__gte" value="{{ request_query_dict.overallrating__gte }}" placeholder="Min">
-									<input class="input-small input-attrib" type="number" min="1" max="99" name="overallrating__lte" value="{{ request_query_dict.overallrating__lte }}" placeholder="Max">
+								<label for="potential__gte">Potential</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="potential__gte" value="{{ request_query_dict.potential__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="potential__lte" value="{{ request_query_dict.potential__lte }}" placeholder="Max">
 								</div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="slider-range-attrib" id="slider-range-ovr"></div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="pull-left">
-									<label>POT:</label>
-								</div>
-								<div class="pull-right">
-									<input class="input-small input-attrib" type="number" min="1" max="99" name="potential__gte" value="{{ request_query_dict.potential__gte }}" placeholder="Min">
-									<input class="input-small input-attrib" type="number" min="1" max="99" name="potential__lte" value="{{ request_query_dict.potential__lte }}" placeholder="Max">
+								<label for="age_min">Age</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="age_min" value="{{ request_query_dict.age_min }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="age_max" value="{{ request_query_dict.age_max }}" placeholder="Max">
 								</div>
 							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="slider-range-attrib" id="slider-range-pot"></div>
+							<div class="col-md-4">
+								<label>Nationality</label>
+								<input id='nationality-input' name="nationalityid" placeholder="Search for nation...">
+								<label>Team</label>
+								<input id='teams-input' name="teamid" placeholder="Search for team...">
 							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<input class="input-medium" id='positions-input' name="preferredpositions" placeholder="Position(s)">
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<input class="input-medium" id='nationality-input' name="nationalityid" placeholder="Nationality...">
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<input class="input-medium" id='teams-input' name="teamid" placeholder="Team...">
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="pull-left">
-									<label>HEIGHT:</label>
+							<div class="col-md-4">
+								<label for="height__gte">Height</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="130" max="215" name="height__gte" value="{{ request_query_dict.height__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="130" max="215" name="height__lte" value="{{ request_query_dict.height__lte }}" placeholder="Max">
 								</div>
-								<div class="pull-right">
-									<input class="input-small input-attrib" type="number" min="130" max="215" name="height__gte" value="{{ request_query_dict.height__gte }}" placeholder="Min">
-									<input class="input-small input-attrib" type="number" min="130" max="215" name="height__lte" value="{{ request_query_dict.height__lte }}" placeholder="Max">
+								<label for="weight__gte">Weight</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="30" max="115" name="weight__gte" value="{{ request_query_dict.weight__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="30" max="115" name="weight__lte" value="{{ request_query_dict.weight__lte }}" placeholder="Max">
 								</div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="slider-range-height" id="slider-range-height"></div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="pull-left">
-									<label>WEIGHT:</label>
-								</div>
-								<div class="pull-right">
-									<input class="input-small input-attrib" type="number" min="30" max="115" name="weight__gte" value="{{ request_query_dict.weight__gte }}" placeholder="Min">
-									<input class="input-small input-attrib" type="number" min="30" max="115" name="weight__lte" value="{{ request_query_dict.weight__lte }}" placeholder="Max">
-								</div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="slider-range-weight" id="slider-range-weight"></div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="pull-left">
-									<label>AGE:</label>
-								</div>
-								<div class="pull-right">
-									<input class="input-small input-attrib" type="number" min="1" max="99" name="age_min" value="{{ request_query_dict.age_min }}" placeholder="Min">
-									<input class="input-small input-attrib" type="number" min="1" max="99" name="age_max" value="{{ request_query_dict.age_max }}" placeholder="Max">
-								</div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-md-6">
-								<div class="slider-range-attrib" id="slider-range-age"></div>
 							</div>
 						</div>
 					</div>
 					<div id="tabs-2">
 						<div class="row">
+							<div class="col-md-4">
+								<h3>Attack</h3>
+								<label for="crossing__gte">Crossing</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="crossing__gte" value="{{ request_query_dict.crossing__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="crossing__lte" value="{{ request_query_dict.crossing__lte }}" placeholder="Max">
+								</div>
+								<label for="finishing__gte">Finishing</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="finishing__gte" value="{{ request_query_dict.finishing__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="finishing__lte" value="{{ request_query_dict.finishing__lte }}" placeholder="Max">
+								</div>
+								<label for="headingaccuracy__gte">Heading Accuracy</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="headingaccuracy__gte" value="{{ request_query_dict.headingaccuracy__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="headingaccuracy__lte" value="{{ request_query_dict.headingaccuracy__lte }}" placeholder="Max">
+								</div>
+								<label for="shortpassing__gte">Short Passing</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="shortpassing__gte" value="{{ request_query_dict.shortpassing__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="shortpassing__lte" value="{{ request_query_dict.shortpassing__lte }}" placeholder="Max">
+								</div>
+								<label for="volleys__gte">Volleys</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="volleys__gte" value="{{ request_query_dict.volleys__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="volleys__lte" value="{{ request_query_dict.volleys__lte }}" placeholder="Max">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<h3>Defending</h3>
+								<label for="marking__gte">Marking</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="marking__gte" value="{{ request_query_dict.marking__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="marking__lte" value="{{ request_query_dict.marking__lte }}" placeholder="Max">
+								</div>
+								<label for="standingtackle__gte">Standingtackle</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="standingtackle__gte" value="{{ request_query_dict.standingtackle__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="standingtackle__lte" value="{{ request_query_dict.standingtackle__lte }}" placeholder="Max">
+								</div>
+								<label for="slidingtackle__gte">Slidingtackle</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="slidingtackle__gte" value="{{ request_query_dict.slidingtackle__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="slidingtackle__lte" value="{{ request_query_dict.slidingtackle__lte }}" placeholder="Max">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<h3>Skill</h3>
+								<label for="dribbling__gte">Dribbling</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="dribbling__gte" value="{{ request_query_dict.dribbling__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="dribbling__lte" value="{{ request_query_dict.dribbling__lte }}" placeholder="Max">
+								</div>
+								<label for="curve__gte">Curve</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="curve__gte" value="{{ request_query_dict.curve__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="curve__lte" value="{{ request_query_dict.curve__lte }}" placeholder="Max">
+								</div>
+								<label for="freekickaccuracy__gte">Free Kick Accuracy</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="freekickaccuracy__gte" value="{{ request_query_dict.freekickaccuracy__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="freekickaccuracy__lte" value="{{ request_query_dict.freekickaccuracy__lte }}" placeholder="Max">
+								</div>
+								<label for="longpassing__gte">Long Passing</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="longpassing__gte" value="{{ request_query_dict.longpassing__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="longpassing__lte" value="{{ request_query_dict.longpassing__lte }}" placeholder="Max">
+								</div>
+								<label for="ballcontrol__gte">Ball Control</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="ballcontrol__gte" value="{{ request_query_dict.ballcontrol__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="ballcontrol__lte" value="{{ request_query_dict.ballcontrol__lte }}" placeholder="Max">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<h3>Power</h3>
+								<label for="shotpower__gte">Shot Power</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="shotpower__gte" value="{{ request_query_dict.shotpower__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="shotpower__lte" value="{{ request_query_dict.shotpower__lte }}" placeholder="Max">
+								</div>
+								<label for="jumping__gte">Jumping</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="jumping__gte" value="{{ request_query_dict.jumping__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="jumping__lte" value="{{ request_query_dict.jumping__lte }}" placeholder="Max">
+								</div>
+								<label for="stamina__gte">Stamina</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="stamina__gte" value="{{ request_query_dict.stamina__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="stamina__lte" value="{{ request_query_dict.stamina__lte }}" placeholder="Max">
+								</div>
+								<label for="strength__gte">Strength</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="strength__gte" value="{{ request_query_dict.strength__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="strength__lte" value="{{ request_query_dict.strength__lte }}" placeholder="Max">
+								</div>
+								<label for="longhshots__gte">Longh Shots</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="longhshots__gte" value="{{ request_query_dict.longhshots__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="longhshots__lte" value="{{ request_query_dict.longhshots__lte }}" placeholder="Max">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<h3>Movement</h3>
+								<label for="acceleration__gte">Acceleration</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="acceleration__gte" value="{{ request_query_dict.acceleration__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="acceleration__lte" value="{{ request_query_dict.acceleration__lte }}" placeholder="Max">
+								</div>
+								<label for="sprintspeed__gte">Sprintspeed</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="sprintspeed__gte" value="{{ request_query_dict.sprintspeed__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="sprintspeed__lte" value="{{ request_query_dict.sprintspeed__lte }}" placeholder="Max">
+								</div>
+								<label for="agility__gte">Agility</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="agility__gte" value="{{ request_query_dict.agility__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="agility__lte" value="{{ request_query_dict.agility__lte }}" placeholder="Max">
+								</div>
+								<label for="reactions__gte">Reactions</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="reactions__gte" value="{{ request_query_dict.reactions__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="reactions__lte" value="{{ request_query_dict.reactions__lte }}" placeholder="Max">
+								</div>
+								<label for="balance__gte">Balance</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="balance__gte" value="{{ request_query_dict.balance__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="balance__lte" value="{{ request_query_dict.balance__lte }}" placeholder="Max">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<h3>Mentalilty</h3>
+								<label for="aggression__gte">Aggression</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="aggression__gte" value="{{ request_query_dict.aggression__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="aggression__lte" value="{{ request_query_dict.aggression__lte }}" placeholder="Max">
+								</div>
+								<label for="composure__gte">Composure</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="composure__gte" value="{{ request_query_dict.composure__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="composure__lte" value="{{ request_query_dict.composure__lte }}" placeholder="Max">
+								</div>
+								<label for="interceptions__gte">Interceptions</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="interceptions__gte" value="{{ request_query_dict.interceptions__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="interceptions__lte" value="{{ request_query_dict.interceptions__lte }}" placeholder="Max">
+								</div>
+								<label for="positioning__gte">Attack Positioning</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="positioning__gte" value="{{ request_query_dict.positioning__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="positioning__lte" value="{{ request_query_dict.positioning__lte }}" placeholder="Max">
+								</div>
+								<label for="vision__gte">Vision</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="vision__gte" value="{{ request_query_dict.vision__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="vision__lte" value="{{ request_query_dict.vision__lte }}" placeholder="Max">
+								</div>
+								<label for="penalties__gte">Penalties</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="penalties__gte" value="{{ request_query_dict.penalties__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="penalties__lte" value="{{ request_query_dict.penalties__lte }}" placeholder="Max">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<h3>Goalkeeper</h3>
+								<label for="gkdiving__gte">gkdiving</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="gkdiving__gte" value="{{ request_query_dict.gkdiving__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="gkdiving__lte" value="{{ request_query_dict.gkdiving__lte }}" placeholder="Max">
+								</div>
+								<label for="gkhandling__gte">gkhandling</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="gkhandling__gte" value="{{ request_query_dict.gkhandling__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="gkhandling__lte" value="{{ request_query_dict.gkhandling__lte }}" placeholder="Max">
+								</div>
+								<label for="gkkicking__gte">gkkicking</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="gkkicking__gte" value="{{ request_query_dict.gkkicking__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="gkkicking__lte" value="{{ request_query_dict.gkkicking__lte }}" placeholder="Max">
+								</div>
+								<label for="gkpositioning__gte">gkpositioning</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="gkpositioning__gte" value="{{ request_query_dict.gkpositioning__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="gkpositioning__lte" value="{{ request_query_dict.gkpositioning__lte }}" placeholder="Max">
+								</div>
+								<label for="gkreflexes__gte">gkreflex</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="99" name="gkreflexes__gte" value="{{ request_query_dict.gkreflexes__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="99" name="gkreflexes__lte" value="{{ request_query_dict.gkreflexes__lte }}" placeholder="Max">
+								</div>
+							</div>
 						</div>
 					</div>
 					<div id="tabs-3">

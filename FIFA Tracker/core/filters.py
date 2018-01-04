@@ -22,7 +22,6 @@ class DataUsersLeaguesFilter:
             list_filtered_leagues.append(league.leagueid)
 
         leagueteamlinks = list(DataUsersLeagueteamlinks.objects.for_user(self.for_user).filter(leagueid__in=list_filtered_leagues).iterator())
-        print(leagueteamlinks)
         teams = ""
 
         for team in leagueteamlinks:
@@ -119,7 +118,6 @@ class DataUsersPlayersFilter:
                 if range_bottom in self.request_dict or range_top in self.request_dict:
                     val_bottom = (self._check_key(self.request_dict, range_bottom) or 1) 
                     val_top = (self._check_key(self.request_dict, range_top) or 99) 
-
                     queryset = queryset.filter(
                         Q((range_bottom, val_bottom)), 
                         Q((range_top, val_top)),
@@ -135,6 +133,27 @@ class DataUsersPlayersFilter:
                 queryset = queryset.filter(Q(skillmoves__gte=sm_min), Q(skillmoves__lte=sm_max))
         except ValueError:
             pass
+    
+        try:
+            if 'attackingworkrate' in self.request_dict:
+                value = list(self.request_dict['attackingworkrate'].split(','))
+                queryset = queryset.filter( Q(attackingworkrate__in=value) )
+        except ValueError:
+            pass
+
+        try:
+            if 'defensiveworkrate' in self.request_dict:
+                value = list(self.request_dict['defensiveworkrate'].split(','))
+                queryset = queryset.filter( Q(defensiveworkrate__in=value) )
+        except ValueError:
+            pass
+
+        try:
+            if 'isretiring' in self.request_dict:
+                queryset = queryset.filter( Q(isretiring=self.request_dict['isretiring']) )
+        except ValueError:
+            pass
+
 
         try:
             if 'leagueid' in self.request_dict:

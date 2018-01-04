@@ -10,6 +10,8 @@
     <script src="{% static 'js\selectize.min.js' %}"></script>
 	<script>
 		$( function() {
+			$('#select-isretiring').selectize();
+
 			$("#positions-input").selectize({
 				delimiter: ',',
 				persist: false,
@@ -59,6 +61,56 @@
 					},
 				},
 			});
+
+			$( "#awr-input").selectize({
+				delimiter: ',',
+				persist: false,
+				valueField: 'workrateValue',
+				labelField: 'workrate',
+				searchField: ['workrateValue', 'workrate'],
+				options: [
+					{ workrate: 'Low', 			workrateValue: '1'},
+					{ workrate: 'Medium', 		workrateValue: '0'},
+					{ workrate: 'High', 		workrateValue: '2'},
+				],
+				render: {
+					item: function(item, escape) {
+						return '<div>' +
+							(item.workrate ? '<span class="workrate">' + escape(item.workrate) + '</span>' : '') +
+							'/div';
+					},
+					option: function (item, escape) {
+						return '<div>' +
+							(item.workrate ? '<span class="caption">' + escape(item.workrate) + '</span>' : '') +
+							'</div>';
+					},
+				},
+			})
+
+			$( "#dwr-input").selectize({
+				delimiter: ',',
+				persist: false,
+				valueField: 'workrateValue',
+				labelField: 'workrate',
+				searchField: ['workrateValue', 'workrate'],
+				options: [
+					{ workrate: 'Low', 			workrateValue: '1'},
+					{ workrate: 'Medium', 		workrateValue: '0'},
+					{ workrate: 'High', 		workrateValue: '2'},
+				],
+				render: {
+					item: function(item, escape) {
+						return '<div>' +
+							(item.workrate ? '<span class="workrate">' + escape(item.workrate) + '</span>' : '') +
+							'/div';
+					},
+					option: function (item, escape) {
+						return '<div>' +
+							(item.workrate ? '<span class="caption">' + escape(item.workrate) + '</span>' : '') +
+							'</div>';
+					},
+				},
+			})
 
 			$( "#nationality-input").selectize({
 				valueField: 'nationid',
@@ -153,6 +205,10 @@
 					.prop('name', '');
 			});
 
+			$('#btn-reset').click(function () {
+				window.location = window.location.pathname;
+			});
+
 			$( "#tabs" ).tabs();
 
 		  } );
@@ -194,6 +250,12 @@
 									<input class="form-control" type="number" min="1" max="99" name="age_min" value="{{ request_query_dict.age_min }}" placeholder="Min">
 									<input class="form-control" type="number" min="1" max="99" name="age_max" value="{{ request_query_dict.age_max }}" placeholder="Max">
 								</div>
+								<label for="select-isretiring">Is Retiring?</label>
+								<select id="select-isretiring" name="isretiring" placeholder="Any...">
+									<option value="">Any..</option>
+									<option value="0">No</option>
+									<option value="1">Yes</option>
+								</select>
 							</div>
 							<div class="col-md-4">
 								<label>Position(s)</label>
@@ -204,6 +266,10 @@
 								<input id='leagues-input' name="leagueid" placeholder="Search for league...">
 								<label>Team</label>
 								<input id='teams-input' name="teamid" placeholder="Search for team...">
+								<label>Attacking Work Rate</label>
+								<input id='awr-input' name="attackingworkrate" placeholder="Any...">
+								<label>Defensive Work Rate</label>
+								<input id='dwr-input' name="defensiveworkrate" placeholder="Any...">
 							</div>
 							<div class="col-md-4">
 								<label for="skillmoves__gte">Skill Moves</label>
@@ -437,6 +503,7 @@
 				<button type="submit" class="btn btn-primary">
 					<span class="glyphicon glyphicon-search"></span> Search
 				</button>
+				<button type="button" class="btn btn-primary" id="btn-reset">Reset</button>
 			</div>
 		</form>
 	</div> 

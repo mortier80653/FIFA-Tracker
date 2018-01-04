@@ -116,14 +116,24 @@
 				}
 			});
 
+			$('#playerfilter').submit(function () {
+				$(this)
+					.find('input[name]')
+					.filter(function () {
+						return !this.value;
+					})
+					.prop('name', '');
+			});
+
 			$( "#tabs" ).tabs();
+
 		  } );
 	</script>
 {% endblock %}
 
 {% block content %}
 	<div class="container-fluid top-container">
-		<form method="get">
+		<form id="playerfilter" method="get">
 			<div class="well">
 				<h4 style="margin-top: 0">Filter Players</h4>
 				<div id="tabs">
@@ -158,6 +168,8 @@
 								</div>
 							</div>
 							<div class="col-md-4">
+								<label>Position(s)</label>
+								<input id='positions-input' name="preferredpositions" placeholder="Search for position(s)...">
 								<label>Nationality</label>
 								<input id='nationality-input' name="nationalityid" placeholder="Search for nation...">
 								<label>Team</label>

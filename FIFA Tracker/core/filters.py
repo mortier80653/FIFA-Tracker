@@ -83,12 +83,18 @@ class DataUsersPlayersFilter:
         ]
 
         for field in range(len(range_fields)):
-            gte = range_fields[field] + "__gte" 
-            lte = range_fields[field] + "__lte"
+            range_bottom = range_fields[field] + "__gte" 
+            range_top = range_fields[field] + "__lte"
 
             try:
-                if (gte in self.request_dict) and (lte in self.request_dict):
-                    queryset = queryset.filter(Q((gte, self.request_dict[gte])), Q((lte, self.request_dict[lte])))
+                if range_bottom in self.request_dict or range_top in self.request_dict:
+                    val_bottom = (self._check_key(self.request_dict, range_bottom) or 1) 
+                    val_top = (self._check_key(self.request_dict, range_top) or 99) 
+
+                    queryset = queryset.filter(
+                        Q((range_bottom, val_bottom)), 
+                        Q((range_top, val_top)),
+                    )
             except ValueError:
                 pass
 
@@ -117,9 +123,12 @@ class DataUsersPlayersFilter:
             pass
 
         try:
-            if 'age_min' and 'age_max' in self.request_dict:
-                birthdate_max = FifaDate().convert_age_to_birthdate(self.current_date, age=self.request_dict['age_min'])
-                birthdate_min = FifaDate().convert_age_to_birthdate(self.current_date, age=self.request_dict['age_max']) - 365
+            if 'age_min' in self.request_dict or 'age_max' in self.request_dict:
+                age_min = (self._check_key(self.request_dict, 'age_min') or 1)
+                age_max = (self._check_key(self.request_dict, 'age_max') or 99)
+
+                birthdate_max = FifaDate().convert_age_to_birthdate(self.current_date, age=age_min)
+                birthdate_min = FifaDate().convert_age_to_birthdate(self.current_date, age=age_max) - 365
                 
                 queryset = queryset.filter(Q(birthdate__gte=birthdate_min), Q(birthdate__lte=birthdate_max))
         except ValueError:
@@ -130,3 +139,10 @@ class DataUsersPlayersFilter:
     
     def order(self, queryset):
         return queryset.order_by('-potential')
+
+
+    def _check_key(self, d, key):
+        if key in d:
+            return d[key]
+        else:
+            return None

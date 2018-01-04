@@ -1,6 +1,34 @@
 from django.db.models import Q
 from .fifa_utils import FifaDate
-from players.models import DataUsersPlayers, DataUsersTeams, DataUsersTeamplayerlinks
+from players.models import DataUsersPlayers, DataUsersLeagues, DataUsersTeams, DataUsersTeamplayerlinks, DataUsersLeagueteamlinks
+
+class DataUsersLeaguesFilter:
+    def __init__(self, for_user, list_leagues):
+        self.list_leagues = list_leagues
+        self.for_user = for_user
+
+        queryset = DataUsersLeagues.objects.for_user(self.for_user).all()
+        queryset = self.filter(queryset)
+        self.qs = queryset
+
+    def filter(self, queryset):
+        return queryset.filter(Q(leagueid__in=list(self.list_leagues.split(',')))) 
+
+    def get_player_ids(self):
+        eval_DataUsersLeagues_qs = list(self.qs.iterator())
+        list_filtered_leagues = list()
+
+        for league in eval_DataUsersLeagues_qs:
+            list_filtered_leagues.append(league.leagueid)
+
+        leagueteamlinks = list(DataUsersLeagueteamlinks.objects.for_user(self.for_user).filter(leagueid__in=list_filtered_leagues).iterator())
+        print(leagueteamlinks)
+        teams = ""
+
+        for team in leagueteamlinks:
+            teams = teams + "{},".format(team.teamid)
+
+        return DataUsersTeamsFilter(for_user=self.for_user, list_teams=teams[:-1]).get_player_ids()
 
 class DataUsersTeamsFilter:
     def __init__(self, for_user, list_teams):
@@ -12,8 +40,7 @@ class DataUsersTeamsFilter:
         self.qs = queryset
 
     def filter(self, queryset):
-        value = list(self.list_teams.split(','))
-        return queryset.filter(Q(teamid__in=value)) 
+        return queryset.filter(Q(teamid__in=list(self.list_teams.split(',')))) 
 
     def get_player_ids(self):
         eval_DataUsersTeams_qs = list(self.qs.iterator())
@@ -44,6 +71,8 @@ class DataUsersPlayersFilter:
         range_fields = [
             'overallrating',
             'potential',
+            'weakfootabilitytypecode',
+            'internationalrep',
             'height',
             'weight',
             'crossing',
@@ -97,6 +126,22 @@ class DataUsersPlayersFilter:
                     )
             except ValueError:
                 pass
+
+        try:
+            if 'skillmoves__gte' in self.request_dict or 'skillmoves__lte' in self.request_dict:
+                sm_min = int(self._check_key(self.request_dict, 'skillmoves__gte') or 1) - 1
+                sm_max = int(self._check_key(self.request_dict, 'skillmoves__lte') or 5) - 1
+                
+                queryset = queryset.filter(Q(skillmoves__gte=sm_min), Q(skillmoves__lte=sm_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'leagueid' in self.request_dict:
+                list_playerids = DataUsersLeaguesFilter(for_user=self.for_user, list_leagues=self.request_dict['leagueid']).get_player_ids()
+                queryset = queryset.filter(Q(playerid__in=list_playerids))
+        except ValueError:
+            pass
 
         try:
             if 'teamid' in self.request_dict:

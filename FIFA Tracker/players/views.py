@@ -21,6 +21,12 @@ def ajax_teams(request):
     }
     return JsonResponse(data)
 
+def ajax_leagues(request):
+    data = {
+        'leagues': list(DataUsersLeagues.objects.for_user("test123").all().values())
+    }
+    return JsonResponse(data)
+
 def ajax_nationality(request):
     data = {
         'nations': list(DataNations.objects.all().values())

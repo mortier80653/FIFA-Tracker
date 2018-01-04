@@ -88,6 +88,34 @@
 				}
 			});
 
+			$("#leagues-input").selectize({
+				valueField: 'leagueid',
+				labelField: 'leaguename',
+				searchField: 'leaguename',
+				options: [],
+				create: false,
+				render: {
+					option: function (item, escape) {
+						return '<div>' +
+							(item.leaguename ? '<span class="leaguename">' + escape(item.leaguename) + '</span>' : '') +
+							'</div>';
+					}
+				},
+				load: function (query, callback) {
+					if (!query.length) return callback();
+					$.ajax({
+						url: 'ajax/leagues/',
+						dataType: 'json',
+						error: function () {
+							callback();
+						},
+						success: function (res) {
+							callback(res.leagues);
+						}
+					});
+				}
+			});
+
 			$("#teams-input").selectize({
 				valueField: 'teamid',
 				labelField: 'teamname',
@@ -172,10 +200,27 @@
 								<input id='positions-input' name="preferredpositions" placeholder="Search for position(s)...">
 								<label>Nationality</label>
 								<input id='nationality-input' name="nationalityid" placeholder="Search for nation...">
+								<label>League</label>
+								<input id='leagues-input' name="leagueid" placeholder="Search for league...">
 								<label>Team</label>
 								<input id='teams-input' name="teamid" placeholder="Search for team...">
 							</div>
 							<div class="col-md-4">
+								<label for="skillmoves__gte">Skill Moves</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="5" name="skillmoves__gte" value="{{ request_query_dict.skillmoves__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="5" name="skillmoves__lte" value="{{ request_query_dict.skillmoves__lte }}" placeholder="Max">
+								</div>
+								<label for="weakfootabilitytypecode__gte">Weak Foot</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="5" name="weakfootabilitytypecode__gte" value="{{ request_query_dict.weakfootabilitytypecode__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="5" name="weakfootabilitytypecode__lte" value="{{ request_query_dict.weakfootabilitytypecode__lte }}" placeholder="Max">
+								</div>
+								<label for="internationalrep__gte">International Reputation</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="5" name="internationalrep__gte" value="{{ request_query_dict.internationalrep__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="5" name="internationalrep__lte" value="{{ request_query_dict.internationalrep__lte }}" placeholder="Max">
+								</div>
 								<label for="height__gte">Height</label>
 								<div class="input-group justified">
 									<input class="form-control" type="number" min="130" max="215" name="height__gte" value="{{ request_query_dict.height__gte }}" placeholder="Min">

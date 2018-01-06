@@ -11,14 +11,6 @@ class MyPaginator():
         get_page = self.get_page()
         self.results_bottom = get_page[0]
         self.results_top = get_page[1]
-
-    def request_filters(self):
-        request = self.request.dict()
-        qs_filters = ""
-        for field in request:
-            qs_filters += "&{field}={field_value}".format(field=str(field), field_value=str(request[field]))
-
-        return re.sub('&page=[\d]+', '', qs_filters).replace(',', "%2C")
     
     def validate_page(self, page):
         try:

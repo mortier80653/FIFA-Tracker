@@ -16,21 +16,34 @@ from .paginator import MyPaginator
 
 
 def ajax_teams(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+    else:
+        current_user = "test123"
+
     data = {
-        'teams': list(DataUsersTeams.objects.for_user("test123").all().values())
+        'teams': list(DataUsersTeams.objects.for_user(current_user).all().values())
     }
+
     return JsonResponse(data)
 
 def ajax_leagues(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+    else:
+        current_user = "test123"
+
     data = {
-        'leagues': list(DataUsersLeagues.objects.for_user("test123").all().values())
+        'leagues': list(DataUsersLeagues.objects.for_user(current_user).all().values())
     }
+
     return JsonResponse(data)
 
 def ajax_nationality(request):
     data = {
         'nations': list(DataNations.objects.all().values())
     }
+    
     return JsonResponse(data)
 
 def players(request):
@@ -86,15 +99,20 @@ def player(request, playerid):
     if len(data) <= 0:
         return render(request, 'players/players.html')
 
-    dict_cached_queries = dict()
-    dict_cached_queries['q_team_player_links'] = list(DataUsersTeamplayerlinks.objects.for_user(current_user).filter(reduce(lambda x, y: x | y, [Q(playerid=player.playerid) for player in data])).iterator())
-    dict_cached_queries['q_player_loans'] = list(DataUsersPlayerloans.objects.for_user(current_user).filter(reduce(lambda x, y: x | y, [Q(playerid=player.playerid) for player in data])).iterator())
-    dict_cached_queries['q_edited_player_names'] = list(DataUsersEditedplayernames.objects.for_user(current_user).filter(reduce(lambda x, y: x | y, [Q(playerid=player.playerid) for player in data])).iterator())
-    dict_cached_queries['q_teams'] = list(DataUsersTeams.objects.for_user(current_user).filter(reduce(lambda x, y: x | y, [Q(teamid=team.teamid) for team in dict_cached_queries['q_team_player_links']])).iterator())
-    dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).iterator())
-    dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(reduce(lambda x, y: x | y, [Q(teamid=team.teamid) for team in dict_cached_queries['q_team_player_links']])).iterator())
-
     # Current date according to in-game calendar
     current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+
+    dict_cached_queries = dict()
+
+    dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
+
+    dict_cached_queries['q_team_player_links'] = list(DataUsersTeamplayerlinks.objects.for_user(current_user).filter(playerid=playerid).iterator())
+    dict_cached_queries['q_player_loans'] = list(DataUsersPlayerloans.objects.for_user(current_user).filter(playerid=playerid).iterator())
+    dict_cached_queries['q_edited_player_names'] = list(DataUsersEditedplayernames.objects.for_user(current_user).filter(playerid=playerid).iterator())
+
+    f_teamid = reduce(lambda x, y: x | y, [Q(teamid=team.teamid) for team in dict_cached_queries['q_team_player_links']])
+
+    dict_cached_queries['q_teams'] = list(DataUsersTeams.objects.for_user(current_user).filter(f_teamid).iterator())
+    dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(f_teamid).iterator())
 
     return render(request, 'players/player.html', {'p':FifaPlayer(data[0], current_user, current_date, dict_cached_queries)})

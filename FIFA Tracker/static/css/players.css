@@ -20,6 +20,10 @@ tr {
 	border: 1px solid black;
 }
 
+tr:nth-of-type(even) {
+	background-color:rgb(56, 54, 56);
+}
+
 .miniface {
     width: 65px;
     height: 65px;

@@ -43,6 +43,7 @@ def players(request):
 
     # Current date according to in-game calendar
     current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+    print("Current Date: {}".format(current_date))
 
     player_filter = DataUsersPlayersFilter(request, for_user=current_user, current_date=current_date)
 

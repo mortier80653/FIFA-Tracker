@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load players_template_tags %}
 
 {% block stylesheet %}
   <link rel="stylesheet" href="{% static 'css/selectize.default.css' %}">
@@ -522,19 +523,20 @@
 	{% endcomment %}
 
 	<div class="pagination">
+		Total Players: {{ paginator.num_of_objects }} </br>
 		<span class="step-links">
 			{% if paginator.has_previous %}
-				<a href="?page=1{{ paginator.request_filters }}">&laquo; first</a>
-				<a href="?page={{ paginator.previous_page_number }}{{ paginator.request_filters }}">previous</a>
+				<a href="{% url_params request '?page=' '1' %}" >&laquo; first</a>
+				<a href="{% url_params request '?page=' paginator.previous_page_number %}">previous</a>
 			{% endif %}
 	
 			<span class="current">
-				Page {{ paginator.page }} of {{ paginator.last_page_number }} (Total: {{ paginator.num_of_objects }})
+				Page {{ paginator.page }} of {{ paginator.last_page_number }} 
 			</span>
 	
 			{% if paginator.has_next %}
-				<a href="?page={{ paginator.next_page_number }}{{ paginator.request_filters }}">next</a>
-				<a href="?page={{ paginator.last_page_number }}{{ paginator.request_filters }}">last &raquo;</a>
+				<a href="{% url_params request '?page=' paginator.next_page_number %}" >next</a>
+				<a href="{% url_params request '?page=' paginator.last_page_number %}">last &raquo;</a>
 			{% endif %}
 		</span>
 	</div>
@@ -544,9 +546,50 @@
 			<thead>
 				<tr>
 					<td colspan ="3">PLAYER</th>
-					<th class="text-center">RAT</th>
-					<th class="text-center">POT</th>
-					<th class="text-center">AGE</th>
+					<th class="text-center">
+						{% if request_query_dict.order_by == "-overallrating" %}
+							<a href="{% url_params request '?order_by=' 'overallrating' %}">
+								RAT  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+							</a>
+						{% elif request_query_dict.order_by == "overallrating" %}
+							<a href="{% url_params request '?order_by=' '-overallrating' %}">
+								RAT  <span class="glyphicon glyphicon-sort-by-order"></span>
+							</a>
+						{% else %}
+							<a href="{% url_params request '?order_by=' '-overallrating' %}">
+								RAT  <span class="glyphicon glyphicon-sort"></span>
+							</a>
+						{% endif %}
+					</th>
+					<th class="text-center">
+						{% if request_query_dict.order_by == "-potential" %}
+							<a href="{% url_params request '?order_by=' 'potential' %}">
+								POT  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+							</a>
+						{% elif request_query_dict.order_by == "potential" %}
+							<a href="{% url_params request '?order_by=' '-potential' %}">
+								POT  <span class="glyphicon glyphicon-sort-by-order"></span>
+							</a>
+						{% else %}
+							<a href="{% url_params request '?order_by=' '-potential' %}">
+								POT  <span class="glyphicon glyphicon-sort"></span>
+							</a>
+						{% endif %}
+					</th>
+					<th class="text-center">					
+						{% if request_query_dict.order_by == "-birthdate" %}
+							<a href="{% url_params request '?order_by=' 'birthdate' %}">
+								AGE  <span class="glyphicon glyphicon-sort-by-order"></span>
+							</a>
+						{% elif request_query_dict.order_by == "birthdate" %}
+							<a href="{% url_params request '?order_by=' '-birthdate' %}">
+								AGE  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+							</a>
+						{% else %}
+							<a href="{% url_params request '?order_by=' '-birthdate' %}">
+								AGE  <span class="glyphicon glyphicon-sort"></span>
+							</a>
+						{% endif %}
 					<th class="text-center">CONTRACT</th>
 					<th class="text-center">VALUE</th>
 				</tr>

@@ -202,7 +202,10 @@ class DataUsersPlayersFilter:
     
     
     def order(self, queryset):
-        return queryset.order_by('-potential')
+        if 'order_by' in self.request_dict:
+            return queryset.order_by(self.request_dict['order_by'])
+        else:
+            return queryset.order_by('-overallrating')
 
 
     def _check_key(self, d, key):

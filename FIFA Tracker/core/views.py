@@ -11,7 +11,7 @@ def upload_career_save_file(request):
             form = form.save(commit=False)
             form.user = request.user
             form.save()
-            return redirect('home')
+            return render(request, 'upload.html', {'upload_completed': True} )   
     else:
         form = CareerSaveFileForm()
 

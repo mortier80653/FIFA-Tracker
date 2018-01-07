@@ -19,7 +19,7 @@ def ajax_teams(request):
     if request.user.is_authenticated:
         current_user = request.user
     else:
-        current_user = "test123"
+        current_user = "guest"
 
     data = {
         'teams': list(DataUsersTeams.objects.for_user(current_user).all().values())
@@ -31,7 +31,7 @@ def ajax_leagues(request):
     if request.user.is_authenticated:
         current_user = request.user
     else:
-        current_user = "test123"
+        current_user = "guest"
 
     data = {
         'leagues': list(DataUsersLeagues.objects.for_user(current_user).all().values())
@@ -52,10 +52,15 @@ def players(request):
     if request.user.is_authenticated:
         current_user = request.user
     else:
-        current_user = "test123"
+        current_user = "guest"
 
     # Current date according to in-game calendar
-    current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+    try:
+        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+    except IndexError:
+        current_user = "guest"
+        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+
     print("Current Date: {}".format(current_date))
 
     player_filter = DataUsersPlayersFilter(request, for_user=current_user, current_date=current_date)
@@ -93,7 +98,7 @@ def player(request, playerid):
     if request.user.is_authenticated:
         current_user = request.user
     else:
-        current_user = "test123"
+        current_user = "guest"
 
     data = list(DataUsersPlayers.objects.for_user(current_user).filter(playerid=playerid).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',).iterator())
     if len(data) <= 0:

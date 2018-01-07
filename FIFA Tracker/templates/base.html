@@ -30,25 +30,27 @@
 			</button>
 		</div>
 		<div class="collapse navbar-collapse" id="siteNavbar">
+			<ul class="nav navbar-nav navbar-left">
+				<li><a href="{% url 'players' %}">TOP 100 Players</a></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="https://discord.gg/X49vaQ">DISCORD</a></li>
 			{% if user.is_authenticated %}
-				<ul class="nav navbar-nav navbar-right">
 				  <li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-					  <a class="dropdown-item" href="#">My account</a>
+					  <a class="dropdown-item" href="{% url 'players' %}">Players</a>
 					  <div class="dropdown-divider"></div>
-					  <a class="dropdown-item" href="#">Change password</a>
+					  <a class="dropdown-item" href="{% url 'upload_career_save_file' %}">Upload</a>
 					  <div class="dropdown-divider"></div>
 					  <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
 					</div>
 				  </li>
-				</ul>
 			{% else %}
-			  <ul class="nav navbar-nav navbar-right">
-				<li><a href="#contact">CONTACT</a></li>
 				<li><a href="{% url 'login_view' %}">LOG-IN</a></li>
-			  </ul>
 			{% endif %}
+			</ul>
 		</div>
 	  </div>
 	</nav>
@@ -57,7 +59,7 @@
 		{% endblock %}
 	</div>
 	<footer class="footer text-center">
-		<p>&copy; FIFA Tracker 2017 | All FIFA assets are property of EA Sports | <a href="https://github.com/xAranaktu/FIFA-Tracker">GitHub</a> </p> 
+		<p>&copy; FIFA Tracker 2018 | All FIFA assets are property of EA Sports | <a href="https://github.com/xAranaktu/FIFA-Tracker">GitHub</a> </p> 
 	</footer>	
 <script src="{% static 'js\FIFA_TRACKER.js' %}"></script>
 </body>

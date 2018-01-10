@@ -149,11 +149,22 @@ class DataUsersPlayersFilter:
             pass
 
         try:
-            if 'isretiring' in self.request_dict:
+            if 'isretiring' in self.request_dict and int(self.request_dict['isretiring']) in range(0,2):
                 queryset = queryset.filter( Q(isretiring=self.request_dict['isretiring']) )
         except ValueError:
             pass
 
+        try:
+            if 'isreal' in self.request_dict and int(self.request_dict['isreal']) in range(0,2):
+                highest_real_playerid = 240895
+                if int(self.request_dict['isreal']) == 0:
+                    #All regens, pregens etc.
+                    queryset = queryset.filter( Q(playerid__gte=highest_real_playerid) )
+                elif int(self.request_dict['isreal']) == 1:
+                    #Real players that exists since beginning of the career
+                    queryset = queryset.filter( Q(playerid__lte=highest_real_playerid) )               
+        except ValueError:
+            pass
 
         try:
             if 'leagueid' in self.request_dict:

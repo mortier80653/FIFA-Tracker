@@ -11,7 +11,12 @@
     <script src="{% static 'js\selectize.min.js' %}"></script>
 	<script>
 		$( function() {
-			$('#select-isretiring').selectize();
+			$('#select-isretiring').selectize({
+				allowEmptyOption: true,
+			});
+			$('#select-isreal').selectize({
+				allowEmptyOption: true,
+			});
 
 			$("#positions-input").selectize({
 				delimiter: ',',
@@ -259,7 +264,14 @@
 								</div>
 								<label for="select-isretiring">Is Retiring?</label>
 								<select id="select-isretiring" name="isretiring" placeholder="Any...">
-									<option value="">Any..</option>
+									<option value="-1" selected>Any..</option>
+									<option value="0">No</option>
+									<option value="1">Yes</option>
+								</select>
+
+								<label for="select-isreal">Is Real?</label>
+								<select id="select-isreal" name="isreal" placeholder="Any...">
+									<option value="-1" selected>Any..</option>
 									<option value="0">No</option>
 									<option value="1">Yes</option>
 								</select>

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="container top-container">
+      <h2>Success!</h2>
+      <p align="center">Your account has been created! You can <a href="{% url 'upload_career_save_file' %}">upload</a> your FIFA 18 career save now.</p>
+  </div>
+{% endblock %}

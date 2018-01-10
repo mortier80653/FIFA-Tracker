@@ -17,7 +17,7 @@ def signup(request):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('home')
+        return render(request, 'accounts/success.html')
 
     return render(request, 'accounts/signup.html', {'form': form, 'icons': icons })
 

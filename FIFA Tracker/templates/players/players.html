@@ -158,6 +158,9 @@
 					if (!query.length) return callback();
 					$.ajax({
 						url: 'ajax/leagues/',
+						data: {
+							'username': $('.current_user').text()
+						},
 						dataType: 'json',
 						error: function () {
 							callback();
@@ -186,6 +189,9 @@
 					if (!query.length) return callback();
 					$.ajax({
 						url: 'ajax/teams/',
+						data: {
+							'username': $('.current_user').text()
+						},
 						dataType: 'json',
 						error: function () {
 							callback();

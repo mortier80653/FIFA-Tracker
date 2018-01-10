@@ -16,10 +16,7 @@ from .paginator import MyPaginator
 
 
 def ajax_teams(request):
-    if request.user.is_authenticated:
-        current_user = request.user
-    else:
-        current_user = "guest"
+    current_user = request.GET.get('username', None)
 
     data = {
         'teams': list(DataUsersTeams.objects.for_user(current_user).all().values())
@@ -28,10 +25,7 @@ def ajax_teams(request):
     return JsonResponse(data)
 
 def ajax_leagues(request):
-    if request.user.is_authenticated:
-        current_user = request.user
-    else:
-        current_user = "guest"
+    current_user = request.GET.get('username', None)
 
     data = {
         'leagues': list(DataUsersLeagues.objects.for_user(current_user).all().values())
@@ -100,12 +94,17 @@ def player(request, playerid):
     else:
         current_user = "guest"
 
+    # Current date according to in-game calendar
+    try:
+        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+    except IndexError:
+        current_user = "guest"
+        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+
     data = list(DataUsersPlayers.objects.for_user(current_user).filter(playerid=playerid).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',).iterator())
     if len(data) <= 0:
         return render(request, 'players/players.html')
 
-    # Current date according to in-game calendar
-    current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
 
     dict_cached_queries = dict()
 

@@ -1,9 +1,9 @@
-.current_user, .current_date{
-	border-bottom: 3px solid rgb(0, 0, 0);
+.well{
+	color: black;
 }
 
-#table-container {
-    padding-top: 20px;
+.current_user, .current_date{
+	border-bottom: 3px solid rgb(0, 0, 0);
 }
 
 table{

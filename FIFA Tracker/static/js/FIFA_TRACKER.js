@@ -42,9 +42,3 @@ function updateWorkrates() {
         }
     });
 }
-
-function faceNotFound(image, path) {
-    image.onerror = "";
-    image.src = path + "img/assets/heads/not_found_0.png";
-    return true;
-}

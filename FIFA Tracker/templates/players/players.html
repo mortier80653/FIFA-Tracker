@@ -228,7 +228,7 @@
 {% endblock %}
 
 {% block content %}
-	<div class="container-fluid top-container">
+	<div class="container-fluid">
 		<form id="playerfilter" method="get">
 			<div class="well">
 				<h4 style="margin-top: 0">Filter Players</h4>
@@ -540,28 +540,37 @@
 		</form>	
 	{% endcomment %}
 
-	<div class="pagination">
+	<div class="container-fluid">
 		{% with player=players|first %}
 			<p>Displaying Players for user: <span class="current_user">{{player.username}}</span></p>
 			<p>Current Date: <span class="current_date">{{player.current_date}}</span></p>
 		{% endwith %}
-
-		<p>Total Players: {{ paginator.num_of_objects }}</p>
-		<span class="step-links">
-			{% if paginator.has_previous %}
-				<a href="{% url_params request '?page=' '1' %}" >&laquo; first</a>
-				<a href="{% url_params request '?page=' paginator.previous_page_number %}">previous</a>
-			{% endif %}
-	
-			<span class="current">
-				Page {{ paginator.page }} of {{ paginator.last_page_number }} 
-			</span>
-	
-			{% if paginator.has_next %}
-				<a href="{% url_params request '?page=' paginator.next_page_number %}" >next</a>
-				<a href="{% url_params request '?page=' paginator.last_page_number %}">last &raquo;</a>
-			{% endif %}
-		</span>
+	</div>
+	<div class="container-fluid">
+		<nav aria-label="Search results pages">
+			<p>Total Players: {{ paginator.num_of_objects }}</p>
+			<ul class="pagination">
+			  {% if paginator.has_previous %}
+				<li class="page-item">
+				  <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">First</a>
+				</li>
+				<li class="page-item">
+				  <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
+				</li>
+			  {% endif %}
+			  <li class="page-item active">
+				<a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
+			  </li>
+			  {% if paginator.has_next %}
+				  <li class="page-item">
+					<a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
+				  </li>
+				  <li class="page-item">
+					<a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
+				  </li>
+			  {% endif %}
+			</ul>
+		</nav>
 	</div>
 
 	<div id="table-container" class="container-fluid">
@@ -620,7 +629,7 @@
 			<tbody>
 				{% for p in players %}
 					<tr>
-						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" title="{{ p.player.playerid }}" class="miniface" onerror="faceNotFound(this, {% get_static_prefix %});"</a></td>
+						<td width="65"><a href="{% url 'home' %}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="{{ p.player.playerid }}" class="miniface"></a></td>
 						<td class="player-position text-center" width="65">{{ p.player.preferredposition1 }}</td>
 						<td width="250">
 							<div>
@@ -660,24 +669,30 @@
 				{% endfor %}
 			</tbody>
 		</table>
-
-		<div class="pagination">
-			<p>Total Players: {{ paginator.num_of_objects }}</p>
-			<span class="step-links">
-				{% if paginator.has_previous %}
-					<a href="{% url_params request '?page=' '1' %}" >&laquo; first</a>
-					<a href="{% url_params request '?page=' paginator.previous_page_number %}">previous</a>
-				{% endif %}
-		
-				<span class="current">
-					Page {{ paginator.page }} of {{ paginator.last_page_number }} 
-				</span>
-		
-				{% if paginator.has_next %}
-					<a href="{% url_params request '?page=' paginator.next_page_number %}" >next</a>
-					<a href="{% url_params request '?page=' paginator.last_page_number %}">last &raquo;</a>
-				{% endif %}
-			</span>
-		</div>
+	</div>
+	<div class="container-fluid">
+		<nav aria-label="Search results pages">
+			<ul class="pagination">
+			  {% if paginator.has_previous %}
+				<li class="page-item">
+				  <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">First</a>
+				</li>
+				<li class="page-item">
+				  <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
+				</li>
+			  {% endif %}
+			  <li class="page-item active">
+				<a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
+			  </li>
+			  {% if paginator.has_next %}
+				  <li class="page-item">
+					<a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
+				  </li>
+				  <li class="page-item">
+					<a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
+				  </li>
+			  {% endif %}
+			</ul>
+		</nav>
 	</div>
 {% endblock %}

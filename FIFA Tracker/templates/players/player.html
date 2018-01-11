@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-	<div class="container top-container">
+	<div class="container ">
     <div class="row">
       <div class="col-sm-4 text-right hidden-xs">
         <div class="row">
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="col-sm-4 text-center">
-        <div><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" title="PlayerID: {{ p.player.playerid }}" class="largeface" onerror="faceNotFound(this, {% get_static_prefix %});"></div>
+        <div><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" title="PlayerID: {{ p.player.playerid }}" class="largeface" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';"></div>
       </div>
       <div class="col-sm-4 text-left hidden-xs">
         <div class="row">

@@ -59,7 +59,7 @@ def players(request):
 
     player_filter = DataUsersPlayersFilter(request, for_user=current_user, current_date=current_date)
 
-    paginator = MyPaginator(player_filter.qs.count(), request=request.GET.copy(), max_per_page=100)
+    paginator = MyPaginator(player_filter.qs.count(), request=request.GET.copy(), max_per_page=50)
 
     data = list(player_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
 

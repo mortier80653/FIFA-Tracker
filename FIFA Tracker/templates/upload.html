@@ -2,23 +2,27 @@
 {% load static %}
 
 {% block content %}
-<div id="upload-container" class="container top-container">
+<div id="upload-container" class="container">
     <h3>Upload your FIFA 18 Manager Mode Career File</h3>
     {% if upload_completed %}
       <p>Your file is being processed, when everything will be ready you will be able to see your players <a href="{% url 'players' %}">here</a>.</p>
     {% else %}  
       {% if request.user.is_authenticated %}
+      <div class="container">
         <p>Currently supporting only PC, sorry. </p>
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           {{ form.as_p}}
           <button type="submit" class="btn btn-primary">Upload</button>
         </form>
+      </div>
       {% else %}
         <p>Only authenticated users are allowed to upload files.</p>
       {% endif %}
-      <a href="{% url 'home' %}" class="btn btn-primary">Return to home</a>
-      <p>Join <a href="https://discord.gg/X49vaQ">Discord</a> in case of any problems</p>
+      <div class="container top-container">
+        <a href="{% url 'home' %}" class="btn btn-primary">Return to home</a>
+        <p>Join <a href="https://discord.gg/X49vaQ">Discord</a> in case of any problems</p>
+      </div>
     {% endif %}
   </div>
 {% endblock %}

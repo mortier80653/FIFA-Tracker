@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-  <div id="SignUp" class="container top-container">
+  <div id="SignUp" class="container">
 		<div class="main_row">
 			<h2>Login</h2>
 			<form method="post" novalidate>
@@ -18,8 +18,8 @@
 				{% include "includes/form.html" %}
 				<button type="submit" class="btn btn-primary">Login</button>
 			</form>
-			<p align="center">Lost Password?</p>
-			<p align="center"><a href="{% url 'signup' %}">Create New Account</a> </p>
+			{% comment %} <p align="center">Lost Password?</p> {% endcomment %}
 		</div>
+		<p align="center"><a href="{% url 'signup' %}">Create New Account</a></p>
   </div>
 {% endblock %}

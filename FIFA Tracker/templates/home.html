@@ -1,12 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container ">
+<div class="container">
 	<h3 class="text-center">FIFA Tracker</h3>
 	<p class="text-center">Track your progress in FIFA Career Mode.</p>
-	<p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mattis, elit vitae interdum faucibus, odio dui mollis tortor, at varius velit leo venenatis ligula. Donec lacinia felis sed risus aliquet fringilla. Praesent eget bibendum nibh. Nunc condimentum risus ut urna lobortis, in ultricies nulla dapibus. Cras quam lorem, pellentesque vel blandit sit amet, dapibus eget quam. Maecenas luctus nisi sed magna scelerisque, in varius nulla interdum. Nam sed turpis rutrum purus sollicitudin efficitur non vel enim.</p>
-	<p class="text-center">Etiam at erat vulputate, vulputate lacus ac, scelerisque turpis. Nam quam nisl, auctor vel hendrerit ut, pulvinar ut turpis. Fusce blandit, ipsum sed euismod volutpat, lorem est aliquet erat, eu ultricies tellus enim at augue. Integer et ligula rhoncus arcu ultrices tempor. Praesent consectetur ac nulla sed iaculis. Sed vehicula malesuada nibh, eget molestie dui. In pellentesque vitae ligula at mollis. Cras dapibus ligula ac libero dapibus convallis a ac ex. Aenean sapien libero, tempus eu ex vitae, pharetra vehicula nisi.</p>
-	<p class="text-center">Aliquam erat volutpat. Nam vestibulum egestas augue ut ullamcorper. In maximus lacus nec ornare scelerisque. Nunc et erat sapien. Sed sit amet auctor risus. Cras sed orci mauris. Proin eu ornare sem. Suspendisse luctus mi at est maximus, vitae pretium leo convallis. Curabitur finibus purus justo, et vehicula ligula iaculis sed. Vestibulum condimentum urna quis velit mollis bibendum. Sed nec hendrerit dolor, in accumsan leo. Donec sit amet lectus imperdiet, rhoncus mauris ut, consequat felis. Nunc ac efficitur nunc, at lacinia libero. Donec eget sodales metus, ac ultrices leo. Etiam lacinia eu arcu eget faucibus. Quisque commodo semper.</p>
+	<p class="text-center">We are live! FIFA Tracker is live!</p>
+	<p class="text-center">If you ever wanted to find best of the best players in your career mode then this place is ideal for you. Upload your career save and let the magic happen. :)</p>
+</div>
+<div class="container" style="padding-top: 20px;">
+	<h3>Get Started:</h3>
+	<ul>
+		<li><a href="{% url 'signup' %}">Register</a> an new account or <a href="{% url 'login_view' %}">login</a>.</li>
+		<li><a href="{% url 'upload_career_save_file' %}">Upload</a> your career save.</li>
+		<li>Players from your career save will be available here after our servers will process your career data. It may take some time. :(</li>
+	</ul>
+	<h3>Plans for future:</h3>
+	<ul>
+		<li>Support for consoles.</li>
+		<li>Add teams and league tables.</li>
+		<li>Transfers history.</li>
+		<li>Support for older FIFA editions.</li>
+	</ul>
 </div>
 <div id="discord" class="container">
 	<h3 class="text-center">Join Our Discord</h3>

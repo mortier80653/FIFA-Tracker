@@ -10,6 +10,37 @@ body {
 	margin-bottom: 30px;
 }
 
+.ratinglabel {
+    padding: 4px;
+    color: white;
+}
+
+.rat0, .rat1, .rat2, .rat3, .rat4, .rat5, .rat6, .rat7, .rat8, .rat9, .rat10,
+.rat11, .rat12, .rat13, .rat14, .rat15, .rat16, .rat17, .rat18, .rat19, .rat20,
+.rat21, .rat22, .rat23, .rat24, .rat25, .rat26, .rat27, .rat28, .rat29, .rat30, 
+.rat31, .rat32, .rat33, .rat34, .rat35, .rat36, .rat37, .rat38, .rat39, .rat40, 
+.rat41, .rat42, .rat43, .rat44, .rat45, .rat46, .rat47, .rat48, .rat49 {
+    background-color: red;
+}
+
+.rat50, .rat51, .rat52, .rat53, .rat54, .rat55, .rat56, .rat57, .rat58, .rat59, .rat60,
+.rat61, .rat62, .rat63, .rat64 {
+    background-color: orange;
+}
+
+.rat65, .rat66, .rat67, .rat68, .rat69, .rat70, .rat71, .rat72, .rat73, .rat74, .rat75, 
+.rat76, .rat77, .rat78, .rat79 {
+    background-color: yellowgreen;
+}
+
+.rat80, .rat81, .rat82, .rat83, .rat84, .rat85, .rat86, .rat87, .rat88, .rat89 {
+    background-color: green;
+}
+
+.rat90, .rat91, .rat92, .rat93, .rat94, .rat95, .rat96, .rat97, .rat98, .rat99 {
+    background-color: darkgreen;
+}
+
 .top-container {
     padding-top: 80px;
 }

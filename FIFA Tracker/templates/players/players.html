@@ -644,8 +644,8 @@
 								{% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
 							</div>
 						</td>
-						<td class="text-center">{{ p.player.overallrating }}</td>
-						<td class="text-center">{{ p.player.potential }}</td>
+						<td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
+						<td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
 						<td class="text-center">{{ p.player_age.age }}</td>
 						<td class="text-center">
 							<div>

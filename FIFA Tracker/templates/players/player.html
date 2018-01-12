@@ -57,7 +57,7 @@
       </div>
     </div>
   </div>
-  <div class="text-center">
+  <div class="container text-center">
     <h1>{{ p.player_name.knownas}}</h1>
     <h3>#{{ p.player.playerid}}</h3>
   </div>
@@ -125,11 +125,11 @@
             <tbody>
               <tr>
                 <td>Overall </td>
-                <td align="right">{{ p.player.overallrating }}</td>
+                <td align="right"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
               </tr>
               <tr>
                 <td>Potential </td>
-                <td align="right">{{ p.player.potential }} </td>
+                <td align="right"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span> </td>
               </tr>
               <tr>
                 <td>Strong Foot</td>
@@ -174,23 +174,23 @@
           <tbody>
             <tr>
               <td>GK Diving</td>
-              <td align="right"> {{ p.player.gkdiving }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.gkdiving}}">{{ p.player.gkdiving }}</span></td>
             </tr>
             <tr>
               <td>GK Handling</td>
-              <td align="right"> {{ p.player.gkhandling }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.gkhandling}}">{{ p.player.gkhandling }}</span></td>
             </tr>
             <tr>
               <td>GK Kicking</td>
-              <td align="right"> {{ p.player.gkkicking }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.gkkicking}}">{{ p.player.gkkicking }}</span></td>
             </tr>
             <tr>
               <td>GK Positioning</td>
-              <td align="right"> {{ p.player.gkpositioning }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.gkpositioning}}">{{ p.player.gkpositioning }}</span></td>
             </tr>
             <tr>
               <td>GK Reflex</td>
-              <td align="right"> {{ p.player.gkreflexes }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.gkreflexes}}">{{ p.player.gkreflexes }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -202,23 +202,23 @@
           <tbody>
             <tr>
               <td>Crossing</td>
-              <td align="right"> {{ p.player.crossing }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.crossing}}">{{ p.player.crossing }}</span></td>
             </tr>
             <tr>
               <td>Finishing</td>
-              <td align="right"> {{ p.player.finishing }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.finishing}}">{{ p.player.finishing }}</span></td>
             </tr>
             <tr>
               <td>Heading Accuracy</td>
-              <td align="right"> {{ p.player.headingaccuracy }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.headingaccuracy}}">{{ p.player.headingaccuracy }}</span></td>
             </tr>
             <tr>
               <td>Short Passing</td>
-              <td align="right"> {{ p.player.shortpassing }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.shortpassing}}">{{ p.player.shortpassing }}</span></td>
             </tr>
             <tr>
               <td>Volleys</td>
-              <td align="right"> {{ p.player.volleys }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.volleys}}">{{ p.player.volleys }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -230,15 +230,15 @@
           <tbody>
             <tr>
               <td>Marking</td>
-              <td align="right"> {{ p.player.marking }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.marking}}">{{ p.player.marking }}</span></td>
             </tr>
             <tr>
               <td>Standing Tackle</td>
-              <td align="right"> {{ p.player.standingtackle }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.standingtackle}}">{{ p.player.standingtackle }}</span> </td>
             </tr>
             <tr>
               <td>Sliding Tackle</td>
-              <td align="right"> {{ p.player.slidingtackle }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.slidingtackle}}">{{ p.player.slidingtackle }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -249,23 +249,23 @@
           <tbody>
             <tr>
               <td>Dribbling</td>
-              <td align="right"> {{ p.player.dribbling }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.dribbling}}">{{ p.player.dribbling }}</span></td>
             </tr>
             <tr>
               <td>Curve</td>
-              <td align="right"> {{ p.player.curve }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.curve}}">{{ p.player.curve }}</span></td>
             </tr>
             <tr>
               <td>Free Kick Accuracy</td>
-              <td align="right"> {{ p.player.freekickaccuracy }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.freekickaccuracy}}">{{ p.player.freekickaccuracy }}</span></td>
             </tr>
             <tr>
               <td>Long Passing</td>
-              <td align="right"> {{ p.player.longpassing }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.longpassing}}">{{ p.player.longpassing }}</span></td>
             </tr>
             <tr>
               <td>Ball Control</td>
-              <td align="right"> {{ p.player.ballcontrol }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.ballcontrol}}">{{ p.player.ballcontrol }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -276,23 +276,23 @@
           <tbody>
             <tr>
               <td>Shot Power</td>
-              <td align="right"> {{ p.player.shotpower }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.shotpower}}">{{ p.player.shotpower }}</span></td>
             </tr>
             <tr>
               <td>Jumping</td>
-              <td align="right"> {{ p.player.jumping }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.jumping}}">{{ p.player.jumping }}</span></td>
             </tr>
             <tr>
               <td>Stamina</td>
-              <td align="right"> {{ p.player.stamina }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.stamina}}">{{ p.player.stamina }}</span></td>
             </tr>
             <tr>
               <td>Strength</td>
-              <td align="right"> {{ p.player.strength }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.strength}}">{{ p.player.strength }}</span></td>
             </tr>
             <tr>
               <td>Long Shots</td>
-              <td align="right"> {{ p.player.longshots }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.longshots}}">{{ p.player.longshots }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -303,23 +303,23 @@
           <tbody>
             <tr>
               <td>Acceleration</td>
-              <td align="right"> {{ p.player.acceleration }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.acceleration}}">{{ p.player.acceleration }}</span></td>
             </tr>
             <tr>
-              <td>Spring Speed</td>
-              <td align="right"> {{ p.player.sprintspeed }} </td>
+              <td>Sprint Speed</td>
+              <td align="right"><span class="ratinglabel rat{{p.player.sprintspeed}}">{{ p.player.sprintspeed }}</span></td>
             </tr>
             <tr>
               <td>Agility</td>
-              <td align="right"> {{ p.player.agility }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.agility}}">{{ p.player.agility }}</span></td>
             </tr>
             <tr>
               <td>Reactions</td>
-              <td align="right"> {{ p.player.reactions }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.reactions}}">{{ p.player.reactions }}</span></td>
             </tr>
             <tr>
               <td>Balance</td>
-              <td align="right"> {{ p.player.balance }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.balance}}">{{ p.player.balance }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -330,27 +330,27 @@
           <tbody>
             <tr>
               <td>Aggression</td>
-              <td align="right"> {{ p.player.aggression }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.aggression}}">{{ p.player.aggression }}</span></td>
             </tr>
             <tr>
               <td>Composure</td>
-              <td align="right"> {{ p.player.composure }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.composure}}">{{ p.player.composure }}</span></td>
             </tr>
             <tr>
               <td>Interceptions</td>
-              <td align="right"> {{ p.player.interceptions }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.interceptions}}">{{ p.player.interceptions }}</span></td>
             </tr>
             <tr>
               <td>Attack Positioning</td>
-              <td align="right"> {{ p.player.positioning }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.positioning}}">{{ p.player.positioning }}</span></td>
             </tr>
             <tr>
               <td>Vision</td>
-              <td align="right"> {{ p.player.vision }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.vision}}">{{ p.player.vision }}</span></td>
             </tr>
 			      <tr>
               <td>Penalties</td>
-              <td align="right"> {{ p.player.penalties }} </td>
+              <td align="right"><span class="ratinglabel rat{{p.player.penalties}}">{{ p.player.penalties }}</span></td>
             </tr>
           </tbody>
         </table>

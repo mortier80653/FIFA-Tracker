@@ -28,7 +28,7 @@ class DataUsersCareerCalendar(models.Model):
     objects = UserDataManager()
 
     class Meta: 
-        db_table = 'data_users_career_calendar'
+        db_table = 'datauserscareercalendar'
 
 class DataUsersCareerUsers(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
@@ -53,7 +53,7 @@ class DataUsersCareerUsers(models.Model):
     objects = UserDataManager()
 
     class Meta:  
-        db_table = 'data_users_career_users'
+        db_table = 'datauserscareerusers'
 
 class DataUsersCareerPlayercontract(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
@@ -82,7 +82,7 @@ class DataUsersCareerPlayercontract(models.Model):
     objects = UserDataManager()
 
     class Meta:
-        db_table = 'data_users_career_playercontract'
+        db_table = 'datauserscareerplayercontract'
 
 class DataUsersCareerYouthplayers(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
@@ -97,7 +97,7 @@ class DataUsersCareerYouthplayers(models.Model):
     objects = UserDataManager()
 
     class Meta:
-        db_table = 'data_users_career_youthplayers'
+        db_table = 'datauserscareeryouthplayers'
 
 class DataUsersTeams(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
@@ -188,7 +188,7 @@ class DataUsersTeams(models.Model):
     objects = UserDataManager()
 
     class Meta:        
-        db_table = 'data_users_teams'
+        db_table = 'datausersteams'
 
 class DataUsersLeagueteamlinks(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
@@ -231,7 +231,7 @@ class DataUsersLeagueteamlinks(models.Model):
     objects = UserDataManager()
 
     class Meta:       
-        db_table = 'data_users_leagueteamlinks'
+        db_table = 'datausersleagueteamlinks'
 
 class DataUsersTeamplayerlinks(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
@@ -256,7 +256,7 @@ class DataUsersTeamplayerlinks(models.Model):
     objects = UserDataManager()
 
     class Meta:      
-        db_table = 'data_users_teamplayerlinks'
+        db_table = 'datausersteamplayerlinks'
 
 class DataNations(models.Model):
     isocountrycode = models.CharField(max_length=3, blank=True, null=True)
@@ -268,7 +268,7 @@ class DataNations(models.Model):
     nationid = models.IntegerField(primary_key=True)
 
     class Meta: 
-        db_table = 'data_nations'
+        db_table = 'datanations'
 
 class DataPlayernames(models.Model):
     name = models.CharField(max_length=77, blank=True, null=True)
@@ -276,7 +276,7 @@ class DataPlayernames(models.Model):
     commentaryid = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        db_table = 'data_playernames'
+        db_table = 'dataplayernames'
 
 class DataUsersEditedplayernames(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
@@ -290,7 +290,7 @@ class DataUsersEditedplayernames(models.Model):
     objects = UserDataManager()
 
     class Meta:
-        db_table = 'data_users_editedplayernames'
+        db_table = 'datauserseditedplayernames'
 
 
 class DataUsersLeagues(models.Model):
@@ -310,7 +310,7 @@ class DataUsersLeagues(models.Model):
     objects = UserDataManager()
     
     class Meta:  
-        db_table = 'data_users_leagues'
+        db_table = 'datausersleagues'
 
 
 class DataUsersManager(models.Model):
@@ -332,7 +332,7 @@ class DataUsersManager(models.Model):
     bodytypecode = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        db_table = 'data_users_manager'
+        db_table = 'datausersmanager'
 
 class DataUsersPlayers(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
@@ -456,7 +456,7 @@ class DataUsersPlayers(models.Model):
     objects = UserDataManager()
 
     class Meta:    
-        db_table = 'data_users_players'
+        db_table = 'datausersplayers'
 
 class DataUsersPlayerloans(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
@@ -468,4 +468,4 @@ class DataUsersPlayerloans(models.Model):
     objects = UserDataManager()
 
     class Meta:
-        db_table = 'data_users_playerloans'
+        db_table = 'datausersplayerloans'

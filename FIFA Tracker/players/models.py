@@ -421,7 +421,7 @@ class DataUsersPlayers(models.Model):
     playerjointeamdate = models.IntegerField(blank=True, null=True)
     headclasscode = models.IntegerField(blank=True, null=True)
     defensiveworkrate = models.IntegerField(blank=True, null=True)
-    nationality = models.ForeignKey(DataNations, db_column='nationality', on_delete=models.CASCADE)
+    nationality = models.ForeignKey(DataNations, db_column='nationality', null=True, on_delete=models.CASCADE)
     preferredfoot = models.IntegerField(blank=True, null=True)
     sideburnscode = models.IntegerField(blank=True, null=True)
     weakfootabilitytypecode = models.IntegerField(blank=True, null=True)

@@ -27,8 +27,7 @@ class DataUsersCareerCalendar(models.Model):
 
     objects = UserDataManager()
 
-    class Meta:
-        managed = False
+    class Meta: 
         db_table = 'data_users_career_calendar'
 
 class DataUsersCareerUsers(models.Model):
@@ -53,8 +52,7 @@ class DataUsersCareerUsers(models.Model):
 
     objects = UserDataManager()
 
-    class Meta:
-        managed = False
+    class Meta:  
         db_table = 'data_users_career_users'
 
 class DataUsersCareerPlayercontract(models.Model):
@@ -84,7 +82,6 @@ class DataUsersCareerPlayercontract(models.Model):
     objects = UserDataManager()
 
     class Meta:
-        managed = False
         db_table = 'data_users_career_playercontract'
 
 class DataUsersCareerYouthplayers(models.Model):
@@ -100,7 +97,6 @@ class DataUsersCareerYouthplayers(models.Model):
     objects = UserDataManager()
 
     class Meta:
-        managed = False
         db_table = 'data_users_career_youthplayers'
 
 class DataUsersTeams(models.Model):
@@ -191,8 +187,7 @@ class DataUsersTeams(models.Model):
 
     objects = UserDataManager()
 
-    class Meta:
-        managed = False
+    class Meta:        
         db_table = 'data_users_teams'
 
 class DataUsersLeagueteamlinks(models.Model):
@@ -235,8 +230,7 @@ class DataUsersLeagueteamlinks(models.Model):
 
     objects = UserDataManager()
 
-    class Meta:
-        managed = False
+    class Meta:       
         db_table = 'data_users_leagueteamlinks'
 
 class DataUsersTeamplayerlinks(models.Model):
@@ -261,8 +255,7 @@ class DataUsersTeamplayerlinks(models.Model):
 
     objects = UserDataManager()
 
-    class Meta:
-        managed = False
+    class Meta:      
         db_table = 'data_users_teamplayerlinks'
 
 class DataNations(models.Model):
@@ -274,8 +267,7 @@ class DataNations(models.Model):
     groupid = models.IntegerField(blank=True, null=True)
     nationid = models.IntegerField(primary_key=True)
 
-    class Meta:
-        managed = False
+    class Meta: 
         db_table = 'data_nations'
 
 class DataPlayernames(models.Model):
@@ -284,7 +276,6 @@ class DataPlayernames(models.Model):
     commentaryid = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'data_playernames'
 
 class DataUsersEditedplayernames(models.Model):
@@ -299,7 +290,6 @@ class DataUsersEditedplayernames(models.Model):
     objects = UserDataManager()
 
     class Meta:
-        managed = False
         db_table = 'data_users_editedplayernames'
 
 
@@ -319,8 +309,7 @@ class DataUsersLeagues(models.Model):
 
     objects = UserDataManager()
     
-    class Meta:
-        managed = False
+    class Meta:  
         db_table = 'data_users_leagues'
 
 
@@ -343,7 +332,6 @@ class DataUsersManager(models.Model):
     bodytypecode = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'data_users_manager'
 
 class DataUsersPlayers(models.Model):
@@ -467,8 +455,7 @@ class DataUsersPlayers(models.Model):
 
     objects = UserDataManager()
 
-    class Meta:
-        managed = False
+    class Meta:    
         db_table = 'data_users_players'
 
 class DataUsersPlayerloans(models.Model):
@@ -481,5 +468,4 @@ class DataUsersPlayerloans(models.Model):
     objects = UserDataManager()
 
     class Meta:
-        managed = False
         db_table = 'data_users_playerloans'

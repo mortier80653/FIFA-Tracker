@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^$', core_views.home, name='home'),
     url(r'^upload/$', core_views.upload_career_save_file, name='upload_career_save_file'),
     url(r'^signup/$', accounts_views.signup, name='signup'),
+    url(r'^account_activation_sent/$', accounts_views.account_activation_sent, name='account_activation_sent'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', accounts_views.activate, name='activate'),
     url(r'^login/$', accounts_views.login_view, name='login_view'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^players/', include('players.urls')),

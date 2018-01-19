@@ -21,6 +21,12 @@ def signup(request):
     form = SignUpForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         user = form.save(commit=False)
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return render(request, 'accounts/success.html')
+
+        '''
         user.is_active = False
         user.save()
         current_site = get_current_site(request)
@@ -33,6 +39,7 @@ def signup(request):
         })
         user.email_user(subject, message)
         return render(request, 'accounts/account_activation_sent.html')
+        '''
 
     return render(request, 'accounts/signup.html', {'form': form, 'icons': icons })
 

@@ -1,4 +1,3 @@
-import time
 from functools import reduce
 
 from django.db.models import Q
@@ -41,8 +40,6 @@ def ajax_nationality(request):
     return JsonResponse(data)
 
 def players(request):
-    start = time.time()
-
     if request.user.is_authenticated:
         current_user = request.user
     else:
@@ -54,8 +51,6 @@ def players(request):
     except IndexError:
         current_user = "guest"
         current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
-
-    print("Current Date: {}".format(current_date))
 
     player_filter = DataUsersPlayersFilter(request, for_user=current_user, current_date=current_date)
 
@@ -84,8 +79,6 @@ def players(request):
     for player in data:
         players_list.append(FifaPlayer(player, current_user, current_date, dict_cached_queries))
 
-    endtime = time.time() - start # DEBUG
-    print ("Loading time: {} Queries: {}".format(endtime, len(connection.queries))) #DEBUG
     return render(request, 'players/players.html', {'players':players_list, 'paginator':paginator, 'request_query_dict': request.GET, })
 
 def player(request, playerid):

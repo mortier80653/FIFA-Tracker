@@ -32,7 +32,7 @@ def signup(request):
             'token': account_activation_token.make_token(user),
         })
         user.email_user(subject, message)
-        return render(request, 'accounts/account_activation_sent.html')
+        return render(request, 'accounts/account_activation_sent.html', {'email': form.cleaned_data['email']})
 
     return render(request, 'accounts/signup.html', {'form': form, 'icons': icons })
 
@@ -65,6 +65,6 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('home')
+        return redirect('upload_career_save_file')
     else:
         return render(request, 'accounts/account_activation_invalid.html')

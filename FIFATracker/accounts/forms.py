@@ -11,8 +11,17 @@ class LoginForm(forms.Form):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
-        if not user or not user.is_active:
-            raise forms.ValidationError("Sorry, that login was invalid. Please try again.")
+        if user is None:
+            try:
+                user_get = User.objects.get(username=username)
+            except:
+                raise forms.ValidationError("Sorry, account {} doesn't exists in our database. Please try again.".format(username))
+
+            if not user_get.is_active:
+                raise forms.ValidationError("Sorry, your account is not activated. Check spam folder in your email inbox.")
+            else:
+                raise forms.ValidationError("Sorry, invalid password. Please try again.")
+
         return self.cleaned_data
 
     def login(self, request):

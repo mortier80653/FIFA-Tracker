@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+    <style>        
+        h2 {
+            color: black !important;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+            padding: 0 0 10px;
+            text-align: center;
+        } 
+        .jumbotron>p {
+            color: #111;
+            line-height: 20px;
+            font-size: 18px;
+
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h2 class="display-4">Donate</h2>
+    <p>Help us to survive another month. Send a donation via PayPal.</p>
+    <a style="margin-bottom: 10px;"href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=J8F4UH72WG7RY" class="btn btn-primary">Donate</a>
+    <p>Thank you for every cent! :)</p>
+  </div>
+{% endblock %}

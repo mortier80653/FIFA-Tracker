@@ -28,5 +28,11 @@ def privacypolicy(request):
 def about(request):
     return render(request, 'about.html')
 
+def contact(request):
+    return render(request, 'contact.html')
+
+def donate(request):
+    return render(request, 'donate.html')
+
 def home(request):
     return render(request, 'home.html')

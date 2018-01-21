@@ -25,6 +25,8 @@ from accounts import views as accounts_views
 urlpatterns = [
     url(r'^$', core_views.home, name='home'),
     url(r'^about/$', core_views.about, name='about'),
+    url(r'^contact/$', core_views.contact, name='contact'),
+    url(r'^donate/$', core_views.donate, name='donate'),
     url(r'^privacy-policy/$', core_views.privacypolicy, name='privacypolicy'),
     url(r'^upload/$', core_views.upload_career_save_file, name='upload_career_save_file'),
     url(r'^signup/$', accounts_views.signup, name='signup'),

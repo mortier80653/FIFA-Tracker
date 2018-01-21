@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+    <style>        
+        h2 {
+            color: black !important;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+            padding: 0 0 10px;
+        } 
+        .jumbotron>p {
+            color: #111;
+            line-height: 20px;
+            font-size: 18px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h2 class="display-4">About FIFA Tracker</h2>
+    <p>FIFA Tracker was launched in January 2018. It was created to help career mode fans in finding the best youth players in their FIFA careers.</p>
+    <p>Finding pregens and regens was never easier before. ;)</p>
+  </div>
+{% endblock %}

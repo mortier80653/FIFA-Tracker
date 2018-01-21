@@ -6,7 +6,6 @@ h2, .h2 {
     padding: 0 0 10px;
     font-size: 24px;
     border-bottom: 2px solid rgba(255,255,255,0.2);
-    text-transform: capitalize;
 }
 
 .largeface {
@@ -31,14 +30,7 @@ h2, .h2 {
     height: 27px;
 }
 
-/*
-.player-info {
-    background-color: rgb(176, 46, 180);
-}
-*/
-
 #playerinfo-header {
     column-span: 2;
     text-align: center;
-
 }

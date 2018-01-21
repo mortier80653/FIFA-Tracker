@@ -22,6 +22,8 @@ def upload_career_save_file(request):
 
     return render(request, 'upload.html', {'form':form})    
 
+def privacypolicy(request):
+    return render(request, 'privacy.html')
 
 def home(request):
     return render(request, 'home.html')

@@ -357,6 +357,7 @@ class FifaPlayer():
         self.league_team_links = dict_cached_queries['q_league_team_links']
         self.query_player_loans = dict_cached_queries['q_player_loans']
         self.edited_player_names = dict_cached_queries['q_edited_player_names']
+        self.dc_player_names = dict_cached_queries['q_dcplayernames']
         self.leagues = dict_cached_queries['q_leagues']
 
         self.player_teams = self.set_teams()
@@ -474,9 +475,14 @@ class FifaPlayer():
                     break
         else: 
             for key in name:
-                get_attr = getattr(self.player, key, None)
-                if get_attr is not None:
-                    name[key] = get_attr.name
+                if name[key] >= 34000:
+                    # Get playername from dcplayernames
+                    name[key] = self.get_dcplayername(name[key])
+                else:
+                    # Get playername from playernames
+                    get_attr = getattr(self.player, key, None)
+                    if get_attr is not None:
+                        name[key] = get_attr.name
 
 
         # This name will be displayed on website
@@ -486,3 +492,10 @@ class FifaPlayer():
             name['knownas'] = " ".join((str(name['firstname']), str(name['lastname'])))
 
         return name
+
+    def get_dcplayername(self, nameid):
+        for i in range(len(self.dc_player_names)):
+            if self.dc_player_names[i].nameid == nameid:
+                return self.dc_player_names[i].name
+        
+        return nameid

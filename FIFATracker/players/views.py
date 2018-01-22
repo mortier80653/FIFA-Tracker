@@ -9,7 +9,7 @@ from core.filters import DataUsersPlayersFilter
 from core.fifa_utils import FifaPlayer
 
 from .models import DataUsersPlayers, DataUsersTeamplayerlinks, DataUsersPlayerloans, DataUsersEditedplayernames, DataUsersTeams
-from .models import DataUsersLeagueteamlinks, DataUsersCareerCalendar, DataUsersLeagues, DataNations
+from .models import DataUsersLeagueteamlinks, DataUsersCareerCalendar, DataUsersLeagues, DataNations, DataUsersDcplayernames
 
 from .paginator import MyPaginator
 
@@ -63,6 +63,7 @@ def players(request):
 
     dict_cached_queries = dict()
     dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
+    dict_cached_queries['q_dcplayernames'] = list(DataUsersDcplayernames.objects.for_user(current_user).all().iterator())
     
     f_playerid = reduce(lambda x, y: x | y, [Q(playerid=player.playerid) for player in data])
 
@@ -102,6 +103,7 @@ def player(request, playerid):
     dict_cached_queries = dict()
 
     dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
+    dict_cached_queries['q_dcplayernames'] = list(DataUsersDcplayernames.objects.for_user(current_user).all().iterator())
 
     dict_cached_queries['q_team_player_links'] = list(DataUsersTeamplayerlinks.objects.for_user(current_user).filter(playerid=playerid).iterator())
     dict_cached_queries['q_player_loans'] = list(DataUsersPlayerloans.objects.for_user(current_user).filter(playerid=playerid).iterator())

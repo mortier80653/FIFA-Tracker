@@ -278,6 +278,17 @@ class DataPlayernames(models.Model):
     class Meta:
         db_table = 'dataplayernames'
 
+class DataUsersDcplayernames(models.Model):
+    primary_key = models.BigAutoField(primary_key=True)
+    username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    name = models.CharField(max_length=77, blank=True, null=True)
+    nameid = models.IntegerField(blank=True, null=True)
+    
+    objects = UserDataManager()
+
+    class Meta:
+        db_table = 'datausersdcplayernames'
+
 class DataUsersEditedplayernames(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)

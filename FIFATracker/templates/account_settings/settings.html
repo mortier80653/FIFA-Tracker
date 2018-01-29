@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+    <style>        
+        h2 {
+            color: black !important;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+            padding: 0 0 10px;
+            text-align: center;
+        } 
+        .jumbotron>p {
+            color: #111;
+            line-height: 20px;
+            font-size: 18px;
+        }
+        li {
+            color: #111;
+            font-size: 18px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h2 class="display-4">Account Settings</h2>
+{% endblock %}

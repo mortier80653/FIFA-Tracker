@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from core import views as core_views
+from account_settings import views as account_settings_views
 from accounts import views as accounts_views
 
 urlpatterns = [
@@ -35,6 +36,7 @@ urlpatterns = [
     url(r'^login/$', accounts_views.login_view, name='login_view'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^players/', include('players.urls')),
+    url(r'^settings/', include('account_settings.urls')),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

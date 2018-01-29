@@ -89,7 +89,7 @@
               </tr>
               <tr>
                 <td>Height & Weight</td>
-                <td align="right">{{ p.player.height }} cm / {{ p.player.weight }} kg</td>
+                <td align="right"><span id="p_height">{{ p.player.height }}</span> / <span id="p_weight">{{ p.player.weight }}</span></td>
               </tr>
               <tr>
                 <td>Position</td>
@@ -153,11 +153,11 @@
               </tr>
               <tr>
                 <td>Value</td>
-                <td align="right">{{ p.player_value.formated_value }} &euro;</td>
+                <td align="right">{{ p.player_value.formated_value }} {{ request.session.currency_symbol }}</td>
               </tr>
               <tr>
                 <td>Wage</td>
-                <td align="right">{{ p.player_wage.formated_wage }} &euro;</td>
+                <td align="right">{{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}</td>
               </tr>
             </tbody>
           </table>

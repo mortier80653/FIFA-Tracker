@@ -56,21 +56,59 @@ body {
 .navbar {
     font-family: Montserrat, sans-serif;
     margin-bottom: 0;
-    background-color: #16181d;
+    background-color: #16181dcc;
     border: 0;
     font-size: 14px !important;
     letter-spacing: 2px;
-    opacity: 0.8;
 }
 
-.navbar li a, .navbar { 
-    color: #fff !important;
+.navbar-nav .dropdown-menu {
+    background: #16181d;
+    text-align: right;
+    padding-right: 11px;
+    font-size: 12px;
+}
+
+.dropdown-item {
+    cursor: pointer;
+    color: #9ea5b6 !important; 
+}
+
+.dropdown-item-active {
+    cursor: pointer;
+    color: #f44 !important;
+}
+
+.navbar-nav .dropdown-menu .dropdown-header {
+    position: relative;
+    z-index: 1;
+}
+
+.navbar-nav .dropdown-menu .dropdown-header>span {
+    background-color: #16181d;
+    color: #586074;
+    padding: 0 7px; 
+}
+
+.navbar-nav .dropdown-menu .dropdown-header::before {
+    border-top: 1px solid #424857;
+    content:"";
+    margin: 0 auto;
+    position: absolute;
+    top: 50%; left: 0; right: 0; bottom: 0;
+    width: 95%;
+    z-index: -1;
+}
+
+.navbar li>a, .navbar { 
+    color: #cfd2da !important;
+    font-size: 15px;
 }
 .navbar-nav li a:hover {
     color: #0cc54a !important;
 }
 .navbar-nav li.active a {
-    color: #fff !important;
+    color: #000 !important;
     background-color: #29292c !important;
 }
 .navbar-default .navbar-toggle {
@@ -88,14 +126,8 @@ body {
     padding: 10px 5px;
 }
 
-.glyphicon-user{
+.glyphicon-user {
     padding-right: 5px;
-}
-
-.dropdown-menu {
-	text-align: right;
-	background-color: #cb3f28;
-	min-width: 200px;
 }
 
 .bg-1 {

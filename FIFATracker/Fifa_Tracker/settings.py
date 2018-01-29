@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
 
     'core.apps.CoreConfig',
+    'account_settings.apps.AccountSettingsConfig',
     'accounts.apps.AccountsConfig',
     'players.apps.PlayersConfig',
 ]

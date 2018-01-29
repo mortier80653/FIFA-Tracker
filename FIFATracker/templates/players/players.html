@@ -306,12 +306,12 @@
 									<input class="form-control" type="number" min="1" max="5" name="internationalrep__gte" value="{{ request_query_dict.internationalrep__gte }}" placeholder="Min">
 									<input class="form-control" type="number" min="1" max="5" name="internationalrep__lte" value="{{ request_query_dict.internationalrep__lte }}" placeholder="Max">
 								</div>
-								<label for="height__gte">Height</label>
+								<label for="height__gte">Height (cm)</label>
 								<div class="input-group justified">
 									<input class="form-control" type="number" min="130" max="215" name="height__gte" value="{{ request_query_dict.height__gte }}" placeholder="Min">
 									<input class="form-control" type="number" min="130" max="215" name="height__lte" value="{{ request_query_dict.height__lte }}" placeholder="Max">
 								</div>
-								<label for="weight__gte">Weight</label>
+								<label for="weight__gte">Weight (kg)</label>
 								<div class="input-group justified">
 									<input class="form-control" type="number" min="30" max="115" name="weight__gte" value="{{ request_query_dict.weight__gte }}" placeholder="Min">
 									<input class="form-control" type="number" min="30" max="115" name="weight__lte" value="{{ request_query_dict.weight__lte }}" placeholder="Max">
@@ -659,10 +659,10 @@
 						</td>
 						<td class="text-center">
 							<div>
-								{{ p.player_value.formated_value }} &euro;
+								{{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
 							</div>
 							<div>
-								{{ p.player_wage.formated_wage }} &euro;
+								{{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}
 							</div>
 						</td>
 					</tr>

@@ -45,6 +45,16 @@ def players(request):
     else:
         current_user = "guest"
 
+    currency_symbols = ('$', '€', '£')
+    if request.session.get('currency', None) is None:
+        try:
+            request.session['currency'] = request.user.profile.currency
+        except:
+            request.session['currency'] = 1
+
+    if request.session.get('currency_symbol', None) is None:
+        request.session['currency_symbol'] = currency_symbols[int(request.session['currency'])]
+
     # Current date according to in-game calendar
     try:
         current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
@@ -78,15 +88,26 @@ def players(request):
 
     players_list = list()
     for player in data:
-        players_list.append(FifaPlayer(player, current_user, current_date, dict_cached_queries))
+        players_list.append(FifaPlayer(player, current_user, current_date, dict_cached_queries, request.session))
 
     return render(request, 'players/players.html', {'players':players_list, 'paginator':paginator, 'request_query_dict': request.GET, })
+
 
 def player(request, playerid):
     if request.user.is_authenticated:
         current_user = request.user
     else:
         current_user = "guest"
+
+    currency_symbols = ('$', '€', '£')
+    if request.session.get('currency', None) is None:
+        try:
+            request.session['currency'] = request.user.profile.currency
+        except:
+            request.session['currency'] = 1
+            
+    if request.session.get('currency_symbol', None) is None:
+        request.session['currency_symbol'] = currency_symbols[int(request.session['currency'])]
 
     # Current date according to in-game calendar
     try:
@@ -114,4 +135,4 @@ def player(request, playerid):
     dict_cached_queries['q_teams'] = list(DataUsersTeams.objects.for_user(current_user).filter(f_teamid).iterator())
     dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(f_teamid).iterator())
 
-    return render(request, 'players/player.html', {'p':FifaPlayer(data[0], current_user, current_date, dict_cached_queries)})
+    return render(request, 'players/player.html', {'p':FifaPlayer(data[0], current_user, current_date, dict_cached_queries, request.session)})

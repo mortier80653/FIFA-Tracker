@@ -41,7 +41,7 @@ class PlayerAge():
 
 class PlayerWage:
     # All modifiers are defined in "playerwage.ini", "PlayerWageDomesticPrestigeMods.csv" and "PlayerWageProfitabilityMods.csv"
-    def __init__(self, ovr = 0, age = 0, posid = 0, player_team = {}):
+    def __init__(self, ovr = 0, age = 0, posid = 0, player_team = {}, currency=1):
         if player_team:
             self.ovr = ovr
             self.age = age
@@ -49,13 +49,25 @@ class PlayerWage:
             self.leagueid = player_team['league']['leagueid']
             self.club_domestic_prestige = player_team['domesticprestige']
             self.club_profitability = player_team['profitability']
+            '''
+            [CONVERSION]
+            USDOLLAR = 1.12
+            EURO = 1.0
+            POUND = 0.88
+            '''
+            currency_conversion = (1.12, 1.0, 0.88)
+            try:
+                self.currency = currency_conversion[currency]
+            except IndexError:
+                self.currency = currency_conversion[1] # Euro
+
             self.wage = self._calculate_player_wage()
         else:
             self.wage = 500
         self.formated_wage = "{:,}".format(self.wage)
 
     def _calculate_player_wage(self):
-        league_mod = self._ovr_factor(self.ovr) * ( self._league_factor(self.leagueid) * self._domestic_presitge(self.leagueid, self.club_domestic_prestige) * self._profitability(self.leagueid, self.club_profitability))
+        league_mod = self._ovr_factor(self.ovr) * self.currency * ( self._league_factor(self.leagueid) * self._domestic_presitge(self.leagueid, self.club_domestic_prestige) * self._profitability(self.leagueid, self.club_profitability))
         age_mod = (league_mod * self._age_factor(self.age)) / 100.00
         pos_mod = (league_mod * self._position_factor(self.posid)) / 100.00
 
@@ -261,7 +273,11 @@ class PlayerValue:
         POUND = 0.88
         '''
         currency_conversion = (1.12, 1.0, 0.88)
-        self.currency = currency_conversion[currency]
+        try:
+            self.currency = currency_conversion[currency]
+        except IndexError:
+            self.currency = currency_conversion[1] # Euro
+
         self.value = self._calculate_player_value()
         self.formated_value = "{:,}".format(self.value)
 
@@ -304,7 +320,7 @@ class PlayerValue:
             return summed_value - reminder
 
     def _ovr_factor(self, ovr):
-        factors = (1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 20000, 25000, 34000, 40000, 46000, 54000, 61000, 70000, 86000, 105000, 140000, 170000, 205000, 250000, 305000, 365000, 435000, 515000, 605000, 710000, 1200000, 1600000, 2100000, 2700000, 3800000, 4500000, 5200000, 6000000, 7000000, 8500000, 10000000, 12000000, 15000000, 17500000, 21000000, 26000000, 30000000, 34000000, 40000000, 45000000, 52000000, 60000000, 68000000, 75000000, 83000000, 90000000, 11000000, 120000000, 140000000, 150000000, 200000000)
+        factors = (1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000, 20000, 25000, 34000, 40000, 46000, 54000, 61000, 70000, 86000, 105000, 140000, 170000, 205000, 250000, 305000, 365000, 435000, 515000, 605000, 710000, 1200000, 1600000, 2100000, 2700000, 3800000, 4500000, 5200000, 6000000, 7000000, 8500000, 10000000, 12000000, 15000000, 17500000, 21000000, 26000000, 30000000, 34000000, 40000000, 45000000, 52000000, 60000000, 68000000, 75000000, 83000000, 90000000, 110000000, 120000000, 140000000, 150000000, 200000000)
         try:
             return factors[ovr]
         except IndexError:
@@ -348,7 +364,7 @@ class PlayerValue:
 
 class FifaPlayer():
 
-    def __init__(self, player, username, current_date, dict_cached_queries):
+    def __init__(self, player, username, current_date, dict_cached_queries, session):
         self.player = player
         self.username = username
         self.current_date = current_date
@@ -360,12 +376,17 @@ class FifaPlayer():
         self.dc_player_names = dict_cached_queries['q_dcplayernames']
         self.leagues = dict_cached_queries['q_leagues']
 
+        try:
+            self.currency = int(session['currency'])
+        except KeyError:
+            self.currency = 1 # Set Euro as default currency
+
         self.player_teams = self.set_teams()
         self.player_name = self.set_player_name()
         self.player_age = PlayerAge(self.player.birthdate, current_date)
-        self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, currency=1)
+        self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, int(self.currency))
         try:
-            self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'])
+            self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'], int(self.currency))
         except KeyError:
             self.player_teams['club_team'] = dict()
             self.player_teams['club_team']['league'] = dict()

@@ -4,12 +4,24 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.http import JsonResponse
+from django.contrib import messages
 
 from core.filters import DataUsersPlayersFilter
 from core.fifa_utils import FifaPlayer
 
-from .models import DataUsersPlayers, DataUsersTeamplayerlinks, DataUsersPlayerloans, DataUsersEditedplayernames, DataUsersTeams
-from .models import DataUsersLeagueteamlinks, DataUsersCareerCalendar, DataUsersLeagues, DataNations, DataUsersDcplayernames
+from .models import (
+    DataUsersPlayers, 
+    DataUsersTeamplayerlinks, 
+    DataUsersPlayerloans, 
+    DataUsersEditedplayernames, 
+    DataUsersTeams, 
+    DataUsersLeagueteamlinks,
+    DataUsersCareerCalendar, 
+    DataUsersLeagues, 
+    DataNations, 
+    DataUsersDcplayernames,
+)
+
 
 from .paginator import MyPaginator
 
@@ -59,6 +71,7 @@ def players(request):
     try:
         current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
     except IndexError:
+        messages.error(request, "Your career file hasn't been processed yet. Displaying default FIFA database data.")
         current_user = "guest"
         current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
 
@@ -69,7 +82,8 @@ def players(request):
     data = list(player_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
 
     if len(data) <= 0:
-        return render(request, 'players/players.html')
+        messages.error(request, 'No results found. Try to change your filters.')
+        return redirect('players')
 
     dict_cached_queries = dict()
     dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
@@ -113,12 +127,14 @@ def player(request, playerid):
     try:
         current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
     except IndexError:
+        messages.error(request, "Your career file hasn't been processed yet. Displaying default FIFA database data.")
         current_user = "guest"
         current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
 
     data = list(DataUsersPlayers.objects.for_user(current_user).filter(playerid=playerid).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',).iterator())
     if len(data) <= 0:
-        return render(request, 'players/players.html')
+        messages.error(request, 'Invalid player id ({})'.format(playerid))
+        return redirect('players')
 
 
     dict_cached_queries = dict()

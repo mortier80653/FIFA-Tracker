@@ -86,7 +86,7 @@
 						<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>{{ user.username }}</a>
 						<div class="dropdown-menu" aria-labelledby="userMenu">
-							<a class="dropdown-item" href="{% url 'players' %}">Players</a>
+							<a class="dropdown-item" href="{% url 'settings' %}">Control Panel</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{% url 'upload_career_save_file' %}">Upload</a>
 							<div class="dropdown-divider"></div>
@@ -101,6 +101,17 @@
 	  </div>
 	</nav>
 	<div id="main" class="container top-container bg-1">
+		{% if messages %}
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-sm-offset-3">
+				{% for message in messages %}
+					<p{% if message.tags == "success" %} class="alert alert-success"{% elif message.tags == "error" %} class="alert alert-danger"{% endif %}>{{ message }}</p>
+				{% endfor %}          
+				</div>
+			</div>
+		</div>
+		{% endif %}
 		{% block content %}
 		{% endblock %}
 	</div>

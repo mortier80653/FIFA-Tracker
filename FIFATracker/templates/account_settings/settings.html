@@ -2,25 +2,43 @@
 
 {% block stylesheet %}
     <style>        
-        h2 {
-            color: black !important;
-            border-bottom: 2px solid rgba(0, 0, 0, 0.5);
-            padding: 0 0 10px;
-            text-align: center;
-        } 
-        .jumbotron>p {
+        .jumbotron {
             color: #111;
             line-height: 20px;
-            font-size: 18px;
         }
-        li {
-            color: #111;
-            font-size: 18px;
+
+        .jumbotron>h3 {
+            color: black !important;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+            padding-bottom: 9px;
+            text-align: center;
+        } 
+
+        .jumbotron p label {
+            font-size: 16px !important; 
+        }
+
+        .jumbotron li {
+            font-size: 14px;
         }
     </style>
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 style="padding-bottom: 8px;" class="text-center">Account Control Panel</h2>
+        </div>
+    </div>
+</div>
 <div class="jumbotron">
-    <h2 class="display-4">Account Settings</h2>
+    <h3 class="display-4">Change Password</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form_passwordchange.as_p }}
+        <button type="submit" class="btn btn-primary">Change Password</button>
+      </form>
+</div>
 {% endblock %}

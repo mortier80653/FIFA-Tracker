@@ -39,7 +39,7 @@ function convertUnits() {
 function changeUnits() {
     $('#id_unit_metric').on("click", function() {
         $.ajax({
-            url: '/settings/ajax/change_unit_system/',
+            url: '/settings/ajax/change-unit-system/',
             data: {
                 "units": 0
             },
@@ -52,7 +52,7 @@ function changeUnits() {
 
     $('#id_unit_imperial').on("click", function() {
         $.ajax({
-            url: '/settings/ajax/change_unit_system/',
+            url: '/settings/ajax/change-unit-system/',
             data: {
                 "units": 1
             },
@@ -67,7 +67,7 @@ function changeUnits() {
 function changeCurrency() {
     $('#id_cur_usd').on("click", function() {
         $.ajax({
-            url: '/settings/ajax/change_currency/',
+            url: '/settings/ajax/change-currency/',
             data: {
                 "currency": 0
             },
@@ -80,7 +80,7 @@ function changeCurrency() {
 
     $('#id_cur_eur').on("click", function() {
         $.ajax({
-            url: '/settings/ajax/change_currency/',
+            url: '/settings/ajax/change-currency/',
             data: {
                 "currency": 1
             },
@@ -93,7 +93,7 @@ function changeCurrency() {
 
     $('#id_cur_gbp').on("click", function() {
         $.ajax({
-            url: '/settings/ajax/change_currency/',
+            url: '/settings/ajax/change-currency/',
             data: {
                 "currency": 2
             },

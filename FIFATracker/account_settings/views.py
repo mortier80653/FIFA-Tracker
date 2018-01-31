@@ -1,4 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -39,5 +42,19 @@ def ajax_change_unit_system(request):
 
 @login_required
 def settings(request):
-    request.session['currency'] = request.user.profile.currency
+    if request.method == 'POST':
+        form_passwordchange = PasswordChangeForm(request.user, request.POST)
+        if form_passwordchange.is_valid():
+            user = form_passwordchange.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password has been changed!')
+        else:
+            messages.error(request, 'Password change failed.')
+    else:
+        form_passwordchange = PasswordChangeForm(request.user)
+
+    return render(request, 'account_settings/settings.html', {'form_passwordchange': form_passwordchange,})
+
+@login_required
+def change_password(request):
     return render(request, 'account_settings/settings.html')

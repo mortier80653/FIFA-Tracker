@@ -457,8 +457,6 @@ class FifaPlayer():
                             teams['national_team']['league']['teamstats'] = vars(league[1])
                             teams['national_team']['stats'] = vars(self.team_player_links[j])
                         else:
-                            print(self.q_teams[j].teamname)
-                            print(self.q_teams[j].teamid)
                             teams['club_team'] = vars(self.q_teams[j])
                             teams['club_team']['league'] = vars(league[0])
                             teams['club_team']['league']['teamstats'] = vars(league[1])

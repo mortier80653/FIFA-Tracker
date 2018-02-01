@@ -443,27 +443,29 @@ class FifaPlayer():
     def set_teams(self):
         teams = {}
         max_teams = 2
+        league = None
 
         for i in range(len(self.team_player_links)):
             if self.team_player_links[i].playerid == self.player.playerid:
                 for j in range(len(self.q_teams)):
                     if self.q_teams[j].teamid == self.team_player_links[i].teamid:
-                        if self.q_teams[j].cityid == 0:
+                        league = self.get_league(self.q_teams[j].teamid)
+                        if league[1].leagueid == 78 or league[1].leagueid == 2136:
+                            # Men's National or Women's National
                             teams['national_team'] = vars(self.q_teams[j])
-
-                            league = self.get_league(self.q_teams[j].teamid)
                             teams['national_team']['league'] = vars(league[0])
                             teams['national_team']['league']['teamstats'] = vars(league[1])
                             teams['national_team']['stats'] = vars(self.team_player_links[j])
                         else:
+                            print(self.q_teams[j].teamname)
+                            print(self.q_teams[j].teamid)
                             teams['club_team'] = vars(self.q_teams[j])
-
-                            league = self.get_league(self.q_teams[j].teamid)
                             teams['club_team']['league'] = vars(league[0])
                             teams['club_team']['league']['teamstats'] = vars(league[1])
                             teams['club_team']['stats'] = vars(self.team_player_links[j])
                         
                         if len(teams) >= max_teams:
+                            # Player can only have club team and national team
                             return teams
         
         return teams

@@ -62,6 +62,22 @@
     <h3>#{{ p.player.playerid}}</h3>
   </div>
   <div class="container">
+    <h2 align="center">Share this player</h2>
+    <div class="row justify-content-center">
+      <div class="col-xs-3"></div>
+      <div class="col-xs-4">
+          {% if user.is_authenticated %}
+            <input type="text" readonly="readonly" value="{{ request.build_absolute_uri }}?owner={{request.user}}" title="Share this player with your friends." id="shareinput">
+          {% else %}
+            <input type="text" readonly="readonly" value="{{ request.build_absolute_uri }}?owner=guest" title="Share this player with your friends." id="shareinput">
+          {% endif %}
+      </div>
+      <div class="col-xs-2">
+        <button class="btn btn-primary" onclick="copyShareLink()"><span class="glyphicon glyphicon-copy"></span> COPY</button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
     <h2 align="center">Player Info</h2>
     <div class="row player-info">
         <div class="col-md-6">

@@ -28,7 +28,7 @@ def ajax_change_currency(request):
 def ajax_change_unit_system(request):
     unit_system = request.GET.get('units', 0)
 
-    if int(unit_system) not in range(0,2) :
+    if int(unit_system) not in range(0,2):
         unit_system = 0 # metric
 
     if request.user.is_authenticated:
@@ -39,6 +39,28 @@ def ajax_change_unit_system(request):
     request.session['units'] = unit_system
 
     return JsonResponse({'units': unit_system})
+
+def ajax_change_profile_status(request):
+    is_profile_public = request.GET.get('is_profile_public')
+
+    if int(is_profile_public) not in range(0,2):
+        is_profile_public = 0 # Profile is private
+    else:
+        is_profile_public = int(is_profile_public)
+
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.id)
+        user.profile.is_public = is_profile_public
+        user.save()
+
+        if is_profile_public:
+            status = "Your profile is public now."
+        else:
+            status = "Your profile is private now."
+    else:
+        status = "Failed. User not authenticated"
+
+    return JsonResponse({'status': status})
 
 @login_required
 def settings(request):

@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from django.http import JsonResponse
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 from core.filters import DataUsersPlayersFilter
 from core.fifa_utils import FifaPlayer
@@ -108,11 +109,6 @@ def players(request):
 
 
 def player(request, playerid):
-    if request.user.is_authenticated:
-        current_user = request.user
-    else:
-        current_user = "guest"
-
     currency_symbols = ('$', '€', '£')
     if request.session.get('currency', None) is None:
         try:
@@ -122,6 +118,25 @@ def player(request, playerid):
             
     if request.session.get('currency_symbol', None) is None:
         request.session['currency_symbol'] = currency_symbols[int(request.session['currency'])]
+
+    if 'owner' in request.GET:
+        owner = request.GET['owner']
+        try:
+            is_profile_public = User.objects.get(username=owner).profile.is_public
+        except:
+            messages.error(request, "Something went wrong... :(")
+            return redirect('home')
+
+        if not is_profile_public:
+            messages.error(request, "Sorry, you don't have access to see {}'s players. His profile is private. Profile visibility can be changed in Control Panel.".format(owner))
+            return redirect('home')
+        
+        current_user = owner
+    elif request.user.is_authenticated:
+        current_user = request.user
+    else:
+        current_user = "guest"
+        
 
     # Current date according to in-game calendar
     try:
@@ -136,6 +151,8 @@ def player(request, playerid):
         messages.error(request, 'Invalid player id ({})'.format(playerid))
         return redirect('players')
 
+    if 'owner' in request.GET and current_user == owner:
+        messages.success(request, "User {} shared this player with you!".format(owner))
 
     dict_cached_queries = dict()
 

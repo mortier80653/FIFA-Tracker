@@ -5,6 +5,7 @@ $(document).ready(function(){
   changeCurrency();
   changeUnits();
   convertUnits();
+  changeProfilePublicStatus();
 })
 
 function convertUnits() {
@@ -142,4 +143,33 @@ function updateWorkrates() {
             $(this).text("Medium");
         }
     });
+}
+
+function copyShareLink() {
+    $('#shareinput').select();
+    document.execCommand("copy");
+}
+
+function changeProfilePublicStatus() {
+    $("#isprofilepublic").on("change", function() { 
+        if($(this).is(":checked")) { 
+            $.ajax({
+                url: '/settings/ajax/change-profile-public-status/',
+                data: { "is_profile_public": 1 },
+                dataType: 'json',
+                success: function (is_profile_public) {
+                    alert(is_profile_public.status);
+                }
+            });
+        } else {
+            $.ajax({
+                url: '/settings/ajax/change-profile-public-status/',
+                data: { "is_profile_public": 0 },
+                dataType: 'json',
+                success: function (is_profile_public) {
+                    alert(is_profile_public.status);
+                }
+            });
+        }
+    }); 
 }

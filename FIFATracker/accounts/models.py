@@ -16,7 +16,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,)
     currency = models.CharField(max_length=1, choices=CURRENCY_CHOICES, default=EURO)
     unit_system = models.BooleanField(default=0) # 0 - Metric, 1 - Imperial
-    is_public = models.BooleanField(default=0)
+    is_public = models.BooleanField(default=1)
     
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

@@ -28,26 +28,60 @@ from .paginator import MyPaginator
 
 
 def ajax_teams(request):
-    current_user = request.GET.get('username', None)
+    if request.user.is_authenticated:
+        current_user = request.user
+    else:
+        current_user = "guest"
+
+    selected = request.GET.get('selected', None)
+
+    if selected:
+        selected = list(selected.split(","))
+        teams = list(DataUsersTeams.objects.for_user(current_user).all().filter(Q(teamid__in=selected)).values())
+    else:
+        teams = list(DataUsersTeams.objects.for_user(current_user).all().values())
 
     data = {
-        'teams': list(DataUsersTeams.objects.for_user(current_user).all().values())
+        'teams': teams
     }
 
     return JsonResponse(data)
 
 def ajax_leagues(request):
-    current_user = request.GET.get('username', None)
+    if request.user.is_authenticated:
+        current_user = request.user
+    else:
+        current_user = "guest"
+
+    selected = request.GET.get('selected', None)
+
+    if selected:
+        selected = list(selected.split(","))
+        leagues = list(DataUsersLeagues.objects.for_user(current_user).all().filter(Q(leagueid__in=selected)).values())
+    else:
+        leagues = list(DataUsersLeagues.objects.for_user(current_user).all().values())
 
     data = {
-        'leagues': list(DataUsersLeagues.objects.for_user(current_user).all().values())
+        'leagues': leagues,
     }
 
     return JsonResponse(data)
 
 def ajax_nationality(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+    else:
+        current_user = "guest"
+        
+    selected = request.GET.get('selected', None)
+    if selected:
+        selected = list(selected.split(","))
+        nations = list(DataNations.objects.all().filter(Q(nationid__in=selected)).values())
+    else:
+        nations = list(DataNations.objects.all().values())
+
     data = {
-        'nations': list(DataNations.objects.all().values())
+        'nations': nations,
     }
     
     return JsonResponse(data)

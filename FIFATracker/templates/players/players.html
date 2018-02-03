@@ -17,6 +17,9 @@
 			$('#select-isreal').selectize({
 				allowEmptyOption: true,
 			});
+			$('#select-isonloan').selectize({
+				allowEmptyOption: true,
+			});
 
 			$("#positions-input").selectize({
 				delimiter: ',',
@@ -271,6 +274,13 @@
 
 								<label for="select-isreal">Is Real?</label>
 								<select id="select-isreal" name="isreal" placeholder="Any...">
+									<option value="-1" selected>Any..</option>
+									<option value="0">No</option>
+									<option value="1">Yes</option>
+								</select>
+
+								<label for="select-isonloan">On Loan?</label>
+								<select id="select-isonloan" name="isonloan" placeholder="Any...">
 									<option value="-1" selected>Any..</option>
 									<option value="0">No</option>
 									<option value="1">Yes</option>
@@ -622,8 +632,8 @@
 								AGE  <span class="glyphicon glyphicon-sort"></span>
 							</a>
 						{% endif %}
-					<th class="text-center hidden-sm">CONTRACT</th>
-					<th class="text-center hidden-sm">VALUE</th>
+					<th class="text-center hidden-xs hidden-sm">CONTRACT</th>
+					<th class="text-center hidden-xs hidden-sm">VALUE</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -647,7 +657,7 @@
 						<td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
 						<td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
 						<td class="text-center">{{ p.player_age.age }}</td>
-						<td class="text-center hidden-sm">
+						<td class="text-center hidden-xs hidden-sm">
 							<div>
 								{% if p.player_contract.isloanedout %}
 								<img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}}" class="crest">
@@ -660,7 +670,7 @@
 								{% endif %}
 							</div>
 						</td>
-						<td class="text-center hidden-sm">
+						<td class="text-center hidden-xs hidden-sm">
 							<div>
 								{{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
 							</div>

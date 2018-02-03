@@ -1,6 +1,29 @@
 from django.db.models import Q
 from .fifa_utils import FifaDate
-from players.models import DataUsersPlayers, DataUsersLeagues, DataUsersTeams, DataUsersTeamplayerlinks, DataUsersLeagueteamlinks
+from players.models import (
+    DataUsersPlayers,
+    DataUsersLeagues, 
+    DataUsersTeams, 
+    DataUsersTeamplayerlinks, 
+    DataUsersLeagueteamlinks, 
+    DataUsersPlayerloans,
+)
+
+class DataUsersPlayerloansFilter:
+    def __init__(self, for_user):
+        self.for_user = for_user
+
+        self.qs = DataUsersPlayerloans.objects.for_user(self.for_user).all()
+
+    def get_player_ids(self):
+        eval_DataUsersPlayerloans_qs = list(self.qs.iterator())
+        list_filtered_players = list()
+
+        for player in eval_DataUsersPlayerloans_qs:
+            list_filtered_players.append(player.playerid)
+
+        return list_filtered_players
+
 
 class DataUsersLeaguesFilter:
     def __init__(self, for_user, list_leagues):
@@ -163,6 +186,18 @@ class DataUsersPlayersFilter:
                 elif int(self.request_dict['isreal']) == 1:
                     #Real players that exists since beginning of the career
                     queryset = queryset.filter( Q(playerid__lte=highest_real_playerid) )               
+        except ValueError:
+            pass
+
+        try:
+            if 'isonloan' in self.request_dict and int(self.request_dict['isonloan']) in range(0,2):
+                list_playerids = DataUsersPlayerloansFilter(for_user=self.for_user).get_player_ids()
+                if int(self.request_dict['isonloan']) == 0:
+                    # Players is not on loan.
+                    queryset = queryset.filter(~Q(playerid__in=list_playerids))
+                elif int(self.request_dict['isonloan']) == 1:
+                    # Player is currently on loan.
+                    queryset = queryset.filter(Q(playerid__in=list_playerids))
         except ValueError:
             pass
 

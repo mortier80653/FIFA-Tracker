@@ -6,6 +6,7 @@ $(document).ready(function(){
   changeUnits();
   convertUnits();
   changeProfilePublicStatus();
+  cleanUrl();
 })
 
 function convertUnits() {
@@ -172,4 +173,50 @@ function changeProfilePublicStatus() {
             });
         }
     }); 
+}
+
+function cleanUrl() {
+    var params = ["isretiring", "isreal", "isonloan"];
+    for (i = 0; i < params.length; i++) {
+        if (getUrlParameter(params[i]) == "-1")
+            removeParam(params[i])
+    }
+}
+
+ // http://www.jquerybyexample.net/2012/06/get-url-parameters-using-jquery.html
+function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
+//  https://stackoverflow.com/a/16941921
+function removeParam(parameter) {
+  
+  var url=document.location.href;
+  var urlparts= url.split('?');
+
+  if (urlparts.length>=2) {
+    var urlBase=urlparts.shift(); 
+    var queryString=urlparts.join("?"); 
+
+    var prefix = encodeURIComponent(parameter)+'=';
+    var pars = queryString.split(/[&;]/g);
+    for (var i= pars.length; i-->0;)               
+        if (pars[i].lastIndexOf(prefix, 0)!==-1)   
+            pars.splice(i, 1);
+    url = urlBase+'?'+pars.join('&');
+    window.history.pushState('',document.title,url);
+  }
+  
+  return url;
 }

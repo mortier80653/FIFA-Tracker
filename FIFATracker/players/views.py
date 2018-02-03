@@ -53,6 +53,8 @@ def ajax_nationality(request):
     return JsonResponse(data)
 
 def players(request):
+    request_query_dict = request.GET.copy()
+
     if request.user.is_authenticated:
         current_user = request.user
     else:
@@ -76,9 +78,9 @@ def players(request):
         current_user = "guest"
         current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
 
-    player_filter = DataUsersPlayersFilter(request, for_user=current_user, current_date=current_date)
+    player_filter = DataUsersPlayersFilter(request_query_dict, for_user=current_user, current_date=current_date)
 
-    paginator = MyPaginator(player_filter.qs.count(), request=request.GET.copy(), max_per_page=50)
+    paginator = MyPaginator(player_filter.qs.count(), request=request_query_dict, max_per_page=50)
 
     data = list(player_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
 
@@ -105,7 +107,7 @@ def players(request):
     for player in data:
         players_list.append(FifaPlayer(player, current_user, current_date, dict_cached_queries, request.session))
 
-    return render(request, 'players/players.html', {'players':players_list, 'paginator':paginator, 'request_query_dict': request.GET, })
+    return render(request, 'players/players.html', {'players':players_list, 'paginator':paginator, 'request_query_dict': request_query_dict, })
 
 
 def player(request, playerid):

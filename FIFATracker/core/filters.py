@@ -80,7 +80,7 @@ class DataUsersTeamsFilter:
 
 class DataUsersPlayersFilter:
     def __init__(self, request, for_user, current_date):
-        self.request_dict = request.GET.copy()
+        self.request_dict = request
         self.for_user = for_user
         self.current_date = current_date
         

@@ -44,11 +44,11 @@
     </form>
     <h3 class="display-4">Profile</h3>
     {% if user.profile.is_public %}
-    <input type="checkbox" id="isprofilepublic" data-toggle="tooltip" data-placement="right" name="profileStatus" value="isprofilepublic" title="Makes your data visible for anyone." checked>
+        <input type="checkbox" id="isprofilepublic" name="profileStatus" value="isprofilepublic" checked>
     {% else %}
-      <input type="checkbox" id="isprofilepublic" data-toggle="tooltip" data-placement="right" name="profileStatus" value="isprofilepublic" title="Makes your data visible for anyone.">
+        <input type="checkbox" id="isprofilepublic" name="profileStatus" value="isprofilepublic" checked>
     {% endif %}
     <label for="isprofilepublic">Is profile public visibility?</label>
- 
+    <span style="margin-left: 5px;" class="mytooltip glyphicon glyphicon-question-sign"><span class="tooltiptext">Makes your data visible for anyone.</span></span>
 </div>
 {% endblock %}

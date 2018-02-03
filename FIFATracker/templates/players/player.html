@@ -127,7 +127,7 @@
               </tr>
               <tr>
                 <td>Club</td>
-                <td align="right">{{p.player_teams.club_team.teamname}} <img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" class="crest"></td>
+                <td align="right">{% if p.player_contract.isloanedout %}<span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">This player is currently on loan.</span></span>{% endif %}{{p.player_teams.club_team.teamname}} <img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" class="crest"></td>
               </tr>
               <tr>
                 <td>Contract</td>

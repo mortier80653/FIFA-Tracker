@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 from core.filters import DataUsersPlayersFilter
-from core.fifa_utils import FifaPlayer
+from core.fifa_utils import FifaPlayer, PlayerName
 
 from .models import (
     DataUsersPlayers, 
@@ -21,11 +21,82 @@ from .models import (
     DataUsersLeagues, 
     DataNations, 
     DataUsersDcplayernames,
+    DataPlayernames,
 )
-
 
 from .paginator import MyPaginator
 
+def ajax_players_by_name(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+    else:
+        current_user = "guest"
+
+    players_found = list()
+
+    playername = request.GET.get('playername', None)
+    if playername and len(playername) > 1:
+        playername = playername.split() # split space
+        dict_cached_queries = dict()
+        valid_nameids = list()
+        query = reduce(lambda x, y: x | y, [Q(name__unaccent__istartswith=name) for name in playername])
+        table_playernames = list(DataPlayernames.objects.all().filter(query).iterator())
+
+        for player in table_playernames:
+            if player.nameid in valid_nameids:
+                continue
+            valid_nameids.append(player.nameid)
+        
+        dict_cached_queries['q_dcplayernames'] = list(DataUsersDcplayernames.objects.for_user(current_user).all().filter(query).iterator())
+
+        for player in dict_cached_queries['q_dcplayernames']:
+            if player.nameid in valid_nameids:
+                continue
+            valid_nameids.append(player.nameid)
+
+        dict_cached_queries['q_dcplayernames'] = list(DataUsersDcplayernames.objects.for_user(current_user).all().iterator())
+
+        valid_playerids = list()
+        query_fn = Q()
+        query_sn = Q()
+        query_cn = Q()
+
+        for name in playername:
+            query_fn.add(Q(firstname__unaccent__istartswith=name), Q.OR)
+            query_sn.add(Q(surname__unaccent__istartswith=name), Q.OR)
+            query_cn.add(Q(commonname__unaccent__istartswith=name), Q.OR)
+
+        dict_cached_queries['q_edited_player_names'] = list(DataUsersEditedplayernames.objects.for_user(current_user).all().filter(
+            query_fn | query_sn | query_cn
+            ).iterator())
+
+        for player in dict_cached_queries['q_edited_player_names']:
+            if player.playerid in valid_playerids:
+                continue
+            valid_playerids.append(player.playerid)
+
+        players = list(DataUsersPlayers.objects.for_user(current_user).select_related(
+                'firstname', 'lastname', 'playerjerseyname', 'commonname',
+                ).filter(
+                    Q (playerid__in=valid_playerids) | Q (firstname_id__in=valid_nameids) | 
+                    Q (lastname_id__in=valid_nameids) | Q(commonname_id__in=valid_nameids)
+                ).all().order_by('-overallrating')[:12].iterator())
+
+        available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
+
+        for player in players:
+            p = dict()
+            p['playerid'] = player.playerid
+            p['overallrating'] = player.overallrating
+            p['position'] = available_positions[player.preferredposition1]
+            p['playername'] = PlayerName(player, dict_cached_queries).playername['knownas']
+            players_found.append(p)
+
+    data = {
+        'players': players_found,
+    }
+
+    return JsonResponse(data)
 
 def ajax_teams(request):
     if request.user.is_authenticated:

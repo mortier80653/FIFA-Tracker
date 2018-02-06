@@ -362,18 +362,68 @@ class PlayerValue:
 
         return int(self._round_to_player_value(summed_value))
 
+class PlayerName():
+    def __init__(self, player, dict_cached_queries):
+        self.player = player
+        self.dc_player_names = dict_cached_queries['q_dcplayernames']
+        self.edited_player_names = dict_cached_queries['q_edited_player_names']
+        self.playername = self.set_player_name()
+
+
+    def set_player_name(self):
+        name = {
+            'firstname': int(self.player.firstname_id or 0),
+            'lastname': int(self.player.lastname_id or 0),
+            'commonname': int(self.player.commonname_id or 0),
+            'playerjerseyname': int(self.player.playerjerseyname_id or 0),
+        }
+
+        if name['firstname'] == 0 or name['lastname'] == 0:
+            for i in range(len(self.edited_player_names)):
+                if self.edited_player_names[i].playerid == self.player.playerid:
+                    name['firstname'] = self.edited_player_names[i].firstname
+                    name['lastname'] = self.edited_player_names[i].surname
+                    name['commonname'] = self.edited_player_names[i].commonname 
+                    name['playerjerseyname'] = self.edited_player_names[i].playerjerseyname
+                    break
+        else: 
+            for key in name:
+                if name[key] >= 34000:
+                    # Get playername from dcplayernames
+                    name[key] = self.get_dcplayername(name[key])
+                else:
+                    # Get playername from playernames
+                    get_attr = getattr(self.player, key, None)
+                    if get_attr is not None:
+                        name[key] = get_attr.name
+
+
+        # This name will be displayed on website
+        if name['commonname']:
+            name['knownas'] = name['commonname']
+        else:
+            name['knownas'] = " ".join((str(name['firstname']), str(name['lastname'])))
+
+        return name
+
+    def get_dcplayername(self, nameid):
+        for i in range(len(self.dc_player_names)):
+            if self.dc_player_names[i].nameid == nameid:
+                return self.dc_player_names[i].name
+        
+        return nameid
+
 class FifaPlayer():
 
     def __init__(self, player, username, current_date, dict_cached_queries, session):
         self.player = player
         self.username = username
         self.current_date = current_date
+        self.dict_cached_queries = dict_cached_queries
         self.team_player_links = dict_cached_queries['q_team_player_links']
         self.q_teams = dict_cached_queries['q_teams']
         self.league_team_links = dict_cached_queries['q_league_team_links']
         self.query_player_loans = dict_cached_queries['q_player_loans']
-        self.edited_player_names = dict_cached_queries['q_edited_player_names']
-        self.dc_player_names = dict_cached_queries['q_dcplayernames']
         self.leagues = dict_cached_queries['q_leagues']
 
         try:
@@ -382,7 +432,7 @@ class FifaPlayer():
             self.currency = 1 # Set Euro as default currency
 
         self.player_teams = self.set_teams()
-        self.player_name = self.set_player_name()
+        self.player_name = PlayerName(self.player, self.dict_cached_queries).playername
         self.player_age = PlayerAge(self.player.birthdate, current_date)
         self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, int(self.currency))
         try:
@@ -475,48 +525,3 @@ class FifaPlayer():
                 for j in range(len(self.leagues)):
                     if self.leagues[j].leagueid == self.league_team_links[i].leagueid:
                         return self.leagues[j], self.league_team_links[i]
-
-
-    def set_player_name(self):
-        name = {
-            'firstname': int(self.player.firstname_id or 0),
-            'lastname': int(self.player.lastname_id or 0),
-            'commonname': int(self.player.commonname_id or 0),
-            'playerjerseyname': int(self.player.playerjerseyname_id or 0),
-        }
-
-
-        if name['firstname'] == 0 or name['lastname'] == 0:
-            for i in range(len(self.edited_player_names)):
-                if self.edited_player_names[i].playerid == self.player.playerid:
-                    name['firstname'] = self.edited_player_names[i].firstname
-                    name['lastname'] = self.edited_player_names[i].surname
-                    name['commonname'] = self.edited_player_names[i].commonname 
-                    name['playerjerseyname'] = self.edited_player_names[i].playerjerseyname
-                    break
-        else: 
-            for key in name:
-                if name[key] >= 34000:
-                    # Get playername from dcplayernames
-                    name[key] = self.get_dcplayername(name[key])
-                else:
-                    # Get playername from playernames
-                    get_attr = getattr(self.player, key, None)
-                    if get_attr is not None:
-                        name[key] = get_attr.name
-
-
-        # This name will be displayed on website
-        if name['commonname']:
-            name['knownas'] = name['commonname']
-        else:
-            name['knownas'] = " ".join((str(name['firstname']), str(name['lastname'])))
-
-        return name
-
-    def get_dcplayername(self, nameid):
-        for i in range(len(self.dc_player_names)):
-            if self.dc_player_names[i].nameid == nameid:
-                return self.dc_player_names[i].name
-        
-        return nameid

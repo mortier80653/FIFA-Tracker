@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  selectizejs();
   updatePositions();
   updateStrongFoot();
   updateWorkrates();
@@ -7,7 +8,391 @@ $(document).ready(function(){
   convertUnits();
   changeProfilePublicStatus();
   cleanUrl();
-})
+});
+
+function selectizejs() {
+    $('#select-isretiring').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("isretiring")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+    $('#select-isreal').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("isreal")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+    $('#select-isonloan').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("isonloan")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+
+    $("#positions-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'posid',
+        labelField: 'position',
+        searchField: ['posid', 'position'],
+        options: [
+            { position: 'GK', 	posid: '0'},
+            { position: 'SW', 	posid: '1'},
+            { position: 'RWB', 	posid: '2'},
+            { position: 'RB', 	posid: '3'},
+            { position: 'RCB', 	posid: '4'},
+            { position: 'CB', 	posid: '5'},
+            { position: 'LCB', 	posid: '6'},
+            { position: 'LB', 	posid: '7'},
+            { position: 'LWB', 	posid: '8'},
+            { position: 'RDM', 	posid: '9'},
+            { position: 'CDM', 	posid: '10'},
+            { position: 'LDM', 	posid: '11'},
+            { position: 'RM', 	posid: '12'},
+            { position: 'RCM', 	posid: '13'},
+            { position: 'CM', 	posid: '14'},
+            { position: 'LCM', 	posid: '15'},
+            { position: 'LM', 	posid: '16'},
+            { position: 'RAM', 	posid: '17'},
+            { position: 'CAM', 	posid: '18'},
+            { position: 'LAM', 	posid: '19'},
+            { position: 'RF', 	posid: '20'},
+            { position: 'CF', 	posid: '21'},
+            { position: 'LF', 	posid: '22'},
+            { position: 'RW', 	posid: '23'},
+            { position: 'RS', 	posid: '24'},
+            { position: 'ST', 	posid: '25'},
+            { position: 'LS', 	posid: '26'},
+            { position: 'LW', 	posid: '27'},
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.position ? '<span class="position">' + escape(item.position) + '</span>' : '') +
+                    '/div';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.position ? '<span class="caption">' + escape(item.position) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("preferredpositions")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    });
+
+    $( "#awr-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'workrateValue',
+        labelField: 'workrate',
+        searchField: ['workrateValue', 'workrate'],
+        options: [
+            { workrate: 'Low', 			workrateValue: '1'},
+            { workrate: 'Medium', 		workrateValue: '0'},
+            { workrate: 'High', 		workrateValue: '2'},
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.workrate ? '<span class="workrate">' + escape(item.workrate) + '</span>' : '') +
+                    '/div';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.workrate ? '<span class="caption">' + escape(item.workrate) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("attackingworkrate")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    });
+
+    $( "#dwr-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'workrateValue',
+        labelField: 'workrate',
+        searchField: ['workrateValue', 'workrate'],
+        options: [
+            { workrate: 'Low', 			workrateValue: '1'},
+            { workrate: 'Medium', 		workrateValue: '0'},
+            { workrate: 'High', 		workrateValue: '2'},
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.workrate ? '<span class="workrate">' + escape(item.workrate) + '</span>' : '') +
+                    '/div';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.workrate ? '<span class="caption">' + escape(item.workrate) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("defensiveworkrate")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    });
+
+    $( "#nationality-input").selectize({
+        valueField: 'nationid',
+        labelField: 'nationname',
+        searchField: 'nationname',
+        options: [],
+        plugins: ['remove_button'],
+        create: false,
+        render: {
+            option: function(item, escape) {
+                return '<div>' +
+                    (item.nationname ? '<span class="nationname">' + escape(item.nationname) + '</span>' : '') +
+                '</div>';
+            }
+        },
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            this.settings.load = null;
+            $.ajax({
+                url: 'ajax/nationality/',
+                dataType: 'json',
+                error: function() {
+                    callback();
+                },
+                success: function (res) {
+                  callback(res.nations);
+                }
+            });
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("nationalityid")
+            var selectized = this
+            if (value) 
+                $.ajax({
+                    url: 'ajax/nationality/',
+                    data: {
+                        'selected': value
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                      var nations = res.nations;
+                      var nationids = [];
+                      for (var i = 0; i < nations.length; i++) {
+                        selectized.addOption({"nationid": nations[i].nationid, "nationname": nations[i].nationname});
+                        nationids.push(nations[i].nationid)
+                      }
+                      selectized.setValue(nationids);
+                    }
+                });	
+        }
+    });
+
+    $("#leagues-input").selectize({
+        valueField: 'leagueid',
+        labelField: 'leaguename',
+        searchField: 'leaguename',
+        options: [],
+        plugins: ['remove_button'],
+        create: false,
+        render: {
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.leaguename ? '<span class="leaguename">' + escape(item.leaguename) + '</span>' : '') +
+                    '</div>';
+            }
+        },
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            this.settings.load = null;
+            $.ajax({
+                url: 'ajax/leagues/',
+                data: {
+                    'username': $('.current_user').text()
+                },
+                dataType: 'json',
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    callback(res.leagues);
+                }
+            });
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("leagueid")
+            var selectized = this
+            if (value) 
+                $.ajax({
+                    url: 'ajax/leagues/',
+                    data: {
+                        'username': $('.current_user').text(),
+                        'selected': value
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                      var leagues = res.leagues;
+                      var leaguesids = [];
+                      for (var i = 0; i < leagues.length; i++) {
+                        selectized.addOption({"leagueid": leagues[i].leagueid, "leaguename": leagues[i].leaguename});
+                        leaguesids.push(leagues[i].leagueid)
+                      }
+                      selectized.setValue(leaguesids);
+                    }
+                });	
+        }
+    });
+
+    $("#player-search-input").selectize({
+        valueField: 'playerid',
+        labelField: 'playername',
+        searchField: 'playername',
+        sortField: [
+            {
+                field: 'overallrating',
+                direction: 'desc'
+            },
+            {
+                field: '$score'
+            }
+        ],
+        option: [],
+        create: false,
+        maxItems: 1,
+        render: {					
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.overallrating ? '<span class="ratinglabel rat' + item.overallrating + '" style="width: 25px; margin-right: 10px;">' + escape(item.overallrating) + '</span>' : '') +
+                    (item.playername ? '<span class="knownas">' + escape(item.playername) + '</span>' : '') +
+                    (item.position ? '<span class="position"> (' + escape(item.position) + ')</span>' : '') +
+                    '</div>';
+            }
+        },
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            var selectized = this
+            $.ajax({
+                url: 'ajax/players-by-name/',
+                data: {
+                    'username': $('.current_user').text(),
+                    'playername': $("#player-search-input-selectized").val(),
+                },
+                dataType: 'json',
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    selectized.clearOptions();
+                    callback(res.players);
+                }
+            });
+        },
+        onDropdownOpen: function() {
+            var selectized = this;
+            this.$dropdown_content.on("mousedown", function (event) {
+                var dropdown_data = $(this)[0]['childNodes']
+                for (var i = 0; i < dropdown_data.length; i++) {
+                    if (dropdown_data[i].className === "active") {
+                        var playerid = dropdown_data[i].getAttribute('data-value');
+                        window.location.href = "/players/" + playerid;
+                        selectized.disable();
+                        break;
+                    }
+                }
+            });
+        },
+    });
+
+    $("#teams-input").selectize({
+        valueField: 'teamid',
+        labelField: 'teamname',
+        searchField: 'teamname',
+        options: [],
+        plugins: ['remove_button'],
+        create: false,
+        render: {
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.teamname ? '<span class="teamname">' + escape(item.teamname) + '</span>' : '') +
+                    '</div>';
+            }
+        },
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            this.settings.load = null;
+            $.ajax({
+                url: 'ajax/teams/',
+                data: {
+                    'username': $('.current_user').text()
+                },
+                dataType: 'json',
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    callback(res.teams);
+                }
+            });
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("teamid")
+            var selectized = this
+            if (value) 
+                $.ajax({
+                    url: 'ajax/teams/',
+                    data: {
+                        'username': $('.current_user').text(),
+                        'selected': value
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                      var teams = res.teams;
+                      var teamsids = [];
+                      for (var i = 0; i < teams.length; i++) {
+                        selectized.addOption({"teamid": teams[i].teamid, "teamname": teams[i].teamname});
+                        teamsids.push(teams[i].teamid)
+                      }
+                      selectized.setValue(teamsids);
+                    }
+                });	
+        }
+    });
+
+    $('#playerfilter').submit(function () {
+        $(this)
+            .find('input[name]')
+            .filter(function () {
+                return !this.value;
+            })
+            .prop('name', '');
+    });
+
+    $('#btn-reset').click(function () {
+        window.location = window.location.pathname;
+    });
+
+    $( "#tabs" ).tabs();
+};
 
 function convertUnits() {
     $('#p_height').each(function() {

@@ -103,3 +103,4 @@ ENV/
 secret_settings.py
 FIFATracker/pypy/
 FIFATracker/static/img/assets/
+.vscode/settings.json

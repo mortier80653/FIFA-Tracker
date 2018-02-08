@@ -31,6 +31,7 @@ class CareerSaveFileModel(models.Model):
 class DataUsersCareerManagerInfo(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     seasonobjectiveresult1 = models.IntegerField(blank=True, null=True)
     userid = models.IntegerField(blank=True, null=True)
     internationalteamid = models.IntegerField(blank=True, null=True)
@@ -65,6 +66,7 @@ class DataUsersCareerManagerInfo(models.Model):
 class DataUsersCareerScouts(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     firstname = models.CharField(max_length=60, blank=True, null=True)
     lastname = models.CharField(max_length=60, blank=True, null=True)
     scoutid = models.IntegerField(blank=True, null=True)
@@ -82,6 +84,7 @@ class DataUsersCareerScouts(models.Model):
 class DataUsersCareerPrecontract(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     offerid = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     offeredcontracttype = models.IntegerField(blank=True, null=True)
@@ -101,6 +104,7 @@ class DataUsersCareerPrecontract(models.Model):
 class DataUsersCareerPresignedContract(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     offerid = models.IntegerField(blank=True, null=True)
     offeredfee = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
@@ -131,6 +135,7 @@ class DataUsersCareerPresignedContract(models.Model):
 class DataUsersCareerTransferOffer(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     offerid = models.IntegerField(blank=True, null=True)
     offeredfee = models.IntegerField(blank=True, null=True)
     snipedteamid = models.IntegerField(blank=True, null=True)
@@ -166,6 +171,7 @@ class DataUsersCareerTransferOffer(models.Model):
 class DataUsersCareerSquadRanking(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
     curroverall = models.IntegerField(blank=True, null=True)
     lastoverall = models.IntegerField(blank=True, null=True)
@@ -178,6 +184,7 @@ class DataUsersCareerSquadRanking(models.Model):
 class DataUsersCareerYouthPlayerHistory(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
     appearances = models.IntegerField(blank=True, null=True)
     goals = models.IntegerField(blank=True, null=True)
@@ -190,6 +197,7 @@ class DataUsersCareerYouthPlayerHistory(models.Model):
 class DataUsersCareerPlayermatchratinghistory(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
     minsplayed = models.IntegerField(blank=True, null=True)
     rating = models.IntegerField(blank=True, null=True)
@@ -205,6 +213,7 @@ class DataUsersCareerPlayermatchratinghistory(models.Model):
 class DataUsersCareerManagerhistory(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
     leagueobjective = models.IntegerField(blank=True, null=True)
     continentalcuptrophies = models.IntegerField(blank=True, null=True)
@@ -240,6 +249,7 @@ class DataUsersCareerManagerhistory(models.Model):
 class DataUsersCareerPlayerlastmatchhistory(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     minsplayed = models.IntegerField(blank=True, null=True)
@@ -256,6 +266,7 @@ class DataUsersCareerPlayerlastmatchhistory(models.Model):
 class DataUsersCareerTeamofweek(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
     matchrating = models.IntegerField(blank=True, null=True)
     weekswon = models.IntegerField(blank=True, null=True)
@@ -270,6 +281,7 @@ class DataUsersCareerTeamofweek(models.Model):
 class DataUsersCareerPlayerawards(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     typeid = models.IntegerField(blank=True, null=True)
@@ -286,6 +298,7 @@ class DataUsersCareerPlayerawards(models.Model):
 class DataUsersCareerManagerawards(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     typeid = models.IntegerField(blank=True, null=True)
@@ -301,6 +314,7 @@ class DataUsersCareerManagerawards(models.Model):
 class DataUsersCareerTrophies(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     season = models.IntegerField(blank=True, null=True)
     flags = models.IntegerField(blank=True, null=True)
     userid = models.IntegerField(blank=True, null=True)
@@ -313,6 +327,7 @@ class DataUsersCareerTrophies(models.Model):
 class DataUsersCareerPlayergrowthuserseason(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
     gkkicking = models.IntegerField(blank=True, null=True)
     dribbling = models.IntegerField(blank=True, null=True)
@@ -359,6 +374,7 @@ class DataUsersCareerPlayergrowthuserseason(models.Model):
 class DataUsersCareerPlayasplayer(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     userid = models.IntegerField(blank=True, null=True)
     playedlastmatch = models.IntegerField(blank=True, null=True)
     requestactiondays = models.IntegerField(blank=True, null=True)
@@ -380,6 +396,7 @@ class DataUsersCareerPlayasplayer(models.Model):
 class DataUsersCareerPlayasplayerhistory(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     playasplayerhistoryid = models.IntegerField(blank=True, null=True)
     clublevel = models.IntegerField(blank=True, null=True)
     continentalcuptrophies = models.IntegerField(blank=True, null=True)
@@ -424,6 +441,7 @@ class DataUsersCareerPlayasplayerhistory(models.Model):
 class DataUsersTeamstadiumlinks(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     stadiumname = models.CharField(max_length=510, blank=True, null=True)
     forcedhome = models.IntegerField(blank=True, null=True)
@@ -437,6 +455,7 @@ class DataUsersTeamstadiumlinks(models.Model):
 class DataUsersPreviousteam(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
     previousteamid = models.IntegerField(blank=True, null=True)
 
@@ -448,6 +467,7 @@ class DataUsersPreviousteam(models.Model):
 class DataUsersPlayerGrudgelove(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
     level_of_emotion = models.IntegerField(blank=True, null=True)
     emotional_teamid = models.IntegerField(blank=True, null=True)
@@ -460,6 +480,7 @@ class DataUsersPlayerGrudgelove(models.Model):
 class DataUsersTeamkits(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     teamtechid = models.IntegerField(blank=True, null=True)
     jerseynumbercolorterg = models.IntegerField(blank=True, null=True)
     jerseyfit = models.IntegerField(blank=True, null=True)
@@ -527,6 +548,7 @@ class DataUsersTeamkits(models.Model):
 class DataUsersFormations(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     formationid = models.IntegerField(blank=True, null=True)
     position3 = models.IntegerField(blank=True, null=True)
     position7 = models.IntegerField(blank=True, null=True)
@@ -601,6 +623,7 @@ class DataUsersFormations(models.Model):
 class DataUsersDefaultTeamsheets(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     customsub1in = models.IntegerField(blank=True, null=True)
     customsub2out = models.IntegerField(blank=True, null=True)
@@ -748,6 +771,7 @@ class DataUsersDefaultTeamsheets(models.Model):
 class DataUsersCompetition(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     competitionid = models.IntegerField(blank=True, null=True)
     iscenterpitchflagenabled = models.IntegerField(blank=True, null=True)
     onpitchgraphics = models.IntegerField(blank=True, null=True)
@@ -815,6 +839,7 @@ class DataUsersCompetition(models.Model):
 class DataUsersRivals(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     teamid1 = models.IntegerField(blank=True, null=True)
     teamid2 = models.IntegerField(blank=True, null=True)
     rivaltype = models.IntegerField(blank=True, null=True)
@@ -827,6 +852,7 @@ class DataUsersRivals(models.Model):
 class DataUsersRowteamnationlinks(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     nationid = models.IntegerField(blank=True, null=True)
 
@@ -838,6 +864,7 @@ class DataUsersRowteamnationlinks(models.Model):
 class DataUsersTeamnationlinks(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     nationid = models.IntegerField(blank=True, null=True)
 
@@ -849,6 +876,7 @@ class DataUsersTeamnationlinks(models.Model):
 class DataUsersReferee(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     refereeid = models.IntegerField(blank=True, null=True)
     headvariation = models.IntegerField(blank=True, null=True)
     haircolorcode = models.IntegerField(blank=True, null=True)
@@ -892,6 +920,7 @@ class DataUsersReferee(models.Model):
 class DataUsersLeaguerefereelinks(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     leagueid = models.IntegerField(blank=True, null=True)
     refereeid = models.IntegerField(blank=True, null=True)
 
@@ -903,6 +932,7 @@ class DataUsersLeaguerefereelinks(models.Model):
 class DataUsersFixtures(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     fixtureid = models.IntegerField(blank=True, null=True)
     fanflags = models.IntegerField(blank=True, null=True)
     awayteamskill = models.IntegerField(blank=True, null=True)
@@ -936,6 +966,7 @@ class DataUsersFixtures(models.Model):
 class DataUsersSmrivals(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     teamid1 = models.IntegerField(blank=True, null=True)
     teamid2 = models.IntegerField(blank=True, null=True)
     rivaltype = models.IntegerField(blank=True, null=True)
@@ -948,6 +979,7 @@ class DataUsersSmrivals(models.Model):
 class DataUsersPlayersuspensions(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     enddate = models.IntegerField(blank=True, null=True)
@@ -962,6 +994,7 @@ class DataUsersPlayersuspensions(models.Model):
 class DataUsersBannerplayers(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     playertechid = models.IntegerField(blank=True, null=True)
     teamtechid = models.IntegerField(blank=True, null=True)
     legend = models.IntegerField(blank=True, null=True)
@@ -974,6 +1007,7 @@ class DataUsersBannerplayers(models.Model):
 class DataUsersPlayerformdiff(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     newoverallrating = models.IntegerField(blank=True, null=True)
     overallratingdiff = models.IntegerField(blank=True, null=True)
@@ -988,6 +1022,7 @@ class DataUsersPlayerformdiff(models.Model):
 class DataUsersTeamformdiff(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     oldmidfieldrating = models.IntegerField(blank=True, null=True)
     newmidfieldrating = models.IntegerField(blank=True, null=True)
@@ -1007,6 +1042,7 @@ class DataUsersTeamformdiff(models.Model):
 class DataUsersVersion(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user_id = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
     major = models.IntegerField(blank=True, null=True)
     exportdate = models.IntegerField(blank=True, null=True)

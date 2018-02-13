@@ -1,6 +1,11 @@
 from datetime import date  
 from datetime import timedelta  
 
+def get_team_name(all_teams, teamid):
+    for t in all_teams:
+        if int(t['teamid']) == int(teamid):
+            return t['teamname']
+            
 class FifaDate():
 
     def convert_days_to_py_date(self, days):
@@ -377,7 +382,7 @@ class PlayerName():
             'commonname': int(self.player.commonname_id or 0),
             'playerjerseyname': int(self.player.playerjerseyname_id or 0),
         }
-
+      
         if name['firstname'] == 0 or name['lastname'] == 0:
             for i in range(len(self.edited_player_names)):
                 if self.edited_player_names[i].playerid == self.player.playerid:

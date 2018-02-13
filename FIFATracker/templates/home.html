@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container">
@@ -21,6 +22,64 @@
 		<li>Transfers history.</li>
 		<li>Support for older FIFA editions.</li>
 	</ul>
+</div>
+<div class="container">
+	<div class="col-md-6 col-xs-12">
+		<h2 align="center">Most Popular Clubs</h2>
+		<div id="table-container" class="container-fluid">
+			<table>
+				<thead>
+					<tr>
+						<th class="text-center">CLUB</th>
+						<th class="text-center">MANAGERS</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for club in users_clubs %}
+					<tr>
+						<td>
+							<div style="padding: 5px;">
+								<img src="{% get_static_prefix %}img/assets/crest/l{{ club.id }}.png" title="{{ club.teamname }}" class="crest">
+								<span style="margin-left: 10px;">{{club.teamname}}</span>
+							</div>
+						</td>
+						<td class="text-center">
+							{{club.managers}}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="col-md-6 col-xs-12">
+		<h2 align="center">Most Popular National Teams</h2>
+		<div id="table-container" class="container-fluid">
+			<table>
+				<thead>
+					<tr>
+						<th class="text-center">NATIONAL TEAM</th>
+						<th class="text-center">MANAGERS</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for team in users_nationalteams %}
+					<tr>
+						<td>
+							<div style="padding: 5px;">
+								<img src="{% get_static_prefix %}img/assets/crest/l{{ team.id }}.png" title="{{ team.teamname }}" class="crest">
+								<span style="margin-left: 10px;">{{team.teamname}}</span>
+							</div>
+						</td>
+						<td class="text-center">
+							{{team.managers}}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 <div id="discord" class="container">
 	<h3 class="text-center">Join Our Discord</h3>

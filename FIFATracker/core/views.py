@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib import messages
+from django.db.models import Q
 from django.contrib.auth.models import User
 
+from collections import Counter
+
+from .fifa_utils import get_team_name
+from players.models import DataUsersTeams
 from .models import CareerSaveFileModel
 from .forms import CareerSaveFileForm
 
@@ -42,4 +47,38 @@ def donate(request):
     return render(request, 'donate.html')
 
 def home(request):
-    return render(request, 'home.html')
+    data = User.objects.prefetch_related('careerusers').values('careerusers__clubteamid', 'careerusers__nationalteamid')
+    
+    clubs = list()
+    nationalteams = list()
+    all_teams = list()
+
+    for u in data:
+        club = u['careerusers__clubteamid']
+        if club is not None and int(club) > 0:
+            clubs.append(club)
+            all_teams.append(club)          
+
+        nationalteam = u['careerusers__nationalteamid']
+        if (nationalteam is not None) and int(nationalteam) > 0:
+            nationalteams.append(nationalteam)
+            all_teams.append(nationalteam)
+
+    db_teams = list(DataUsersTeams.objects.for_user("guest").all().filter(Q(teamid__in=all_teams)).values())
+
+    
+    count_all_teams = Counter(all_teams).most_common()
+
+    max_teams_display = 30 # Max number of most popular teams to be displayed on homepage
+    users_clubs = list()
+    users_nationalteams = list()
+    teamname = ""
+    for team in count_all_teams:
+        teamname = get_team_name(db_teams, team[0])
+        if team[0] in clubs and len(users_clubs) < max_teams_display:
+            users_clubs.append({'id': team[0], 'managers': team[1], 'teamname': teamname, })
+        elif team[0] in nationalteams and len(users_nationalteams) < max_teams_display:
+            users_nationalteams.append({'id': team[0], 'managers': team[1], 'teamname': teamname, })
+
+    context = {'users_clubs':users_clubs, 'users_nationalteams':users_nationalteams, }
+    return render(request, 'home.html', context=context)

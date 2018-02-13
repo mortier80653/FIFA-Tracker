@@ -10,6 +10,38 @@ body {
 	margin-bottom: 40px;
 }
 
+.crest {
+	width: 27px;
+    height: 27px;
+}
+
+.flag {
+	width: 27px;
+    height: 27px;
+}
+
+#table-container>table{
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	border: 1px solid black;
+}
+
+#table-container thead {
+	text-align: center;
+	background: #595a5a;
+	padding: 5px;
+	border: 1px solid black;
+}
+
+#table-container tr {
+	border: 1px solid black;
+}
+
+#table-container tr:nth-of-type(even) {
+	background-color:rgb(56, 54, 56);
+}
+
 .mytooltip {
     position: relative;
     display: inline-block;

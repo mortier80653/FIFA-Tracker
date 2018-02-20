@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', accounts_views.reset, name='reset'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^players/', include('players.urls')),
+    url(r'^teams/', include('teams.urls')),
     url(r'^settings/', include('account_settings.urls')),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

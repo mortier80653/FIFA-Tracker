@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'account_settings.apps.AccountSettingsConfig',
     'accounts.apps.AccountsConfig',
     'players.apps.PlayersConfig',
+    'teams.apps.TeamsConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load teams_template_tags %}
+
+{% block content %}
+    <div class="container-fluid">
+        <nav aria-label="Search results pages">
+            <p>Total Teams: {{ paginator.num_of_objects }}</p>
+            <ul class="pagination">
+            {% if paginator.has_previous %}
+                <li class="page-item">
+                <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">First</a>
+                </li>
+                <li class="page-item">
+                <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
+                </li>
+            {% endif %}
+            <li class="page-item active">
+                <a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
+            </li>
+            {% if paginator.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
+                </li>
+            {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="col-xs-12">
+            <div id="table-container" class="container-fluid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center">TEAM</th>
+                            <th class="text-center">OVR</th>
+                            <th class="text-center">ATT</th>
+                            <th class="text-center">MID</th>
+                            <th class="text-center">DEF</th>
+                            <th class="text-center">BUDGET</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for team in teams %}
+                        <tr>
+                            <td>
+                                <div style="padding: 5px;">
+                                    <a href="{% url 'teams' %}{{team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID:{{ team.teamid}})" class="crest"></a>
+                                    <span style="margin-left: 10px;"><a href="{% url 'teams' %}{{team.teamid}}">{{team.teamname}}</a></span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="ratinglabel rat{{team.overallrating}}">{{ team.overallrating }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="ratinglabel rat{{team.attackrating}}">{{ team.attackrating }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="ratinglabel rat{{team.midfieldrating}}">{{ team.midfieldrating }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="ratinglabel rat{{team.defenserating}}">{{ team.defenserating }}</span>
+                            </td>
+                            <td class="text-center">
+                                {{team.transferbudget}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <nav aria-label="Search results pages">
+            <p>Total Teams: {{ paginator.num_of_objects }}</p>
+            <ul class="pagination">
+            {% if paginator.has_previous %}
+                <li class="page-item">
+                <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">First</a>
+                </li>
+                <li class="page-item">
+                <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
+                </li>
+            {% endif %}
+            <li class="page-item active">
+                <a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
+            </li>
+            {% if paginator.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
+                </li>
+            {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}

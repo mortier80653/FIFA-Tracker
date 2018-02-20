@@ -46,14 +46,21 @@ class PlayerAge():
 
 class PlayerWage:
     # All modifiers are defined in "playerwage.ini", "PlayerWageDomesticPrestigeMods.csv" and "PlayerWageProfitabilityMods.csv"
-    def __init__(self, ovr = 0, age = 0, posid = 0, player_team = {}, currency=1):
+    def __init__(self, ovr = 0, age = 0, posid = 0, player_team = None, currency=1):
         if player_team:
             self.ovr = ovr
             self.age = age
             self.posid = posid
             self.leagueid = player_team['league']['leagueid']
-            self.club_domestic_prestige = player_team['domesticprestige']
-            self.club_profitability = player_team['profitability']
+            self.club_domestic_prestige = player_team['team']['domesticprestige']
+            self.club_profitability = player_team['team']['profitability']
+            '''
+            print('----------class PlayerWage--------------')
+            print(self.leagueid)
+            print(self.club_domestic_prestige )
+            print(self.club_profitability)
+            '''
+
             '''
             [CONVERSION]
             USDOLLAR = 1.12
@@ -190,7 +197,7 @@ class PlayerWage:
         try:
             return domestic_prestige_table[leagueid][club_domestic_prestige]
         except KeyError:
-            return domestic_prestige_table[0][club_domestic_prestige]
+            return domestic_prestige_table[0][0]
 
     def _profitability(self, leagueid, club_profitability):
         profitability_table = {
@@ -236,7 +243,7 @@ class PlayerWage:
         try:
             return profitability_table[leagueid][club_profitability]
         except KeyError:
-            return profitability_table[0][club_profitability]
+            return profitability_table[0][0]
 
     def _round_to_player_wage(self, summed_wage):
         divisor = 0
@@ -418,6 +425,10 @@ class PlayerName():
         
         return nameid
 
+class FifaTeam():
+    def __init__(self, teamid, dict_cached_queries):
+        pass
+
 class FifaPlayer():
 
     def __init__(self, player, username, current_date, dict_cached_queries, session):
@@ -442,13 +453,12 @@ class FifaPlayer():
         self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, int(self.currency))
         try:
             self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'], int(self.currency))
-        except KeyError:
-            self.player_teams['club_team'] = dict()
-            self.player_teams['club_team']['league'] = dict()
-            self.player_teams['club_team']['teamname'] = "Not Found"
-            self.player_teams['club_team']['teamid'] = 0
-            self.player_teams['club_team']['league']['leaguename'] = "Not Found"
-            self.player_teams['club_team']['league']['leagueid'] = 0
+        except KeyError as e:
+            #print('KeyError: {}'.format(e))
+            self.player_teams['club_team'] = {
+                'team': {'teamid': 0, 'teamname': "Not Found"},
+                'league': {'leagueid': 0, 'leaguename': "Not Found"}, 
+            }
             self.player_wage = PlayerWage()
         self.player_contract = self.set_contract()
         self.headshot = self.set_headshot()
@@ -460,7 +470,7 @@ class FifaPlayer():
             return "youthheads/p{headtypecode}{haircolorcode:02d}.png".format(headtypecode=self.player.headtypecode, haircolorcode=self.player.haircolorcode) 
 
     def update_positions(self):
-        available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
+        available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW', 'SUB', 'RES')
         if -1 < self.player.preferredposition1 < len(available_positions):
             self.player.preferredposition1 = available_positions[self.player.preferredposition1]
 
@@ -474,7 +484,7 @@ class FifaPlayer():
             self.player.preferredposition4 = available_positions[self.player.preferredposition4]
 
     def set_contract(self):
-        contract = {}
+        contract = dict()
         
         contract['jointeamdate'] = FifaDate().convert_days_to_py_date(days=self.player.playerjointeamdate)
         contract['enddate'] = FifaDate().convert_to_py_date(fifa_date=self.player.contractvaliduntil)
@@ -485,11 +495,11 @@ class FifaPlayer():
                 contract['isloanedout'] = 1
                 contract['loan'] = vars(self.query_player_loans[i])
                 contract['enddate']  = FifaDate().convert_to_py_date(fifa_date=self.query_player_loans[i].loandateend)
-                contract['loanedto_clubid'] = self.player_teams['club_team']['teamid']
-                contract['loanedto_clubname'] = self.player_teams['club_team']['teamname']
+                contract['loanedto_clubid'] = self.player_teams['club_team']['team']['teamid']
+                contract['loanedto_clubname'] = self.player_teams['club_team']['team']['teamname']
                 for j in range(len(self.q_teams)):
-                    if self.query_player_loans[i].teamidloanedfrom == self.q_teams[j].teamid:
-                        self.player_teams['club_team'] = vars(self.q_teams[j])
+                    if int(self.query_player_loans[i].teamidloanedfrom) == int(self.q_teams[j].teamid):
+                        self.player_teams['club_team']['team'] = vars(self.q_teams[j])
                         return contract
 
         return contract
@@ -499,28 +509,31 @@ class FifaPlayer():
         teams = {}
         max_teams = 2
         league = None
-
+        
         for i in range(len(self.team_player_links)):
-            if self.team_player_links[i].playerid == self.player.playerid:
+            if int(self.team_player_links[i].playerid) == int(self.player.playerid):
                 for j in range(len(self.q_teams)):
-                    if self.q_teams[j].teamid == self.team_player_links[i].teamid:
+                    if int(self.q_teams[j].teamid) == int(self.team_player_links[i].teamid):
                         league = self.get_league(self.q_teams[j].teamid)
                         if league[1].leagueid == 78 or league[1].leagueid == 2136:
                             # Men's National or Women's National
-                            teams['national_team'] = vars(self.q_teams[j])
-                            teams['national_team']['league'] = vars(league[0])
-                            teams['national_team']['league']['teamstats'] = vars(league[1])
-                            teams['national_team']['stats'] = vars(self.team_player_links[j])
+                            teams['national_team'] = {
+                                'team': vars(self.q_teams[j]),
+                                'team_links': vars(self.team_player_links[i]),
+                                'league': vars(league[0]),
+                                'league_links': vars(league[1]),
+                            } 
                         else:
-                            teams['club_team'] = vars(self.q_teams[j])
-                            teams['club_team']['league'] = vars(league[0])
-                            teams['club_team']['league']['teamstats'] = vars(league[1])
-                            teams['club_team']['stats'] = vars(self.team_player_links[j])
+                            teams['club_team'] = {
+                                'team': vars(self.q_teams[j]),
+                                'team_links': vars(self.team_player_links[i]),
+                                'league': vars(league[0]),
+                                'league_links': vars(league[1]),
+                            } 
                         
                         if len(teams) >= max_teams:
                             # Player can only have club team and national team
                             return teams
-        
         return teams
 
 

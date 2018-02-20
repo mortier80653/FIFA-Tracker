@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load players_template_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h2>{{team.teamname}} (ID:{{ team.teamid}})</h2>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-xs-12 text-center">
+                <img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }}" class="crest-big">
+            </div>
+        </div>
+        <div class="row" style="color:white; margin-bottom: 10px;">
+            <div class="col-xs-6 col-xs-offset-3" style="border: 2px solid rgb({{team.teamcolor3r}}, {{team.teamcolor3g}}, {{team.teamcolor3b}}); border-radius: 5px;">
+                <div class="row">
+                    <div class="col-xs-12 text-center rat{{team.overallrating}}">
+                        {{team.overallrating}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 rat{{team.attackrating}}">
+                        <div class="row">
+                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                                ATT
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                                {{team.attackrating}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 rat{{team.midfieldrating}}">
+                        <div class="row">
+                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                                MID
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                                {{team.midfieldrating}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 rat{{team.defenserating}}">
+                        <div class="row">
+                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                                DEF
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                                {{team.defenserating}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-xs-12 teamlabel" style="border: 2px solid rgb({{team.teamcolor1r}}, {{team.teamcolor1g}}, {{team.teamcolor1b}});">
+                <div class="row">
+                    <div class="col-xs-3 ">
+                        <img src="{% get_static_prefix %}img/assets/leagues/l{{ league.leagueid }}.png" title="{{league.leaguename}}" class="crest-medium">
+                    </div>
+                    <div class="col-xs-9 ">
+                        <div class="row">
+                            <div class="col">
+                                Manager: {{manager.firstname}} {{manager.surname}}                      
+                            </div>
+                            <div class="col">
+                                League position: <span class="leagueposlabel" style="border: 2px solid rgb({{team.teamcolor2r}}, {{team.teamcolor2g}}, {{team.teamcolor2b}});">{{leagueteamlink.currenttableposition}}</span>
+                            </div>
+                            <div class="col">
+                                Careers: {{total_careers}} <span style="margin-left: 5px;" class="mytooltip glyphicon glyphicon-question-sign"><span class="tooltiptext">{{total_careers}} FIFA Tracker users are managing this team.</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-xs-12 teamlabel" style="border: 2px solid rgb({{team.teamcolor1r}}, {{team.teamcolor1g}}, {{team.teamcolor1b}});">
+                <div class="row">
+                    <div class="col-xs-12 ">
+                        Budget: {{team.transferbudget}}
+                    </div>
+                    <div class="col-xs-12 ">
+                        Club worth: {{team.clubworth}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-xs-12 teamlabel" style="border: 2px solid rgb({{team.teamcolor1r}}, {{team.teamcolor1g}}, {{team.teamcolor1b}});">
+                <div class="row">
+                    <div class="col-xs-12 ">
+                        Popularity: {{team.popularity}}
+                    </div>
+                    <div class="col-xs-12 ">
+                        Domestic prestige: {{team.domesticprestige}}
+                    </div>
+                    <div class="col-xs-12 ">
+                        Int. prestige: {{team.internationalprestige}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if players %}
+        <div id="table-container" class="container-fluid" style="margin-top: 10px;">
+        <h3 align="center">GOALKEEPERS</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="text-center" colspan ="3">PLAYER</th>
+                        <th class="text-center">RAT</th>
+                        <th class="text-center">POT</th>
+                        <th class="text-center">AGE</th>
+                        <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
+                        <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in grouped_players.GK %}
+                    <tr>
+                        <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="player-position text-center" width="65">
+                            {% if is_club_team %}
+                                {{p.player_teams.club_team.team_links.position}}
+                            {% elif is_national_team %}
+                                {{p.player_teams.national_team.team_links.position}}
+                            {% else %}
+                                {{ p.player.preferredposition1 }}
+                            {% endif %}
+                        </td>
+                        <td width="250">
+                            <div>
+                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
+                            </div>
+                            <div class="player-position">
+                                {% if is_club_team %}
+                                    #{{p.player_teams.club_team.team_links.jerseynumber }}
+                                {% elif is_national_team %}
+                                    #{{p.player_teams.national_team.team_links.jerseynumber }}
+                                {% else %}
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% endif %}
+                                {{ p.player.preferredposition1 }}
+                                {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
+                                {% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
+                                {% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
+                        <td class="text-center">{{ p.player_age.age }}</td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {% if p.player_contract.isloanedout %}
+                                <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                {% else %}
+                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% endif %}
+                                {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                {% if p.player_contract.isloanedout %}
+                                <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">This player is currently on loan.</span></span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
+                            </div>
+                            <div>
+                                {{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="table-container" class="container-fluid" style="margin-top: 10px;">
+        <h3 align="center">DEFENDERS</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="text-center" colspan ="3">PLAYER</th>
+                        <th class="text-center">RAT</th>
+                        <th class="text-center">POT</th>
+                        <th class="text-center">AGE</th>
+                        <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
+                        <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in grouped_players.DEF %}
+                    <tr>
+                        <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="player-position text-center" width="65">
+                            {% if is_club_team %}
+                                {{p.player_teams.club_team.team_links.position}}
+                            {% elif is_national_team %}
+                                {{p.player_teams.national_team.team_links.position}}
+                            {% else %}
+                                {{ p.player.preferredposition1 }}
+                            {% endif %}
+                        </td>
+                        <td width="250">
+                            <div>
+                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
+                            </div>
+                            <div class="player-position">
+                                {% if is_club_team %}
+                                    #{{p.player_teams.club_team.team_links.jerseynumber }}
+                                {% elif is_national_team %}
+                                    #{{p.player_teams.national_team.team_links.jerseynumber }}
+                                {% else %}
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% endif %}
+                                {{ p.player.preferredposition1 }}
+                                {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
+                                {% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
+                                {% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
+                        <td class="text-center">{{ p.player_age.age }}</td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {% if p.player_contract.isloanedout %}
+                                    Loaned from {{p.player_teams.club_team.team.teamname}}
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
+                                {% else %}
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
+                            </div>
+                            <div>
+                                {{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="table-container" class="container-fluid" style="margin-top: 10px;">
+        <h3 align="center">MIDFIELDERS</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="text-center" colspan ="3">PLAYER</th>
+                        <th class="text-center">RAT</th>
+                        <th class="text-center">POT</th>
+                        <th class="text-center">AGE</th>
+                        <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
+                        <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in grouped_players.MID %}
+                    <tr>
+                        <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="player-position text-center" width="65">
+                            {% if is_club_team %}
+                                {{p.player_teams.club_team.team_links.position}}
+                            {% elif is_national_team %}
+                                {{p.player_teams.national_team.team_links.position}}
+                            {% else %}
+                                {{ p.player.preferredposition1 }}
+                            {% endif %}
+                        </td>
+                        <td width="250">
+                            <div>
+                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
+                            </div>
+                            <div class="player-position">
+                                {% if is_club_team %}
+                                    #{{p.player_teams.club_team.team_links.jerseynumber }}
+                                {% elif is_national_team %}
+                                    #{{p.player_teams.national_team.team_links.jerseynumber }}
+                                {% else %}
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% endif %}
+                                {{ p.player.preferredposition1 }}
+                                {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
+                                {% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
+                                {% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
+                        <td class="text-center">{{ p.player_age.age }}</td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {% if p.player_contract.isloanedout %}
+                                <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                {% else %}
+                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% endif %}
+                                {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                {% if p.player_contract.isloanedout %}
+                                <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">This player is currently on loan.</span></span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
+                            </div>
+                            <div>
+                                {{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="table-container" class="container-fluid" style="margin-top: 10px;">
+        <h3 align="center">FORWARDS</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="text-center" colspan ="3">PLAYER</th>
+                        <th class="text-center">RAT</th>
+                        <th class="text-center">POT</th>
+                        <th class="text-center">AGE</th>
+                        <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
+                        <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in grouped_players.ATT %}
+                    <tr>
+                        <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="player-position text-center" width="65">
+                            {% if is_club_team %}
+                                {{p.player_teams.club_team.team_links.position}}
+                            {% elif is_national_team %}
+                                {{p.player_teams.national_team.team_links.position}}
+                            {% else %}
+                                {{ p.player.preferredposition1 }}
+                            {% endif %}
+                        </td>
+                        <td width="250">
+                            <div>
+                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
+                            </div>
+                            <div class="player-position">
+                                {% if is_club_team %}
+                                    #{{p.player_teams.club_team.team_links.jerseynumber }}
+                                {% elif is_national_team %}
+                                    #{{p.player_teams.national_team.team_links.jerseynumber }}
+                                {% else %}
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% endif %}
+                                {{ p.player.preferredposition1 }}
+                                {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
+                                {% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
+                                {% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
+                        <td class="text-center">{{ p.player_age.age }}</td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {% if p.player_contract.isloanedout %}
+                                <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                {% else %}
+                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% endif %}
+                                {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                {% if p.player_contract.isloanedout %}
+                                <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">This player is currently on loan.</span></span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
+                            </div>
+                            <div>
+                                {{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <h2>This team don't have any players</h2>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -7,24 +7,19 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
 
-from core.filters import DataUsersPlayersFilter
-from core.fifa_utils import FifaPlayer, PlayerName
+from core.exceptions import NoResultsError, PrivateProfileError, UnknownError
+from core.generate_view_helper import get_fifaplayers
+from core.fifa_utils import PlayerName
 
-from .models import (
+from players.models import (
     DataUsersPlayers, 
-    DataUsersTeamplayerlinks, 
-    DataUsersPlayerloans, 
     DataUsersEditedplayernames, 
     DataUsersTeams, 
-    DataUsersLeagueteamlinks,
-    DataUsersCareerCalendar, 
     DataUsersLeagues, 
     DataNations, 
     DataUsersDcplayernames,
     DataPlayernames,
 )
-
-from .paginator import MyPaginator
 
 def ajax_players_by_name(request):
     if request.user.is_authenticated:
@@ -158,121 +153,20 @@ def ajax_nationality(request):
     return JsonResponse(data)
 
 def players(request):
-    request_query_dict = request.GET.copy()
-
-    if request.user.is_authenticated:
-        current_user = request.user
-    else:
-        current_user = "guest"
-
-    currency_symbols = ('$', '€', '£')
-    if request.session.get('currency', None) is None:
-        try:
-            request.session['currency'] = request.user.profile.currency
-        except:
-            request.session['currency'] = 1
-
-    if request.session.get('currency_symbol', None) is None:
-        request.session['currency_symbol'] = currency_symbols[int(request.session['currency'])]
-
-    # Current date according to in-game calendar
     try:
-        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
-    except IndexError:
-        messages.error(request, "Your career file hasn't been processed yet. Displaying default FIFA database data.")
-        current_user = "guest"
-        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
-
-    player_filter = DataUsersPlayersFilter(request_query_dict, for_user=current_user, current_date=current_date)
-
-    paginator = MyPaginator(player_filter.qs.count(), request=request_query_dict, max_per_page=50)
-
-    data = list(player_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
-
-    if len(data) <= 0:
-        messages.error(request, 'No results found. Try to change your filters.')
-        return redirect('players')
-
-    dict_cached_queries = dict()
-    dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
-    dict_cached_queries['q_dcplayernames'] = list(DataUsersDcplayernames.objects.for_user(current_user).all().iterator())
-    
-    f_playerid = reduce(lambda x, y: x | y, [Q(playerid=player.playerid) for player in data])
-
-    dict_cached_queries['q_team_player_links'] = list(DataUsersTeamplayerlinks.objects.for_user(current_user).filter(f_playerid).iterator())
-    dict_cached_queries['q_player_loans'] = list(DataUsersPlayerloans.objects.for_user(current_user).filter(f_playerid).iterator())
-    dict_cached_queries['q_edited_player_names'] = list(DataUsersEditedplayernames.objects.for_user(current_user).filter(f_playerid).iterator())
-
-    f_teamid = reduce(lambda x, y: x | y, [Q(teamid=team.teamid) for team in dict_cached_queries['q_team_player_links']])
-
-    dict_cached_queries['q_teams'] = list(DataUsersTeams.objects.for_user(current_user).filter(f_teamid).iterator())
-    dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(f_teamid).iterator())
-
-    players_list = list()
-    for player in data:
-        players_list.append(FifaPlayer(player, current_user, current_date, dict_cached_queries, request.session))
-
-    return render(request, 'players/players.html', {'players':players_list, 'paginator':paginator, 'request_query_dict': request_query_dict, })
+        context = get_fifaplayers(request, paginate=True)
+        return render(request, 'players/players.html', context)
+    except (NoResultsError, PrivateProfileError, UnknownError) as e:
+        messages.error(request, e)
+        return redirect('home')
 
 
 def player(request, playerid):
-    currency_symbols = ('$', '€', '£')
-    if request.session.get('currency', None) is None:
-        try:
-            request.session['currency'] = request.user.profile.currency
-        except:
-            request.session['currency'] = 1
-            
-    if request.session.get('currency_symbol', None) is None:
-        request.session['currency_symbol'] = currency_symbols[int(request.session['currency'])]
-
-    if 'owner' in request.GET:
-        owner = request.GET['owner']
-        try:
-            is_profile_public = User.objects.get(username=owner).profile.is_public
-        except:
-            messages.error(request, "Something went wrong... :(")
-            return redirect('home')
-
-        if not is_profile_public:
-            messages.error(request, "Sorry, you don't have access to see {}'s players. His profile is private. Profile visibility can be changed in Control Panel.".format(owner))
-            return redirect('home')
-        
-        current_user = owner
-    elif request.user.is_authenticated:
-        current_user = request.user
-    else:
-        current_user = "guest"
-        
-
-    # Current date according to in-game calendar
     try:
-        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
-    except IndexError:
-        messages.error(request, "Your career file hasn't been processed yet. Displaying default FIFA database data.")
-        current_user = "guest"
-        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+        additional_filters = {'playerid': playerid}
+        context = get_fifaplayers(request, additional_filters=additional_filters, paginate=False)
 
-    data = list(DataUsersPlayers.objects.for_user(current_user).filter(playerid=playerid).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',).iterator())
-    if len(data) <= 0:
-        messages.error(request, 'Invalid player id ({})'.format(playerid))
-        return redirect('players')
-
-    if 'owner' in request.GET and current_user == owner:
-        messages.success(request, "User {} shared this player with you!".format(owner))
-
-    dict_cached_queries = dict()
-
-    dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
-    dict_cached_queries['q_dcplayernames'] = list(DataUsersDcplayernames.objects.for_user(current_user).all().iterator())
-
-    dict_cached_queries['q_team_player_links'] = list(DataUsersTeamplayerlinks.objects.for_user(current_user).filter(playerid=playerid).iterator())
-    dict_cached_queries['q_player_loans'] = list(DataUsersPlayerloans.objects.for_user(current_user).filter(playerid=playerid).iterator())
-    dict_cached_queries['q_edited_player_names'] = list(DataUsersEditedplayernames.objects.for_user(current_user).filter(playerid=playerid).iterator())
-
-    f_teamid = reduce(lambda x, y: x | y, [Q(teamid=team.teamid) for team in dict_cached_queries['q_team_player_links']])
-
-    dict_cached_queries['q_teams'] = list(DataUsersTeams.objects.for_user(current_user).filter(f_teamid).iterator())
-    dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(f_teamid).iterator())
-
-    return render(request, 'players/player.html', {'p':FifaPlayer(data[0], current_user, current_date, dict_cached_queries, request.session)})
+        return render(request, 'players/player.html', {'p': context['players'][0]})
+    except (NoResultsError, PrivateProfileError, UnknownError) as e:
+        messages.error(request, e)
+        return redirect('home')

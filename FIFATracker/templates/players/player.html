@@ -6,26 +6,32 @@
 {% endblock %}
 
 {% block content %}
-	<div class="container ">
+	<div class="container">
     <div class="row">
       <div class="col-sm-4 text-right hidden-xs">
         <div class="row">
           <div class="col-xs-12">
             <dl>
               <dt>Nationality</dt>
-              <dd>{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" class="flag"></dd>
+              <dd>{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag"></dd>
             </dl>
           </div>
           <div class="col-xs-12">
               <dl>
                 <dt>League</dt>
-                <dd>{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" class="crest"></dd>
+                <dd>{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" title="{{p.player_teams.club_team.league.leaguename}} (ID: {{p.player_teams.club_team.league.leagueid}})" class="crest"></dd>
               </dl>
           </div>
           <div class="col-xs-12">
               <dl>
                 <dt>Club</dt>
-                <dd>{{p.player_teams.club_team.teamname}} <img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" class="crest"></dd>
+                <dd>
+                  {% if p.player_contract.isloanedout %}
+                    {{p.player_contract.loanedto_clubname}} <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="Loaned from: {{p.player_teams.club_team.team.teamname}}" class="crest"></a>
+                  {% else %}
+                    {{p.player_teams.club_team.team.teamname}} <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
+                  {% endif %}
+                </dd>
               </dl>
           </div>
         </div>
@@ -64,15 +70,15 @@
   <div class="container">
     <h2 align="center">Share this player</h2>
     <div class="row justify-content-center">
-      <div class="col-xs-3"></div>
-      <div class="col-xs-4">
+      <div class="col-xs-3 hidden-xs"></div>
+      <div class="col-sm-4 col-xs-12">
           {% if user.is_authenticated %}
             <input type="text" readonly="readonly" value="{{ request.build_absolute_uri }}?owner={{request.user}}" title="Share this player with your friends." id="shareinput">
           {% else %}
             <input type="text" readonly="readonly" value="{{ request.build_absolute_uri }}?owner=guest" title="Share this player with your friends." id="shareinput">
           {% endif %}
       </div>
-      <div class="col-xs-2">
+      <div class="col-sm-2 col-xs-12">
         <button class="btn btn-primary" onclick="copyShareLink()"><span class="glyphicon glyphicon-copy"></span> COPY</button>
       </div>
     </div>
@@ -119,15 +125,24 @@
               {% endif %}
               <tr>
                 <td>Nationality</td>
-                <td align="right">{{p.player.nationality.nationname}} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" class="flag"></td>
+                <td align="right">{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag"></td>
               </tr>
               <tr>
                 <td>League</td>
-                <td align="right">{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" class="crest"></td>
+                <td align="right">{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" title="{{p.player_teams.club_team.league.leaguename}} (ID: {{p.player_teams.club_team.league.leagueid}})" class="crest"></td>
               </tr>
               <tr>
                 <td>Club</td>
-                <td align="right">{% if p.player_contract.isloanedout %}<span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">This player is currently on loan.</span></span>{% endif %}{{p.player_teams.club_team.teamname}} <img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.teamid }}.png" class="crest"></td>
+                <td align="right">
+                  {% if p.player_contract.isloanedout %}
+                  {{p.player_contract.loanedto_clubname}} 
+                  <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">This player is loaned from: {{p.player_teams.club_team.team.teamname}}.</span></span>
+                  <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="Loaned from: {{p.player_teams.club_team.team.teamname}}" class="crest"></a>
+                  {% else %}
+                  {{p.player_teams.club_team.team.teamname}} 
+                  <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
+                  {% endif %}
+                </td>
               </tr>
               <tr>
                 <td>Contract</td>
@@ -381,15 +396,15 @@
             <tbody>
               <tr>
                 <td>League - Goals</td>
-                <td align="right"> {{ p.player_teams.club_team.stats.leaguegoals }} </td>
+                <td align="right"> {{ p.player_teams.club_team.team_links.leaguegoals }} </td>
               </tr>
               <tr>
                 <td>League - Yellow Cards</td>
-                <td align="right"> {{ p.player_teams.club_team.stats.yellows }} </td>
+                <td align="right"> {{ p.player_teams.club_team.team_links.yellows }} </td>
               </tr>
               <tr>
                 <td>League - Red Cards</td>
-                <td align="right"> {{ p.player_teams.club_team.stats.reds }} </td>
+                <td align="right"> {{ p.player_teams.club_team.team_links.reds }} </td>
               </tr>
             </tbody>
           </table>

@@ -53,16 +53,52 @@ class DataUsersLeaguesFilter:
         return DataUsersTeamsFilter(for_user=self.for_user, list_teams=teams[:-1]).get_player_ids()
 
 class DataUsersTeamsFilter:
-    def __init__(self, for_user, list_teams):
-        self.list_teams = list_teams
+    def __init__(self, request, for_user):
+        self.request_dict = request
         self.for_user = for_user
 
         queryset = DataUsersTeams.objects.for_user(self.for_user).all()
         queryset = self.filter(queryset)
+        queryset = self.order(queryset)
         self.qs = queryset
 
     def filter(self, queryset):
-        return queryset.filter(Q(teamid__in=list(self.list_teams.split(',')))) 
+        # Exclude women teams
+        women_nt = [
+            '112998',   # Australia Women
+            '112999',   # Brazil Women
+            '113000',   # Canada Women
+            '113001',   # China PR Women
+            '113002',   # England Women
+            '113003',   # France Women
+            '113004',   # Germany Women
+            '113005',   # Italy Women
+            '113007',   # Norway Women
+            '113008',   # Sweden Women
+            '113009',   # United States Women
+            '113010',   # Mexico Women
+            '113011',   # Holland Women
+            '113012',   # Spain Women
+            '113258',   # New Zealand Women
+        ]
+        queryset = queryset.exclude(teamid__in=women_nt)
+        try:
+            if 'teamid' in self.request_dict:
+                teams_list = self.request_dict['teamid']
+                queryset = queryset.filter(Q(teamid__in=list(teams_list.split(',')))) 
+        except ValueError:
+            pass
+
+        return queryset
+
+    def order(self, queryset):
+        if 'order_by' in self.request_dict:
+            valid_fields = [f.name for f in DataUsersTeams._meta.get_fields()]
+            orderby = self.request_dict['order_by'].replace('-', "")
+            if orderby in valid_fields:
+                return queryset.order_by(self.request_dict['order_by'])
+
+        return queryset.order_by('-overallrating')
 
     def get_player_ids(self):
         eval_DataUsersTeams_qs = list(self.qs.iterator())
@@ -79,7 +115,7 @@ class DataUsersTeamsFilter:
         return list_players
 
 class DataUsersPlayersFilter:
-    def __init__(self, request, for_user, current_date):
+    def __init__(self, request, for_user, current_date=20170701):
         self.request_dict = request
         self.for_user = for_user
         self.current_date = current_date
@@ -90,6 +126,13 @@ class DataUsersPlayersFilter:
         self.qs = queryset
 
     def filter(self, queryset):
+        try:
+            if 'playerid' in self.request_dict:
+                value = list(self.request_dict['playerid'].split(','))
+                queryset = queryset.filter( Q(playerid__in=value) )
+        except ValueError:
+            pass
+
         range_fields = [
             'overallrating',
             'potential',
@@ -210,7 +253,7 @@ class DataUsersPlayersFilter:
 
         try:
             if 'teamid' in self.request_dict:
-                list_playerids = DataUsersTeamsFilter(for_user=self.for_user, list_teams=self.request_dict['teamid']).get_player_ids()
+                list_playerids = DataUsersTeamsFilter(for_user=self.for_user, request=self.request_dict).get_player_ids()
                 queryset = queryset.filter(Q(playerid__in=list_playerids))
         except ValueError:
             pass
@@ -249,9 +292,12 @@ class DataUsersPlayersFilter:
     
     def order(self, queryset):
         if 'order_by' in self.request_dict:
-            return queryset.order_by(self.request_dict['order_by'])
-        else:
-            return queryset.order_by('-overallrating')
+            valid_fields = [f.name for f in DataUsersPlayers._meta.get_fields()]
+            orderby = self.request_dict['order_by'].replace('-', "")
+            if orderby in valid_fields:
+                return queryset.order_by(self.request_dict['order_by'], 'playerid')
+
+        return queryset.order_by('-overallrating', 'playerid')
 
 
     def _check_key(self, d, key):

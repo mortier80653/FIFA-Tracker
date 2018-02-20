@@ -15,7 +15,7 @@ class UserDataManager(models.Manager):
 class DataUsersCareerCalendar(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='calendar', on_delete=models.CASCADE, null=True,)
     transferwindowend1 = models.IntegerField(blank=True, null=True)
     transferwindowstart1 = models.IntegerField(blank=True, null=True)
     transferwindowend2 = models.IntegerField(blank=True, null=True)
@@ -61,7 +61,7 @@ class DataUsersCareerUsers(models.Model):
 class DataUsersCareerPlayercontract(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='playercontract', on_delete=models.CASCADE, null=True,)
     offered_wage = models.IntegerField(blank=True, null=True)
     isperformancebonusachieved = models.IntegerField(blank=True, null=True)
     salary_demand = models.IntegerField(blank=True, null=True)
@@ -91,7 +91,7 @@ class DataUsersCareerPlayercontract(models.Model):
 class DataUsersCareerYouthplayers(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='youthplayers', on_delete=models.CASCADE, null=True,)
     playerid = models.IntegerField(blank=True, null=True)
     playertier = models.IntegerField(blank=True, null=True)
     playertype = models.IntegerField(blank=True, null=True)
@@ -107,7 +107,7 @@ class DataUsersCareerYouthplayers(models.Model):
 class DataUsersTeams(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True) 
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='teams', on_delete=models.CASCADE, null=True,)
     assetid = models.IntegerField(blank=True, null=True)
     balltype = models.IntegerField(blank=True, null=True)
     teamcolor1g = models.IntegerField(blank=True, null=True)
@@ -199,7 +199,7 @@ class DataUsersTeams(models.Model):
 class DataUsersLeagueteamlinks(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)      
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='leagueteamlinks', on_delete=models.CASCADE, null=True,)
     homega = models.IntegerField(blank=True, null=True)
     previousyeartableposition = models.IntegerField(blank=True, null=True)
     homegf = models.IntegerField(blank=True, null=True)
@@ -243,7 +243,7 @@ class DataUsersLeagueteamlinks(models.Model):
 class DataUsersTeamplayerlinks(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='teamplayerlinks', on_delete=models.CASCADE, null=True,)
     leaguegoals = models.IntegerField(blank=True, null=True)
     isamongtopscorers = models.IntegerField(blank=True, null=True)
     yellows = models.IntegerField(blank=True, null=True)
@@ -289,7 +289,7 @@ class DataPlayernames(models.Model):
 class DataUsersDcplayernames(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='dcplayernames', on_delete=models.CASCADE, null=True,)
     name = models.CharField(max_length=77, blank=True, null=True)
     nameid = models.IntegerField(blank=True, null=True)
     
@@ -301,7 +301,7 @@ class DataUsersDcplayernames(models.Model):
 class DataUsersEditedplayernames(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='editedplayernames', on_delete=models.CASCADE, null=True,)
     firstname = models.CharField(max_length=45, blank=True, null=True)
     commonname = models.CharField(max_length=45, blank=True, null=True)
     playerjerseyname = models.CharField(max_length=45, blank=True, null=True)
@@ -317,7 +317,7 @@ class DataUsersEditedplayernames(models.Model):
 class DataUsersLeagues(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='leagues', on_delete=models.CASCADE, null=True,)
     countryid = models.IntegerField(blank=True, null=True)
     leaguename = models.CharField(max_length=120, blank=True, null=True)
     level = models.IntegerField(blank=True, null=True)
@@ -354,13 +354,15 @@ class DataUsersManager(models.Model):
     skintonecode = models.IntegerField(blank=True, null=True)
     bodytypecode = models.IntegerField(blank=True, null=True)
 
+    objects = UserDataManager()
+
     class Meta:
         db_table = 'datausersmanager'
 
 class DataUsersPlayers(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='players', on_delete=models.CASCADE, null=True,)
     firstname = models.ForeignKey(DataPlayernames, related_name='firstname', db_column='firstnameid', null=True, on_delete=models.CASCADE)
     lastname = models.ForeignKey(DataPlayernames, related_name='lastname',  db_column='lastnameid', null=True, on_delete=models.CASCADE)
     playerjerseyname = models.ForeignKey(DataPlayernames, related_name='playerjerseyname', db_column='playerjerseynameid', null=True, on_delete=models.CASCADE)
@@ -485,7 +487,7 @@ class DataUsersPlayers(models.Model):
 class DataUsersPlayerloans(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
-    ft_user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False, blank=True, null=True, default=None)
+    ft_user = models.ForeignKey(User, related_name='playerloans', on_delete=models.CASCADE, null=True,)
     teamidloanedfrom = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
     loandateend = models.IntegerField(blank=True, null=True)

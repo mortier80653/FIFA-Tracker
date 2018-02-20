@@ -158,13 +158,12 @@
                         <td class="text-center hidden-xs hidden-sm">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                    Loaned from {{p.player_teams.club_team.team.teamname}}
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
-                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                {% endif %}
-                                {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
-                                {% if p.player_contract.isloanedout %}
-                                <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">This player is currently on loan.</span></span>
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
                                 {% endif %}
                             </div>
                         </td>
@@ -305,13 +304,12 @@
                         <td class="text-center hidden-xs hidden-sm">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                    Loaned from {{p.player_teams.club_team.team.teamname}}
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
-                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                {% endif %}
-                                {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
-                                {% if p.player_contract.isloanedout %}
-                                <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">This player is currently on loan.</span></span>
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
                                 {% endif %}
                             </div>
                         </td>
@@ -379,13 +377,12 @@
                         <td class="text-center hidden-xs hidden-sm">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                    Loaned from {{p.player_teams.club_team.team.teamname}}
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
-                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                {% endif %}
-                                {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
-                                {% if p.player_contract.isloanedout %}
-                                <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">This player is currently on loan.</span></span>
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
                                 {% endif %}
                             </div>
                         </td>

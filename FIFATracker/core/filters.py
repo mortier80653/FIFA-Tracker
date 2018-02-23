@@ -24,6 +24,33 @@ class DataUsersPlayerloansFilter:
 
         return list_filtered_players
 
+class DataUsersLeagueteamlinksFilter:
+    def __init__(self, request, for_user):
+        self.request_dict = request
+        self.for_user = for_user
+
+        queryset = DataUsersLeagueteamlinks.objects.for_user(self.for_user).all()
+        queryset = self.filter(queryset)
+        self.qs = queryset
+
+    def filter(self, queryset):
+        try:
+            if 'teamtype' in self.request_dict:
+                leagueid_nt = [
+                    78,     # Men's
+                    2136,   # Women's
+                ]
+                tt = int(self.request_dict['teamtype'])
+                if tt == 0:
+                    # Club Teams only
+                    queryset = queryset.exclude(Q (leagueid__in=leagueid_nt))
+                elif tt == 1:
+                    # National Teams only
+                    queryset = queryset.filter(Q (leagueid__in=leagueid_nt))
+        except ValueError:
+            pass
+
+        return queryset
 
 class DataUsersLeaguesFilter:
     def __init__(self, for_user, list_leagues):
@@ -81,7 +108,49 @@ class DataUsersTeamsFilter:
             '113012',   # Spain Women
             '113258',   # New Zealand Women
         ]
-        queryset = queryset.exclude(teamid__in=women_nt)
+        queryset = queryset.exclude(Q(teamid__in=women_nt))
+
+        try:
+            if 'teamtype' in self.request_dict:
+                leagueteamsfilter = list(DataUsersLeagueteamlinksFilter(request=self.request_dict, for_user=self.for_user).qs.iterator())
+                teamtype_teamids = list()
+                for team in leagueteamsfilter:
+                    teamtype_teamids.append(team.teamid)
+                    
+                queryset = queryset.filter(Q(teamid__in=teamtype_teamids))
+        except ValueError:
+            pass
+
+        range_fields = [
+            'overallrating',
+            'attackrating',
+            'midfieldrating',
+            'defenserating',
+            'transferbudget',
+            'clubworth',
+            'popularity',
+            'domesticprestige',
+            'internationalprestige',
+            'leaguetitles',
+            'domesticcups',
+            'youthdevelopment',
+        ]
+
+        for field in range(len(range_fields)):
+            range_bottom = range_fields[field] + "__gte" 
+            range_top = range_fields[field] + "__lte"
+
+            try:
+                if range_bottom in self.request_dict or range_top in self.request_dict:
+                    val_bottom = (self._check_key(self.request_dict, range_bottom) or 0) 
+                    val_top = (self._check_key(self.request_dict, range_top) or 500000000) 
+                    queryset = queryset.filter(
+                        Q((range_bottom, val_bottom)), 
+                        Q((range_top, val_top)),
+                    )
+            except ValueError:
+                pass
+
         try:
             if 'teamid' in self.request_dict:
                 teams_list = self.request_dict['teamid']
@@ -96,9 +165,9 @@ class DataUsersTeamsFilter:
             valid_fields = [f.name for f in DataUsersTeams._meta.get_fields()]
             orderby = self.request_dict['order_by'].replace('-', "")
             if orderby in valid_fields:
-                return queryset.order_by(self.request_dict['order_by'])
+                return queryset.order_by(self.request_dict['order_by'], 'teamid')
 
-        return queryset.order_by('-overallrating')
+        return queryset.order_by('-overallrating', 'teamid')
 
     def get_player_ids(self):
         eval_DataUsersTeams_qs = list(self.qs.iterator())
@@ -113,6 +182,12 @@ class DataUsersTeamsFilter:
             list_players.append(player.playerid)
 
         return list_players
+
+    def _check_key(self, d, key):
+        if key in d:
+            return d[key]
+        else:
+            return None
 
 class DataUsersPlayersFilter:
     def __init__(self, request, for_user, current_date=20170701):
@@ -253,8 +328,24 @@ class DataUsersPlayersFilter:
 
         try:
             if 'teamid' in self.request_dict:
+                save_overallratinggte = None
+                save_overallratinglte = None
+                if 'overallrating__gte' in self.request_dict:
+                    save_overallratinggte = self.request_dict['overallrating__gte']
+                    del self.request_dict['overallrating__gte']
+
+                if 'overallrating__lte' in self.request_dict:
+                    save_overallratinglte = self.request_dict['overallrating__lte']
+                    del self.request_dict['overallrating__lte']
+
                 list_playerids = DataUsersTeamsFilter(for_user=self.for_user, request=self.request_dict).get_player_ids()
                 queryset = queryset.filter(Q(playerid__in=list_playerids))
+
+                if save_overallratinggte:
+                    self.request_dict['overallrating__gte'] = save_overallratinggte
+                if save_overallratinglte:
+                    self.request_dict['overallrating__lte'] = save_overallratinglte
+
         except ValueError:
             pass
 

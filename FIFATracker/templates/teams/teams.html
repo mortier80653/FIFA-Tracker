@@ -1,103 +1,312 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load teams_template_tags %}
-
-{% block content %}
-    <div class="container-fluid">
-        <nav aria-label="Search results pages">
-            <p>Total Teams: {{ paginator.num_of_objects }}</p>
-            <ul class="pagination">
+{% extends 'base.html' %} {% load static %} {% load teams_template_tags %} {% block content %}
+<div class="container-fluid">
+    <form id="playerfilter" method="get">
+        <div class="well">
+            <h4 style="margin-top: 0">Filter Teams</h4>
+            <div id="tabs">
+                <ul>
+                    <li>
+                        <a href="#tabs-1">Team Info</a>
+                    </li>
+                </ul>
+                <div id="tabs-1">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label for="overallrating__gte">Overall</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="99" name="overallrating__gte" value="{{ request_query_dict.overallrating__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="99" name="overallrating__lte" value="{{ request_query_dict.overallrating__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="attackrating__gte">Att. Rating</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="99" name="attackrating__gte" value="{{ request_query_dict.attackrating__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="99" name="attackrating__lte" value="{{ request_query_dict.attackrating__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="midfieldrating__gte">Mid. Rating</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="99" name="midfieldrating__gte" value="{{ request_query_dict.midfieldrating__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="99" name="midfieldrating__lte" value="{{ request_query_dict.midfieldrating__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="defenserating__gte">Def. Rating</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="99" name="defenserating__gte" value="{{ request_query_dict.defenserating__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="99" name="defenserating__lte" value="{{ request_query_dict.defenserating__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="select-teamtype">Team Type</label>
+                            <select id="select-teamtype" name="teamtype" placeholder="Both">
+								<option value="-1" selected>Both</option>
+								<option value="0">Club Team</option>
+								<option value="1">National Team</option>
+							</select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="transferbudget__gte">Transfer Budget</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="500000000" name="transferbudget__gte" value="{{ request_query_dict.transferbudget__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="500000000" name="transferbudget__lte" value="{{ request_query_dict.transferbudget__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="clubworth__gte">Club Worth</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="9999999" name="clubworth__gte" value="{{ request_query_dict.clubworth__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="9999999" name="clubworth__lte" value="{{ request_query_dict.clubworth__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="popularity__gte">Popularity</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="10" name="popularity__gte" value="{{ request_query_dict.popularity__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="10" name="popularity__lte" value="{{ request_query_dict.popularity__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="domesticprestige__gte">Domestic prestige</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="20" name="domesticprestige__gte" value="{{ request_query_dict.domesticprestige__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="20" name="domesticprestige__lte" value="{{ request_query_dict.domesticprestige__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="internationalprestige__gte">Int. Prestige</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="20" name="internationalprestige__gte" value="{{ request_query_dict.internationalprestige__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="20" name="internationalprestige__lte" value="{{ request_query_dict.internationalprestige__lte }}"
+                                    placeholder="Max">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="leaguetitles__gte">League Titles</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="1023" name="leaguetitles__gte" value="{{ request_query_dict.leaguetitles__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="1023" name="leaguetitles__lte" value="{{ request_query_dict.leaguetitles__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="domesticcups__gte">Domestic Cups</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="1023" name="domesticcups__gte" value="{{ request_query_dict.domesticcups__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="1023" name="domesticcups__lte" value="{{ request_query_dict.domesticcups__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="youthdevelopment__gte">Youth Development</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="10" name="youthdevelopment__gte" value="{{ request_query_dict.youthdevelopment__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="10" name="youthdevelopment__lte" value="{{ request_query_dict.youthdevelopment__lte }}"
+                                    placeholder="Max">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="btn-filter" style="margin-top: 10px; margin-right: 5px;">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-reset" style="margin-top: 10px; margin-right: 5px;">Reset</button>
+        </div>
+    </form>
+</div>
+<div class="container-fluid">
+    <nav aria-label="Search results pages">
+        <p>Total Teams: {{ paginator.num_of_objects }}</p>
+        <ul class="pagination">
             {% if paginator.has_previous %}
-                <li class="page-item">
+            <li class="page-item">
                 <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">First</a>
-                </li>
-                <li class="page-item">
+            </li>
+            <li class="page-item">
                 <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
-                </li>
+            </li>
             {% endif %}
             <li class="page-item active">
-                <a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
+                <a class="page-link">{{ paginator.page }}
+                    <span class="sr-only">(current)</span>
+                </a>
             </li>
             {% if paginator.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
-                </li>
+            <li class="page-item">
+                <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
+            </li>
             {% endif %}
-            </ul>
-        </nav>
-    </div>
-    <div class="container">
-        <div class="col-xs-12">
-            <div id="table-container" class="container-fluid">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center">TEAM</th>
-                            <th class="text-center">OVR</th>
-                            <th class="text-center">ATT</th>
-                            <th class="text-center">MID</th>
-                            <th class="text-center">DEF</th>
-                            <th class="text-center">BUDGET</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for team in teams %}
-                        <tr>
-                            <td>
-                                <div style="padding: 5px;">
-                                    <a href="{% url 'teams' %}{{team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID:{{ team.teamid}})" class="crest"></a>
-                                    <span style="margin-left: 10px;"><a href="{% url 'teams' %}{{team.teamid}}">{{team.teamname}}</a></span>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="ratinglabel rat{{team.overallrating}}">{{ team.overallrating }}</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="ratinglabel rat{{team.attackrating}}">{{ team.attackrating }}</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="ratinglabel rat{{team.midfieldrating}}">{{ team.midfieldrating }}</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="ratinglabel rat{{team.defenserating}}">{{ team.defenserating }}</span>
-                            </td>
-                            <td class="text-center">
-                                {{team.transferbudget}}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        </ul>
+    </nav>
+</div>
+<div class="container">
+    <div class="col-xs-12">
+        <div id="table-container" class="container-fluid">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="text-center">TEAM</th>
+                        <th class="text-center">
+                            {% if request_query_dict.order_by == "-overallrating" %}
+                            <a href="{% url_params request '?order_by=' 'overallrating' %}">
+                                OVR
+                                <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                            {% elif request_query_dict.order_by == "overallrating" %}
+                            <a href="{% url_params request '?order_by=' '-overallrating' %}">
+                                OVR
+                                <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                            {% else %}
+                            <a href="{% url_params request '?order_by=' 'overallrating' %}">
+                                OVR
+                                <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                            {% endif %}
+                        </th>
+                        <th class="text-center">
+                            {% if request_query_dict.order_by == "-attackrating" %}
+                            <a href="{% url_params request '?order_by=' 'attackrating' %}">
+                                ATT
+                                <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                            {% elif request_query_dict.order_by == "attackrating" %}
+                            <a href="{% url_params request '?order_by=' '-attackrating' %}">
+                                ATT
+                                <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                            {% else %}
+                            <a href="{% url_params request '?order_by=' '-attackrating' %}">
+                                ATT
+                                <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                            {% endif %}
+                        </th>
+                        <th class="text-center">
+                            {% if request_query_dict.order_by == "-midfieldrating" %}
+                            <a href="{% url_params request '?order_by=' 'midfieldrating' %}">
+                                MID
+                                <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                            {% elif request_query_dict.order_by == "midfieldrating" %}
+                            <a href="{% url_params request '?order_by=' '-midfieldrating' %}">
+                                MID
+                                <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                            {% else %}
+                            <a href="{% url_params request '?order_by=' '-midfieldrating' %}">
+                                MID
+                                <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                            {% endif %}
+                        </th>
+                        <th class="text-center">
+                            {% if request_query_dict.order_by == "-defenserating" %}
+                            <a href="{% url_params request '?order_by=' 'defenserating' %}">
+                                DEF
+                                <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                            {% elif request_query_dict.order_by == "defenserating" %}
+                            <a href="{% url_params request '?order_by=' '-defenserating' %}">
+                                DEF
+                                <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                            {% else %}
+                            <a href="{% url_params request '?order_by=' '-defenserating' %}">
+                                DEF
+                                <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                            {% endif %}
+                        </th>
+
+                        <th class="text-center">
+                            {% if request_query_dict.order_by == "-transferbudget" %}
+                            <a href="{% url_params request '?order_by=' 'transferbudget' %}">
+                                BUDGET
+                                <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                            {% elif request_query_dict.order_by == "transferbudget" %}
+                            <a href="{% url_params request '?order_by=' '-transferbudget' %}">
+                                BUDGET
+                                <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                            {% else %}
+                            <a href="{% url_params request '?order_by=' '-transferbudget' %}">
+                                BUDGET
+                                <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                            {% endif %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams %}
+                    <tr>
+                        <td>
+                            <div style="padding: 5px;">
+                                <a href="{% url 'teams' %}{{team.teamid}}">
+                                    <img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID:{{ team.teamid}})"
+                                        class="crest">
+                                </a>
+                                <span style="margin-left: 10px;">
+                                    <a href="{% url 'teams' %}{{team.teamid}}">{{team.teamname}}</a>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <span class="ratinglabel rat{{team.overallrating}}">{{ team.overallrating }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="ratinglabel rat{{team.attackrating}}">{{ team.attackrating }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="ratinglabel rat{{team.midfieldrating}}">{{ team.midfieldrating }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="ratinglabel rat{{team.defenserating}}">{{ team.defenserating }}</span>
+                        </td>
+                        <td class="text-center">
+                            {{team.transferbudget}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-    <div class="container-fluid">
-        <nav aria-label="Search results pages">
-            <p>Total Teams: {{ paginator.num_of_objects }}</p>
-            <ul class="pagination">
+</div>
+<div class="container-fluid">
+    <nav aria-label="Search results pages">
+        <p>Total Teams: {{ paginator.num_of_objects }}</p>
+        <ul class="pagination">
             {% if paginator.has_previous %}
-                <li class="page-item">
+            <li class="page-item">
                 <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">First</a>
-                </li>
-                <li class="page-item">
+            </li>
+            <li class="page-item">
                 <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
-                </li>
+            </li>
             {% endif %}
             <li class="page-item active">
-                <a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
+                <a class="page-link">{{ paginator.page }}
+                    <span class="sr-only">(current)</span>
+                </a>
             </li>
             {% if paginator.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
-                </li>
+            <li class="page-item">
+                <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
+            </li>
             {% endif %}
-            </ul>
-        </nav>
-    </div>
+        </ul>
+    </nav>
+</div>
 {% endblock %}

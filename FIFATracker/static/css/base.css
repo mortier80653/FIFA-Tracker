@@ -10,6 +10,10 @@ body {
 	margin-bottom: 40px;
 }
 
+.well{
+	color: black;
+}
+
 .crest {
 	width: 27px;
     height: 27px;

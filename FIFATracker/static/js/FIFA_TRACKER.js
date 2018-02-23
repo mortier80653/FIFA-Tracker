@@ -11,6 +11,16 @@ $(document).ready(function(){
 });
 
 function selectizejs() {
+    $('#select-teamtype').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("teamtype")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+
+
     $('#select-isretiring').selectize({
         allowEmptyOption: true,
         onInitialize: function() {

@@ -1,4 +1,20 @@
-{% extends 'base.html' %} {% load static %} {% load teams_template_tags %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% load teams_template_tags %}
+
+{% block secondnav %}
+<nav class="navbar navbar-default">
+	<div class="container" style="margin-top: 55px;">
+		<div class="row">
+			<div class="col-sm-4" style="padding-top:5px;">
+				<div class="form-group">
+					<input id='team-search-input' name="teamsearch" placeholder="Search for team...">
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+{% endblock %}
+
+{% block content %}
 <div class="container-fluid">
     <form id="playerfilter" method="get">
         <div class="well">

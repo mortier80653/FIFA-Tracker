@@ -20,6 +20,65 @@ function selectizejs() {
         }
     });
 
+    $("#team-search-input").selectize({
+        valueField: 'teamid',
+        labelField: 'teamname',
+        searchField: 'teamname',
+        sortField: [
+            {
+                field: 'overallrating',
+                direction: 'desc'
+            },
+            {
+                field: '$score'
+            }
+        ],
+        option: [],
+        create: false,
+        maxItems: 1,
+        render: {					
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.overallrating ? '<span class="ratinglabel rat' + item.overallrating + '" style="width: 25px; margin-right: 10px;">' + escape(item.overallrating) + '</span>' : '') +
+                    (item.teamname ? '<span class="teamname">' + escape(item.teamname) + '</span>' : '') +
+                    '</div>';
+            }
+        },
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            var selectized = this
+            $.ajax({
+                url: 'ajax/team-by-name/',
+                data: {
+                    'username': $('.current_user').text(),
+                    'teamname': $("#team-search-input-selectized").val(),
+                },
+                dataType: 'json',
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    selectized.clearOptions();
+                    callback(res.teams);
+                }
+            });
+        },
+        onDropdownOpen: function() {
+            var selectized = this;
+            this.$dropdown_content.on("mousedown", function (event) {
+                var dropdown_data = $(this)[0]['childNodes']
+                for (var i = 0; i < dropdown_data.length; i++) {
+                    if (dropdown_data[i].className === "active") {
+                        var teamid = dropdown_data[i].getAttribute('data-value');
+                        window.location.href = "/teams/" + teamid;
+                        selectized.disable();
+                        break;
+                    }
+                }
+            });
+        },
+    });
+
 
     $('#select-isretiring').selectize({
         allowEmptyOption: true,
@@ -571,7 +630,7 @@ function changeProfilePublicStatus() {
 }
 
 function cleanUrl() {
-    var params = ["isretiring", "isreal", "isonloan"];
+    var params = ["isretiring", "isreal", "isonloan", "teamtype"];
     for (i = 0; i < params.length; i++) {
         if (getUrlParameter(params[i]) == "-1")
             removeParam(params[i])

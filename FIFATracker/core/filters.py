@@ -50,6 +50,13 @@ class DataUsersLeagueteamlinksFilter:
         except ValueError:
             pass
 
+        try:
+            if 'leagueid' in self.request_dict:
+                value = list(self.request_dict['leagueid'].split(','))
+                queryset = queryset.filter( Q(leagueid__in=value) )
+        except ValueError:
+            pass
+
         return queryset
 
 class DataUsersLeaguesFilter:
@@ -110,14 +117,14 @@ class DataUsersTeamsFilter:
         ]
         queryset = queryset.exclude(Q(teamid__in=women_nt))
 
+        # DataUsersLeagueteamlinksFilter
         try:
-            if 'teamtype' in self.request_dict:
-                leagueteamsfilter = list(DataUsersLeagueteamlinksFilter(request=self.request_dict, for_user=self.for_user).qs.iterator())
-                teamtype_teamids = list()
-                for team in leagueteamsfilter:
-                    teamtype_teamids.append(team.teamid)
-                    
-                queryset = queryset.filter(Q(teamid__in=teamtype_teamids))
+            leagueteamsfilter = list(DataUsersLeagueteamlinksFilter(request=self.request_dict, for_user=self.for_user).qs.iterator())
+            leagueteamsfilter_teamids = list()
+            for team in leagueteamsfilter:
+                leagueteamsfilter_teamids.append(team.teamid)
+                
+            queryset = queryset.filter(Q(teamid__in=leagueteamsfilter_teamids))
         except ValueError:
             pass
 
@@ -328,23 +335,15 @@ class DataUsersPlayersFilter:
 
         try:
             if 'teamid' in self.request_dict:
-                save_overallratinggte = None
-                save_overallratinglte = None
-                if 'overallrating__gte' in self.request_dict:
-                    save_overallratinggte = self.request_dict['overallrating__gte']
-                    del self.request_dict['overallrating__gte']
+                req_dict = self.request_dict
+                if 'overallrating__gte' in req_dict:
+                    del req_dict['overallrating__gte']
 
-                if 'overallrating__lte' in self.request_dict:
-                    save_overallratinglte = self.request_dict['overallrating__lte']
-                    del self.request_dict['overallrating__lte']
+                if 'overallrating__lte' in req_dict:
+                    del req_dict['overallrating__lte']
 
-                list_playerids = DataUsersTeamsFilter(for_user=self.for_user, request=self.request_dict).get_player_ids()
+                list_playerids = DataUsersTeamsFilter(for_user=self.for_user, request=req_dict).get_player_ids()
                 queryset = queryset.filter(Q(playerid__in=list_playerids))
-
-                if save_overallratinggte:
-                    self.request_dict['overallrating__gte'] = save_overallratinggte
-                if save_overallratinglte:
-                    self.request_dict['overallrating__lte'] = save_overallratinglte
 
         except ValueError:
             pass

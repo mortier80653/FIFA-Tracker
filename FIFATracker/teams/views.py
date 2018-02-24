@@ -44,6 +44,26 @@ def ajax_team_by_name(request):
 
     return JsonResponse(data)
 
+def ajax_leagues(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+    else:
+        current_user = "guest"
+
+    selected = request.GET.get('selected', None)
+
+    if selected:
+        selected = list(selected.split(","))
+        leagues = list(DataUsersLeagues.objects.for_user(current_user).all().filter(Q(leagueid__in=selected)).values())
+    else:
+        leagues = list(DataUsersLeagues.objects.for_user(current_user).all().values())
+
+    data = {
+        'leagues': leagues,
+    }
+
+    return JsonResponse(data)
+
 def teams(request):
     try:
         context = get_teams(request, paginate=True)

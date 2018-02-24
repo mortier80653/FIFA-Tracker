@@ -78,13 +78,6 @@
                                 <input class="form-control" type="number" min="0" max="9999999" name="clubworth__lte" value="{{ request_query_dict.clubworth__lte }}"
                                     placeholder="Max">
                             </div>
-                            <label for="popularity__gte">Popularity</label>
-                            <div class="input-group justified">
-                                <input class="form-control" type="number" min="0" max="10" name="popularity__gte" value="{{ request_query_dict.popularity__gte }}"
-                                    placeholder="Min">
-                                <input class="form-control" type="number" min="0" max="10" name="popularity__lte" value="{{ request_query_dict.popularity__lte }}"
-                                    placeholder="Max">
-                            </div>
                             <label for="domesticprestige__gte">Domestic prestige</label>
                             <div class="input-group justified">
                                 <input class="form-control" type="number" min="0" max="20" name="domesticprestige__gte" value="{{ request_query_dict.domesticprestige__gte }}"
@@ -99,6 +92,8 @@
                                 <input class="form-control" type="number" min="0" max="20" name="internationalprestige__lte" value="{{ request_query_dict.internationalprestige__lte }}"
                                     placeholder="Max">
                             </div>
+                            <label>League</label>
+                            <input id='leagues-input' name="leagueid" placeholder="Search for league...">
                         </div>
                         <div class="col-md-4">
                             <label for="leaguetitles__gte">League Titles</label>
@@ -113,6 +108,13 @@
                                 <input class="form-control" type="number" min="0" max="1023" name="domesticcups__gte" value="{{ request_query_dict.domesticcups__gte }}"
                                     placeholder="Min">
                                 <input class="form-control" type="number" min="0" max="1023" name="domesticcups__lte" value="{{ request_query_dict.domesticcups__lte }}"
+                                    placeholder="Max">
+                            </div>
+                            <label for="popularity__gte">Popularity</label>
+                            <div class="input-group justified">
+                                <input class="form-control" type="number" min="0" max="10" name="popularity__gte" value="{{ request_query_dict.popularity__gte }}"
+                                    placeholder="Min">
+                                <input class="form-control" type="number" min="0" max="10" name="popularity__lte" value="{{ request_query_dict.popularity__lte }}"
                                     placeholder="Max">
                             </div>
                             <label for="youthdevelopment__gte">Youth Development</label>

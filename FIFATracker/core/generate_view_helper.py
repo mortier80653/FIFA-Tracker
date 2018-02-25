@@ -193,7 +193,7 @@ def get_teams(request, additional_filters=None, paginate=False):
     # Paginate results if needed
     if paginate:
         max_per_page = int(request.GET.get('max_per_page', 50))
-        if  0 > max_per_page > 100:
+        if not 25 <= max_per_page <= 100:
             max_per_page = 50
         paginator = MyPaginator(teams_filter.qs.count(), request=request_query_dict, max_per_page=max_per_page)
         data = list(teams_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
@@ -234,7 +234,7 @@ def get_fifaplayers(request, additional_filters=None, paginate=False):
     # Paginate results if needed
     if paginate:
         max_per_page = int(request.GET.get('max_per_page', 50))
-        if  0 > max_per_page > 100:
+        if not 25 <= max_per_page <= 100:
             max_per_page = 50
         paginator = MyPaginator(player_filter.qs.count(), request=request_query_dict, max_per_page=max_per_page)
         data = list(player_filter.qs[paginator.results_bottom:paginator.results_top].iterator())

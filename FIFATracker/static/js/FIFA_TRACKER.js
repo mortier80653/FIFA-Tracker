@@ -11,6 +11,15 @@ $(document).ready(function(){
 });
 
 function selectizejs() {
+    $('#select-max_per_page').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("max_per_page")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+
     $('#select-teamtype').selectize({
         allowEmptyOption: true,
         onInitialize: function() {

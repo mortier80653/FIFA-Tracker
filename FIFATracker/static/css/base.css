@@ -14,6 +14,13 @@ body {
 	color: black;
 }
 
+.maxresults .selectize-control {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 10px;
+    width: calc(100% - 120px);
+}
+
 .crest {
 	width: 27px;
     height: 27px;

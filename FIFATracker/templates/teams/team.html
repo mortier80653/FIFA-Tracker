@@ -2,11 +2,25 @@
 {% load static %}
 {% load players_template_tags %}
 
+{% block stylesheet %}
+    <style>
+        h2, .h2 {
+            margin: 0 auto 20px;
+            color: #fff;
+            display: block;
+            text-align: center;
+            padding: 10px 0 10px;
+            font-size: 24px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h2>{{team.teamname}} (ID:{{ team.teamid}})</h2>
+                <h3>{{team.teamname}} (ID:{{ team.teamid}})</h3>
             </div>
         </div>
         <div class="row" style="margin-bottom: 10px;">
@@ -61,54 +75,121 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-6 col-xs-12 teamlabel" style="border: 2px solid rgb({{team.teamcolor1r}}, {{team.teamcolor1g}}, {{team.teamcolor1b}});">
-                <div class="row">
-                    <div class="col-xs-3 ">
-                        <img src="{% get_static_prefix %}img/assets/leagues/l{{ league.leagueid }}.png" title="{{league.leaguename}}" class="crest-medium">
-                    </div>
-                    <div class="col-xs-9 ">
-                        <div class="row">
-                            <div class="col">
-                                Manager: {{manager.firstname}} {{manager.surname}}                      
-                            </div>
-                            <div class="col">
-                                League position: <span class="leagueposlabel" style="border: 2px solid rgb({{team.teamcolor2r}}, {{team.teamcolor2g}}, {{team.teamcolor2b}});">{{leagueteamlink.currenttableposition}}</span>
-                            </div>
-                            <div class="col">
-                                Careers: {{total_careers}} <span style="margin-left: 5px;" class="mytooltip glyphicon glyphicon-question-sign"><span class="tooltiptext">{{total_careers}} FIFA Tracker users are managing this team.</span></span>
-                            </div>
-                        </div>
-                    </div>
+        <div class="container-fluid">
+        <h2 align="center">Team Info</h2>
+            <div class="row team-info">
+                <div class="col-md-6">
+                    <table width="100%" class="info-table">
+                        <tbody>
+                            <tr>
+                                <td>Team</td>
+                                <td align="right">
+                                    {{team.teamname}} <a href="{% url 'teams' %}{{team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID: {{team.teamid}})" class="crest"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Foundation Year</td>
+                                <td align="right">
+                                    {{team.foundationyear}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Careers</td>
+                                <td align="right">
+                                    {{total_careers}} <span style="margin-left: 5px;" class="mytooltip glyphicon glyphicon-question-sign"><span class="tooltiptext">{{total_careers}} FIFA Tracker users are managing this team.</span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Manager</td>
+                                <td align="right">{{manager.firstname}} {{manager.surname}}</td>
+                            </tr>
+                            <tr>
+                                <td>League</td>
+                                <td align="right">{{league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ league.leagueid }}.png" title="{{league.leaguename}} (ID: {{league.leagueid}})" class="crest"></td>
+                            </tr>
+                            <tr>
+                                <td>League Position</td>
+                                <td align="right">{{leagueteamlink.currenttableposition}}</td>
+                            </tr>
+                            <tr>
+                                <td>League Titles</td>
+                                <td align="right">{{team.leaguetitles}}</td>
+                            </tr>
+                            <tr>
+                                <td>Domestic Cups</td>
+                                <td align="right">{{team.domesticcups}}</td>
+                            </tr>
+                            <tr>
+                                <td>Rival Team</td>
+                                <td align="right"><a href="{% url 'teams' %}{{team.rivalteam}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.rivalteam }}.png" title="ID: {{team.rivalteam}}" class="crest"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="col-sm-3 col-xs-12 teamlabel" style="border: 2px solid rgb({{team.teamcolor1r}}, {{team.teamcolor1g}}, {{team.teamcolor1b}});">
-                <div class="row">
-                    <div class="col-xs-12 ">
-                        Budget: {{team.transferbudget}}
-                    </div>
-                    <div class="col-xs-12 ">
-                        Club worth: {{team.clubworth}}
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3 col-xs-12 teamlabel" style="border: 2px solid rgb({{team.teamcolor1r}}, {{team.teamcolor1g}}, {{team.teamcolor1b}});">
-                <div class="row">
-                    <div class="col-xs-12 ">
-                        Popularity: {{team.popularity}}
-                    </div>
-                    <div class="col-xs-12 ">
-                        Domestic prestige: {{team.domesticprestige}}
-                    </div>
-                    <div class="col-xs-12 ">
-                        Int. prestige: {{team.internationalprestige}}
-                    </div>
+                <div class="col-md-6">
+                    <table width="100%" class="info-table">
+                        <tbody>
+                            <tr>
+                                <td>Budget</td>
+                                <td align="right"> {{team.transferbudget}}</td>
+                            </tr>
+                            <tr>
+                                <td>Club worth</td>
+                                <td align="right"> {{team.clubworth}}</td>
+                            </tr>
+                            <tr>
+                                <td>Popularity</td>
+                                <td align="right"> {{team.popularity}}</td>
+                            </tr>
+                            <tr>
+                                <td>Domestic prestige</td>
+                                <td align="right"> {{team.domesticprestige}}</td>
+                            </tr>
+                            <tr>
+                                <td>Int. prestige</td>
+                                <td align="right"> {{team.internationalprestige}}</td>
+                            </tr>
+                            <tr>
+                                <td>numtransfersin</td>
+                                <td align="right"> {{team.numtransfersin}}</td>
+                            </tr>
+                            <tr>
+                                <td>Profitability</td>
+                                <td align="right"> {{team.profitability}}</td>
+                            </tr>
+                            <tr>
+                                <td>Youth Development</td>
+                                <td align="right"> {{team.youthdevelopment}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
         {% if players %}
+        <div class="container-fluid hidden-xs hidden-sm">
+            <div class="row">
+                <div class="col-md-8" id="footballpitch">
+                    <div class="container-fluid">
+                        {% if is_club_team %}
+                            {% for p in players %}
+                                {% if p.player_teams.club_team.team_links.position <= 27 %}
+                                    <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="{{ p.player_name.knownas }}" id="pitch-player-{{p.player_teams.club_team.team_links.position}}" class="miniface"></a>
+                                {% endif %}
+                            {% endfor %}
+                        {% elif is_national_team %}
+                            {% for p in players %}
+                                {% if p.player_teams.national_team.team_links.position <= 27 %}
+                                    <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="{{p.player_name.knownas}}" id="pitch-player-{{p.player_teams.national_team.team_links.position}}" class="miniface"></a>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
-        <h3 align="center">GOALKEEPERS</h3>
+        <h2 align="center">GOALKEEPERS</h2>
             <table>
                 <thead>
                     <tr>
@@ -181,7 +262,7 @@
             </table>
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
-        <h3 align="center">DEFENDERS</h3>
+        <h2 align="center">DEFENDERS</h2>
             <table>
                 <thead>
                     <tr>
@@ -254,7 +335,7 @@
             </table>
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
-        <h3 align="center">MIDFIELDERS</h3>
+        <h2 align="center">MIDFIELDERS</h2>
             <table>
                 <thead>
                     <tr>
@@ -327,7 +408,7 @@
             </table>
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
-        <h3 align="center">FORWARDS</h3>
+        <h2 align="center">FORWARDS</h2>
             <table>
                 <thead>
                     <tr>
@@ -403,7 +484,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <h2>This team don't have any players</h2>
+                    <h3>This team don't have any players</h3>
                 </div>
             </div>
         </div>

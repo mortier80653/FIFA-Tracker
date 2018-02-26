@@ -109,6 +109,7 @@ def get_team(request, teamid=0, additional_filters=None):
         manager = {
             'firstname': valid_team.teamname,
             'surname': "Manager",
+            'headid': "None",
         }
 
 

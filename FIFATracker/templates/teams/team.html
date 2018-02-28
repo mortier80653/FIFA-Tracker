@@ -174,13 +174,35 @@
                         {% if is_club_team %}
                             {% for p in players %}
                                 {% if p.player_teams.club_team.team_links.position <= 27 %}
-                                    <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="{{ p.player_name.knownas }}" id="pitch-player-{{p.player_teams.club_team.team_links.position}}" class="miniface"></a>
+                                    <div id="pitch-player-{{p.player_teams.club_team.team_links.position}}"> 
+                                        <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="{{ p.player_name.knownas }}" class="miniface"></a>
+                                        <div class="pitch-ovr rat{{p.player.overallrating}}" title="OVR: {{p.player.overallrating}} / POT: {{p.player.potential}}"> 
+                                            {{p.player.overallrating}}
+                                        </div>
+                                        <div class="pitch-pos-name player-position" title="POS ID: {{p.player_teams.club_team.team_links.position}}">
+                                                {{p.player_teams.club_team.team_links.position}}
+                                            </div>
+                                        <div class="pitch-playername" title="{{ p.player_name.knownas }}">
+                                            <marquee behavior="scroll" direction="left" scrollamount="2">{{ p.player_name.knownas }}</marquee>
+                                        </div>
+                                    </div>
                                 {% endif %}
                             {% endfor %}
                         {% elif is_national_team %}
                             {% for p in players %}
                                 {% if p.player_teams.national_team.team_links.position <= 27 %}
-                                    <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="{{p.player_name.knownas}}" id="pitch-player-{{p.player_teams.national_team.team_links.position}}" class="miniface"></a>
+                                    <div id="pitch-player-{{p.player_teams.national_team.team_links.position}}"> 
+                                        <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="{{ p.player_name.knownas }}" class="miniface"></a>
+                                        <div class="pitch-ovr rat{{p.player.overallrating}}" title="OVR: {{p.player.overallrating}} / POT: {{p.player.potential}}"> 
+                                            {{p.player.overallrating}}
+                                        </div>
+                                        <div class="pitch-pos-name player-position" title="POS ID: {{p.player_teams.national_team.team_links.position}}">
+                                                {{p.player_teams.national_team.team_links.position}}
+                                            </div>
+                                        <div class="pitch-playername" title="{{ p.player_name.knownas }}">
+                                            <marquee behavior="scroll" direction="left" scrollamount="2">{{ p.player_name.knownas }}</marquee>
+                                        </div>
+                                    </div>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}

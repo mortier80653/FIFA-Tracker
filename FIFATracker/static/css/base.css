@@ -65,7 +65,7 @@ body {
 }
 
 tr:hover { 
-    background-color: #816955 !important; 
+    background-color: #252900 !important; 
 }
 
 .mytooltip {
@@ -110,173 +110,260 @@ tr:hover {
     margin-top: 20px;
 }
 
+.pitch-ovr {
+    position: absolute;
+    width: 20px;
+    bottom: 0px;
+    color: white;
+    font-size: 1.0rem;
+}
+
+.pitch-pos-name {
+    position: absolute;
+    color: white;
+    background-color: #FF3939;
+    width: 25px;
+    bottom: 0px;
+    left: 60px;
+    font-size: 1.0rem;
+}
+
+.pitch-playername {
+    background-color: #252830;
+    border-radius: 7px;
+    margin-top: 5px;
+    color: white;
+    width: 100%;
+    height: 18px;
+    font-size: 1.1rem;
+    left: 0;   
+    white-space:nowrap;
+    overflow: hidden;
+    position: absolute;
+}
 
 #pitch-player-27 {
     position: absolute;
     left: 21px;
     bottom: 535px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-26 {
     position: absolute;
     left: 167px;
     bottom: 535px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-25 {
     position: absolute;
     left: 268.5px;
     bottom: 535px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-24 {
     position: absolute;
     left: 370px;
     bottom: 535px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-23 {
     position: absolute;
-    left: 515px;
+    left: 510px;
     bottom: 535px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-22 {
     position: absolute;
     left: 167px;
     bottom: 465px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-21 {
     position: absolute;
     left: 268.5px;
-    bottom: 465px;
+    bottom: 445px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-20 {
     position: absolute;
     left: 370px;
     bottom: 465px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-19 {
     position: absolute;
     left: 167px;
     bottom: 382px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-18 {
     position: absolute;
     left: 268.5px;
     bottom: 382px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-17 {
     position: absolute;
     left: 370px;
     bottom: 382px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-16 {
     position: absolute;
     left: 21px;
     bottom: 292px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-15 {
     position: absolute;
     left: 167px;
     bottom: 292px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-14 {
     position: absolute;
     left: 268.5px;
     bottom: 292px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-13 {
     position: absolute;
     left: 370px;
     bottom: 292px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-12 {
     position: absolute;
-    left: 515px;
+    left: 510px;
     bottom: 292px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-11 {
     position: absolute;
     left: 167px;
     bottom: 227px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-10 {
     position: absolute;
     left: 268.5px;
     bottom: 227px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-9 {
     position: absolute;
     left: 370px;
     bottom: 227px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-8 {
     position: absolute;
     left: 21px;
     bottom: 195px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-7 {
     position: absolute;
     left: 35px;
-    bottom: 164px;
+    bottom: 133px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-6 {
     position: absolute;
     left: 167px;
-    bottom: 164px;
+    bottom: 133px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-5 {
     position: absolute;
     left: 268.5px;
-    bottom: 164px;
+    bottom: 133px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-4 {
     position: absolute;
     left: 370px;
-    bottom: 164px;
+    bottom: 133px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-3 {
     position: absolute;
     left: 501px;
-    bottom: 164px;
+    bottom: 133px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-2 {
     position: absolute;
-    left: 515px;
+    left: 510px;
     bottom: 195px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-1 {
     position: absolute;
     left: 268.5px;
     bottom: 102px;
+    width: 85px;
+    text-align: center;
 }
 
 #pitch-player-0 {
     position: absolute;
     left: 268.5px;
     bottom: 33px;
+    width: 85px;
+    text-align: center;
 }
 
 .miniface {
@@ -297,8 +384,6 @@ tr:hover {
     padding: 4px;
     color: white;
 }
-
-
 
 .rat0, .rat1, .rat2, .rat3, .rat4, .rat5, .rat6, .rat7, .rat8, .rat9, .rat10,
 .rat11, .rat12, .rat13, .rat14, .rat15, .rat16, .rat17, .rat18, .rat19, .rat20,

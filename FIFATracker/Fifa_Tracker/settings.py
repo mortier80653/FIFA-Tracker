@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
 from .secret_settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -130,6 +131,18 @@ LOGOUT_REDIRECT_URL = 'home'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+RUN_MODE = sys.argv[1] if len(sys.argv) > 1 else None
+
+if RUN_MODE == 'test':
+    class DisableMigrations(dict):
+        except_apps = {'app_to_run_migrations_for'}
+        def __contains__(self, item):
+            return item not in self.except_apps
+        def __getitem__(self, item):
+            return super(DisableMigrations, self).__getitem__(item) if item in self.except_apps else None
+
+    MIGRATION_MODULES = DisableMigrations()
 
 # Django Debug Toolbar
 # https://django-debug-toolbar.readthedocs.io/en/stable/index.html#

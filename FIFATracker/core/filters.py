@@ -10,10 +10,23 @@ from players.models import (
 )
 
 class DataUsersPlayerloansFilter:
-    def __init__(self, for_user):
+    def __init__(self, request, for_user):
+        self.request_dict = request
         self.for_user = for_user
 
-        self.qs = DataUsersPlayerloans.objects.for_user(self.for_user).all()
+        queryset = DataUsersPlayerloans.objects.for_user(self.for_user).all()
+        queryset = self.filter(queryset)
+        self.qs = queryset
+
+    def filter(self, queryset):
+        try:
+            if 'teamidloanedfrom' in self.request_dict:
+                value = list(self.request_dict['teamidloanedfrom'].split(','))
+                queryset = queryset.filter( Q(teamidloanedfrom__in=value) )
+        except ValueError:
+            pass
+
+        return queryset
 
     def get_player_ids(self):
         eval_DataUsersPlayerloans_qs = list(self.qs.iterator())
@@ -84,7 +97,7 @@ class DataUsersLeaguesFilter:
         for team in leagueteamlinks:
             teams = teams + "{},".format(team.teamid)
 
-        return DataUsersTeamsFilter(for_user=self.for_user, list_teams=teams[:-1]).get_player_ids()
+        return DataUsersTeamsFilter(for_user=self.for_user, request={"teamid": teams[:-1]}).get_player_ids()
 
 class DataUsersTeamsFilter:
     def __init__(self, request, for_user):
@@ -202,7 +215,7 @@ class DataUsersPlayersFilter:
         self.for_user = for_user
         self.current_date = current_date
         
-        queryset = DataUsersPlayers.objects.for_user(self.for_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname','nationality',)
+        queryset = DataUsersPlayers.objects.for_user(self.for_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname', 'nationality',)
         queryset = self.filter(queryset)
         queryset = self.order(queryset)
         self.qs = queryset
@@ -314,15 +327,29 @@ class DataUsersPlayersFilter:
         except ValueError:
             pass
 
+        # DataUsersPlayerloansFilter
+        player_loans = DataUsersPlayerloansFilter(for_user=self.for_user, request=self.request_dict)
+        player_loans_ids = None
+        try:
+            if 'teamidloanedfrom' in self.request_dict:
+                if player_loans_ids is None:
+                    player_loans_ids = player_loans.get_player_ids()
+
+        except ValueError:
+            pass
+        
         try:
             if 'isonloan' in self.request_dict and int(self.request_dict['isonloan']) in range(0,2):
-                list_playerids = DataUsersPlayerloansFilter(for_user=self.for_user).get_player_ids()
+                if player_loans_ids is None:
+                    player_loans_ids = player_loans.get_player_ids()
+
                 if int(self.request_dict['isonloan']) == 0:
                     # Players is not on loan.
-                    queryset = queryset.filter(~Q(playerid__in=list_playerids))
+                    queryset = queryset.filter(~Q(playerid__in=player_loans_ids))
                 elif int(self.request_dict['isonloan']) == 1:
                     # Player is currently on loan.
-                    queryset = queryset.filter(Q(playerid__in=list_playerids))
+                    
+                    queryset = queryset.filter(Q(playerid__in=player_loans_ids))
         except ValueError:
             pass
 
@@ -343,6 +370,8 @@ class DataUsersPlayersFilter:
                     del req_dict['overallrating__lte']
 
                 list_playerids = DataUsersTeamsFilter(for_user=self.for_user, request=req_dict).get_player_ids()
+                if player_loans_ids:
+                    list_playerids.extend(player_loans_ids)
                 queryset = queryset.filter(Q(playerid__in=list_playerids))
 
         except ValueError:

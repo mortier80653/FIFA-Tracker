@@ -64,7 +64,8 @@ def get_team(request, teamid=0, additional_filters=None):
     set_currency(request)
     current_user = get_current_user(request)
 
-    additional_filters = {'teamid': teamid}
+    #additional_filters = {'teamid': teamid, }
+    additional_filters = {'teamid': teamid, 'teamidloanedfrom': teamid, }
     try:
         context_data = get_fifaplayers(request, additional_filters=additional_filters, paginate=False)
     except (NoResultsError):
@@ -75,7 +76,7 @@ def get_team(request, teamid=0, additional_filters=None):
         context_data['dict_cached_queries']['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(teamid=teamid).iterator())
         context_data['dict_cached_queries']['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
 
-    players = context_data['players']
+    players = context_data['players'][:]
 
     # get valid team
     for team in context_data['dict_cached_queries']['q_teams']:
@@ -114,32 +115,40 @@ def get_team(request, teamid=0, additional_filters=None):
 
 
     # group players
-    is_club_team = False
+    is_club_team = True
     is_national_team = False
     if players:
+        try:                
+            if int(players[0].player_teams['national_team']['team']['teamid']) == int(teamid):
+                is_national_team = True
+                is_club_team = False
+        except KeyError:
+            pass
+
         grouped_players = dict()
         grouped_players['GK'] = list()
         grouped_players['DEF'] = list()
         grouped_players['MID'] = list()
         grouped_players['ATT'] = list()
+        grouped_players['LOANED_OUT'] = list()
         grouped_players['total_players'] = len(players)
 
         grouped_players['value_GK'] = 0
         grouped_players['value_DEF'] = 0
         grouped_players['value_MID'] = 0
-        grouped_players['value_ATT'] = 0   
+        grouped_players['value_ATT'] = 0
+        grouped_players['value_LOANED_OUT'] = 0   
         grouped_players['total_team_value'] = 0 
 
         for p in players:
-            try:
-                if int(p.player_teams['club_team']['team']['teamid']) == int(teamid):
-                    is_club_team = True
-                elif int(p.player_teams['national_team']['team']['teamid']) == int(teamid):
-                    is_national_team = True
-            except KeyError:
-                pass
-
             grouped_players['total_team_value'] += p.player_value.value
+            if int(p.player_contract['isloanedout']) == 1 and int(p.player_contract['loanedto_clubid']) != int(teamid):
+                grouped_players['value_LOANED_OUT'] += p.player_value.value
+                grouped_players['LOANED_OUT'].append(p)
+                p_index = context_data['players'].index(p)
+                del context_data['players'][p_index]
+                continue
+
             if p.player.preferredposition1 == 0:
                 grouped_players['value_GK'] += p.player_value.value
                 grouped_players['GK'].append(p)
@@ -159,7 +168,6 @@ def get_team(request, teamid=0, additional_filters=None):
         grouped_players['total_ATT'] = len(grouped_players['ATT'])
     else:
         grouped_players = None
-
 
     # print("Queries: {}".format(len(connection.queries)))
     total_careers = len(list(DataUsersCareerUsers.objects.all().filter(Q(clubteamid=teamid) | Q(nationalteamid=teamid)).iterator()))

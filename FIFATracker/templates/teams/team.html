@@ -502,6 +502,63 @@
                 </tbody>
             </table>
         </div>
+            {% if is_club_team %}
+                <div id="table-container" class="container-fluid" style="margin-top: 10px;">
+                <h2 align="center">LOANED OUT</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="text-center" colspan ="3">PLAYER</th>
+                                <th class="text-center">RAT</th>
+                                <th class="text-center">POT</th>
+                                <th class="text-center">AGE</th>
+                                <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
+                                <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in grouped_players.LOANED_OUT %}
+                            <tr>
+                                <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                                <td class="player-position text-center" width="65">
+                                    {{p.player.preferredposition1}}
+                                </td>
+                                <td width="250">
+                                    <div>
+                                        <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                        <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
+                                    </div>
+                                    <div class="player-position">
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        {{ p.player.preferredposition1 }}
+                                        {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
+                                        {% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
+                                        {% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
+                                    </div>
+                                </td>
+                                <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
+                                <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
+                                <td class="text-center">{{ p.player_age.age }}</td>
+                                <td class="text-center hidden-xs hidden-sm">
+                                    <div>
+                                        Loaned to {{p.player_contract.loanedto_clubname}}
+                                        <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="{{ p.player_contract.loanedto_clubname }} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                    </div>
+                                </td>
+                                <td class="text-center hidden-xs hidden-sm">
+                                    <div>
+                                        {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
+                                    </div>
+                                    <div>
+                                        {{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
         {% else %}
         <div class="container">
             <div class="row">

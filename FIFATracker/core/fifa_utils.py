@@ -1,5 +1,4 @@
-from datetime import date  
-from datetime import timedelta  
+from datetime import date, timedelta  
 
 def get_team_name(all_teams, teamid):
     for t in all_teams:
@@ -377,8 +376,16 @@ class PlayerValue:
 class PlayerName():
     def __init__(self, player, dict_cached_queries):
         self.player = player
-        self.dc_player_names = dict_cached_queries['q_dcplayernames']
-        self.edited_player_names = dict_cached_queries['q_edited_player_names']
+        try:
+            self.dc_player_names = dict_cached_queries['q_dcplayernames']
+        except KeyError:
+            self.dc_player_names = None
+
+        try:    
+            self.edited_player_names = dict_cached_queries['q_edited_player_names']
+        except KeyError:
+            self.edited_player_names = None
+
         self.playername = self.set_player_name()
 
 
@@ -390,7 +397,7 @@ class PlayerName():
             'playerjerseyname': int(self.player.playerjerseyname_id or 0),
         }
       
-        if name['firstname'] == 0 or name['lastname'] == 0:
+        if (name['firstname'] == 0 or name['lastname'] == 0) and self.edited_player_names is not None:
             for i in range(len(self.edited_player_names)):
                 if self.edited_player_names[i].playerid == self.player.playerid:
                     name['firstname'] = self.edited_player_names[i].firstname
@@ -398,7 +405,7 @@ class PlayerName():
                     name['commonname'] = self.edited_player_names[i].commonname 
                     name['playerjerseyname'] = self.edited_player_names[i].playerjerseyname
                     break
-        else: 
+        elif self.dc_player_names is not None:
             for key in name:
                 if name[key] >= 34000:
                     # Get playername from dcplayernames
@@ -419,6 +426,9 @@ class PlayerName():
         return name
 
     def get_dcplayername(self, nameid):
+        if self.dc_player_names is None:
+            return 0
+            
         for i in range(len(self.dc_player_names)):
             if self.dc_player_names[i].nameid == nameid:
                 return self.dc_player_names[i].name
@@ -439,8 +449,12 @@ class FifaPlayer():
         self.team_player_links = dict_cached_queries['q_team_player_links']
         self.q_teams = dict_cached_queries['q_teams']
         self.league_team_links = dict_cached_queries['q_league_team_links']
-        self.query_player_loans = dict_cached_queries['q_player_loans']
         self.leagues = dict_cached_queries['q_leagues']
+
+        try:
+            self.query_player_loans = dict_cached_queries['q_player_loans']
+        except KeyError:
+            self.query_player_loans = None
 
         try:
             self.currency = int(session['currency'])
@@ -448,7 +462,10 @@ class FifaPlayer():
             self.currency = 1 # Set Euro as default currency
 
         self.player_teams = self.set_teams()
+
+        # q_dcplayernames & q_edited_player_names
         self.player_name = PlayerName(self.player, self.dict_cached_queries).playername
+
         self.player_age = PlayerAge(self.player.birthdate, current_date)
         self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, int(self.currency))
         try:
@@ -489,7 +506,10 @@ class FifaPlayer():
         contract['jointeamdate'] = FifaDate().convert_days_to_py_date(days=self.player.playerjointeamdate)
         contract['enddate'] = FifaDate().convert_to_py_date(fifa_date=self.player.contractvaliduntil)
 
-        contract['isloanedout'] = 0 
+        contract['isloanedout'] = 0
+        if self.query_player_loans is None:
+            return contract
+
         for i in range(len(self.query_player_loans)):
             if self.query_player_loans[i].playerid == self.player.playerid:
                 contract['isloanedout'] = 1

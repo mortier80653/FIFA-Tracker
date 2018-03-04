@@ -1,10 +1,144 @@
+from datetime import date, timedelta  
 from django.test import TestCase
 from django.urls import resolve, reverse
 from django.contrib.auth.models import User
-from .views import home, privacypolicy, about, contact, donate, upload_career_save_file
+from players.models import (
+    DataUsersPlayers,
+    DataUsersTeamplayerlinks, 
+    DataUsersTeams,
+    DataUsersLeagueteamlinks, 
+    DataUsersLeagues, 
+    DataNations,
+    DataPlayernames,
+)
 
-# Create your tests here.
+from core.fifa_utils import FifaPlayer, FifaDate, PlayerAge, PlayerWage, PlayerValue, PlayerName
+from core.views import home, privacypolicy, about, contact, donate, upload_career_save_file
 
+# fifa_utils tests.
+
+class FifaPlayerTests(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        # Create User
+        test_user1 = User.objects.create_user(username='testuser1', password='12345')
+        test_user1.save()
+
+        test_user2 = User.objects.create_user(username='testuser2', password='12345')
+        test_user2.save()
+
+        # Create Nation
+        brazil = DataNations.objects.create(
+            nationid=54,
+            nationname="Brazil",
+        )
+
+        # Create playernames
+        firstname = DataPlayernames.objects.create(
+            nameid=16653,
+            name="Malcom Filipe",
+        )
+
+        commonname = DataPlayernames.objects.create(
+            nameid=16652,
+            name="Malcom",
+        )
+
+        lastname = DataPlayernames.objects.create(
+            nameid=24479,
+            name="Silva de Oliveira",
+        )
+
+        # Create player
+
+        # Malcom
+        player = DataUsersPlayers.objects.create(
+            username="testuser1", 
+            ft_user=test_user1, 
+            playerid=222737,
+            firstname=firstname,
+            lastname=lastname,
+            commonname=commonname,
+            playerjerseyname=commonname,
+            birthdate=151346,               # 1997-02-26
+            nationality=brazil,             # Brazil
+            height=171,
+            weight=75,
+            playerjointeamdate=160289,      # 2021-08-22
+            contractvaliduntil=2023,
+            preferredposition1=23,          # RW
+            preferredposition2=12,          # RM
+            preferredposition3=-1,          # None
+            preferredposition4=-1,          # None
+            internationalrep=2,
+            overallrating=88,
+            potential=88,
+        )
+
+        player.save()
+
+        # Team-Player Links
+        team_player_links = DataUsersTeamplayerlinks.objects.create(
+            username="testuser1", 
+            ft_user=test_user1, 
+            playerid=222737,
+            teamid=5,
+        )
+
+        team_player_links.save()
+
+        # Team
+        team = DataUsersTeams.objects.create(
+            username="testuser1", 
+            ft_user=test_user1,
+            teamid=5,
+            teamname="Chelsea",
+            profitability=2,
+            domesticprestige=10,
+            internationalprestige=10,
+        )
+        team.save()
+
+        # League
+        league = DataUsersLeagues.objects.create(
+            username="testuser1", 
+            ft_user=test_user1,
+            leaguename="England Premier League (1)",
+            leagueid=13,
+        )
+        league.save()
+
+        # Team-League Links
+        league_team_links = DataUsersLeagueteamlinks.objects.create(
+            username="testuser1", 
+            ft_user=test_user1,
+            teamid=5,           # Chelsea
+            leagueid=13,        # England Premier League (1)
+        )
+        league_team_links.save()
+
+    def test_player_team(self):
+        player = DataUsersPlayers.objects.for_user("testuser1").filter(playerid=222737).first()
+
+        qdata_dict = dict()
+        qdata_dict['q_team_player_links'] = list(DataUsersTeamplayerlinks.objects.for_user("testuser1").iterator())
+        qdata_dict['q_teams'] = list(DataUsersTeams.objects.for_user("testuser1").iterator())
+        qdata_dict['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user("testuser1").iterator())
+        #qdata_dict['q_player_loans'] = list(DataUsersTeams.objects.for_user("testuser1").iterator())
+        qdata_dict['q_leagues'] = list(DataUsersLeagues.objects.for_user("testuser1").iterator())
+
+        testsession = {'currency': 1, }
+
+        testplayer1 = FifaPlayer(player, username="testuser1", current_date="20230918", dict_cached_queries=qdata_dict, session=testsession)
+        testteam = testplayer1.player_teams['club_team']['team']
+        self.assertEquals(testteam['teamname'], "Chelsea")
+        self.assertEquals(testteam['teamid'], 5)
+        self.assertEquals(testteam['domesticprestige'], 10)
+        self.assertEquals(testteam['internationalprestige'], 10)
+
+
+# Views tests.
 class HomePageTests(TestCase):
     def test_homepage_view_status_code(self):
         url = reverse('home')

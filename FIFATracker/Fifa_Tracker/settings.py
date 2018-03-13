@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import sys
+import logging
 from .secret_settings import *
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -133,6 +135,13 @@ LOGOUT_REDIRECT_URL = 'home'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+# LOGS
+logging.basicConfig(
+    level = logging.INFO,
+    format = '%(asctime)s %(levelname)s %(message)s',
+    filename = os.path.join(os.path.dirname(BASE_DIR), 'FIFA_TRACKER_LOGS.log'),
+)
 
 # Tests without migrations
 RUN_MODE = sys.argv[1] if len(sys.argv) > 1 else None

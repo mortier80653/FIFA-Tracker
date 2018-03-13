@@ -8,7 +8,41 @@ $(document).ready(function(){
   convertUnits();
   changeProfilePublicStatus();
   cleanUrl();
+  careerFileUpload();
 });
+
+function careerFileUpload() {
+    /* https://simpleisbetterthancomplex.com/tutorial/2016/11/22/django-multiple-file-upload-using-ajax.html */
+
+    $(".js-upload-career-save").click(function () {
+      $("#fileupload").click();
+    });
+  
+    $("#fileupload").fileupload({
+      dataType: 'json',
+      singleFileUploads: true,
+      start: function (e) {
+        $('.js-upload-career-save').css('display', 'none')
+        $('.progress').css('display', '')
+        $( "p:first" ).text("Uploading your FIFA career save: 0%");
+      },
+      progressall: function (e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $( "p:first" ).text("Uploading your FIFA career save: " + progress + "%");
+        $('.upload-progress-bar').css(
+            'width',
+            progress + '%'
+        );
+      },
+      done: function (e, data) {  
+        if (data.result.is_valid) {
+          $( "p:first" ).text("Upload completed. You will be redirected in a second.");
+          $('.progress').css('display', 'none');
+          location.reload();
+        }
+      }
+    });
+};
 
 function selectizejs() {
     $('#select-max_per_page').selectize({

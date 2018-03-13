@@ -21,12 +21,17 @@ class CareerSaveFileModel(models.Model):
         filesize = filefield_obj.file.size
         min_size = 10000000
         max_size = 15000000
-        if min_size > filesize > max_size:
+        if filesize < min_size:
             raise ValidationError("Your file is not a FIFA 18 Career File.")
-
+        elif filesize > max_size:
+            raise ValidationError("Your file is not a FIFA 18 Career File.")
+   
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploadedfile = models.FileField(verbose_name='FIFA 18 Career File', upload_to=user_dir_path, validators=[validate_size])
+    fifa_edition = models.IntegerField(blank=True, null=True, default=18)
+    file_process_status_code = models.IntegerField(blank=True, null=True, default=0)
+    file_process_status_msg = models.CharField(max_length=120, blank=True, null=True)
 
 class DataUsersCareerManagerInfo(models.Model):
     primary_key = models.BigAutoField(primary_key=True)

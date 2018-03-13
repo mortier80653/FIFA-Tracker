@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     'widget_tweaks',
+    'django_extensions',
 
     'core.apps.CoreConfig',
     'account_settings.apps.AccountSettingsConfig',
@@ -132,6 +133,8 @@ LOGOUT_REDIRECT_URL = 'home'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+# Tests without migrations
 RUN_MODE = sys.argv[1] if len(sys.argv) > 1 else None
 
 if RUN_MODE == 'test':

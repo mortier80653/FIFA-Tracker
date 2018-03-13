@@ -17,6 +17,7 @@ class Profile(models.Model):
     currency = models.CharField(max_length=1, choices=CURRENCY_CHOICES, default=EURO)
     unit_system = models.BooleanField(default=0) # 0 - Metric, 1 - Imperial
     is_public = models.BooleanField(default=1)
+    is_save_processed = models.BooleanField(default=1)
     
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

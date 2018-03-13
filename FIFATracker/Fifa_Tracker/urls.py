@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^donate/$', core_views.donate, name='donate'),
     url(r'^privacy-policy/$', core_views.privacypolicy, name='privacypolicy'),
     url(r'^upload/$', core_views.upload_career_save_file, name='upload_career_save_file'),
+    url(r'^upload/process_status/$', core_views.process_status, name='process_status'),
     url(r'^login/$', accounts_views.login_view, name='login_view'),
     url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', accounts_views.activate, name='activate'),

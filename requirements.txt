@@ -1,6 +1,9 @@
 Django==2.0
 -e git+https://github.com/jazzband/django-debug-toolbar.git@b7672d951be75513bd8be3a685c1a4393f48d492#egg=django_debug_toolbar
+django-extensions==2.0.0
 django-widget-tweaks==1.4.1
 psycopg2==2.7.3.2
 pytz==2017.3
+six==1.11.0
 sqlparse==0.2.4
+typing==3.6.4

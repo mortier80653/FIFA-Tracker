@@ -1,20 +1,85 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block script %}
+  {# JQUERY FILE UPLOAD SCRIPTS #}
+  <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+  <script>
+    function updateStatus(data) {
+      var status_msg = data.status_msg
+      var status_code = parseInt(data.status_code);
+
+      $(".process_status_msg").text(status_msg)
+
+      if (status_code == 0) {
+        $(".process_status_info").text("Whole process may take from 20s to even 10mins. Depends on how much data needs to be updated.")
+        $(".status").text("Status (updates every 10s):")
+        setTimeout(checkStatus, 10000);
+      } else if (status_code == 1) {
+        $( "h3:first" ).text("Failed.");
+        $(".process_status_info").text("Error during processing your career file.")
+        $(".status").text("Reason:")
+      } else if (status_code == 2) {
+        $( "h3:first" ).text("Success!");
+        $(".process_status_info").text("Career file has been processed. Everything should work :)")
+        $(".status").text("Status: ")
+      }
+    }
+
+    function checkStatus() {
+      var span_status_msg = $(".process_status_msg")
+      if (span_status_msg.length){ 
+        $.ajax({
+          url: '/upload/process_status/',
+          dataType: 'json',
+          success: function (data) {
+            updateStatus(data)        
+          },
+        });        
+      }  
+    };
+    setTimeout(checkStatus, 1000);
+  </script>
+
+{% endblock %}
+
 {% block content %}
 <div id="upload-container" class="container">
-    <h3>Upload your FIFA 18 Manager Mode Career File</h3>
-    {% if upload_completed %}
-      <p>Your file is being processed, when everything will be ready you will be able to see your players <a href="{% url 'players' %}">here</a>.</p>
-    {% else %}  
+    
+    {% if cs_model %}
+      <h3>Your file is being processed.</h3>
+      {% if cs_model.file_process_status_code == 0 %}
+        <p><span class="process_status_info">Whole process may take from 20s to even 10mins. Depends on how much data needs to be updated.</span></p>
+        <p><strong><span class="status">Status (updates every 10s):</span></strong></p>
+        <p><span class="process_status_msg">{{cs_model.file_process_status_msg}}</span></p>
+      {% elif cs_model.file_process_status_code == 1 %}
+        <p>Error during processing your career file.</p>
+        <p><strong>Reason:</strong> {{cs_model.file_process_status_msg}}</p>
+      {% elif cs_model.file_process_status_code == 2 %}
+        <p>Career file has been processed. Everything should work :)</p>
+        <p>{{cs_model.file_process_status_msg}}</p>
+        <p><a href="{% url 'players' %}">Players</a></p>
+        <p><a href="{% url 'teams' %}">Teams</a></p>
+      {% endif %}
+    {% endif %}
+      
+    {% if form %}  
+      <h3>Upload your FIFA 18 Manager Mode Career File</h3>
       {% if request.user.is_authenticated %}
       <div class="container">
-        <p>Currently supporting only PC, sorry. </p>
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          {{ form.as_p}}
-          <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
+        <p>Only FIFA 18 PC saves are supported at this moment. You will find you save in "Documents\FIFA 18\settings"</p>
+        <input id="fileupload" type="file" name="uploadedfile"
+            style="display: none;"
+            data-url="{% url 'upload_career_save_file' %}"
+            data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+        <button type="button" class="btn btn-primary js-upload-career-save">
+          <span class="glyphicon glyphicon-cloud-upload"></span> Upload Career Save
+        </button>
+        <div class="progress" style="display: none;">
+            <div class="upload-progress-bar progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
       </div>
       {% else %}
         <p>Only authenticated users are allowed to upload files.</p>

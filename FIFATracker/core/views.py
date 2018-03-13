@@ -3,6 +3,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+
+import shlex, subprocess
+import time
 
 from collections import Counter
 
@@ -16,10 +20,25 @@ def upload_career_save_file(request):
         messages.error(request, 'Only authenticated users are allowed to upload files.')
         return redirect('home')
 
+
     # Check if user already uploaded a file and it's not processed yet
-    if CareerSaveFileModel.objects.filter(user_id=request.user.id):
-        messages.error(request, "You cannot upload new file if the previous one hasn't been processed.")
-        return render(request, 'upload.html', {'upload_completed': True} )   
+    cs_model = CareerSaveFileModel.objects.filter(user_id=request.user.id).first()
+    user = User.objects.get(username=request.user)
+
+    if cs_model:
+        if cs_model.file_process_status_code == 0:
+            # File is being processed
+            pass
+        elif cs_model.file_process_status_code == 1:
+            # Error
+            cs_model.delete()
+        elif cs_model.file_process_status_code == 2:
+            # Done
+            user.profile.is_save_processed = True
+            user.save()
+            cs_model.delete()
+
+        return render(request, 'upload.html', {'cs_model': cs_model, 'upload_completed': True} )   
 
     if request.method == 'POST':
         form = CareerSaveFileForm(request.POST, request.FILES)
@@ -27,12 +46,69 @@ def upload_career_save_file(request):
             form = form.save(commit=False)
             form.user = request.user
             form.save()
-            messages.success(request, "Upload completed.")
-            return render(request, 'upload.html', {'upload_completed': True} )   
+            
+            user.profile.is_save_processed = False
+            user.save()
+
+            # Run "process_career_file.py"
+            if settings.DEBUG:
+                python_ver = "python"   # My LocalHost
+            else:
+                python_ver = "python3.6"
+
+            fifa_edition = 18   # FIFA 18
+
+            # python manage.py runscript process_career_file --script-args 14 18
+            command = "{} manage.py runscript process_career_file --script-args {} {}".format(python_ver, request.user.id, fifa_edition)
+            args = shlex.split(command)
+            subprocess.Popen(args, close_fds=True)
+
+            data = {'is_valid': True}
+        else:
+            data = {'is_valid': False}
+
+        return JsonResponse(data)
     else:
         form = CareerSaveFileForm()
 
-    return render(request, 'upload.html', {'form':form})    
+    return render(request, 'upload.html', {'form':form, 'cs_model': None})    
+
+def process_status(request):
+    if not request.user.is_authenticated:
+        data = {"status": "user not authenticated"}
+
+    cs_model = CareerSaveFileModel.objects.filter(user_id=request.user.id).first()
+    if cs_model:
+        status_code = cs_model.file_process_status_code
+        status_msg = cs_model.file_process_status_msg
+
+        if not status_msg:
+            status_msg = "Processing Career Save File."
+
+        if cs_model.file_process_status_code == 0:
+            # File is being processed
+            pass
+        elif cs_model.file_process_status_code == 1:
+            # Error
+            cs_model.delete()
+        elif cs_model.file_process_status_code == 2:
+            # Done
+            user = User.objects.get(username=request.user)
+            user.profile.is_save_processed = True
+            user.save()
+            cs_model.delete()
+
+        data = {
+            "status_code": status_code,
+            "status_msg": status_msg,
+        }
+    else:
+        data = {
+            "status_code": 1,
+            "status_msg": "Not found",
+        }
+
+    return JsonResponse(data)
 
 def privacypolicy(request):
     return render(request, 'privacy.html')

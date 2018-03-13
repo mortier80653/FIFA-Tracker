@@ -76,7 +76,10 @@ def get_team(request, teamid=0, additional_filters=None):
         context_data['dict_cached_queries']['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(teamid=teamid).iterator())
         context_data['dict_cached_queries']['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
 
-    players = context_data['players'][:]
+    if context_data['players']:
+        players = context_data['players'][:]
+    else:
+        players = None
 
     # get valid team
     for team in context_data['dict_cached_queries']['q_teams']:

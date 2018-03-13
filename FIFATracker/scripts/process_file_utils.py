@@ -6,6 +6,7 @@ import mmap
 import functools
 import xml.etree.ElementTree as ET
 import time
+import logging
 
 from django.db import connection
 from django.db.models import Q
@@ -573,13 +574,10 @@ class ParseCareerSave():
 
                 ct = ContentType.objects.get(model=model_name) 
                 model = ct.model_class()
-                model_filter = model.objects.filter(ft_user_id=user_id).order_by(self.xml_pkeys[csv])
-                if len(model_filter) > 0:
-                    # Update or create records in database
-                    self._update_table_from_csv(model=model, model_filter=model_filter, table=csv, full_csv_path=full_csv_path, user_id=user_id)
-                else:
-                    # No records to update, copy data from csv
-                    self._copy_from_csv(table=csv, full_csv_path=full_csv_path)
+                #model_filter = model.objects.filter(ft_user_id=user_id).order_by(self.xml_pkeys[csv])
+                self._delete_data(model=model, user_id=user_id)
+                self._copy_from_csv(table=csv, full_csv_path=full_csv_path)
+                #self._update_table_from_csv(model=model, model_filter=model_filter, table=csv, full_csv_path=full_csv_path, user_id=user_id)
             else:
                 print("File not found: {}".format(csv))
 
@@ -684,6 +682,13 @@ class ParseCareerSave():
                 return m
 
         return None
+
+    def _delete_data(self, model, user_id):
+        """ delete data before update """
+        try:
+            model.objects.filter(ft_user_id=user_id).delete()
+        except Exception as e:
+            logging.warning(e)
 
     def _create_lookup(self, user_id, table, row):
         lookup = { "ft_user_id": user_id, self.xml_pkeys[table]: row[self.xml_pkeys[table]] }

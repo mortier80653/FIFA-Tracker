@@ -5,9 +5,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 
-import logging
 import shlex, subprocess
-import time
 
 from collections import Counter
 
@@ -23,13 +21,10 @@ def upload_career_save_file(request):
 
     
     # Check if user already uploaded a file and it's not processed yet
-    logging.info("cs_model")
     cs_model = CareerSaveFileModel.objects.filter(user_id=request.user.id).first()
-    logging.info("user")
     user = User.objects.get(username=request.user)
-    logging.info("if cs_model")
+
     if cs_model:
-        logging.info("cs model true")
         if cs_model.file_process_status_code == 0:
             # File is being processed
             pass
@@ -44,9 +39,7 @@ def upload_career_save_file(request):
 
         return render(request, 'upload.html', {'cs_model': cs_model, 'upload_completed': True} )   
 
-    logging.info("req method")
     if request.method == 'POST':
-        logging.info("POST")
         form = CareerSaveFileForm(request.POST, request.FILES)
         if form.is_valid():
             form = form.save(commit=False)
@@ -75,11 +68,8 @@ def upload_career_save_file(request):
 
         return JsonResponse(data)
     else:
-        logging.info("GET")
         form = CareerSaveFileForm()
-        logging.info("after form")
-
-    logging.info("RENDER")
+        
     return render(request, 'upload.html', {'form':form, 'cs_model': None})    
 
 def process_status(request):

@@ -14,7 +14,7 @@
       $(".process_status_msg").text(status_msg)
 
       if (status_code == 0) {
-        $(".process_status_info").text("Whole process may take from 20s to even 10mins. Depends on how much data needs to be updated.")
+        $(".process_status_info").text("Whole process may take around 1 minute.")
         $(".status").text("Status (updates every 10s):")
         setTimeout(checkStatus, 10000);
       } else if (status_code == 1) {
@@ -51,7 +51,7 @@
     {% if cs_model %}
       <h3>Your file is being processed.</h3>
       {% if cs_model.file_process_status_code == 0 %}
-        <p><span class="process_status_info">Whole process may take from 20s to even 10mins. Depends on how much data needs to be updated.</span></p>
+        <p><span class="process_status_info">Whole process may take around 1 minute.</span></p>
         <p><strong><span class="status">Status (updates every 10s):</span></strong></p>
         <p><span class="process_status_msg">{{cs_model.file_process_status_msg}}</span></p>
       {% elif cs_model.file_process_status_code == 1 %}

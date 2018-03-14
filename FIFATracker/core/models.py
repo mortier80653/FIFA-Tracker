@@ -19,7 +19,7 @@ def user_dir_path(instance, filename):
 class CareerSaveFileModel(models.Model):
     def validate_size(filefield_obj):
         filesize = filefield_obj.file.size
-        min_size = 10000000
+        min_size = 1000000
         max_size = 15000000
         if filesize < min_size:
             raise ValidationError("Your file is not a FIFA 18 Career File.")
@@ -768,6 +768,17 @@ class DataUsersDefaultTeamsheets(models.Model):
     playerid12 = models.IntegerField(blank=True, null=True)
     playerinstruction8_2 = models.IntegerField(blank=True, null=True)
 
+    # FIFA 17
+    busbuildupspeedvstrong = models.IntegerField(blank=True, null=True)
+    busbuildupspeedvequal = models.IntegerField(blank=True, null=True)
+    busbuildupspeedvweak = models.IntegerField(blank=True, null=True)
+    buspassingvstrong = models.IntegerField(blank=True, null=True)
+    buspassingvequal = models.IntegerField(blank=True, null=True)
+    buspassingvweak = models.IntegerField(blank=True, null=True)
+    defmentalityvstrong = models.IntegerField(blank=True, null=True)
+    defmentalityvequal = models.IntegerField(blank=True, null=True)
+    defmentalityvsweak = models.IntegerField(blank=True, null=True)
+
     objects = UserDataManager()
 
     class Meta:
@@ -916,6 +927,19 @@ class DataUsersReferee(models.Model):
     hairstylecode = models.IntegerField(blank=True, null=True)
     nationalitycode = models.IntegerField(blank=True, null=True)
     jerseysleevelengthcode = models.IntegerField(blank=True, null=True)
+
+    # FIFA 17
+    proxyheadclass = models.IntegerField(blank=True, null=True)
+    homecitycode = models.IntegerField(blank=True, null=True)
+    wrinkleid = models.IntegerField(blank=True, null=True)
+    hairpartcode = models.IntegerField(blank=True, null=True)
+    hairvariationid = models.IntegerField(blank=True, null=True)
+    hairlinecode = models.IntegerField(blank=True, null=True)
+    sweatid = models.IntegerField(blank=True, null=True)
+    proxyhaircolorid = models.IntegerField(blank=True, null=True)
+    stylecode = models.IntegerField(blank=True, null=True)
+    haireffecttypecode = models.IntegerField(blank=True, null=True)
+    hairstateid = models.IntegerField(blank=True, null=True)
 
     objects = UserDataManager()
 

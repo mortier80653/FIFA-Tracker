@@ -191,6 +191,24 @@ class DataUsersTeams(models.Model):
     trait1vstrong = models.IntegerField(blank=True, null=True)
     matchdayattackrating = models.IntegerField(blank=True, null=True)
 
+    # FIFA 17
+    trait1 = models.IntegerField(blank=True, null=True)
+    busbuildupspeedvstrong = models.IntegerField(blank=True, null=True)
+    busbuildupspeedvequal = models.IntegerField(blank=True, null=True)
+    busbuildupspeedvweak = models.IntegerField(blank=True, null=True)
+    buspassingvstrong = models.IntegerField(blank=True, null=True)
+    buspassingvequal = models.IntegerField(blank=True, null=True)
+    buspassingvweak = models.IntegerField(blank=True, null=True)
+    defmentalityvstrong = models.IntegerField(blank=True, null=True)
+    defmentalityvequal = models.IntegerField(blank=True, null=True)
+    defmentalityvsweak = models.IntegerField(blank=True, null=True)
+    physioid_primary = models.IntegerField(blank=True, null=True)
+    physioid_secondary = models.IntegerField(blank=True, null=True)
+    stafftracksuitcolorcode = models.IntegerField(blank=True, null=True)
+    fancrowdhairskintexturecode = models.IntegerField(blank=True, null=True)
+    
+    
+
     objects = UserDataManager()
 
     class Meta:        
@@ -235,6 +253,9 @@ class DataUsersLeagueteamlinks(models.Model):
     homedraws = models.IntegerField(blank=True, null=True)
     teamlongform = models.IntegerField(blank=True, null=True)
 
+    #FIFA 17
+    secondarytable = models.IntegerField(blank=True, null=True)
+
     objects = UserDataManager()
 
     class Meta:       
@@ -260,6 +281,9 @@ class DataUsersTeamplayerlinks(models.Model):
     playerid = models.IntegerField(blank=True, null=True)
     form = models.IntegerField(blank=True, null=True)
     reds = models.IntegerField(blank=True, null=True)
+
+    # FIFA 17
+    prevform = models.IntegerField(blank=True, null=True)
 
     objects = UserDataManager()
 

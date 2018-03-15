@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
@@ -24,8 +24,15 @@ def signup(request):
     form = SignUpForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         user = form.save(commit=False)
-        user.is_active = False
+        #user.is_active = False
+        user.is_active = True
         user.save()
+        username = form.cleaned_data.get('username')
+        raw_password = form.cleaned_data.get('password1')
+        user_auth = authenticate(username=username, password=raw_password)
+        login(request, user_auth)
+        return redirect('home')
+        '''
         current_site = get_current_site(request)
         subject = 'FIFA Tracker - Account activation'
         message = render_to_string('accounts/activate_email.html', {
@@ -37,6 +44,7 @@ def signup(request):
         user.email_user(subject, message)
         messages.success(request, 'Confirmation link has been sent to {}. Make sure to check your spam folder'.format(form.cleaned_data['email']))
         return redirect('home')
+        '''
 
     return render(request, 'accounts/signup.html', {'form': form, 'icons': icons })
 

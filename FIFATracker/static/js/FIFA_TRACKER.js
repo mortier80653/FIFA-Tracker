@@ -54,6 +54,159 @@ function selectizejs() {
         }
     });
 
+    $('#select-iscputransfer').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("iscputransfer")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+    $('#select-isloan').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("isloan")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+    $('#select-isloanbuy').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("isloanbuy")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+
+    $('#select-issnipe').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("issnipe")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+
+    $('#select-result').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("result")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+
+    $("#offerteamid-input").selectize({
+        valueField: 'teamid',
+        labelField: 'teamname',
+        searchField: 'teamname',
+        options: [],
+        plugins: ['remove_button'],
+        create: false,
+        render: {
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.teamname ? '<span class="teamname">' + escape(item.teamname) + '</span>' : '') +
+                    '</div>';
+            }
+        },
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            this.settings.load = null;
+            $.ajax({
+                url: '/players/ajax/teams/',
+                data: {
+                    'username': $('.current_user').text()
+                },
+                dataType: 'json',
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    callback(res.teams);
+                }
+            });
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("offerteamid")
+            var selectized = this
+            if (value) 
+                $.ajax({
+                    url: '/players/ajax/teams/',
+                    data: {
+                        'username': $('.current_user').text(),
+                        'selected': value
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                      var teams = res.teams;
+                      var teamsids = [];
+                      for (var i = 0; i < teams.length; i++) {
+                        selectized.addOption({"teamid": teams[i].teamid, "teamname": teams[i].teamname});
+                        teamsids.push(teams[i].teamid)
+                      }
+                      selectized.setValue(teamsids);
+                    }
+                });	
+        }
+    });
+
+    $("#fromteamid-input").selectize({
+        valueField: 'teamid',
+        labelField: 'teamname',
+        searchField: 'teamname',
+        options: [],
+        plugins: ['remove_button'],
+        create: false,
+        render: {
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.teamname ? '<span class="teamname">' + escape(item.teamname) + '</span>' : '') +
+                    '</div>';
+            }
+        },
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            this.settings.load = null;
+            $.ajax({
+                url: '/players/ajax/teams/',
+                data: {
+                    'username': $('.current_user').text()
+                },
+                dataType: 'json',
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    callback(res.teams);
+                }
+            });
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("fromteamid")
+            var selectized = this
+            if (value) 
+                $.ajax({
+                    url: '/players/ajax/teams/',
+                    data: {
+                        'username': $('.current_user').text(),
+                        'selected': value
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                      var teams = res.teams;
+                      var teamsids = [];
+                      for (var i = 0; i < teams.length; i++) {
+                        selectized.addOption({"teamid": teams[i].teamid, "teamname": teams[i].teamname});
+                        teamsids.push(teams[i].teamid)
+                      }
+                      selectized.setValue(teamsids);
+                    }
+                });	
+        }
+    });
+
     $('#select-teamtype').selectize({
         allowEmptyOption: true,
         onInitialize: function() {
@@ -453,7 +606,7 @@ function selectizejs() {
             if (!query.length) return callback();
             this.settings.load = null;
             $.ajax({
-                url: 'ajax/teams/',
+                url: '/players/ajax/teams/',
                 data: {
                     'username': $('.current_user').text()
                 },
@@ -471,7 +624,7 @@ function selectizejs() {
             var selectized = this
             if (value) 
                 $.ajax({
-                    url: 'ajax/teams/',
+                    url: '/players/ajax/teams/',
                     data: {
                         'username': $('.current_user').text(),
                         'selected': value
@@ -498,6 +651,25 @@ function selectizejs() {
             })
             .prop('name', '');
     });
+
+    $('#teamfilter').submit(function () {
+        $(this)
+            .find('input[name]')
+            .filter(function () {
+                return !this.value;
+            })
+            .prop('name', '');
+    });
+
+    $('#transfersfilter').submit(function () {
+        $(this)
+            .find('input[name]')
+            .filter(function () {
+                return !this.value;
+            })
+            .prop('name', '');
+    });
+
 
     $('#btn-reset').click(function () {
         window.location = window.location.pathname;
@@ -673,7 +845,7 @@ function changeProfilePublicStatus() {
 }
 
 function cleanUrl() {
-    var params = ["isretiring", "isreal", "isonloan", "teamtype"];
+    var params = ["isretiring", "isreal", "isonloan", "teamtype", "iscputransfer", "isloan", "isloanbuy", "issnipe", "result"];
     for (i = 0; i < params.length; i++) {
         if (getUrlParameter(params[i]) == "-1")
             removeParam(params[i])

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'players.apps.PlayersConfig',
     'teams.apps.TeamsConfig',
+    'transfer_history.apps.TransferHistoryConfig',
 ]
 
 MIDDLEWARE = [

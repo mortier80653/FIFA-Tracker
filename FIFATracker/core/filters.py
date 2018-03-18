@@ -9,6 +9,109 @@ from players.models import (
     DataUsersPlayerloans,
 )
 
+from core.models import (
+    DataUsersCareerTransferOffer,
+)
+
+class DataUsersCareerTransferOfferFilter:
+    def __init__(self, request, for_user):
+        self.request_dict = request
+        self.for_user = for_user
+
+        queryset = DataUsersCareerTransferOffer.objects.for_user(self.for_user).all()
+        queryset = self.filter(queryset)
+        queryset = self.order(queryset)
+        self.qs = queryset
+
+    def filter(self, queryset):
+        # bool
+        try:
+            if 'iscputransfer' in self.request_dict and int(self.request_dict['iscputransfer']) in range(0,2):
+                queryset = queryset.filter( Q(iscputransfer=self.request_dict['iscputransfer']) )
+        except ValueError:
+            pass
+
+        try:
+            if 'isloan' in self.request_dict and int(self.request_dict['isloan']) in range(0,2):
+                queryset = queryset.filter( Q(isloan=self.request_dict['isloan']) )
+        except ValueError:
+            pass
+
+        try:
+            if 'isloanbuy' in self.request_dict and int(self.request_dict['isloanbuy']) in range(0,2):
+                queryset = queryset.filter( Q(isloanbuy=self.request_dict['isloanbuy']) )
+        except ValueError:
+            pass
+
+        try:
+            if 'issnipe' in self.request_dict and int(self.request_dict['issnipe']) in range(0,2):
+                queryset = queryset.filter( Q(issnipe=self.request_dict['issnipe']) )
+        except ValueError:
+            pass
+
+        # Range
+        range_fields = [
+            'offeredfee',
+            'offeredwage',
+            'valuation',
+        ]
+
+        for field in range(len(range_fields)):
+            range_bottom = range_fields[field] + "__gte" 
+            range_top = range_fields[field] + "__lte"
+
+            try:
+                if range_bottom in self.request_dict or range_top in self.request_dict:
+                    val_bottom = (self._check_key(self.request_dict, range_bottom) or 1) 
+                    val_top = (self._check_key(self.request_dict, range_top) or 99) 
+                    queryset = queryset.filter(
+                        Q((range_bottom, val_bottom)), 
+                        Q((range_top, val_top)),
+                    )
+            except ValueError:
+                pass
+
+        # Rest
+        try:
+            if 'fromteamid' in self.request_dict:
+                teams_list = self.request_dict['fromteamid']
+                queryset = queryset.filter(Q(teamid__in=list(teams_list.split(',')))) 
+        except ValueError:
+            pass
+
+        try:
+            if 'offerteamid' in self.request_dict:
+                teams_list = self.request_dict['offerteamid']
+                queryset = queryset.filter(Q(offerteamid__in=list(teams_list.split(',')))) 
+        except ValueError:
+            pass
+
+        try:
+            if 'result' in self.request_dict and int(self.request_dict['result']) in range(0,33):
+                value = int(self.request_dict['result'])
+                queryset = queryset.filter(Q(result=value))
+        except ValueError:
+            pass
+
+        try:
+            if 'stage' in self.request_dict:
+                value = self.request_dict['stage']
+                queryset = queryset.filter( Q(stage=value) )
+        except ValueError:
+            pass
+
+        return queryset
+
+    def order(self, queryset):
+        if 'order_by' in self.request_dict:
+            valid_fields = [f.name for f in DataUsersCareerTransferOffer._meta.get_fields()]
+            orderby = self.request_dict['order_by'].replace('-', "")
+            if orderby in valid_fields:
+                return queryset.order_by(self.request_dict['order_by'], 'offerid')
+
+        return queryset.order_by('-offeredfee', 'offerid')
+
+
 class DataUsersPlayerloansFilter:
     def __init__(self, request, for_user):
         self.request_dict = request
@@ -210,14 +313,16 @@ class DataUsersTeamsFilter:
             return None
 
 class DataUsersPlayersFilter:
-    def __init__(self, request, for_user, current_date=20170701):
+    def __init__(self, request, for_user, current_date=20170701, sort=True):
         self.request_dict = request
         self.for_user = for_user
         self.current_date = current_date
         
         queryset = DataUsersPlayers.objects.for_user(self.for_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname', 'nationality',)
         queryset = self.filter(queryset)
-        queryset = self.order(queryset)
+        if sort:
+            queryset = self.order(queryset)
+
         self.qs = queryset
 
     def filter(self, queryset):

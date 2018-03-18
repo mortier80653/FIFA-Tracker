@@ -8,7 +8,7 @@ from django.db import connection
 from core.exceptions import NoResultsError, PrivateProfileError, UnknownError
 from core.fifa_utils import FifaPlayer
 from core.paginator import MyPaginator
-from core.filters import DataUsersPlayersFilter, DataUsersTeamsFilter
+from core.filters import DataUsersPlayersFilter, DataUsersTeamsFilter, DataUsersCareerTransferOfferFilter
 
 from players.models import (
     DataUsersPlayers, 
@@ -24,6 +24,10 @@ from players.models import (
     DataPlayernames,
     DataUsersManager,
     DataUsersCareerUsers,
+)
+
+from core.models import (
+    DataUsersCareerTransferOffer,
 )
 
 def set_currency(request):
@@ -58,6 +62,99 @@ def get_current_user(request):
 
     return current_user
 
+# Transfers
+
+def transfer_info(playerid, data):
+    for transfer in data:
+        if int(transfer.playerid) == int(playerid):
+            return {
+                "playerid": transfer.playerid,
+                "offerid": transfer.offerid,
+                "snipedteamid": transfer.snipedteamid,
+                "offeredcontracttype": transfer.offeredcontracttype,
+                "precontract": transfer.precontract,
+                "desiredfee": transfer.desiredfee,
+                "offeredbonus": transfer.offeredbonus,
+                "startdate": transfer.startdate,
+                "squadrole": transfer.squadrole,
+                "transferwindow": transfer.transferwindow,
+                "currentcontractlength": transfer.currentcontractlength,
+                "counteroffers": transfer.counteroffers,
+                "date": transfer.date,
+                "from_team": transfer.teamid,
+                "to_team":  transfer.offerteamid,
+                "valuation": "{:,}".format(transfer.valuation),
+                "offeredfee": "{:,}".format(transfer.offeredfee),
+                "offeredwage": "{:,}".format(transfer.offeredwage),
+                "exchangeplayerid": transfer.exchangeplayerid,
+                "iscputransfer": transfer.iscputransfer,
+                "isloan": transfer.isloan,
+                "isloanbuy": transfer.isloanbuy,
+                "issnipe": transfer.issnipe,
+                "stage": transfer.stage,
+                "result": transfer.result,
+                "approachreason": transfer.approachreason,
+            }
+        
+    return None
+
+def get_transfers(request, additional_filters=None, paginate=False):
+    request_query_dict = request.GET.copy()
+
+    current_user = get_current_user(request)
+
+    if additional_filters:
+        for k, v in additional_filters.items():
+            request_query_dict[k] = str(v)
+
+    transfer_offer_filter = DataUsersCareerTransferOfferFilter(request_query_dict, for_user=current_user)
+
+    # Paginate results if needed
+    if paginate:
+        max_per_page = int(request.GET.get('max_per_page', 50))
+        if not 25 <= max_per_page <= 100:
+            max_per_page = 50
+        paginator = MyPaginator(transfer_offer_filter.qs.count(), request=request_query_dict, max_per_page=max_per_page)
+
+        data = list(transfer_offer_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
+    else:
+        paginator = None
+        data = list(transfer_offer_filter.qs.iterator())
+
+
+    if len(data) <= 0:
+        raise NoResultsError('No results found. Try to change your filters')
+
+    playerids = ",".join(str(transfer.playerid) for transfer in data)
+
+    additional_filters = {'playerid': playerids, }
+    try:
+        context_data = get_fifaplayers(request, additional_filters=additional_filters, paginate=False, sort=False)
+    except (NoResultsError):
+        context_data = dict()
+        context_data['players'] = None
+
+    if context_data['players']:
+        # keep order from 'transfer_offer_filter'
+        players_original_order = list()
+
+        copy_context_data_players = context_data['players'][:]
+        for playerid in playerids.split(','):
+            for p in copy_context_data_players:
+                if int(playerid) == int(p.player.playerid):
+                    t_info = transfer_info(playerid, data)
+                    if t_info:
+                        setattr(p, 'transfer_info', t_info)
+                    players_original_order.append(p)
+    
+        context_data['players'] = players_original_order 
+
+    
+    context_data['paginator'] = paginator
+    return context_data
+
+
+# Teams
 def get_team(request, teamid=0, additional_filters=None):
     request_query_dict = request.GET.copy()
 
@@ -223,7 +320,9 @@ def get_teams(request, additional_filters=None, paginate=False):
     context = {'teams': data, 'paginator':paginator, 'request_query_dict': request_query_dict, 'dict_cached_queries': dict_cached_queries,}
     return context
 
-def get_fifaplayers(request, additional_filters=None, paginate=False):
+
+# Players
+def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True):
     request_query_dict = request.GET.copy()
 
     set_currency(request)
@@ -241,7 +340,7 @@ def get_fifaplayers(request, additional_filters=None, paginate=False):
     if additional_filters:
         for k, v in additional_filters.items():
             request_query_dict[k] = str(v)
-    player_filter = DataUsersPlayersFilter(request_query_dict, for_user=current_user, current_date=current_date)
+    player_filter = DataUsersPlayersFilter(request_query_dict, for_user=current_user, current_date=current_date, sort=sort)
 
     # Paginate results if needed
     if paginate:

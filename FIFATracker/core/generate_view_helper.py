@@ -180,6 +180,10 @@ def get_team(request, teamid=0, additional_filters=None):
     else:
         players = None
 
+    
+    if not context_data['dict_cached_queries']['q_teams']:
+        raise NoResultsError('No results found. Try to change your filters')
+
     # get valid team
     for team in context_data['dict_cached_queries']['q_teams']:
         if int(team.teamid) == int(teamid):

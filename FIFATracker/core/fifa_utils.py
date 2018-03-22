@@ -32,6 +32,12 @@ class FifaDate():
         birthdate = date(year=current_date.year - int(age), month=current_date.month, day=current_date.day) 
         return (birthdate - start_date).days
 
+    def convert_to_fifa_date(self, current_date):
+        """Return days since 14.10.1582 to current date"""
+        start_date = date(year=1582, month=10, day=14)
+        current_date = self.convert_to_py_date(fifa_date=current_date)
+        return (current_date - start_date).days
+
 class PlayerAge():
     def __init__(self, birth_date=141279, current_date=20170701):
         self.birth_date = FifaDate().convert_days_to_py_date(days=birth_date)
@@ -374,7 +380,8 @@ class PlayerValue:
         return int(self._round_to_player_value(summed_value))
 
 class PlayerName():
-    def __init__(self, player, dict_cached_queries):
+    def __init__(self, player, dict_cached_queries, fifa_edition=18):
+        self.fifa_edition = int(fifa_edition)
         self.player = player
         try:
             self.dc_player_names = dict_cached_queries['q_dcplayernames']
@@ -390,6 +397,11 @@ class PlayerName():
 
 
     def set_player_name(self):
+        if self.fifa_edition == 18:
+            dcplayernames_start_index = 34000
+        else:
+            dcplayernames_start_index = 30000
+
         name = {
             'firstname': int(self.player.firstname_id or 0),
             'lastname': int(self.player.lastname_id or 0),
@@ -407,7 +419,7 @@ class PlayerName():
                     break
         elif self.dc_player_names is not None:
             for key in name:
-                if name[key] >= 34000:
+                if name[key] >= dcplayernames_start_index:
                     # Get playername from dcplayernames
                     name[key] = self.get_dcplayername(name[key])
                 else:
@@ -441,7 +453,7 @@ class FifaTeam():
 
 class FifaPlayer():
 
-    def __init__(self, player, username, current_date, dict_cached_queries, session):
+    def __init__(self, player, username, current_date, dict_cached_queries, session, fifa_edition):
         self.player = player
         self.username = username
         self.current_date = current_date
@@ -450,6 +462,8 @@ class FifaPlayer():
         self.q_teams = dict_cached_queries['q_teams']
         self.league_team_links = dict_cached_queries['q_league_team_links']
         self.leagues = dict_cached_queries['q_leagues']
+
+        self.fifa_edition = fifa_edition
 
         try:
             self.query_player_loans = dict_cached_queries['q_player_loans']
@@ -464,7 +478,7 @@ class FifaPlayer():
         self.player_teams = self.set_teams()
 
         # q_dcplayernames & q_edited_player_names
-        self.player_name = PlayerName(self.player, self.dict_cached_queries).playername
+        self.player_name = PlayerName(self.player, self.dict_cached_queries, self.fifa_edition).playername
 
         self.player_age = PlayerAge(self.player.birthdate, current_date)
         self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, int(self.currency))
@@ -512,13 +526,13 @@ class FifaPlayer():
 
         for i in range(len(self.query_player_loans)):
             if self.query_player_loans[i].playerid == self.player.playerid:
-                contract['isloanedout'] = 1
-                contract['loan'] = vars(self.query_player_loans[i])
-                contract['enddate']  = FifaDate().convert_to_py_date(fifa_date=self.query_player_loans[i].loandateend)
-                contract['loanedto_clubid'] = self.player_teams['club_team']['team']['teamid']
-                contract['loanedto_clubname'] = self.player_teams['club_team']['team']['teamname']
                 for j in range(len(self.q_teams)):
                     if int(self.query_player_loans[i].teamidloanedfrom) == int(self.q_teams[j].teamid):
+                        contract['isloanedout'] = 1
+                        contract['loan'] = vars(self.query_player_loans[i])
+                        contract['enddate']  = FifaDate().convert_to_py_date(fifa_date=self.query_player_loans[i].loandateend)
+                        contract['loanedto_clubid'] = self.player_teams['club_team']['team']['teamid']
+                        contract['loanedto_clubname'] = self.player_teams['club_team']['team']['teamname']
                         self.player_teams['club_team']['team'] = vars(self.q_teams[j])
                         return contract
 

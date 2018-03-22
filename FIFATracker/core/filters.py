@@ -2,6 +2,7 @@ from django.db.models import Q
 from .fifa_utils import FifaDate
 from players.models import (
     DataUsersPlayers,
+    DataUsersPlayers17,
     DataUsersLeagues, 
     DataUsersTeams, 
     DataUsersTeamplayerlinks, 
@@ -113,15 +114,33 @@ class DataUsersCareerTransferOfferFilter:
 
 
 class DataUsersPlayerloansFilter:
-    def __init__(self, request, for_user):
+    def __init__(self, request, for_user, current_date=18):
         self.request_dict = request
         self.for_user = for_user
+        self.current_date = current_date
 
         queryset = DataUsersPlayerloans.objects.for_user(self.for_user).all()
         queryset = self.filter(queryset)
         self.qs = queryset
 
     def filter(self, queryset):
+
+        # exclude invalid date
+        invalid_dates = FifaDate().convert_to_fifa_date(self.current_date)
+        queryset = queryset.exclude(Q(loandateend__lte=invalid_dates))
+
+        '''
+        if self.fifa_edition == 17:
+            # For some reasons players in FIFA 17 are in 'playerloans' table even if they are not loaned out.
+            invalid_dates = [
+                158745,     # June  1,  2017
+                158775,     # July  1,  2017
+                158959,     # January  1,  2018 
+                159140,     # July  1,  2018
+            ]
+            queryset = queryset.exclude(Q(loandateend__in=invalid_dates))  # 
+        '''
+
         try:
             if 'teamidloanedfrom' in self.request_dict:
                 value = list(self.request_dict['teamidloanedfrom'].split(','))
@@ -313,12 +332,17 @@ class DataUsersTeamsFilter:
             return None
 
 class DataUsersPlayersFilter:
-    def __init__(self, request, for_user, current_date=20170701, sort=True):
+    def __init__(self, request, for_user, current_date=20170701, sort=True, fifa_edition=18):
         self.request_dict = request
         self.for_user = for_user
         self.current_date = current_date
+        self.fifa_edition = fifa_edition
         
-        queryset = DataUsersPlayers.objects.for_user(self.for_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname', 'nationality',)
+        if self.fifa_edition == 18:
+            queryset = DataUsersPlayers.objects.for_user(self.for_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname', 'nationality',)
+        else:
+            queryset = DataUsersPlayers17.objects.for_user(self.for_user).select_related('firstname', 'lastname', 'playerjerseyname', 'commonname', 'nationality',)
+
         queryset = self.filter(queryset)
         if sort:
             queryset = self.order(queryset)
@@ -433,7 +457,7 @@ class DataUsersPlayersFilter:
             pass
 
         # DataUsersPlayerloansFilter
-        player_loans = DataUsersPlayerloansFilter(for_user=self.for_user, request=self.request_dict)
+        player_loans = DataUsersPlayerloansFilter(for_user=self.for_user, request=self.request_dict, current_date=self.current_date)
         player_loans_ids = None
         try:
             if 'teamidloanedfrom' in self.request_dict:

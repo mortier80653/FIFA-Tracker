@@ -18,6 +18,7 @@ class Profile(models.Model):
     unit_system = models.BooleanField(default=0) # 0 - Metric, 1 - Imperial
     is_public = models.BooleanField(default=1)
     is_save_processed = models.BooleanField(default=1)
+    fifa_edition = models.IntegerField(blank=True, null=True, default=18)
     
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

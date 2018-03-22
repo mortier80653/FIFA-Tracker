@@ -26,6 +26,7 @@ from players.models import (
     DataUsersLeagues,
     DataUsersManager,
     DataUsersPlayers,
+    DataUsersPlayers17,
     DataUsersPlayerloans,
 )
 
@@ -424,7 +425,7 @@ class ParseCareerSave():
             Full path to "fifa_ng_db-meta.xml" file
     """
     
-    def __init__(self, career_file_fullpath, careersave_data_path, user, xml_file):
+    def __init__(self, career_file_fullpath, careersave_data_path, user, xml_file, fifa_edition):
         start = time.time()
         self.cs_model = CareerSaveFileModel.objects.filter(user_id=user.id).first()
 
@@ -432,6 +433,8 @@ class ParseCareerSave():
         self.data_path = careersave_data_path
         self.user = user
         self.xml_file = xml_file
+        self.fifa_edition = int(fifa_edition)
+        print("FIFA EDITION = {}".format(fifa_edition))
         
         # Create Data Path
         if not os.path.exists(self.data_path):
@@ -553,7 +556,7 @@ class ParseCareerSave():
             "default_teamsheets",
             "previousteam",
             "teamplayerlinks",  
-            "players",
+            "players",  
         ]
 
         '''
@@ -569,6 +572,12 @@ class ParseCareerSave():
             #print(csv)
             full_csv_path = os.path.join(csv_path, csv) + ".csv" # example: media\<user>\data\csv\career_calendar.csv
             if os.path.exists(full_csv_path):
+                if csv == "players":
+                    if self.fifa_edition == 18:
+                        csv = "players"
+                    else:
+                        csv = "players17"
+
                 model_name = "datausers{}".format(csv.replace("_", ""))
                 postgresql_table_name = "public.datausers{}".format(csv.replace("_", "")) # career_calendar --> public.datauserscareercalendar
 

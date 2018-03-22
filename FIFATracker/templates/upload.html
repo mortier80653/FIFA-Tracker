@@ -66,20 +66,24 @@
     {% endif %}
       
     {% if form %}  
-      <h3>Upload your FIFA 18 Manager Mode Career File</h3>
+      <h3>Upload your FIFA Manager Mode Career File</h3>
       {% if request.user.is_authenticated %}
       <div class="container">
-        <p>Only FIFA 18 PC saves are supported at this moment. You will find you save in "Documents\FIFA 18\settings"</p>
-        <input id="fileupload" type="file" name="uploadedfile"
-            style="display: none;"
-            data-url="{% url 'upload_career_save_file' %}"
-            data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
-        <button type="button" class="btn btn-primary js-upload-career-save">
-          <span class="glyphicon glyphicon-cloud-upload"></span> Upload Career Save
-        </button>
-        <div class="progress" style="display: none;">
-            <div class="upload-progress-bar progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+        <p>On PC you can find your save file in "Documents" -> "FIFA 18" -> "settings" -> "CareerXXX"</p>
+        <form method="post" action="{% url 'upload_career_save_file' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input id="fileupload" type="file" name="uploadedfile" style="display: none;">
+          <button type="button" class="btn btn-primary js-upload-career-save" style="margin-bottom: 10px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload Career Save
+          </button>
+          <div class="progress" style="display: none;">
+            <div class="upload-progress-bar progress-bar progress-bar-striped" role="progressbar" style="width: 0%; margin-bottom: 10px;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
+          <select id="select-fifa" name="fifa_edition" placeholder="FIFA 18 PC" style="width: 164px;">
+            <option value="17">FIFA 17 PC</option>
+            <option value="18" selected>FIFA 18 PC</option>
+          </select>
+        </form>
       </div>
       {% else %}
         <p>Only authenticated users are allowed to upload files.</p>

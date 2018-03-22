@@ -50,8 +50,9 @@ def run(*args):
     
     # Parse Career Save
     try:
-        ParseCareerSave(career_file_fullpath=fpath, careersave_data_path=careersave_data_path, user=user, xml_file=FIFA_XML_PATH)
+        ParseCareerSave(career_file_fullpath=fpath, careersave_data_path=careersave_data_path, user=user, xml_file=FIFA_XML_PATH, fifa_edition=fifa_edition)
         user.profile.is_save_processed = True
+        user.profile.fifa_edition = fifa_edition
         user.save()
     except Exception as e:
         user.profile.is_save_processed = False

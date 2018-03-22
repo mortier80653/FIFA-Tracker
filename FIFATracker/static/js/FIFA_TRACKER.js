@@ -39,12 +39,21 @@ function careerFileUpload() {
           $( "p:first" ).text("Upload completed. You will be redirected in a second.");
           $('.progress').css('display', 'none');
           location.reload();
+        } else {
+            alert("data is not valid.");
+            $( "p:first" ).text("Uploading your FIFA career save: FAILED");
+            $('.progress').css('display', 'none');
+            location.reload();
         }
       }
     });
 };
 
 function selectizejs() {
+    $('#select-fifa').selectize({
+        allowEmptyOption: true,
+    });
+
     $('#select-max_per_page').selectize({
         allowEmptyOption: true,
         onInitialize: function() {

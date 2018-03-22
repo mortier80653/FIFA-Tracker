@@ -19,7 +19,6 @@ def upload_career_save_file(request):
         messages.error(request, 'Only authenticated users are allowed to upload files.')
         return redirect('home')
 
-    
     # Check if user already uploaded a file and it's not processed yet
     cs_model = CareerSaveFileModel.objects.filter(user_id=request.user.id).first()
     user = User.objects.get(username=request.user)
@@ -42,11 +41,20 @@ def upload_career_save_file(request):
     if request.method == 'POST':
         form = CareerSaveFileForm(request.POST, request.FILES)
         if form.is_valid():
+            fifa_edition = int(request.POST.get('fifa_edition'))
+
+            # FIFA 17 and FIFA 18 is supported.
+            valid_fifa_editions = (17, 18)
+            if fifa_edition not in valid_fifa_editions:
+                data = {'is_valid': False}
+                return JsonResponse(data)
+
             form = form.save(commit=False)
             form.user = request.user
             form.save()
             
             user.profile.is_save_processed = False
+            user.profile.fifa_edition = fifa_edition
             user.save()
 
             # Run "process_career_file.py"
@@ -54,8 +62,6 @@ def upload_career_save_file(request):
                 python_ver = "python"   # My LocalHost
             else:
                 python_ver = "python3.6"
-
-            fifa_edition = 18   # FIFA 18
 
             # python manage.py runscript process_career_file --script-args 14 18
             command = "{} manage.py runscript process_career_file --script-args {} {}".format(python_ver, request.user.id, fifa_edition)

@@ -13,19 +13,23 @@ from core.fifa_utils import PlayerName
 
 from players.models import (
     DataUsersPlayers, 
+    DataUsersPlayers17, 
     DataUsersEditedplayernames, 
     DataUsersTeams, 
     DataUsersLeagues, 
     DataNations, 
     DataUsersDcplayernames,
     DataPlayernames,
+    DataPlayernames17,
 )
 
 def ajax_players_by_name(request):
     if request.user.is_authenticated:
         current_user = request.user
+        fifa_edition = request.user.profile.fifa_edition
     else:
         current_user = "guest"
+        fifa_edition = 18
 
     players_found = list()
 
@@ -35,7 +39,10 @@ def ajax_players_by_name(request):
         dict_cached_queries = dict()
         valid_nameids = list()
         query = reduce(lambda x, y: x | y, [Q(name__unaccent__istartswith=name) for name in playername])
-        table_playernames = list(DataPlayernames.objects.all().filter(query).iterator())
+        if fifa_edition == 18:
+            table_playernames = list(DataPlayernames.objects.all().filter(query).iterator())
+        else:
+            table_playernames = list(DataPlayernames17.objects.all().filter(query).iterator())
 
         for player in table_playernames:
             if player.nameid in valid_nameids:
@@ -70,12 +77,20 @@ def ajax_players_by_name(request):
                 continue
             valid_playerids.append(player.playerid)
 
-        players = list(DataUsersPlayers.objects.for_user(current_user).select_related(
-                'firstname', 'lastname', 'playerjerseyname', 'commonname',
-                ).filter(
-                    Q (playerid__in=valid_playerids) | Q (firstname_id__in=valid_nameids) | 
-                    Q (lastname_id__in=valid_nameids) | Q(commonname_id__in=valid_nameids)
-                ).all().order_by('-overallrating')[:12].iterator())
+        if fifa_edition == 18:
+            players = list(DataUsersPlayers.objects.for_user(current_user).select_related(
+                    'firstname', 'lastname', 'playerjerseyname', 'commonname',
+                    ).filter(
+                        Q (playerid__in=valid_playerids) | Q (firstname_id__in=valid_nameids) | 
+                        Q (lastname_id__in=valid_nameids) | Q(commonname_id__in=valid_nameids)
+                    ).all().order_by('-overallrating')[:12].iterator())
+        else:
+            players = list(DataUsersPlayers17.objects.for_user(current_user).select_related(
+                    'firstname', 'lastname', 'playerjerseyname', 'commonname',
+                    ).filter(
+                        Q (playerid__in=valid_playerids) | Q (firstname_id__in=valid_nameids) | 
+                        Q (lastname_id__in=valid_nameids) | Q(commonname_id__in=valid_nameids)
+                    ).all().order_by('-overallrating')[:12].iterator())
 
         available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
 

@@ -15,6 +15,7 @@ from players.models import (
     DataUsersLeagues,
     DataUsersManager,
     DataUsersPlayers,
+    DataUsersPlayers17,
     DataUsersPlayerloans,
 )
 
@@ -75,6 +76,7 @@ def delete_data(user_id):
         "datausersleagues",
         "datausersmanager",
         "datausersplayers",
+        "datausersplayers17",
         "datausersplayerloans",
         "datauserscareermanagerinfo",
         "datauserscareerscouts",

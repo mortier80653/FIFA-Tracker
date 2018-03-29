@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load i18n %}
 
 {% block stylesheet %}
   <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
@@ -9,17 +10,17 @@
 {% block content %}
   <div id="SignUp" class="container">
 		<div class="main_row">
-			<h2>Login</h2>
+			<h2>{% trans 'Login' %}</h2>
 			<form method="post" novalidate>
 			{% if form.errors %}
 				{{ form.non_field_errors }}
 			{% endif %}
 				{% csrf_token %}
 				{% include "includes/form.html" %}
-				<button type="submit" class="btn btn-primary">Login</button>
+				<button type="submit" class="btn btn-primary">{% trans 'Login' %}</button>
 			</form>
 		</div>
-		<p align="center"><a href="{% url 'reset_password' %}">Forgot your password?</a></p>
-		<p align="center"><a href="{% url 'signup' %}">Create New Account</a></p>
+		<p align="center"><a href="{% url 'reset_password' %}">{% trans 'Forgot your password?' %}</a></p>
+		<p align="center"><a href="{% url 'signup' %}">{% trans 'Create New Account' %}</a></p>
   </div>
 {% endblock %}

@@ -1,0 +1,299 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-29 12:04+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: .\Fifa_Tracker\settings.py:116
+msgid "English"
+msgstr "Angielski"
+
+#: .\Fifa_Tracker\settings.py:117
+msgid "Polish"
+msgstr "Polski"
+
+#: .\account_settings\views.py:58
+msgid "Your profile is public now."
+msgstr "Twój profil jest teraz publiczny"
+
+#: .\account_settings\views.py:60
+msgid "Your profile is private now."
+msgstr "Twój profil jest teraz prywatny"
+
+#: .\account_settings\views.py:62
+msgid "Failed. User not authenticated"
+msgstr "Nie udało się. Użytkownik nie jest autoryzowany"
+
+#: .\account_settings\views.py:73
+msgid "Your password has been changed!"
+msgstr "Twoje hasło zostało zmienione!"
+
+#: .\account_settings\views.py:75
+msgid "Password change failed."
+msgstr "Zmiana hasła zakończona niepowodzeniem."
+
+#: .\accounts\forms.py:9 .\accounts\forms.py:44
+msgid "username"
+msgstr "Nazwa Użytkownika"
+
+#: .\accounts\forms.py:10
+msgid "password"
+msgstr "Hasło"
+
+#: .\accounts\forms.py:20
+#, fuzzy
+#| msgid ""
+#| "Sorry, account '{}' doesn't exists in our database. Please try again."
+msgid "Sorry, account {} doesn't exists in our database. Please try again."
+msgstr "Konto '{}' nie istnieje. Spróbuj ponownie."
+
+#: .\accounts\forms.py:23
+msgid ""
+"Sorry, your account is not activated. Check spam folder in your email inbox."
+msgstr "Twoje konto nie jest aktywne. Sprawdź folder spam w swojej skrzynce pocztowej."
+
+#: .\accounts\forms.py:25
+#, fuzzy
+#| msgid ""
+#| "Sorry, account '{}' doesn't exists in our database. Please try again."
+msgid "Sorry, invalid password. Please try again."
+msgstr "Konto '{}' nie istnieje. Spróbuj ponownie."
+
+#: .\accounts\forms.py:52
+msgid "Please, enter your email or username and try again."
+msgstr "Nazwa uzytkowinka i email jest wymagana."
+
+#: .\accounts\forms.py:58
+msgid "Sorry, account '{}' doesn't exists in our database. Please try again."
+msgstr "Konto '{}' nie istnieje. Spróbuj ponownie."
+
+#: .\accounts\forms.py:63
+msgid ""
+"Sorry, account with '{}' email address doesn't exists in our database. "
+"Please try again."
+msgstr ""
+"Podany adres email: '{}' nie istnieje w naszej bazie danych. Spróbuj "
+"ponownie."
+
+#: .\accounts\forms.py:75
+msgid "The two password fields didn't match."
+msgstr "Podane hasła nie są identyczne."
+
+#: .\accounts\forms.py:77
+#, fuzzy
+#| msgid "password"
+msgid "New password"
+msgstr "Nowe Hasło"
+
+#: .\accounts\forms.py:79
+msgid "New password confirmation"
+msgstr "Potwierdź Nowe Hasło"
+
+#: .\accounts\views.py:20 .\accounts\views.py:55
+msgid "Hey {}, you are already logged in!"
+msgstr "Jesteś juz zalogowany {}!"
+
+#: .\accounts\views.py:39
+msgid "FIFA Tracker - Account activation"
+msgstr "FIFA Tracker - Aktywacja konta"
+
+#: .\accounts\views.py:47
+msgid ""
+"Confirmation link has been sent to {}. Make sure to check your spam folder"
+msgstr "Link weryfikacyjny konto został wyslany do {}. Czasami może on znajdować sie w folderze ze spamem"
+
+#: .\accounts\views.py:65
+msgid "It's nice to see you again {}!"
+msgstr "Miło widzieć cię ponownie {}!"
+
+#: .\accounts\views.py:82
+msgid "Account activated! You can upload your FIFA career save now."
+msgstr "Konto Aktywowane! Możesz już przesłać swój plik z zapisanym stanem gry."
+
+#: .\accounts\views.py:85
+msgid ""
+"The confirmation link was invalid, possibly because it has already been used."
+msgstr "Link weryfikacyjny jest nieprawidłowy, prawdopodobnie został już użyty."
+
+#: .\accounts\views.py:98
+msgid "FIFA Tracker - Password Reset"
+msgstr "FIFA Tracker - Reset Hasła"
+
+#: .\accounts\views.py:109
+msgid "We've emailed you instructions for setting your new password, to {}"
+msgstr "Instrukcje dotyczące zmiany hasła zostały wysłane do {}"
+
+#: .\accounts\views.py:126
+msgid "Password has been reset. You can login now using your new credentials."
+msgstr "Hasło zostało zresetowane. Możesz już się zalogować używając nowych danych."
+
+#: .\core\generate_view_helper.py:57
+msgid ""
+"Sorry, {}'s profile is private. Profile visibility can be changed in Control "
+"Panel."
+msgstr "Niestety, profil użytkownika {} jest prywatny. Widoczność profilu może być zmieniona w Panelu Kontrolnym konta"
+
+#: .\core\generate_view_helper.py:129 .\core\generate_view_helper.py:186
+#: .\core\generate_view_helper.py:321 .\core\generate_view_helper.py:365
+msgid "No results found. Try to change your filters"
+msgstr "Brak rezultatów wyszukiwania. Spróbuj zmienić filtry"
+
+#: .\core\generate_view_helper.py:342
+msgid ""
+"Your career file hasn't been processed yet. Displaying default FIFA database "
+"data."
+msgstr "Twoj plik kariery nie został jeszcze przetworzony. Przeglądasz domyślną baze danych FIFA"
+
+#: .\core\views.py:20
+msgid "Only authenticated users are allowed to upload files."
+msgstr "Tylko autoryzowani użytkownicy mogą przesyłać pliki."
+
+#: .\core\views.py:92
+msgid "Processing Career Save File."
+msgstr "Przetwarzanie pliku z zapisanym stanem gry"
+
+#: .\scripts\process_career_file.py:39
+msgid "Save file model not found."
+msgstr "Model nie znaleziony"
+
+#: .\scripts\process_career_file.py:47
+msgid "Save file not found on the server."
+msgstr "Plik nie znaleziony na serwerze"
+
+#: .\scripts\process_file_utils.py:452
+msgid "Unpacking database from career file."
+msgstr "Wypakowywanie bazydanych z pliku kariery"
+
+#: .\scripts\process_file_utils.py:463
+msgid "Exporting data from FIFA database to csv files."
+msgstr "Exportowanie danych z bazy danych FIFA do pliku csv"
+
+#: .\scripts\process_file_utils.py:471
+msgid "Importing data to FIFA Tracker database."
+msgstr "Importowanie danych do bazy danych FIFA Trackera"
+
+#: .\scripts\process_file_utils.py:476
+msgid "Completed in {}s"
+msgstr "Proces zakończony w {}s"
+
+#: .\templates\account_settings\settings.html:34
+msgid "Account Control Panel"
+msgstr "Panel Kontrolny Konta"
+
+#: .\templates\account_settings\settings.html:39
+#: .\templates\account_settings\settings.html:44
+#, fuzzy
+#| msgid "password"
+msgid "Change Password"
+msgstr "Nowe Hasło"
+
+#: .\templates\account_settings\settings.html:46
+msgid "Profile"
+msgstr "Profil"
+
+#: .\templates\account_settings\settings.html:52
+msgid "Is profile public visibility?"
+msgstr "Profil widoczny publicznie?"
+
+#: .\templates\account_settings\settings.html:53
+msgid "Makes your data visible to anyone."
+msgstr "Twoje dane są widoczne dla każdego kto przeglada strone."
+
+#: .\templates\accounts\activate_email.html:4
+#: .\templates\accounts\password_reset_email.html:4
+msgid "Hi"
+msgstr "Witaj"
+
+#: .\templates\accounts\activate_email.html:6
+msgid "Thanks for using FIFA Tracker!"
+msgstr "Dziękuje za korzystanie z FIFA Tracker!"
+
+#: .\templates\accounts\activate_email.html:7
+msgid "Please click on the link below to activate your account:"
+msgstr "Proszę, kliknij na link poniżej aby aktywować swoje konto:"
+
+#: .\templates\accounts\activate_email.html:11
+msgid ""
+"If you did not sign up for a FIFA Tracker account please disregard this "
+"email."
+msgstr "Jeśli nie założyłeś konta na FIFA Tracker, proszę, zignoruj ten email."
+
+#: .\templates\accounts\login.html:13 .\templates\accounts\login.html:20
+msgid "Login"
+msgstr "Zaloguj"
+
+#: .\templates\accounts\login.html:23
+msgid "Forgot your password?"
+msgstr "Nie pamiętasz hasła?"
+
+#: .\templates\accounts\login.html:24
+msgid "Create New Account"
+msgstr "Załóż nowe konto"
+
+#: .\templates\accounts\password_reset_email.html:6
+msgid "We received your request to reset your FIFA Tracker account password."
+msgstr "Otrzymaliśmy twoją prośbe o reset hasła do Twojego konta na FIFA Tracker."
+
+#: .\templates\accounts\password_reset_email.html:8
+msgid "Please click on the link below to change your password:"
+msgstr "Proszę, kliknij na link poniżej aby zmienić swoje hasło:"
+
+#: .\templates\accounts\password_reset_form.html:5
+#, fuzzy
+#| msgid "Forgot your password?"
+msgid "Forgot password"
+msgstr "Zapomniałeś hasła?"
+
+#: .\templates\accounts\password_reset_form.html:6
+msgid ""
+"If you've forgotten your password you can enter your e-mail or username and "
+"we'll send out instructions on how to reset it."
+msgstr "Jeśli zapomniałeś swojego hasła, możesz podac swoj email lub nazwe uzytkowinka, a my wyślemy Ci instrukcje jak zresetować hasło."
+
+#: .\templates\accounts\password_reset_form.html:10
+#, fuzzy
+#| msgid "password"
+msgid "Reset Password"
+msgstr "Zresetuj Hasło"
+
+#: .\templates\accounts\password_set_new.html:5
+#, fuzzy
+#| msgid "password"
+msgid "Set New Password"
+msgstr "Nowe Hasło"
+
+#: .\templates\accounts\password_set_new.html:9
+#, fuzzy
+#| msgid "password"
+msgid "Reset password"
+msgstr "Zresetuj Hasło"
+
+#: .\templates\accounts\signup.html:13
+msgid "Sign up"
+msgstr "Załóż konto"
+
+#: .\templates\accounts\signup.html:17
+#, fuzzy
+#| msgid "Create New Account"
+msgid "Create an account"
+msgstr "Załóż konto"
+
+#: .\templates\accounts\success.html:12
+msgid "Success!"
+msgstr "Sukces!"

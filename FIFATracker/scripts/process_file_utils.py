@@ -12,6 +12,7 @@ from django.db import connection
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType 
 from django.core.exceptions import MultipleObjectsReturned
+from django.utils.translation import ugettext_lazy as _
 
 from players.models import (
     DataUsersCareerCalendar,
@@ -448,7 +449,7 @@ class ParseCareerSave():
         shutil.copy2(self.career_file_fullpath, f_backup)
 
         # Unpack databases from career file.
-        self._update_savefile_model(0, "Unpacking database from career file.")
+        self._update_savefile_model(0, _("Unpacking database from career file."))
         self.unpacked_dbs = UnpackDatabase(career_file_fullpath=self.career_file_fullpath, dest_path=self.data_path).unpack()
         
         if self.unpacked_dbs == 0:
@@ -459,7 +460,7 @@ class ParseCareerSave():
             raise ValueError("Too many .db files - found {}".format(current_db))
 
         # Export data from FIFA database to csv files.
-        self._update_savefile_model(0, "Exporting data from FIFA database to csv files.")
+        self._update_savefile_model(0, _("Exporting data from FIFA database to csv files."))
         db_to_csv = DatabaseToCSV(dbs_path=self.data_path, user=self.user, num_of_db=self.unpacked_dbs, xml_file=self.xml_file)
         self.xml_pkeys = db_to_csv.convert_to_csv()
 
@@ -467,12 +468,12 @@ class ParseCareerSave():
         #csv_path = "K:\Programowanie\Python\FIFA Tracker\Git\FIFATracker\media\Aranaktu\data\csv"
         csv_path = db_to_csv.dest_path 
         
-        self._update_savefile_model(0, "Importing data to FIFA Tracker database.")
+        self._update_savefile_model(0, _("Importing data to FIFA Tracker database."))
         self.importCareerData(csv_path=csv_path)
         self.protectprivacy()
         end = time.time()
         print("Done")
-        self._update_savefile_model(2, "Completed in {}s".format(round(end - start, 3)))
+        self._update_savefile_model(2, _("Completed in {}s").format(round(end - start, 3)))
         '''
 
         # TEST

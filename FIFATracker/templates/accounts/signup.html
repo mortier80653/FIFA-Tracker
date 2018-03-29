@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load i18n %}
 
 {% block stylesheet %}
   <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
@@ -9,11 +10,11 @@
 {% block content %}
   <div id="SignUp" class="container">
 		<div class="main_row">
-			<h2>Sign up</h2>
+			<h2>{% trans 'Sign up' %}</h2>
 			<form method="post" novalidate>
 				{% csrf_token %}
 				{% include "includes/form.html" %}
-				<button type="submit" class="btn btn-primary">Create an account</button>
+				<button type="submit" class="btn btn-primary">{% trans 'Create an account' %}</button>
 			</form>
 		</div>
   </div>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block stylesheet %}
     <style>        
@@ -30,25 +31,25 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
-            <h2 style="padding-bottom: 8px;" class="text-center">Account Control Panel</h2>
+            <h2 style="padding-bottom: 8px;" class="text-center">{% trans 'Account Control Panel' %}</h2>
         </div>
     </div>
 </div>
 <div class="jumbotron">
-    <h3 class="display-4">Change Password</h3>
+    <h3 class="display-4">{% trans 'Change Password' %}</h3>
 
     <form method="post">
         {% csrf_token %}
         {{ form_passwordchange.as_p }}
-        <button type="submit" class="btn btn-primary">Change Password</button>
+        <button type="submit" class="btn btn-primary">{% trans 'Change Password' %}</button>
     </form>
-    <h3 class="display-4">Profile</h3>
+    <h3 class="display-4">{% trans 'Profile' %}</h3>
     {% if user.profile.is_public %}
         <input type="checkbox" id="isprofilepublic" name="profileStatus" value="isprofilepublic" checked>
     {% else %}
         <input type="checkbox" id="isprofilepublic" name="profileStatus" value="isprofilepublic" checked>
     {% endif %}
-    <label for="isprofilepublic">Is profile public visibility?</label>
-    <span style="margin-left: 5px;" class="mytooltip glyphicon glyphicon-question-sign"><span class="tooltiptext">Makes your data visible to anyone.</span></span>
+    <label for="isprofilepublic">{% trans 'Is profile public visibility?' %}</label>
+    <span style="margin-left: 5px;" class="mytooltip glyphicon glyphicon-question-sign"><span class="tooltiptext">{% trans 'Makes your data visible to anyone.' %}</span></span>
 </div>
 {% endblock %}

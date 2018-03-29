@@ -4,6 +4,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import User
 
@@ -54,11 +55,11 @@ def ajax_change_profile_status(request):
         user.save()
 
         if is_profile_public:
-            status = "Your profile is public now."
+            status = _("Your profile is public now.")
         else:
-            status = "Your profile is private now."
+            status = _("Your profile is private now.")
     else:
-        status = "Failed. User not authenticated"
+        status = _("Failed. User not authenticated")
 
     return JsonResponse({'status': status})
 
@@ -69,9 +70,9 @@ def settings(request):
         if form_passwordchange.is_valid():
             user = form_passwordchange.save()
             update_session_auth_hash(request, user)
-            messages.success(request, 'Your password has been changed!')
+            messages.success(request, _('Your password has been changed!'))
         else:
-            messages.error(request, 'Password change failed.')
+            messages.error(request, _('Password change failed.'))
     else:
         form_passwordchange = PasswordChangeForm(request.user)
 

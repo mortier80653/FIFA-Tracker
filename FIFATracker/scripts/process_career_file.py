@@ -3,6 +3,7 @@ import os
 from django.conf import settings
 from django.contrib.auth.models import User
 from core.models import CareerSaveFileModel
+from django.utils.translation import ugettext_lazy as _
 
 from scripts.process_file_utils import ParseCareerSave
 from scripts.delete_user_data import delete_data
@@ -35,7 +36,7 @@ def run(*args):
 
     save_file_model = CareerSaveFileModel.objects.filter(user_id=user.id).first()
     if not save_file_model:
-        update_savefile_model(user_id, "Save file model not found.")
+        update_savefile_model(user_id, _("Save file model not found."))
         return
 
     # Path to meta XML file for a FIFA database.
@@ -43,7 +44,7 @@ def run(*args):
     
     fpath = os.path.join(settings.MEDIA_ROOT, str(save_file_model.uploadedfile))
     if not os.path.exists(fpath):
-        update_savefile_model(user_id, "Save file not found on the server.")
+        update_savefile_model(user_id, _("Save file not found on the server."))
         return
 
     careersave_data_path = os.path.join(settings.MEDIA_ROOT, user.username, "data")

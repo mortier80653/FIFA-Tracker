@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.utils.translation import ugettext_lazy as _
 
 import shlex, subprocess
 
@@ -16,7 +17,7 @@ from .forms import CareerSaveFileForm
 
 def upload_career_save_file(request):
     if not request.user.is_authenticated:
-        messages.error(request, 'Only authenticated users are allowed to upload files.')
+        messages.error(request, _('Only authenticated users are allowed to upload files.'))
         return redirect('home')
 
     # Check if user already uploaded a file and it's not processed yet
@@ -88,7 +89,7 @@ def process_status(request):
         status_msg = cs_model.file_process_status_msg
 
         if not status_msg:
-            status_msg = "Processing Career Save File."
+            status_msg = _("Processing Career Save File.")
 
         if cs_model.file_process_status_code == 0:
             # File is being processed

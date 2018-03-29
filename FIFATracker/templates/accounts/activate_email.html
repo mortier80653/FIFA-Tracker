@@ -1,10 +1,13 @@
 {% autoescape off %}
-Hi {{ user.username }},
+{% load i18n %}
 
-Thanks for using FIFA Tracker!
-Please click on the link below to activate your account:
+{% trans 'Hi' %} {{ user.username }},
+
+{% trans 'Thanks for using FIFA Tracker!' %}
+{% trans 'Please click on the link below to activate your account:' %}
 
 https://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 
-If you did not sign up for a FIFA Tracker account please disregard this email.
+{% trans 'If you did not sign up for a FIFA Tracker account please disregard this email.' %}
+
 {% endautoescape %}

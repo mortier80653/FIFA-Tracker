@@ -3,10 +3,11 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.utils.translation import ugettext_lazy as _
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=255, required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    username = forms.CharField(label=_('username'), max_length=255, required=True)
+    password = forms.CharField(label=_('password'), widget=forms.PasswordInput, required=True)
 
     def clean(self):
         username = self.cleaned_data.get('username')
@@ -16,12 +17,12 @@ class LoginForm(forms.Form):
             try:
                 user_get = User.objects.get(username=username)
             except:
-                raise forms.ValidationError("Sorry, account {} doesn't exists in our database. Please try again.".format(username))
+                raise forms.ValidationError(_("Sorry, account {} doesn't exists in our database. Please try again.").format(username))
 
             if not user_get.is_active:
-                raise forms.ValidationError("Sorry, your account is not activated. Check spam folder in your email inbox.")
+                raise forms.ValidationError(_("Sorry, your account is not activated. Check spam folder in your email inbox."))
             else:
-                raise forms.ValidationError("Sorry, invalid password. Please try again.")
+                raise forms.ValidationError(_("Sorry, invalid password. Please try again."))
 
         return self.cleaned_data
 
@@ -40,7 +41,7 @@ class SignUpForm(UserCreationForm):
 
 
 class PasswordResetForm(forms.Form):
-    username = forms.CharField(max_length=255, required=False,)
+    username = forms.CharField(label=_('username'), max_length=255, required=False,)
     email = forms.EmailField(max_length=254, required=False, widget=forms.EmailInput())
 
     def clean(self):
@@ -48,18 +49,18 @@ class PasswordResetForm(forms.Form):
         email = self.cleaned_data.get('email')
 
         if not username and not email:
-            raise forms.ValidationError("Please, enter your email or username and try again.")
+            raise forms.ValidationError(_("Please, enter your email or username and try again."))
 
         if not email:
             try:
                 User.objects.get(username=username)
             except:
-                raise forms.ValidationError("Sorry, account '{}' doesn't exists in our database. Please try again.".format(username))
+                raise forms.ValidationError(_("Sorry, account '{}' doesn't exists in our database. Please try again.").format(username))
         else:
             try:
                 User.objects.get(email=email)
             except:
-                raise forms.ValidationError("Sorry, account with '{}' email address doesn't exists in our database. Please try again.".format(email))
+                raise forms.ValidationError(_("Sorry, account with '{}' email address doesn't exists in our database. Please try again.").format(email))
         return self.cleaned_data
 
     def get_user(self):
@@ -71,11 +72,11 @@ class PasswordResetForm(forms.Form):
 
 class SetNewPasswordForm(forms.Form):
     error_messages = {
-        'password_mismatch': ("The two password fields didn't match."),
+        'password_mismatch': _("The two password fields didn't match."),
         }
-    new_password1 = forms.CharField(label=("New password"),
+    new_password1 = forms.CharField(label=_("New password"),
                                     widget=forms.PasswordInput)
-    new_password2 = forms.CharField(label=("New password confirmation"),
+    new_password2 = forms.CharField(label=_("New password confirmation"),
                                     widget=forms.PasswordInput)
 
     def clean_new_password2(self):

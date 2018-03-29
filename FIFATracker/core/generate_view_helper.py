@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.db import connection
+from django.utils.translation import ugettext_lazy as _
 
 from core.exceptions import NoResultsError, PrivateProfileError, UnknownError
 from core.fifa_utils import FifaPlayer
@@ -53,7 +54,7 @@ def get_current_user(request):
             raise UnknownError(e)
 
         if not is_profile_public:
-            raise PrivateProfileError("Sorry, {}'s profile is private. Profile visibility can be changed in Control Panel.".format(owner))
+            raise PrivateProfileError(_("Sorry, {}'s profile is private. Profile visibility can be changed in Control Panel.").format(owner))
         
         current_user = owner
     elif request.user.is_authenticated:
@@ -125,7 +126,7 @@ def get_transfers(request, additional_filters=None, paginate=False):
         data = list(transfer_offer_filter.qs.iterator())
 
     if len(data) <= 0:
-        raise NoResultsError('No results found. Try to change your filters')
+        raise NoResultsError(_('No results found. Try to change your filters'))
 
     playerids = ",".join(str(transfer.playerid) for transfer in data)
 
@@ -182,7 +183,7 @@ def get_team(request, teamid=0, additional_filters=None):
 
     
     if not context_data['dict_cached_queries']['q_teams']:
-        raise NoResultsError('No results found. Try to change your filters')
+        raise NoResultsError(_('No results found. Try to change your filters'))
 
     # get valid team
     for team in context_data['dict_cached_queries']['q_teams']:
@@ -317,7 +318,7 @@ def get_teams(request, additional_filters=None, paginate=False):
         data = list(teams_filter.qs.iterator())
 
     if len(data) <= 0:
-        raise NoResultsError('No results found. Try to change your filters')
+        raise NoResultsError(_('No results found. Try to change your filters'))
 
     dict_cached_queries = dict()
     dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).iterator())
@@ -338,7 +339,7 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
     try:
         current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
     except IndexError:
-        messages.error(request, "Your career file hasn't been processed yet. Displaying default FIFA database data.")
+        messages.error(request, _("Your career file hasn't been processed yet. Displaying default FIFA database data."))
         current_user = "guest"
         current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
 
@@ -361,7 +362,7 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
         data = list(player_filter.qs.iterator())
 
     if len(data) <= 0:
-        raise NoResultsError('No results found. Try to change your filters')
+        raise NoResultsError(_('No results found. Try to change your filters'))
 
     dict_cached_queries = dict()
     

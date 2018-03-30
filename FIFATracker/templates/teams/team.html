@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load players_template_tags %}
+{% load i18n %}
 
 {% block stylesheet %}
     <style>
@@ -39,7 +40,7 @@
                     <div class="col-xs-4 rat{{team.attackrating}}">
                         <div class="row">
                             <div class="col-xs-12 text-center" style="border: 1px solid black;">
-                                ATT
+                                {% trans 'ATT' %}
                             </div>
                         </div>
                         <div class="row">
@@ -51,7 +52,7 @@
                     <div class="col-xs-4 rat{{team.midfieldrating}}">
                         <div class="row">
                             <div class="col-xs-12 text-center" style="border: 1px solid black;">
-                                MID
+                                {% trans 'MID' %}
                             </div>
                         </div>
                         <div class="row">
@@ -63,7 +64,7 @@
                     <div class="col-xs-4 rat{{team.defenserating}}">
                         <div class="row">
                             <div class="col-xs-12 text-center" style="border: 1px solid black;">
-                                DEF
+                                {% trans 'DEF' %}
                             </div>
                         </div>
                         <div class="row">
@@ -76,51 +77,51 @@
             </div>
         </div>
         <div class="container-fluid">
-        <h2 align="center">Team Info</h2>
+        <h2 align="center">{% trans 'Team Info' %}</h2>
             <div class="row team-info">
                 <div class="col-md-6">
                     <table width="100%" class="info-table">
                         <tbody>
                             <tr>
-                                <td>Team</td>
+                                <td>{% trans 'Team' %}</td>
                                 <td align="right">
                                     {{team.teamname}} <a href="{% url 'teams' %}{{team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID: {{team.teamid}})" class="crest"></a>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Foundation Year</td>
+                                <td>{% trans 'Foundation Year' %}</td>
                                 <td align="right">
                                     {{team.foundationyear}}
                                 </td>
                             </tr>
                             <tr>
-                                <td>Careers</td>
+                                <td>{% trans 'Careers' %}</td>
                                 <td align="right">
                                     {{total_careers}} <span style="margin-left: 5px;" class="mytooltip glyphicon glyphicon-question-sign"><span class="tooltiptext">{{total_careers}} FIFA Tracker users are managing this team.</span></span>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Manager</td>
+                                <td>{% trans 'Manager' %}</td>
                                 <td align="right">{{manager.firstname}} {{manager.surname}}</td>
                             </tr>
                             <tr>
-                                <td>League</td>
+                                <td>{% trans 'League' %}</td>
                                 <td align="right">{{league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ league.leagueid }}.png" title="{{league.leaguename}} (ID: {{league.leagueid}})" class="crest"></td>
                             </tr>
                             <tr>
-                                <td>League Position</td>
+                                <td>{% trans 'League Position' %}</td>
                                 <td align="right">{{leagueteamlink.currenttableposition}}</td>
                             </tr>
                             <tr>
-                                <td>League Titles</td>
+                                <td>{% trans 'League Titles' %}</td>
                                 <td align="right">{{team.leaguetitles}}</td>
                             </tr>
                             <tr>
-                                <td>Domestic Cups</td>
+                                <td>{% trans 'Domestic Cups' %}</td>
                                 <td align="right">{{team.domesticcups}}</td>
                             </tr>
                             <tr>
-                                <td>Rival Team</td>
+                                <td>{% trans 'Rival Team' %}</td>
                                 <td align="right"><a href="{% url 'teams' %}{{team.rivalteam}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.rivalteam }}.png" title="ID: {{team.rivalteam}}" class="crest"></a></td>
                             </tr>
                         </tbody>
@@ -130,35 +131,35 @@
                     <table width="100%" class="info-table">
                         <tbody>
                             <tr>
-                                <td>Budget</td>
+                                <td>{% trans 'Budget' %}</td>
                                 <td align="right"> {{team.transferbudget}}</td>
                             </tr>
                             <tr>
-                                <td>Club worth</td>
+                                <td>{% trans 'Club worth' %}</td>
                                 <td align="right"> {{team.clubworth}}</td>
                             </tr>
                             <tr>
-                                <td>Popularity</td>
+                                <td>{% trans 'Popularity' %}</td>
                                 <td align="right"> {{team.popularity}}</td>
                             </tr>
                             <tr>
-                                <td>Domestic prestige</td>
+                                <td>{% trans 'Domestic prestige' %}</td>
                                 <td align="right"> {{team.domesticprestige}}</td>
                             </tr>
                             <tr>
-                                <td>Int. prestige</td>
+                                <td>{% trans 'Int. prestige' %}</td>
                                 <td align="right"> {{team.internationalprestige}}</td>
                             </tr>
                             <tr>
-                                <td>numtransfersin</td>
+                                <td>{% trans 'numtransfersin' %}</td>
                                 <td align="right"> {{team.numtransfersin}}</td>
                             </tr>
                             <tr>
-                                <td>Profitability</td>
+                                <td>{% trans 'Profitability' %}</td>
                                 <td align="right"> {{team.profitability}}</td>
                             </tr>
                             <tr>
-                                <td>Youth Development</td>
+                                <td>{% trans 'Youth Development' %}</td>
                                 <td align="right"> {{team.youthdevelopment}}</td>
                             </tr>
                         </tbody>
@@ -180,8 +181,8 @@
                                             {{p.player.overallrating}}
                                         </div>
                                         <div class="pitch-pos-name player-position" title="POS ID: {{p.player_teams.club_team.team_links.position}}">
-                                                {{p.player_teams.club_team.team_links.position}}
-                                            </div>
+                                            {{p.player_teams.club_team.team_links.position}}
+                                        </div>
                                         <div class="pitch-playername" title="{{ p.player_name.knownas }}">
                                             <marquee behavior="scroll" direction="left" scrollamount="2">{{ p.player_name.knownas }}</marquee>
                                         </div>
@@ -211,16 +212,16 @@
             </div>
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
-        <h2 align="center">GOALKEEPERS</h2>
+        <h2 align="center">{% trans 'GOALKEEPERS' %}</h2>
             <table>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan ="3">PLAYER</th>
-                        <th class="text-center">RAT</th>
-                        <th class="text-center">POT</th>
-                        <th class="text-center">AGE</th>
-                        <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
-                        <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                        <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
+                        <th class="text-center">{% trans 'RAT' %}</th>
+                        <th class="text-center">{% trans 'POT' %}</th>
+                        <th class="text-center">{% trans 'AGE' %}</th>
+                        <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
+                        <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -261,7 +262,7 @@
                         <td class="text-center hidden-xs hidden-sm">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                    Loaned from {{p.player_teams.club_team.team.teamname}}
+                                    {% trans 'Loaned from' %} {{p.player_teams.club_team.team.teamname}}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                     <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
@@ -284,16 +285,16 @@
             </table>
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
-        <h2 align="center">DEFENDERS</h2>
+        <h2 align="center">{% trans 'DEFENDERS' %}</h2>
             <table>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan ="3">PLAYER</th>
-                        <th class="text-center">RAT</th>
-                        <th class="text-center">POT</th>
-                        <th class="text-center">AGE</th>
-                        <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
-                        <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                        <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
+                        <th class="text-center">{% trans 'RAT' %}</th>
+                        <th class="text-center">{% trans 'POT' %}</th>
+                        <th class="text-center">{% trans 'AGE' %}</th>
+                        <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
+                        <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -334,7 +335,7 @@
                         <td class="text-center hidden-xs hidden-sm">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                    Loaned from {{p.player_teams.club_team.team.teamname}}
+                                {% trans 'Loaned from' %} {{p.player_teams.club_team.team.teamname}}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                     <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
@@ -357,16 +358,16 @@
             </table>
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
-        <h2 align="center">MIDFIELDERS</h2>
+        <h2 align="center">{% trans 'MIDFIELDERS' %}</h2>
             <table>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan ="3">PLAYER</th>
-                        <th class="text-center">RAT</th>
-                        <th class="text-center">POT</th>
-                        <th class="text-center">AGE</th>
-                        <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
-                        <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                        <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
+                        <th class="text-center">{% trans 'RAT' %}</th>
+                        <th class="text-center">{% trans 'POT' %}</th>
+                        <th class="text-center">{% trans 'AGE' %}</th>
+                        <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
+                        <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -407,7 +408,7 @@
                         <td class="text-center hidden-xs hidden-sm">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                    Loaned from {{p.player_teams.club_team.team.teamname}}
+                                {% trans 'Loaned from' %} {{p.player_teams.club_team.team.teamname}}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                     <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
@@ -430,16 +431,16 @@
             </table>
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
-        <h2 align="center">FORWARDS</h2>
+        <h2 align="center">{% trans 'FORWARDS' %}</h2>
             <table>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan ="3">PLAYER</th>
-                        <th class="text-center">RAT</th>
-                        <th class="text-center">POT</th>
-                        <th class="text-center">AGE</th>
-                        <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
-                        <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                        <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
+                        <th class="text-center">{% trans 'RAT' %}</th>
+                        <th class="text-center">{% trans 'POT' %}</th>
+                        <th class="text-center">{% trans 'AGE' %}</th>
+                        <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
+                        <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -480,7 +481,7 @@
                         <td class="text-center hidden-xs hidden-sm">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                    Loaned from {{p.player_teams.club_team.team.teamname}}
+                                    {% trans 'Loaned from' %} {{p.player_teams.club_team.team.teamname}}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                     <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
@@ -504,16 +505,16 @@
         </div>
             {% if is_club_team %}
                 <div id="table-container" class="container-fluid" style="margin-top: 10px;">
-                <h2 align="center">LOANED OUT</h2>
+                <h2 align="center">{% trans 'LOANED OUT' %}</h2>
                     <table>
                         <thead>
                             <tr>
-                                <th class="text-center" colspan ="3">PLAYER</th>
-                                <th class="text-center">RAT</th>
-                                <th class="text-center">POT</th>
-                                <th class="text-center">AGE</th>
-                                <th class="text-center hidden-xs hidden-sm">CONTRACT</th>
-                                <th class="text-center hidden-xs hidden-sm">VALUE</th>
+                                <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
+                                <th class="text-center">{% trans 'RAT' %}</th>
+                                <th class="text-center">{% trans 'POT' %}</th>
+                                <th class="text-center">{% trans 'AGE' %}</th>
+                                <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
+                                <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -541,7 +542,7 @@
                                 <td class="text-center">{{ p.player_age.age }}</td>
                                 <td class="text-center hidden-xs hidden-sm">
                                     <div>
-                                        Loaned to {{p.player_contract.loanedto_clubname}}
+                                        {% trans 'Loaned to' %} {{p.player_contract.loanedto_clubname}}
                                         <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="{{ p.player_contract.loanedto_clubname }} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
                                     </div>
                                 </td>
@@ -563,7 +564,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <h3>This team don't have any players</h3>
+                    <h3>{% trans 'This team dont have any players' %}</h3>
                 </div>
             </div>
         </div>

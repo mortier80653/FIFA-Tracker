@@ -58,24 +58,24 @@
 									<input class="form-control" type="number" min="1" max="99" name="age_max" value="{{ request_query_dict.age_max }}" placeholder="Max">
 								</div>
 								<label for="select-isretiring">{% trans 'Is Retiring?' %}</label>
-								<select id="select-isretiring" name="isretiring" placeholder="Any...">
-									<option value="-1" selected>Any..</option>
-									<option value="0">No</option>
-									<option value="1">Yes</option>
+								<select id="select-isretiring" name="isretiring" placeholder="{% trans 'Any...' %}">
+									<option value="-1" selected>{% trans 'Any...' %}</option>
+									<option value="0">{% trans 'No' %}</option>
+									<option value="1">{% trans 'Yes' %}</option>
 								</select>
 
 								<label for="select-isreal">{% trans 'Is Real?' %}</label>
-								<select id="select-isreal" name="isreal" placeholder="Any...">
-									<option value="-1" selected>Any..</option>
-									<option value="0">No</option>
-									<option value="1">Yes</option>
+								<select id="select-isreal" name="isreal" placeholder="{% trans 'Any...' %}">
+									<option value="-1" selected>{% trans 'Any...' %}</option>
+									<option value="0">{% trans 'No' %}</option>
+									<option value="1">{% trans 'Yes' %}</option>
 								</select>
 
 								<label for="select-isonloan">{% trans 'On Loan?' %}</label>
-								<select id="select-isonloan" name="isonloan" placeholder="Any...">
-									<option value="-1" selected>Any..</option>
-									<option value="0">No</option>
-									<option value="1">Yes</option>
+								<select id="select-isonloan" name="isonloan" placeholder="{% trans 'Any...' %}">
+									<option value="-1" selected>{% trans 'Any...' %}</option>
+									<option value="0">{% trans 'No' %}</option>
+									<option value="1">{% trans 'Yes' %}</option>
 								</select>
 							</div>
 							<div class="col-md-4">

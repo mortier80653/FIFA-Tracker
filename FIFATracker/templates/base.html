@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,44 +55,44 @@
 			</div>
 			<div class="collapse navbar-collapse" id="siteNavbar">
 				<ul class="nav navbar-nav navbar-left">
-					<li><a href="{% url 'players' %}">Players</a></li>
-					<li><a href="{% url 'teams' %}">Teams</a></li>
-					<li><a href="{% url 'transfers' %}">Transfers</a></li>
+					<li><a href="{% url 'players' %}">{% trans 'Players' %}</a></li>
+					<li><a href="{% url 'teams' %}">{% trans 'Teams' %}</a></li>
+					<li><a href="{% url 'transfers' %}">{% trans 'Transfers' %}</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="userSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span></a>
 						<div class="dropdown-menu">
-							<h6 class="dropdown-header"><span>Currency</span></h6>
+							<h6 class="dropdown-header"><span>{% trans 'Currency' %}</span></h6>
 							{% if request.session.currency == '0' %}
-								<a class="dropdown-item-active" id="id_cur_usd">USDOLLAR</a>
+								<a class="dropdown-item-active" id="id_cur_usd">{% trans 'USDOLLAR' %}</a>
 							{% else %}
-								<a class="dropdown-item" id="id_cur_usd">USDOLLAR</a>
+								<a class="dropdown-item" id="id_cur_usd">{% trans 'USDOLLAR' %}</a>
 							{% endif %}
 							<div class="dropdown-divider"></div>
 							{% if request.session.currency == '1' %}
-								<a class="dropdown-item-active" id="id_cur_eur">EURO</a>
+								<a class="dropdown-item-active" id="id_cur_eur">{% trans 'EURO' %}</a>
 							{% else %}
-								<a class="dropdown-item" id="id_cur_eur">EURO</a>
+								<a class="dropdown-item" id="id_cur_eur">{% trans 'EURO' %}</a>
 							{% endif %}
 							<div class="dropdown-divider"></div>
 							{% if request.session.currency == '2' %}
-								<a class="dropdown-item-active" id="id_cur_gbp">POUND</a>
+								<a class="dropdown-item-active" id="id_cur_gbp">{% trans 'POUND' %}</a>
 							{% else %}
-								<a class="dropdown-item" id="id_cur_gbp">POUND</a>
+								<a class="dropdown-item" id="id_cur_gbp">{% trans 'POUND' %}</a>
 							{% endif %}
-							<h6 class="dropdown-header"><span>Units</span></h6>
+							<h6 class="dropdown-header"><span>{% trans 'Units' %}</span></h6>
 							{% if request.session.units == '0' %}
-								<a class="dropdown-item-active" id="id_unit_metric">METRIC</a>
+								<a class="dropdown-item-active" id="id_unit_metric">{% trans 'METRIC' %}</a>
 							{% else %}
-								<a class="dropdown-item" id="id_unit_metric">METRIC</a>
+								<a class="dropdown-item" id="id_unit_metric">{% trans 'METRIC' %}</a>
 							{% endif %}
 							<div class="dropdown-divider"></div>
 							{% if request.session.units == '1' %}
-								<a class="dropdown-item-active" id="id_unit_imperial">IMPERIAL</a>
+								<a class="dropdown-item-active" id="id_unit_imperial">{% trans 'IMPERIAL' %}</a>
 							{% else %}
-								<a class="dropdown-item" id="id_unit_imperial">IMPERIAL</a>
+								<a class="dropdown-item" id="id_unit_imperial">{% trans 'IMPERIAL' %}</a>
 							{% endif %}
 						</div>
 					</li>
@@ -99,15 +100,15 @@
 						<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>{{ user.username }}</a>
 						<div class="dropdown-menu" aria-labelledby="userMenu">
-							<a class="dropdown-item" href="{% url 'settings' %}">Control Panel</a>
+							<a class="dropdown-item" href="{% url 'settings' %}">{% trans 'Control Panel' %}</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="{% url 'upload_career_save_file' %}">Upload</a>
+							<a class="dropdown-item" href="{% url 'upload_career_save_file' %}">{% trans 'Upload' %}</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+							<a class="dropdown-item" href="{% url 'logout' %}">{% trans 'Log out' %}</a>
 						</div>
 						</li>
 				{% else %}
-					<li><a class="btn btn-success" href="{% url 'login_view' %}">LOG-IN</a></li>
+					<li><a class="btn btn-success" href="{% url 'login_view' %}">{% trans 'LOG-IN' %}</a></li>
 				{% endif %}
 				</ul>
 			</div>

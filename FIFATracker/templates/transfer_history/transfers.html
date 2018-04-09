@@ -1,71 +1,72 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load transfers_template_tags %}
+{% load i18n %}
 
 {% block content %}
 <div class="container-fluid">
     <form id="transfersfilter" method="get">
         <div class="well">
-            <h4 style="margin-top: 0">Filter Transfers</h4>
+            <h4 style="margin-top: 0">{% trans 'Filter Transfers' %}</h4>
             <div id="tabs">
                 <ul>
                     <li>
-                        <a href="#tabs-1">Transfers</a>
+                        <a href="#tabs-1">{% trans 'Transfers' %}</a>
                     </li>
                 </ul>
                 <div id="tabs-1">
                     <div class="form-group row">
                         <div class="col-md-4">  
-                            <label for="select-iscputransfer">Is CPU Transfer?</label>
+                            <label for="select-iscputransfer">{% trans 'Is CPU Transfer?' %}</label>
                             <select id="select-iscputransfer" name="iscputransfer" placeholder="All">
-                                <option value="-1" selected>All</option>
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
+                                <option value="-1" selected>{% trans 'All' %}</option>
+                                <option value="0">{% trans 'No' %}</option>
+                                <option value="1">{% trans 'Yes' %}</option>
                             </select>
-                            <label for="select-isloan">Is Loan Listed?</label>
+                            <label for="select-isloan">{% trans 'Is Loan Listed?' %}</label>
                             <select id="select-isloan" name="isloan" placeholder="All">
-                                <option value="-1" selected>All</option>
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
+                                <option value="-1" selected>{% trans 'All' %}</option>
+                                <option value="0">{% trans 'No' %}</option>
+                                <option value="1">{% trans 'Yes' %}</option>
                             </select>
-                            <label for="select-isloanbuy">Is Loan Buy?</label>
+                            <label for="select-isloanbuy">{% trans 'Is Loan Buy?' %}</label>
                             <select id="select-isloanbuy" name="isloanbuy" placeholder="All">
-                                <option value="-1" selected>All</option>
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
+                                <option value="-1" selected>{% trans 'All' %}</option>
+                                <option value="0">{% trans 'No' %}</option>
+                                <option value="1">{% trans 'Yes' %}</option>
                             </select>
-                            <label for="select-issnipe">Is Snipe?</label>
+                            <label for="select-issnipe">{% trans 'Is Snipe?' %}</label>
                             <select id="select-issnipe" name="issnipe" placeholder="All">
-                                <option value="-1" selected>All</option>
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
+                                <option value="-1" selected>{% trans 'All' %}</option>
+                                <option value="0">{% trans 'No' %}</option>
+                                <option value="1">{% trans 'Yes' %}</option>
                             </select>
-                            <label for="select-result">Transfer Result</label>
-                            <select id="select-result" name="result" placeholder="Transfer Completed">
-                                    <option value="-1">All</option>
-                                    <option value="1">Transfer Rejected (?)</option>
-                                    <option value="2">Transfer Stalled (?)</option>
-                                    <option value="32" selected>Transfer Completed</option>
+                            <label for="select-result">{% trans 'Transfer Result' %}</label>
+                            <select id="select-result" name="result" placeholder="{% trans 'Transfer Completed' %}">
+                                    <option value="-1">{% trans 'All' %}</option>
+                                    <option value="1">{% trans 'Transfer Rejected' %} (?)</option>
+                                    <option value="2">{% trans 'Transfer Stalled' %} (?)</option>
+                                    <option value="32" selected>{% trans 'Transfer Completed' %}</option>
                                 </select>
                         </div>
                         <div class="col-md-4">
-                            <label>Team From</label>
-							<input class='teams-filter-input' id='fromteamid-input' name="fromteamid" placeholder="Search for team...">  
-                            <label>Team To</label>
-							<input class='teams-filter-input' id='offerteamid-input' name="offerteamid" placeholder="Search for team...">  
+                            <label>{% trans 'Team From' %}</label>
+							<input class='teams-filter-input' id='fromteamid-input' name="fromteamid" placeholder="{% trans 'Search for team...' %}">  
+                            <label>{% trans 'Team To' %}</label>
+							<input class='teams-filter-input' id='offerteamid-input' name="offerteamid" placeholder="{% trans 'Search for team...' %}">  
                         </div>
                         <div class="col-md-4">
-                            <label for="valuation__gte">Valuation</label>
+                            <label for="valuation__gte">{% trans 'Valuation' %}</label>
                             <div class="input-group justified">
                                 <input class="form-control" type="number" min="0" max="2147483520" name="valuation__gte" value="{{ request_query_dict.valuation__gte }}" placeholder="Min">
                                 <input class="form-control" type="number" min="0" max="2147483520" name="valuation__lte" value="{{ request_query_dict.valuation__lte }}" placeholder="Max">
                             </div>  
-                            <label for="offeredfee__gte">Offered Fee</label>
+                            <label for="offeredfee__gte">{% trans 'Offered Fee' %}</label>
                             <div class="input-group justified">
                                 <input class="form-control" type="number" min="0" max="2147483520" name="offeredfee__gte" value="{{ request_query_dict.offeredfee__gte }}" placeholder="Min">
                                 <input class="form-control" type="number" min="0" max="2147483520" name="offeredfee__lte" value="{{ request_query_dict.offeredfee__lte }}" placeholder="Max">
                             </div>  
-                            <label for="offeredwage__gte">Offered Wage</label>
+                            <label for="offeredwage__gte">{% trans 'Offered Wage' %}</label>
                             <div class="input-group justified">
                                 <input class="form-control" type="number" min="0" max="2147483520" name="offeredwage__gte" value="{{ request_query_dict.offeredwage__gte }}" placeholder="Min">
                                 <input class="form-control" type="number" min="0" max="2147483520" name="offeredwage__lte" value="{{ request_query_dict.offeredwage__lte }}" placeholder="Max">
@@ -77,12 +78,12 @@
             <div class="row">
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary" id="btn-filter" style="margin-top: 10px; margin-right: 5px;">
-                        <span class="glyphicon glyphicon-search"></span> Search
+                        <span class="glyphicon glyphicon-search"></span> {% trans 'Search' %}
                     </button>
-                    <button type="button" class="btn btn-primary" id="btn-reset" style="margin-top: 10px; margin-right: 5px;">Reset</button>
+                    <button type="button" class="btn btn-primary" id="btn-reset" style="margin-top: 10px; margin-right: 5px;">{% trans 'Reset' %}</button>
                 </div>
                 <div class="col-md-4 col-md-offset-4 maxresults">
-                    <label for="select-max_per_page">Results per page:</label>
+                    <label for="select-max_per_page">{% trans 'Results per page' %}:</label>
                     <select id="select-max_per_page" name="max_per_page" placeholder="50">
                         <option value="25">25</option>
                         <option value="50" selected>50</option>
@@ -96,11 +97,11 @@
 </div>
 <div class="container-fluid">
     <nav aria-label="Search results pages">
-        <p>Total Transfers: {{ paginator.num_of_objects }}</p>
+        <p>{% trans 'Total Transfers' %}: {{ paginator.num_of_objects }}</p>
         <ul class="pagination">
             {% if paginator.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">First</a>
+                <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">{% trans 'First' %}</a>
             </li>
             <li class="page-item">
                 <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
@@ -116,7 +117,7 @@
                 <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
+                <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">{% trans 'Last' %}</a>
             </li>
             {% endif %}
         </ul>
@@ -126,23 +127,23 @@
     <table>
         <thead>
             <tr>
-                <th class="text-center" colspan ="3">PLAYER</th>
-                <th class="text-center">RAT</th>
-                <th class="text-center">FROM</th>
-                <th class="text-center">TO</th>
-                <th class="text-center hidden-xs hidden-sm">Player Value</th>
+                <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
+                <th class="text-center">{% trans 'RAT' %}</th>
+                <th class="text-center">{% trans 'FROM' %}</th>
+                <th class="text-center">{% trans 'TO' %}</th>
+                <th class="text-center hidden-xs hidden-sm">{% trans 'Player Value' %}</th>
                 <th class="text-center hidden-xs hidden-sm">
                     {% if request_query_dict.order_by == "-offeredfee" %}
                         <a href="{% url_params request '?order_by=' 'offeredfee' %}">
-                            Offered Fee  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            {% trans 'Offered Fee' %} <span class="glyphicon glyphicon-sort-by-order-alt"></span>
                         </a>
                     {% elif request_query_dict.order_by == "offeredfee" %}
                         <a href="{% url_params request '?order_by=' '-offeredfee' %}">
-                            Offered Fee  <span class="glyphicon glyphicon-sort-by-order"></span>
+                            {% trans 'Offered Fee' %} <span class="glyphicon glyphicon-sort-by-order"></span>
                         </a>
                     {% else %}
                         <a href="{% url_params request '?order_by=' 'offeredfee' %}">
-                            Offered Fee  <span class="glyphicon glyphicon-sort"></span>
+                            {% trans 'Offered Fee' %} <span class="glyphicon glyphicon-sort"></span>
                         </a>
                     {% endif %}
                 </th>
@@ -183,7 +184,7 @@
                     <td class="text-center hidden-xs hidden-sm">
                         <div>
                             {% if p.player_contract.isloanedout %}
-                                Loan
+                                {% trans 'Loan' %}
                             {% else %}
                                 {{ p.transfer_info.offeredfee }} {{ request.session.currency_symbol }}
                             {% endif %}
@@ -199,7 +200,7 @@
         <ul class="pagination">
             {% if paginator.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">First</a>
+                <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">{% trans 'First' %}</a>
             </li>
             <li class="page-item">
                 <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
@@ -215,7 +216,7 @@
                 <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">Last</a>
+                <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">{% trans 'Last' %}</a>
             </li>
             {% endif %}
         </ul>

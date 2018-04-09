@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-30 21:01+0200\n"
+"POT-Creation-Date: 2018-04-09 18:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -292,6 +292,135 @@ msgstr "Załóż konto"
 msgid "Success!"
 msgstr "Sukces!"
 
+#: .\templates\base.html:58 .\templates\upload.html:64
+msgid "Players"
+msgstr "Zawodnicy"
+
+#: .\templates\base.html:59 .\templates\upload.html:65
+msgid "Teams"
+msgstr "Drużyny"
+
+#: .\templates\base.html:60 .\templates\transfer_history\transfers.html:14
+msgid "Transfers"
+msgstr "Transfery"
+
+#: .\templates\base.html:67
+msgid "Currency"
+msgstr "Waluta"
+
+#: .\templates\base.html:69 .\templates\base.html:71
+msgid "USDOLLAR"
+msgstr "DOLAR"
+
+#: .\templates\base.html:75 .\templates\base.html:77
+msgid "EURO"
+msgstr "EURO"
+
+#: .\templates\base.html:81 .\templates\base.html:83
+msgid "POUND"
+msgstr "FUNT"
+
+#: .\templates\base.html:85
+msgid "Units"
+msgstr "SYSTEM MIAR"
+
+#: .\templates\base.html:87 .\templates\base.html:89
+msgid "METRIC"
+msgstr "METRY"
+
+#: .\templates\base.html:93 .\templates\base.html:95
+msgid "IMPERIAL"
+msgstr "BRYTYJSKI"
+
+#: .\templates\base.html:103
+msgid "Control Panel"
+msgstr "Panel Kontrolny"
+
+#: .\templates\base.html:105 .\templates\home.html:15
+msgid "Upload"
+msgstr "Prześlij"
+
+#: .\templates\base.html:107
+msgid "Log out"
+msgstr "Wyloguj się"
+
+#: .\templates\base.html:111
+msgid "LOG-IN"
+msgstr "ZALOGUJ"
+
+#: .\templates\home.html:8
+msgid "Track your progress in FIFA Career Mode"
+msgstr "Sledź swoje postępy w trybie kariery w grze FIFA"
+
+#: .\templates\home.html:9
+msgid ""
+"If you ever wanted to find best of the best players in your career mode then "
+"this place is ideal for you. Upload your career save and let the magic happen"
+msgstr ""
+"Jeśli kiedykolwiek chciałeś wiedzieć kto jest najepszym zawodnikiem w Twojej "
+"karierze to to miejsce będzie idealne dla Ciebie. Prześlij swój zapisany "
+"stan gry i sprawdź kto to"
+
+#: .\templates\home.html:12
+msgid "Get Started"
+msgstr "Zacznij Teraz"
+
+#: .\templates\home.html:14
+msgid "Register"
+msgstr "Zarejestruj"
+
+#: .\templates\home.html:14
+msgid "an new account or"
+msgstr "nowe konto, lub"
+
+#: .\templates\home.html:14
+msgid "login"
+msgstr "zaloguj się"
+
+#: .\templates\home.html:15
+msgid "your career save"
+msgstr "Twój zapisany stan gry"
+
+#: .\templates\home.html:16
+msgid "Players from your career save will be available"
+msgstr "Zawodnicy z Twojego zapisu gry będa dostępni"
+
+#: .\templates\home.html:16
+msgid "here"
+msgstr "tutaj"
+
+#: .\templates\home.html:16
+msgid "after our servers will process your career data"
+msgstr "gdy nasze serwery przetworzą Twoje dane"
+
+#: .\templates\home.html:18
+msgid "Plans for future"
+msgstr "Plany na przyszłość"
+
+#: .\templates\home.html:31
+msgid "Most Popular Clubs"
+msgstr "Najpopularniejsze kluby"
+
+#: .\templates\home.html:36
+msgid "CLUB"
+msgstr "Klub"
+
+#: .\templates\home.html:37 .\templates\home.html:65
+msgid "MANAGERS"
+msgstr "Menedżerów"
+
+#: .\templates\home.html:59
+msgid "Most Popular National Teams"
+msgstr "Najpopularniejsze Reprezentacje"
+
+#: .\templates\home.html:64
+msgid "NATIONAL TEAM"
+msgstr "Reprezentacja"
+
+#: .\templates\home.html:88
+msgid "Join Our Discord"
+msgstr "Dołącz do nas na Discordzie"
+
 #: .\templates\players\player.html:16 .\templates\players\player.html:128
 #: .\templates\players\players.html:84
 msgid "Nationality"
@@ -396,7 +525,7 @@ msgstr "Słabsza noga"
 
 #: .\templates\players\player.html:183
 msgid "Int. Reputation"
-msgstr ""
+msgstr "Reptuacja m-nar."
 
 #: .\templates\players\player.html:187
 msgid "Value"
@@ -600,7 +729,7 @@ msgstr "Filtruj Zawodników"
 
 #: .\templates\players\players.html:33
 msgid "Player Info"
-msgstr ""
+msgstr "Informacje o Zawodniku"
 
 #: .\templates\players\players.html:39
 msgid "Other"
@@ -613,6 +742,31 @@ msgstr "Wiek"
 #: .\templates\players\players.html:60
 msgid "Is Retiring?"
 msgstr "Konczy Kariere?"
+
+#: .\templates\players\players.html:61 .\templates\players\players.html:62
+#: .\templates\players\players.html:68 .\templates\players\players.html:69
+#: .\templates\players\players.html:75 .\templates\players\players.html:76
+#: .\templates\players\players.html:91 .\templates\players\players.html:93
+msgid "Any..."
+msgstr "Każda..."
+
+#: .\templates\players\players.html:63 .\templates\players\players.html:70
+#: .\templates\players\players.html:77
+#: .\templates\transfer_history\transfers.html:23
+#: .\templates\transfer_history\transfers.html:29
+#: .\templates\transfer_history\transfers.html:35
+#: .\templates\transfer_history\transfers.html:41
+msgid "No"
+msgstr "Nie"
+
+#: .\templates\players\players.html:64 .\templates\players\players.html:71
+#: .\templates\players\players.html:78
+#: .\templates\transfer_history\transfers.html:24
+#: .\templates\transfer_history\transfers.html:30
+#: .\templates\transfer_history\transfers.html:36
+#: .\templates\transfer_history\transfers.html:42
+msgid "Yes"
+msgstr "Tak"
 
 #: .\templates\players\players.html:67
 msgid "Is Real?"
@@ -639,16 +793,14 @@ msgid "Team"
 msgstr "Drużyna"
 
 #: .\templates\players\players.html:89 .\templates\teams\teams.html:10
+#: .\templates\transfer_history\transfers.html:54
+#: .\templates\transfer_history\transfers.html:56
 msgid "Search for team..."
 msgstr "Szukaj drużyny..."
 
 #: .\templates\players\players.html:90
 msgid "Attacking Work Rate"
 msgstr "Pracowitość w Ataku"
-
-#: .\templates\players\players.html:91 .\templates\players\players.html:93
-msgid "Any..."
-msgstr "Każda..."
 
 #: .\templates\players\players.html:92
 msgid "Defensive Work Rate"
@@ -664,7 +816,7 @@ msgstr "Słabsza Noga"
 
 #: .\templates\players\players.html:106
 msgid "International Reputation"
-msgstr "Sława"
+msgstr "Reptuacja m-nar."
 
 #: .\templates\players\players.html:111
 msgid "Height (cm)"
@@ -711,14 +863,17 @@ msgid "GK Reflexes"
 msgstr "Refleks"
 
 #: .\templates\players\players.html:327 .\templates\teams\teams.html:135
+#: .\templates\transfer_history\transfers.html:81
 msgid "Search"
 msgstr "Szukaj"
 
 #: .\templates\players\players.html:329 .\templates\teams\teams.html:137
+#: .\templates\transfer_history\transfers.html:83
 msgid "Reset"
 msgstr "Resetuj"
 
 #: .\templates\players\players.html:332 .\templates\teams\teams.html:140
+#: .\templates\transfer_history\transfers.html:86
 msgid "Results per page"
 msgstr "Rezultatów na strone"
 
@@ -736,17 +891,22 @@ msgstr "Wszystkich zawodników"
 
 #: .\templates\players\players.html:356 .\templates\players\players.html:485
 #: .\templates\teams\teams.html:158 .\templates\teams\teams.html:318
+#: .\templates\transfer_history\transfers.html:104
+#: .\templates\transfer_history\transfers.html:203
 msgid "First"
 msgstr "Pierwsza"
 
 #: .\templates\players\players.html:370 .\templates\players\players.html:499
 #: .\templates\teams\teams.html:174 .\templates\teams\teams.html:334
+#: .\templates\transfer_history\transfers.html:120
+#: .\templates\transfer_history\transfers.html:219
 msgid "Last"
 msgstr "Ostatnia"
 
 #: .\templates\players\players.html:381 .\templates\teams\team.html:219
 #: .\templates\teams\team.html:292 .\templates\teams\team.html:365
 #: .\templates\teams\team.html:438 .\templates\teams\team.html:512
+#: .\templates\transfer_history\transfers.html:130
 msgid "PLAYER"
 msgstr "ZAWODNIK"
 
@@ -754,6 +914,7 @@ msgstr "ZAWODNIK"
 #: .\templates\players\players.html:393 .\templates\teams\team.html:220
 #: .\templates\teams\team.html:293 .\templates\teams\team.html:366
 #: .\templates\teams\team.html:439 .\templates\teams\team.html:513
+#: .\templates\transfer_history\transfers.html:131
 msgid "RAT"
 msgstr "OGL"
 
@@ -804,7 +965,7 @@ msgstr "OBR"
 
 #: .\templates\teams\team.html:80 .\templates\teams\teams.html:26
 msgid "Team Info"
-msgstr ""
+msgstr "Informacje o Drużynie"
 
 #: .\templates\teams\team.html:92
 msgid "Foundation Year"
@@ -848,15 +1009,15 @@ msgstr "Popularność"
 
 #: .\templates\teams\team.html:146 .\templates\teams\teams.html:82
 msgid "Domestic prestige"
-msgstr ""
+msgstr "Lokalny prestiż"
 
 #: .\templates\teams\team.html:150
 msgid "Int. prestige"
-msgstr ""
+msgstr "M-nar. prestiż"
 
 #: .\templates\teams\team.html:154
 msgid "numtransfersin"
-msgstr ""
+msgstr "numtransfersin"
 
 #: .\templates\teams\team.html:158
 msgid "Profitability"
@@ -905,15 +1066,15 @@ msgstr "Filtruj Drużyny"
 
 #: .\templates\teams\teams.html:39
 msgid "Att. Rating"
-msgstr ""
+msgstr "Ocena ATK"
 
 #: .\templates\teams\teams.html:46
 msgid "Mid. Rating"
-msgstr ""
+msgstr "Ocena POM"
 
 #: .\templates\teams\teams.html:53
 msgid "Def. Rating"
-msgstr ""
+msgstr "Ocena OBR"
 
 #: .\templates\teams\teams.html:60
 msgid "Team Type"
@@ -941,7 +1102,7 @@ msgstr "Wartość klubu"
 
 #: .\templates\teams\teams.html:89
 msgid "Int. Prestige"
-msgstr ""
+msgstr "M-nar prestiż"
 
 #: .\templates\teams\teams.html:154 .\templates\teams\teams.html:314
 msgid "Total Teams"
@@ -960,3 +1121,140 @@ msgstr "OGL"
 #: .\templates\teams\teams.html:271
 msgid "BUDGET"
 msgstr "BUDŻET"
+
+#: .\templates\transfer_history\transfers.html:10
+msgid "Filter Transfers"
+msgstr "Filtruj Transfery"
+
+#: .\templates\transfer_history\transfers.html:20
+msgid "Is CPU Transfer?"
+msgstr "Transfer CPU?"
+
+#: .\templates\transfer_history\transfers.html:22
+#: .\templates\transfer_history\transfers.html:28
+#: .\templates\transfer_history\transfers.html:34
+#: .\templates\transfer_history\transfers.html:40
+#: .\templates\transfer_history\transfers.html:46
+msgid "All"
+msgstr "Wszystko"
+
+#: .\templates\transfer_history\transfers.html:26
+msgid "Is Loan Listed?"
+msgstr "Jest do wypożyczenia?"
+
+#: .\templates\transfer_history\transfers.html:32
+msgid "Is Loan Buy?"
+msgstr "Kupno po wypożyczeniu?"
+
+#: .\templates\transfer_history\transfers.html:38
+msgid "Is Snipe?"
+msgstr "Snipe?"
+
+#: .\templates\transfer_history\transfers.html:44
+msgid "Transfer Result"
+msgstr "Rezultat Negocjacji"
+
+#: .\templates\transfer_history\transfers.html:45
+#: .\templates\transfer_history\transfers.html:49
+msgid "Transfer Completed"
+msgstr "Transfer Zakończony"
+
+#: .\templates\transfer_history\transfers.html:47
+msgid "Transfer Rejected"
+msgstr "Transfer Odrzucony"
+
+#: .\templates\transfer_history\transfers.html:48
+msgid "Transfer Stalled"
+msgstr "Transfer Wstrzymany"
+
+#: .\templates\transfer_history\transfers.html:53
+msgid "Team From"
+msgstr "Z Drużyny"
+
+#: .\templates\transfer_history\transfers.html:55
+msgid "Team To"
+msgstr "Do Drużyny"
+
+#: .\templates\transfer_history\transfers.html:59
+msgid "Valuation"
+msgstr "Wycena"
+
+#: .\templates\transfer_history\transfers.html:64
+#: .\templates\transfer_history\transfers.html:138
+#: .\templates\transfer_history\transfers.html:142
+#: .\templates\transfer_history\transfers.html:146
+msgid "Offered Fee"
+msgstr "Oferowana Kwota"
+
+#: .\templates\transfer_history\transfers.html:69
+msgid "Offered Wage"
+msgstr "Oferowana Pensja"
+
+#: .\templates\transfer_history\transfers.html:100
+msgid "Total Transfers"
+msgstr "Wszystkich Transferów"
+
+#: .\templates\transfer_history\transfers.html:132
+msgid "FROM"
+msgstr "Z"
+
+#: .\templates\transfer_history\transfers.html:133
+msgid "TO"
+msgstr "DO"
+
+#: .\templates\transfer_history\transfers.html:134
+msgid "Player Value"
+msgstr "Wartość Zawodnika"
+
+#: .\templates\transfer_history\transfers.html:187
+msgid "Loan"
+msgstr "Wypożyczony"
+
+#: .\templates\upload.html:53
+msgid "Your file is being processed"
+msgstr "Twój plik jest przetwarzany"
+
+#: .\templates\upload.html:55
+msgid "Whole process may take around 1 minute"
+msgstr "Cały proces może zająć około 1 minuty"
+
+#: .\templates\upload.html:56
+msgid "Status (updates every 10s)"
+msgstr "Status (aktualizacja co 10s)"
+
+#: .\templates\upload.html:59
+#, fuzzy
+#| msgid "after our servers will process your career data"
+msgid "Error during processing your career file"
+msgstr "gdy nasze serwery przetworzą Twoje dane"
+
+#: .\templates\upload.html:60
+msgid "Reason"
+msgstr "Powód"
+
+#: .\templates\upload.html:62
+msgid "Career file has been processed. Everything should work"
+msgstr "Plik został przetworzony. Wszystko powinno działać"
+
+#: .\templates\upload.html:70
+msgid "Upload your FIFA Manager Mode Career File"
+msgstr "Prześlij swój zapisany stan gry z trybu kariery"
+
+#: .\templates\upload.html:73
+msgid ""
+"On PC you can find your save file in \"Documents\" -> \"FIFA 18\" -> "
+"\"settings\" -> \"CareerXXX\""
+msgstr "Na PC Twój plik z zapisanym stanem gry powinien znajdować się w \"Documents\" -> \"FIFA 18\" -> "
+"\"settings\" -> \"CareerXXX\""
+
+#: .\templates\upload.html:78
+msgid "Upload Career Save"
+msgstr "Prześlij stan gry"
+
+#: .\templates\upload.html:90
+msgid "Only authenticated users are allowed to upload files"
+msgstr "Tylko autoryzowani użytkownicy mogą przesyłać pliki."
+
+#: .\templates\upload.html:93
+msgid "Return to home"
+msgstr "Wróć na stronę główną"

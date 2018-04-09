@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="container">
 	<h3 class="text-center">FIFA Tracker</h3>
-	<p class="text-center">Track your progress in FIFA Career Mode.</p>
-	<p class="text-center">We are live! FIFA Tracker is live!</p>
-	<p class="text-center">If you ever wanted to find best of the best players in your career mode then this place is ideal for you. Upload your career save and let the magic happen. :)</p>
+	<p class="text-center">{% trans 'Track your progress in FIFA Career Mode' %}.</p>
+	<p class="text-center">{% trans 'If you ever wanted to find best of the best players in your career mode then this place is ideal for you. Upload your career save and let the magic happen' %}. :)</p>
 </div>
 <div class="container" style="padding-top: 20px;">
-	<h3>Get Started:</h3>
+	<h3>{% trans 'Get Started' %}:</h3>
 	<ul>
-		<li><a href="{% url 'signup' %}">Register</a> an new account or <a href="{% url 'login_view' %}">login</a>.</li>
-		<li><a href="{% url 'upload_career_save_file' %}">Upload</a> your career save.</li>
-		<li>Players from your career save will be available <a href="{% url 'players' %}">here</a> after our servers will process your career data.</li>
+		<li><a href="{% url 'signup' %}">{% trans 'Register' %}</a> {% trans 'an new account or' %} <a href="{% url 'login_view' %}">{% trans 'login' %}</a>.</li>
+		<li><a href="{% url 'upload_career_save_file' %}">{% trans 'Upload' %}</a> {% trans 'your career save' %}.</li>
+		<li>{% trans 'Players from your career save will be available' %} <a href="{% url 'players' %}">{% trans 'here' %}</a> {% trans 'after our servers will process your career data' %}.</li>
 	</ul>
-	<h3>Plans for future:</h3>
+	<h3>{% trans 'Plans for future' %}:</h3>
 	<ul>
 		<li>Support for XBOX ONE (If you are playing on XBOX please, contact with me).</li>
 		<li>League table.</li>
@@ -28,13 +28,13 @@
 </div>
 <div class="container">
 	<div class="col-md-6 col-xs-12">
-		<h2 align="center">Most Popular Clubs</h2>
+		<h2 align="center">{% trans 'Most Popular Clubs' %}</h2>
 		<div id="table-container" class="container-fluid">
 			<table>
 				<thead>
 					<tr>
-						<th class="text-center">CLUB</th>
-						<th class="text-center">MANAGERS</th>
+						<th class="text-center">{% trans 'CLUB' %}</th>
+						<th class="text-center">{% trans 'MANAGERS' %}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -56,13 +56,13 @@
 		</div>
 	</div>
 	<div class="col-md-6 col-xs-12">
-		<h2 align="center">Most Popular National Teams</h2>
+		<h2 align="center">{% trans 'Most Popular National Teams' %}</h2>
 		<div id="table-container" class="container-fluid">
 			<table>
 				<thead>
 					<tr>
-						<th class="text-center">NATIONAL TEAM</th>
-						<th class="text-center">MANAGERS</th>
+						<th class="text-center">{% trans 'NATIONAL TEAM' %}</th>
+						<th class="text-center">{% trans 'MANAGERS' %}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -85,7 +85,7 @@
 	</div>
 </div>
 <div id="discord" class="container-fluid">
-	<h3 class="text-center">Join Our Discord</h3>
+	<h3 class="text-center">{% trans 'Join Our Discord' %}</h3>
 	<p class="text-center"><iframe src="https://discordapp.com/widget?id=362620892963930113&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe></p>
 </div>
 {% endblock %}

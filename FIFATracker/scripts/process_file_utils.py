@@ -211,10 +211,10 @@ class DatabaseToCSV():
                     else:
                         headers = ""
                     for v in range(CountFields):
-                        fieldtypes[v] = copyfieldtypes[sortedBitOffsets[v]]
-                        bitoffsets[v] = copybitoffsets[sortedBitOffsets[v]]  
+                        fieldtypes[v] = copyfieldtypes[sortedBitOffsets[v]] # [rdx]
+                        bitoffsets[v] = copybitoffsets[sortedBitOffsets[v]] # [r10+4] (r10 == rdx)
                         shortnames[v] = copyshortnames[sortedBitOffsets[v]]  
-                        bitdepth[v] = copybitdepth[sortedBitOffsets[v]]
+                        bitdepth[v] = copybitdepth[sortedBitOffsets[v]]     # [r10+C]
                         headers += (xml_field_names[shortnames[v]] + ",")
 
                     f_csv.write(headers.rstrip(',') + "\n")   # CSV - table headers  

@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^transfers/', include('transfer_history.urls')),
     url(r'^teams/', include('teams.urls')),
     url(r'^settings/', include('account_settings.urls')),
+    url(r'^i18n/', include('django.conf.urls.i18n'), name='set_language'),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

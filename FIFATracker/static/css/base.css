@@ -10,6 +10,13 @@ body {
 	margin-bottom: 40px;
 }
 
+.flag-lang {
+	width: 40px;
+    height: 40px;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
 .well{
 	color: black;
 }

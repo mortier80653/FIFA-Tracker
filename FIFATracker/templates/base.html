@@ -97,7 +97,7 @@
 						</div>
 					</li>
 				{% if user.is_authenticated %}
-						<li class="nav-item dropdown">
+					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>{{ user.username }}</a>
 						<div class="dropdown-menu" aria-labelledby="userMenu">
 							<a class="dropdown-item" href="{% url 'settings' %}">{% trans 'Control Panel' %}</a>
@@ -106,10 +106,30 @@
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{% url 'logout' %}">{% trans 'Log out' %}</a>
 						</div>
-						</li>
+					</li>
 				{% else %}
 					<li><a class="btn btn-success" href="{% url 'login_view' %}">{% trans 'LOG-IN' %}</a></li>
 				{% endif %}
+					<li class="nav-item dropdown">
+						<form name="setlang" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+							<input name="next" type="hidden" value="{{ redirect_to }}" />
+							<input name="language" type="hidden"/>
+							{% get_current_language as LANGUAGE_CODE %}
+							{% get_available_languages as LANGUAGES %}
+							{% get_language_info_list for LANGUAGES as languages %}
+							{% for language in languages %}
+								{% if language.code == LANGUAGE_CODE %}
+									<a class="nav-link dropdown-toggle" href="#" id="langSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/static/img/lang/{{ language.code }}.png" title="{{ language.name_local }}" class="flag-lang"></a>
+								{% endif %}
+							{% endfor %}
+							<div class="dropdown-menu" aria-labelledby="langSelect">
+							{% for language in languages %}
+								<a class="dropdown-item" href="#" onclick="document.setlang.language.value='{{ language.code}}'; document.setlang.submit();">{{ language.name_local }}  <img src="/static/img/lang/{{ language.code }}.png" title="{{ language.name_local }}" class="flag-lang"></a>
+								<div class="dropdown-divider"></div>
+							{% endfor %}
+							</div>
+						</form>
+					</li>
 				</ul>
 			</div>
 	  </div>

@@ -12,42 +12,50 @@ Development in progress...
 - [PostgreSQL 10](https://www.postgresql.org/download/windows/)
 - [Git](https://git-scm.com/downloads)
 
-**2. Install virtualenv**
+**2. Create Database**
+Create database with pgAdmin (pgAdmin 4\bin\pgAdmin4.exe)
+![pgAdmindatabase](https://i.imgur.com/aCiy48b.png)
+
+**3. Create unaccent extension**
+Connect to created database and crate unaccent extension
+![unaccent](https://i.imgur.com/82xVlin.png)
+
+**4. Install virtualenv**
 ```sh
 pip install virtualenv
 ```
 
-**3. Create virtualenv**
+**5. Create virtualenv**
 ```sh
 mkdir "C:\Program Files\Project"
 cd "C:\Program Files\Project"
 virtualenv FT_ENV
 ```
 
-**4. Activate virtualenv**
+**6. Activate virtualenv**
 ```sh
 cd "FT_ENV\Scripts"
 activate.bat
 ```
 
-**5. Clone FIFA Tracker repository**
+**7. Clone FIFA Tracker repository**
 ```sh
 cd "..\.."
 git clone https://github.com/xAranaktu/FIFA-Tracker.git
 ```
 
-**6. Install dependencies**
+**8. Install dependencies**
 ```sh
 pip install -r "FIFA-Tracker\requirements.txt"
 ```
 
-**7. Create ["secret_settings.py"](https://gist.github.com/xAranaktu/c4c954ac249472d541aff36ecce9bf12) file in "FIFATracker\Fifa_Tracker" dir**
+**9. Create ["secret_settings.py"](https://gist.github.com/xAranaktu/c4c954ac249472d541aff36ecce9bf12) file in "FIFATracker\Fifa_Tracker" dir**
 
 ![secret_settings](https://i.imgur.com/MBPIeYQ.png)
 
 **Note** Make sure that database name and password is correct.
 
-**8. Database migrations**
+**10. Database migrations**
 
 It's awkward because you cannot store a null primary key in PostgreSQL database which is surprisingly possible in FIFA Database.
 
@@ -58,7 +66,7 @@ python manage.py migrate --fake players 0002
 python manage.py migrate
 ```
 
-**9. Populate Database**
+**11. Populate Database**
 
 "playernames" & "nations" tables are not included in career save. So you need to populate these tables from .csv files.
 Just simply navigate to your PostrgreSQL\bin folder and execute proper commands or use pgAdmin.
@@ -81,7 +89,7 @@ psql -d FIFA_TRACKER --username=postgres -c "COPY datanations (isocountrycode,na
 psql -d FIFA_TRACKER --username=postgres -c "COPY datanations17 (isocountrycode,nationname,confederation,top_tier,nationstartingfirstletter,groupid,nationid)  FROM 'C:\Program Files\Project\FIFA-Tracker\Database Data\nations17.csv' delimiter ',' csv header ENCODING 'UTF8';"
 ```
 
-**10. Run server**
+**12. Run server**
 
 Make sure virtualenv is still active. Then change dir to "FIFA-Tracker\FIFATracker" and run django server.
 

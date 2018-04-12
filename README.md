@@ -13,10 +13,12 @@ Development in progress...
 - [Git](https://git-scm.com/downloads)
 
 **2. Create Database**
+
 Create database with pgAdmin (pgAdmin 4\bin\pgAdmin4.exe)
 ![pgAdmindatabase](https://i.imgur.com/aCiy48b.png)
 
 **3. Create unaccent extension**
+
 Connect to created database and crate unaccent extension
 ![unaccent](https://i.imgur.com/82xVlin.png)
 

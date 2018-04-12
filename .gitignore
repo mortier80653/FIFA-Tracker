@@ -103,3 +103,5 @@ secret_settings.py
 FIFATracker/static/img/assets/
 .vscode/settings.json
 FIFATracker/media/
+FIFATracker/players/migrations/
+FIFATracker/core/migrations/

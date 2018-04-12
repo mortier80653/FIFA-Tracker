@@ -47,7 +47,6 @@ coverage.xml
 .hypothesis/
 
 # Translations
-*.mo
 *.pot
 
 # Django stuff:
@@ -101,9 +100,6 @@ ENV/
 # mypy
 .mypy_cache/
 secret_settings.py
-FIFATracker/pypy/
 FIFATracker/static/img/assets/
 .vscode/settings.json
 FIFATracker/media/
-FIFATracker/players/migrations/
-FIFATracker/core/migrations/

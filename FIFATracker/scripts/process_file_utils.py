@@ -135,133 +135,132 @@ class DatabaseToCSV():
         for db in range(1, max_databases):
             database_full_path = os.path.join(database_path, "{}.db".format(db))
             if os.path.exists(database_full_path):
-                f = open(database_full_path, 'rb')   # Open FIFA Database
-                database_header = b"\x44\x42\x00\x08\x00\x00\x00\x00"    # FIFA Database file header
-                mm = mmap.mmap(f.fileno(), length = 0, access = mmap.ACCESS_READ)
-                offset = mm.find(database_header)
-                
-                if offset == -1: continue   # File header not matching
-
-                mm.seek(offset+len(database_header))
-                dbSize = self.ReadInt32(mm.read(4))
-
-                if dbSize != mm.size(): continue     # Invalid file size
-
-                mm.seek(4, 1) # Skip unknown 4 bytes
-                countTables = self.ReadInt32(mm.read(4)) # Num of tables in database
-                CrcHeader = self.ReadInt32(mm.read(4))   # CRC32
-
-                table_names = list()
-                TableOffsets = list()
-
-                for x in range(countTables):
-                    table_names.append(mm.read(4).decode("utf-8"))
-                    TableOffsets.append(self.ReadInt32(mm.read(4))) 
-                CrcShortNames = self.ReadInt32(mm.read(4))   # CRC32
-                TablesStartOffset = mm.tell()
-                allshortnames = list()
-                allRecords = list()
-                allRecordsValues = list()
-
-                for x in range(countTables):
-                    mm.seek(TablesStartOffset + TableOffsets[x])
-                    mm.seek(4, 1)                                   #unknown
-                    RecordSize = self.ReadInt32(mm.read(4))              #RecordSize
-                    mm.read(4)                                      #NBitRecords
-                    CompressedStringLen = self.ReadInt32(mm.read(4))     #CompressedStringLength
-                    CountRecords = self.ReadInt16(mm.read(2))            #CountRecords          
-                    CountValidRecords = self.ReadInt16(mm.read(2))       #ValidRecords
-                    mm.read(4)                                      #Unknown
-                    CountFields = int(mm.read(1)[0])                #CountFields
-                    mm.seek(7, 1)                                   #Unknown
-                    mm.read(4)                                      #CRC32
-
-                    if CountValidRecords <= 0: continue
-
-                    f_csv = open(os.path.join(csv_path, "{}.csv".format(xml_table_names[table_names[x]])) , 'w+', encoding='utf-8')
-
-                    fieldtypes = list()
-                    bitoffsets = list()
-                    bitdepth = list()
-                    shortnames = list()
-                    strFieldIndex = list()
+                # Open FIFA Database
+                with open(database_full_path, 'rb') as f:
+                    database_header = b"\x44\x42\x00\x08\x00\x00\x00\x00"    # FIFA Database file header
+                    mm = mmap.mmap(f.fileno(), length = 0, access = mmap.ACCESS_READ)
+                    offset = mm.find(database_header)
                     
-                    for y in range(CountFields):
-                        fieldtype = self.ReadInt32(mm.read(4))
-                        fieldtypes.append(fieldtype)                    #fieldtypes
-                        bitoffsets.append(self.ReadInt32(mm.read(4)))        #bitoffset
-                        shortnames.append(mm.read(4).decode("utf-8"))   #shortname
-                        bitdepth.append(self.ReadInt32(mm.read(4)))          #depth
+                    if offset == -1: continue   # File header not matching
 
-                        if fieldtype == 0:                              #String
-                            strFieldIndex.append(y)
-                        elif fieldtype == 3:                            #Int
-                            pass
-                        else:                                           # Float aka REAL?
-                            pass
+                    mm.seek(offset+len(database_header))
+                    dbSize = self.ReadInt32(mm.read(4))
 
-                    #Sort
-                    copybitoffsets = list(bitoffsets)
-                    sortedBitOffsets = sorted(range(len(bitoffsets)), key=bitoffsets.__getitem__)
-                    copyfieldtypes = list(fieldtypes)
-                    copyshortnames = list(shortnames)
-                    copybitdepth = list(bitdepth)
-                    if username and user_id:
-                        headers = "username,ft_user_id,"
-                    else:
-                        headers = ""
-                    for v in range(CountFields):
-                        fieldtypes[v] = copyfieldtypes[sortedBitOffsets[v]] # [rdx]
-                        bitoffsets[v] = copybitoffsets[sortedBitOffsets[v]] # [r10+4] (r10 == rdx)
-                        shortnames[v] = copyshortnames[sortedBitOffsets[v]]  
-                        bitdepth[v] = copybitdepth[sortedBitOffsets[v]]     # [r10+C]
-                        headers += (xml_field_names[shortnames[v]] + ",")
+                    if dbSize != mm.size(): continue     # Invalid file size
 
-                    f_csv.write(headers.rstrip(',') + "\n")   # CSV - table headers  
-                    
-                    allshortnames.append(shortnames)
-                    RecordValues = list()
-                    currentbyte = 0
-                    currentbitpos = 0
-                    values = username + "," + user_id + ","
-                    for i in range(CountValidRecords):
-                        position = mm.tell()
-                        for j in range(CountFields):
-                            num = int(bitoffsets[j]/8)
-                            fieldtype = fieldtypes[j]
-                            if fieldtype == 0:              #String
-                                mm.seek(position+num)
+                    mm.seek(4, 1) # Skip unknown 4 bytes
+                    countTables = self.ReadInt32(mm.read(4)) # Num of tables in database
+                    CrcHeader = self.ReadInt32(mm.read(4))   # CRC32
+
+                    table_names = list()
+                    TableOffsets = list()
+
+                    for x in range(countTables):
+                        table_names.append(mm.read(4).decode("utf-8"))
+                        TableOffsets.append(self.ReadInt32(mm.read(4))) 
+                    CrcShortNames = self.ReadInt32(mm.read(4))   # CRC32
+                    TablesStartOffset = mm.tell()
+                    allshortnames = list()
+                    allRecords = list()
+                    allRecordsValues = list()
+
+                    for x in range(countTables):
+                        mm.seek(TablesStartOffset + TableOffsets[x])
+                        mm.seek(4, 1)                                       #unknown
+                        RecordSize = self.ReadInt32(mm.read(4))             #RecordSize
+                        mm.read(4)                                          #NBitRecords
+                        CompressedStringLen = self.ReadInt32(mm.read(4))    #CompressedStringLength
+                        CountRecords = self.ReadInt16(mm.read(2))           #CountRecords          
+                        CountValidRecords = self.ReadInt16(mm.read(2))      #ValidRecords
+                        mm.read(4)                                          #Unknown
+                        CountFields = int(mm.read(1)[0])                    #CountFields
+                        mm.seek(7, 1)                                       #Unknown
+                        mm.read(4)                                          #CRC32
+
+                        if CountValidRecords <= 0: continue
+
+                        with open(os.path.join(csv_path, "{}.csv".format(xml_table_names[table_names[x]])) , 'w+', encoding='utf-8') as f_csv:
+
+                            fieldtypes = list()
+                            bitoffsets = list()
+                            bitdepth = list()
+                            shortnames = list()
+                            strFieldIndex = list()
+                            
+                            for y in range(CountFields):
+                                fieldtype = self.ReadInt32(mm.read(4))
+                                fieldtypes.append(fieldtype)                    #fieldtypes
+                                bitoffsets.append(self.ReadInt32(mm.read(4)))        #bitoffset
+                                shortnames.append(mm.read(4).decode("utf-8"))   #shortname
+                                bitdepth.append(self.ReadInt32(mm.read(4)))          #depth
+
+                                if fieldtype == 0:                              #String
+                                    strFieldIndex.append(y)
+                                elif fieldtype == 3:                            #Int
+                                    pass
+                                else:                                           # Float aka REAL?
+                                    pass
+
+                            #Sort
+                            copybitoffsets = list(bitoffsets)
+                            sortedBitOffsets = sorted(range(len(bitoffsets)), key=bitoffsets.__getitem__)
+                            copyfieldtypes = list(fieldtypes)
+                            copyshortnames = list(shortnames)
+                            copybitdepth = list(bitdepth)
+                            if username and user_id:
+                                headers = "username,ft_user_id,"
+                            else:
+                                headers = ""
+                            for v in range(CountFields):
+                                fieldtypes[v] = copyfieldtypes[sortedBitOffsets[v]] # [rdx]
+                                bitoffsets[v] = copybitoffsets[sortedBitOffsets[v]] # [r10+4] (r10 == rdx)
+                                shortnames[v] = copyshortnames[sortedBitOffsets[v]]  
+                                bitdepth[v] = copybitdepth[sortedBitOffsets[v]]     # [r10+C]
+                                headers += (xml_field_names[shortnames[v]] + ",")
+
+                            f_csv.write(headers.rstrip(',') + "\n")   # CSV - table headers  
+                            
+                            allshortnames.append(shortnames)
+                            RecordValues = list()
+                            currentbyte = 0
+                            currentbitpos = 0
+                            values = username + "," + user_id + ","
+                            for i in range(CountValidRecords):
+                                position = mm.tell()
+                                for j in range(CountFields):
+                                    num = int(bitoffsets[j]/8)
+                                    fieldtype = fieldtypes[j]
+                                    if fieldtype == 0:              #String
+                                        mm.seek(position+num)
+                                        currentbyte = 0
+                                        currentbitpos = 0
+                                        writevalue = self.ReadNullByteStr(mm, int(bitdepth[j]/8)) 
+                                    elif fieldtype == 4:            #Float
+                                        mm.seek(position+num)
+                                        writevalue = self.ReadFloat(mm.read(4))   
+                                    else:                           #Int and ... ?
+                                        num = 0
+                                        depth = bitdepth[j]
+                                        k = 0
+                                        if currentbitpos != 0:
+                                            k = 8 - currentbitpos
+                                            num = currentbyte >> currentbitpos
+                                        while k < depth:
+                                            currentbyte = int(mm.read(1)[0]) # Read single byte
+                                            num += currentbyte << k
+                                            k += 8
+                                        currentbitpos = (depth + 8 - k & 7)
+                                        num2 = int(int(1 << depth) - 1)
+                                        num&=num2
+                                        writevalue = num + int ( xml_field_range[ xml_table_names[table_names[x]] + xml_field_names[shortnames[j]]] )
+                                    values += (str(writevalue) + ",")
+                                f_csv.write(values.rstrip(',') + '\n')
+                                values = username + "," + user_id + ","   
+                                mm.seek(position+RecordSize)
                                 currentbyte = 0
                                 currentbitpos = 0
-                                writevalue = self.ReadNullByteStr(mm, int(bitdepth[j]/8)) 
-                            elif fieldtype == 4:            #Float
-                                mm.seek(position+num)
-                                writevalue = self.ReadFloat(mm.read(4))   
-                            else:                           #Int and ... ?
-                                num = 0
-                                depth = bitdepth[j]
-                                k = 0
-                                if currentbitpos != 0:
-                                    k = 8 - currentbitpos
-                                    num = currentbyte >> currentbitpos
-                                while k < depth:
-                                    currentbyte = int(mm.read(1)[0]) # Read single byte
-                                    num += currentbyte << k
-                                    k += 8
-                                currentbitpos = (depth + 8 - k & 7)
-                                num2 = int(int(1 << depth) - 1)
-                                num&=num2
-                                writevalue = num + int ( xml_field_range[ xml_table_names[table_names[x]] + xml_field_names[shortnames[j]]] )
-                            values += (str(writevalue) + ",")
-                        f_csv.write(values.rstrip(',') + '\n')
-                        values = username + "," + user_id + ","   
-                        mm.seek(position+RecordSize)
-                        currentbyte = 0
-                        currentbitpos = 0
 
-                    f_csv.close() # Close csv file
-                mm.close() # Close mmap
-                f.close() # Close FIFA database file
+                    mm.close() # Close mmap
             #os.remove(database_full_path) # Remove FIFA database file
         return xml_field_pkey
     
@@ -390,24 +389,43 @@ class UnpackDatabase():
 
         # Open Career Save
         with open(self.career_file_fullpath, 'rb') as f:
-            # FIFA Database file header
+            # FIFA Database file signature
             database_header = b"\x44\x42\x00\x08\x00\x00\x00\x00"  
             mm = mmap.mmap(f.fileno(), length = 0, access = mmap.ACCESS_READ)
             offset = mm.find(database_header)
-            offset_end = offset + 1
 
+            # Signature not found
+            if offset < 0:
+                return 0
+
+            # Data before databases section
+            with open(os.path.join(self.dest_path, "data_before_db"), "wb") as data_before_db:
+                data_before_db.write(mm[:offset])
+
+            # Databases section
             current_db = 0
             while offset >= 0:
                 current_db += 1
 
-                offset_end = mm.find(database_header, offset+1)
-        
-                database_file = open(os.path.join(self.dest_path, "{}.db".format(current_db)), "wb") # Create .db file
-                database_file.write(mm[offset:offset_end])  # Write data to .db file
-                database_file.close()
-                offset = offset_end
+                cur_pos = offset + len(database_header)
+                mm.seek(cur_pos, 0)
+                dbSize = self.ReadInt32(mm.read(4))
+                end_of_data = offset+dbSize
+
+                # Create .db file
+                with open(os.path.join(self.dest_path, "{}.db".format(current_db)), "wb") as database_file: 
+                    database_file.write(mm[offset:end_of_data])  # Write data to .db file
+
+                offset = mm.find(database_header, end_of_data)
+
+            # Data after databases section
+            with open(os.path.join(self.dest_path, "rest"), "wb") as rest:
+                rest.write(mm[end_of_data:]) 
             
         return current_db
+
+    def ReadInt32(self, x):
+        return int(x[0]) | int(x[1]) << 8 | int(x[2]) << 16 | int(x[3]) << 24
 
 class ParseCareerSave():
     """Parse FIFA Career Save.
@@ -435,7 +453,6 @@ class ParseCareerSave():
         self.user = user
         self.xml_file = xml_file
         self.fifa_edition = int(fifa_edition)
-        print("FIFA EDITION = {}".format(fifa_edition))
         
         # Create Data Path
         if not os.path.exists(self.data_path):
@@ -472,7 +489,11 @@ class ParseCareerSave():
         self.importCareerData(csv_path=csv_path)
         self.protectprivacy()
         end = time.time()
-        print("Done")
+
+        # Delete Files
+        shutil.rmtree(self.data_path)
+
+        logging.info("Done")
         self._update_savefile_model(2, _("Completed in {}s").format(round(end - start, 3)))
         '''
 
@@ -589,7 +610,7 @@ class ParseCareerSave():
                 self._copy_from_csv(table=csv, full_csv_path=full_csv_path)
                 #self._update_table_from_csv(model=model, model_filter=model_filter, table=csv, full_csv_path=full_csv_path, user_id=user_id)
             else:
-                print("File not found: {}".format(csv))
+                logging.info("File not found: {}".format(csv))
 
             #print("{} in - {}s".format(csv, round(time.time() - start, 5)))
 
@@ -810,7 +831,7 @@ class ParseCareerSave():
                 os.remove(self.career_file_fullpath)
                 return True
         except PermissionError as e:
-            print("PermissionError: {}".format(e))
+            logging.warning("PermissionError: {}".format(e))
         except TypeError:
             pass
 

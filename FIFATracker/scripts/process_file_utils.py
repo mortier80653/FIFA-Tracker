@@ -556,7 +556,7 @@ class ParseCareerSave():
         end = time.time()
 
         # Delete Files
-        #shutil.rmtree(self.data_path)
+        shutil.rmtree(self.data_path)
 
         logging.info("Done")
         self._update_savefile_model(2, _("Completed in {}s").format(round(end - start, 3)))

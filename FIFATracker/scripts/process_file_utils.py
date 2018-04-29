@@ -71,6 +71,68 @@ from core.models import (
     DataUsersVersion,
 )
 
+class RestToCSV():
+    """Convert Data after .db section to .csv format.
+        Parameters
+        ----------
+        rest_path : str
+            Path containing rest file
+
+        user : obj
+            Django User model object.
+
+        dest_path : str
+            Path where csv files will be exported. Default="<rest_path>\\csv"
+    """
+    def __init__(self, rest_path, user, dest_path=None):
+        self.path = rest_path
+        self.username = user.username
+        self.user_id = user.id
+
+        if dest_path:
+            self.dest_path = dest_path
+        else:
+            self.dest_path = os.path.join(self.path, "csv") 
+
+    def convert_to_csv(self):
+        rf_full_path = os.path.join(self.path, "rest")
+
+        # Check if file exists
+        if not os.path.isfile(rf_full_path):
+            return 
+
+        with open(rf_full_path, 'rb') as rf:
+            mm = mmap.mmap(rf.fileno(), length=0, access=mmap.ACCESS_READ)
+            self._release_clauses(mm)
+
+
+    def _release_clauses(self, mm):
+        """Players Release Clauses"""
+        sign = b"\x72\x6C\x63\x74\x72\x6B\x00" # rlctrk - release clause sign (?)
+        offset = mm.find(sign)
+
+        if offset < 0:
+            logging.warning("release clause sign not found")
+            return
+
+        with open(os.path.join(self.dest_path, "career_rest_releaseclauses.csv") , 'w+', encoding='utf-8') as f_csv:
+            # create columns
+            headers = "username,ft_user_id,playerid,teamid,release_clause\n"
+            f_csv.write(headers)
+
+            cur_pos = offset + len(sign)
+            mm.seek(cur_pos, 0)
+
+            num_of_players = self.ReadInt32(mm.read(4)) # Number of players with release clause
+            for p in range(num_of_players):
+                playerid = self.ReadInt32(mm.read(4))
+                teamid = self.ReadInt32(mm.read(4))
+                clause = self.ReadInt32(mm.read(4))
+                f_csv.write("{},{},{},{},{}\n".format(self.username, self.user_id, playerid, teamid, clause))
+
+    def ReadInt32(self, x):
+        return int(x[0]) | int(x[1]) << 8 | int(x[2]) << 16 | int(x[3]) << 24
+
 class DatabaseToCSV():
     """Convert FIFA .db to .csv format.
         Parameters
@@ -481,6 +543,9 @@ class ParseCareerSave():
         db_to_csv = DatabaseToCSV(dbs_path=self.data_path, user=self.user, num_of_db=self.unpacked_dbs, xml_file=self.xml_file)
         self.xml_pkeys = db_to_csv.convert_to_csv()
 
+        # Convert rest of the data to csv file format.
+        RestToCSV(rest_path=self.data_path, user=self.user).convert_to_csv()
+
         # Import data from csv to our PostgreSQL database
         #csv_path = "K:\Programowanie\Python\FIFA Tracker\Git\FIFATracker\media\Aranaktu\data\csv"
         csv_path = db_to_csv.dest_path 
@@ -491,7 +556,7 @@ class ParseCareerSave():
         end = time.time()
 
         # Delete Files
-        shutil.rmtree(self.data_path)
+        #shutil.rmtree(self.data_path)
 
         logging.info("Done")
         self._update_savefile_model(2, _("Completed in {}s").format(round(end - start, 3)))
@@ -530,6 +595,7 @@ class ParseCareerSave():
         # List of csv files that we want to import to our PostgreSQL database
         #'''
         csv_list = [
+            "career_rest_releaseclauses",
             "career_calendar",
             "career_playercontract",
             "career_users",
@@ -610,7 +676,7 @@ class ParseCareerSave():
                 self._copy_from_csv(table=csv, full_csv_path=full_csv_path)
                 #self._update_table_from_csv(model=model, model_filter=model_filter, table=csv, full_csv_path=full_csv_path, user_id=user_id)
             else:
-                logging.info("File not found: {}".format(csv))
+                logging.warning("File not found: {}".format(csv))
 
             #print("{} in - {}s".format(csv, round(time.time() - start, 5)))
 

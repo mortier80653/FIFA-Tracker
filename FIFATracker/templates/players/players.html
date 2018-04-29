@@ -77,6 +77,13 @@
 									<option value="0">{% trans 'No' %}</option>
 									<option value="1">{% trans 'Yes' %}</option>
 								</select>
+
+								<label for="select-hasreleaseclause">{% trans 'Release Clause?' %}</label>
+								<select id="select-hasreleaseclause" name="hasreleaseclause" placeholder="{% trans 'Any...' %}">
+									<option value="-1" selected>{% trans 'Any...' %}</option>
+									<option value="0">{% trans 'No' %}</option>
+									<option value="1">{% trans 'Yes' %}</option>
+								</select>
 							</div>
 							<div class="col-md-4">
 								<label>{% trans 'Position(s)' %}</label>
@@ -117,6 +124,11 @@
 								<div class="input-group justified">
 									<input class="form-control" type="number" min="30" max="115" name="weight__gte" value="{{ request_query_dict.weight__gte }}" placeholder="Min">
 									<input class="form-control" type="number" min="30" max="115" name="weight__lte" value="{{ request_query_dict.weight__lte }}" placeholder="Max">
+								</div>
+								<label for="release_clause__gte">{% trans 'Release Clause' %}</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="1" max="999999999" name="release_clause__gte" value="{{ request_query_dict.release_clause__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="1" max="999999999" name="release_clause__lte" value="{{ request_query_dict.release_clause__lte }}" placeholder="Max">
 								</div>
 							</div>
 						</div>

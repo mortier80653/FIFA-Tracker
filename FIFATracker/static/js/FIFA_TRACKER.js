@@ -309,6 +309,14 @@ function selectizejs() {
                 this.setValue(value);
         }
     });
+    $('#select-hasreleaseclause').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("hasreleaseclause")
+            if (value) 
+                this.setValue(value);
+        }
+    });
 
     $("#positions-input").selectize({
         delimiter: ',',
@@ -854,7 +862,7 @@ function changeProfilePublicStatus() {
 }
 
 function cleanUrl() {
-    var params = ["isretiring", "isreal", "isonloan", "teamtype", "iscputransfer", "isloan", "isloanbuy", "issnipe", "result"];
+    var params = ["isretiring", "isreal", "isonloan", "hasreleaseclause", "teamtype", "iscputransfer", "isloan", "isloanbuy", "issnipe", "result"];
     for (i = 0; i < params.length; i++) {
         if (getUrlParameter(params[i]) == "-1")
             removeParam(params[i])

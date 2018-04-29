@@ -462,6 +462,7 @@ class FifaPlayer():
         self.q_teams = dict_cached_queries['q_teams']
         self.league_team_links = dict_cached_queries['q_league_team_links']
         self.leagues = dict_cached_queries['q_leagues']
+        self.release_clauses = dict_cached_queries['q_release_clauses']
 
         self.fifa_edition = fifa_edition
 
@@ -491,8 +492,18 @@ class FifaPlayer():
                 'league': {'leagueid': 0, 'leaguename': "Not Found"}, 
             }
             self.player_wage = PlayerWage()
+        self.release_clause = self.get_release_clause()
         self.player_contract = self.set_contract()
         self.headshot = self.set_headshot()
+
+    def get_release_clause(self):
+        for i in range(len(self.release_clauses)):
+            if self.release_clauses[i].playerid == self.player.playerid:
+                clause = self.release_clauses[i].release_clause
+                self.formated_release_clause = "{:,}".format(clause)
+                return clause
+
+        return 0
 
     def set_headshot(self):
         if self.player.playerid < 240895:

@@ -8,11 +8,60 @@ from players.models import (
     DataUsersTeamplayerlinks, 
     DataUsersLeagueteamlinks, 
     DataUsersPlayerloans,
+    DataUsersCareerRestReleaseClauses,
 )
 
 from core.models import (
     DataUsersCareerTransferOffer,
 )
+
+class DataUsersCareerRestReleaseClausesFilter:
+    def __init__(self, request, for_user):
+        self.request_dict = request
+        self.for_user = for_user
+
+        queryset = DataUsersCareerRestReleaseClauses.objects.for_user(self.for_user).all()
+        queryset = self.filter(queryset)
+        queryset = self.order(queryset)
+        self.qs = queryset
+        
+
+    def filter(self, queryset):
+        try:
+            if 'release_clause__gte' in self.request_dict or 'release_clause__lte' in self.request_dict:
+                clause_min = int(self._check_key(self.request_dict, 'release_clause__gte') or 1)
+                clause_max = int(self._check_key(self.request_dict, 'release_clause__lte') or 999999999)
+                
+                queryset = queryset.filter(Q(release_clause__gte=clause_min), Q(release_clause__lte=clause_max))
+        except ValueError:
+            pass
+
+        return queryset
+
+    def order(self, queryset):
+        if 'order_by' in self.request_dict:
+            valid_fields = [f.name for f in DataUsersCareerRestReleaseClauses._meta.get_fields()]
+            orderby = self.request_dict['order_by'].replace('-', "")
+            if orderby in valid_fields:
+                return queryset.order_by(self.request_dict['order_by'], 'playerid')
+
+        return queryset
+        #return queryset.order_by('-release_clause', 'playerid')
+
+    def get_player_ids(self):
+        eval_DataUsersCareerRestReleaseClauses_qs = list(self.qs.iterator())
+        list_filtered_players = list()
+
+        for player in eval_DataUsersCareerRestReleaseClauses_qs:
+            list_filtered_players.append(player.playerid)
+
+        return list_filtered_players
+
+    def _check_key(self, d, key):
+        if key in d:
+            return d[key]
+        else:
+            return None
 
 class DataUsersCareerTransferOfferFilter:
     def __init__(self, request, for_user):
@@ -455,7 +504,32 @@ class DataUsersPlayersFilter:
                     queryset = queryset.filter( Q(playerid__lte=highest_real_playerid) )               
         except ValueError:
             pass
+        
+        # DataUsersCareerRestReleaseClausesFilter
+        player_release_clauses = DataUsersCareerRestReleaseClausesFilter(request=self.request_dict, for_user=self.for_user)
+        player_release_clauses_ids = None
+        try:
+            if 'hasreleaseclause' in self.request_dict and int(self.request_dict['hasreleaseclause']) in range(0,2):
+                if player_release_clauses_ids is None:
+                    player_release_clauses_ids = player_release_clauses.get_player_ids()
+                if int(self.request_dict['hasreleaseclause']) == 0:
+                    queryset = queryset.filter(~Q(playerid__in=player_release_clauses_ids))
+                elif int(self.request_dict['hasreleaseclause']) == 1:
+                    queryset = queryset.filter(Q(playerid__in=player_release_clauses_ids))
 
+        except ValueError:
+            pass
+
+        try:
+            if 'release_clause__gte' in self.request_dict or 'release_clause__lte' in self.request_dict:
+                if player_release_clauses_ids is None:
+                    player_release_clauses_ids = player_release_clauses.get_player_ids()
+
+                queryset = queryset.filter(Q(playerid__in=player_release_clauses_ids))
+
+        except ValueError:
+            pass
+        
         # DataUsersPlayerloansFilter
         player_loans = DataUsersPlayerloansFilter(for_user=self.for_user, request=self.request_dict, current_date=self.current_date)
         player_loans_ids = None
@@ -477,8 +551,8 @@ class DataUsersPlayersFilter:
                     queryset = queryset.filter(~Q(playerid__in=player_loans_ids))
                 elif int(self.request_dict['isonloan']) == 1:
                     # Player is currently on loan.
-                    
                     queryset = queryset.filter(Q(playerid__in=player_loans_ids))
+
         except ValueError:
             pass
 

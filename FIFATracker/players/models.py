@@ -12,6 +12,19 @@ class UserDataManager(models.Manager):
     def for_user(self, user):
         return self.get_queryset().for_user(user)
 
+class DataUsersCareerRestReleaseClauses(models.Model):
+    primary_key = models.BigAutoField(primary_key=True)
+    username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user = models.ForeignKey(User, related_name='releaseclauses', on_delete=models.CASCADE, null=True,)
+    playerid = models.IntegerField(blank=True, null=True)
+    teamid = models.IntegerField(blank=True, null=True)
+    release_clause = models.IntegerField(blank=True, null=True)
+
+    objects = UserDataManager()
+
+    class Meta: 
+        db_table = 'datauserscareerrestreleaseclauses'
+
 class DataUsersCareerCalendar(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)

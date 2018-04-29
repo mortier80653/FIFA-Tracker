@@ -183,6 +183,12 @@
                 <td>{% trans 'Int. Reputation' %}</td>
                 <td align="right"> {{ p.player.internationalrep }} <span style="color:yellow">&starf;</span></td>
               </tr>
+              {% if p.release_clause > 0 %}
+              <tr>
+                <td>{% trans 'Release Clause' %}</td>
+                <td align="right">{{ p.formated_release_clause }} {{ request.session.currency_symbol }}</td>
+              </tr>
+              {% endif %}
               <tr>
                 <td>{% trans 'Value' %}</td>
                 <td align="right">{{ p.player_value.formated_value }} {{ request.session.currency_symbol }}</td>

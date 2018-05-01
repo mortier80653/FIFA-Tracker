@@ -100,6 +100,13 @@
 								<input id='dwr-input' name="defensiveworkrate" placeholder="{% trans 'Any...' %}">
 							</div>
 							<div class="col-md-4">
+								{% with player=players|first %}
+									<label for="contractvaliduntil__gte">{% trans 'Contract Valid Until' %}</label>
+									<div class="input-group justified">
+										<input class="form-control" type="number" min="{{player.current_date_py.year|add:"1"}}" max="{{player.current_date_py.year|add:"5"}}" name="contractvaliduntil__gte" value="{{ request_query_dict.contractvaliduntil__gte }}" placeholder="Min">
+										<input class="form-control" type="number" min="{{player.current_date_py.year|add:"1"}}" max="{{player.current_date_py.year|add:"5"}}" name="contractvaliduntil__lte" value="{{ request_query_dict.contractvaliduntil__lte }}" placeholder="Max">
+									</div>
+								{% endwith %}
 								<label for="skillmoves__gte">{% trans 'Skill Moves' %}</label>
 								<div class="input-group justified">
 									<input class="form-control" type="number" min="1" max="5" name="skillmoves__gte" value="{{ request_query_dict.skillmoves__gte }}" placeholder="Min">
@@ -356,7 +363,7 @@
 	<div class="container-fluid">
 		{% with player=players|first %}
 			<p>{% trans 'Displaying Players for user' %}: <span class="current_user">{{player.username}}</span></p>
-			<p>{% trans 'Current Date' %}: <span class="current_date">{{player.current_date}}</span></p>
+			<p>{% trans 'Current Date' %}: <span class="current_date">{{player.current_date_py}}</span></p>
 		{% endwith %}
 	</div>
 	<div class="container-fluid">

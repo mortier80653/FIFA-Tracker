@@ -456,7 +456,6 @@ class FifaPlayer():
     def __init__(self, player, username, current_date, dict_cached_queries, session, fifa_edition):
         self.player = player
         self.username = username
-        self.current_date = current_date
         self.dict_cached_queries = dict_cached_queries
         self.team_player_links = dict_cached_queries['q_team_player_links']
         self.q_teams = dict_cached_queries['q_teams']
@@ -465,6 +464,10 @@ class FifaPlayer():
         self.release_clauses = dict_cached_queries['q_release_clauses']
 
         self.fifa_edition = fifa_edition
+
+        # Current Date
+        self.current_date = current_date
+        self.current_date_py = FifaDate().convert_to_py_date(fifa_date=self.current_date)
 
         try:
             self.query_player_loans = dict_cached_queries['q_player_loans']

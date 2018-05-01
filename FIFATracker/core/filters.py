@@ -385,6 +385,7 @@ class DataUsersPlayersFilter:
         self.request_dict = request
         self.for_user = for_user
         self.current_date = current_date
+        self.current_date_py = FifaDate().convert_to_py_date(fifa_date=self.current_date)
         self.fifa_edition = fifa_edition
         
         if self.fifa_edition == 18:
@@ -606,6 +607,15 @@ class DataUsersPlayersFilter:
                 birthdate_min = FifaDate().convert_age_to_birthdate(self.current_date, age=age_max) - 365
                 
                 queryset = queryset.filter(Q(birthdate__gte=birthdate_min), Q(birthdate__lte=birthdate_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'contractvaliduntil__gte' in self.request_dict or 'contractvaliduntil__lte' in self.request_dict:
+                contractvaliduntil_min = int(self._check_key(self.request_dict, 'contractvaliduntil__gte') or self.current_date_py.year + 1)
+                contractvaliduntil_max = int(self._check_key(self.request_dict, 'contractvaliduntil__lte') or self.current_date_py.year + 5)
+                
+                queryset = queryset.filter(Q(contractvaliduntil__gte=contractvaliduntil_min), Q(contractvaliduntil__lte=contractvaliduntil_max))
         except ValueError:
             pass
         

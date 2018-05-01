@@ -103,8 +103,8 @@
 								{% with player=players|first %}
 									<label for="contractvaliduntil__gte">{% trans 'Contract Valid Until' %}</label>
 									<div class="input-group justified">
-										<input class="form-control" type="number" min="{{player.current_date_py.year|add:"1"}}" max="{{player.current_date_py.year|add:"5"}}" name="contractvaliduntil__gte" value="{{ request_query_dict.contractvaliduntil__gte }}" placeholder="Min">
-										<input class="form-control" type="number" min="{{player.current_date_py.year|add:"1"}}" max="{{player.current_date_py.year|add:"5"}}" name="contractvaliduntil__lte" value="{{ request_query_dict.contractvaliduntil__lte }}" placeholder="Max">
+										<input class="form-control" type="number" min="{{player.current_date_py.year|add:"1"}}" max="{{player.current_date_py.year|add:"10"}}" name="contractvaliduntil__gte" value="{{ request_query_dict.contractvaliduntil__gte }}" placeholder="Min">
+										<input class="form-control" type="number" min="{{player.current_date_py.year|add:"1"}}" max="{{player.current_date_py.year|add:"10"}}" name="contractvaliduntil__lte" value="{{ request_query_dict.contractvaliduntil__lte }}" placeholder="Max">
 									</div>
 								{% endwith %}
 								<label for="skillmoves__gte">{% trans 'Skill Moves' %}</label>

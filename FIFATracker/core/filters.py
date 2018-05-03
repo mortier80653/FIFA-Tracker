@@ -612,7 +612,7 @@ class DataUsersPlayersFilter:
 
         try:
             if 'contractvaliduntil__gte' in self.request_dict or 'contractvaliduntil__lte' in self.request_dict:
-                contractvaliduntil_min = int(self._check_key(self.request_dict, 'contractvaliduntil__gte') or self.current_date_py.year + 1)
+                contractvaliduntil_min = int(self._check_key(self.request_dict, 'contractvaliduntil__gte') or self.current_date_py.year)
                 contractvaliduntil_max = int(self._check_key(self.request_dict, 'contractvaliduntil__lte') or self.current_date_py.year + 10)
                 
                 queryset = queryset.filter(Q(contractvaliduntil__gte=contractvaliduntil_min), Q(contractvaliduntil__lte=contractvaliduntil_max))

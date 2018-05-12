@@ -1,4 +1,4 @@
-from datetime import date, timedelta  
+from datetime import date, timedelta
 
 def get_team_name(all_teams, teamid):
     for t in all_teams:
@@ -278,25 +278,29 @@ class PlayerWage:
 
 class PlayerValue:
     # All modifiers are defined in "playervalues.ini"
-    def __init__(self, ovr, pot, age, posid, currency=1):
-        self.ovr = ovr
-        self.pot = pot
-        self.age = age
-        self.posid = posid
-        '''
-        [CONVERSION]
-        USDOLLAR = 1.12
-        EURO = 1.0
-        POUND = 0.88
-        '''
-        currency_conversion = (1.12, 1.0, 0.88)
-        try:
-            self.currency = currency_conversion[currency]
-        except IndexError:
-            self.currency = currency_conversion[1] # Euro
+    def __init__(self, ovr, pot, age, posid, currency=1, value=None):
+        if value:
+            self.value = value
+            self.formated_value = "{:,}".format(self.value)
+        else:
+            self.ovr = int(ovr)
+            self.pot = int(pot)
+            self.age = int(age)
+            self.posid = int(posid)
+            '''
+            [CONVERSION]
+            USDOLLAR = 1.12
+            EURO = 1.0
+            POUND = 0.88
+            '''
+            currency_conversion = (1.12, 1.0, 0.88)
+            try:
+                self.currency = currency_conversion[int(currency)]
+            except IndexError:
+                self.currency = currency_conversion[1] # Euro
 
-        self.value = self._calculate_player_value()
-        self.formated_value = "{:,}".format(self.value)
+            self.value = self._calculate_player_value()
+            self.formated_value = "{:,}".format(self.value)
 
     def _calculate_player_value(self):
         basevalue = self._ovr_factor(self.ovr) * self.currency
@@ -453,7 +457,7 @@ class FifaTeam():
 
 class FifaPlayer():
 
-    def __init__(self, player, username, current_date, dict_cached_queries, session, fifa_edition):
+    def __init__(self, player, username, current_date, dict_cached_queries, currency, fifa_edition):
         self.player = player
         self.username = username
         self.dict_cached_queries = dict_cached_queries
@@ -463,6 +467,7 @@ class FifaPlayer():
         self.leagues = dict_cached_queries['q_leagues']
         self.release_clauses = dict_cached_queries['q_release_clauses']
 
+        # FIFA 18/FIFA 17
         self.fifa_edition = fifa_edition
 
         # Current Date
@@ -474,8 +479,9 @@ class FifaPlayer():
         except KeyError:
             self.query_player_loans = None
 
+        # Currency
         try:
-            self.currency = int(session['currency'])
+            self.currency = currency
         except KeyError:
             self.currency = 1 # Set Euro as default currency
 
@@ -484,8 +490,13 @@ class FifaPlayer():
         # q_dcplayernames & q_edited_player_names
         self.player_name = PlayerName(self.player, self.dict_cached_queries, self.fifa_edition).playername
 
+        # Player Age
         self.player_age = PlayerAge(self.player.birthdate, current_date)
-        self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, int(self.currency))
+
+        # Player Value
+        self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, int(self.currency), self.player.value)
+        
+        # Player Wage (slow)
         try:
             self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'], int(self.currency))
         except KeyError as e:

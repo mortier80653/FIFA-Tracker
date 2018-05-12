@@ -128,9 +128,7 @@ class FifaPlayerTests(TestCase):
         #qdata_dict['q_player_loans'] = list(DataUsersTeams.objects.for_user("testuser1").iterator())
         qdata_dict['q_leagues'] = list(DataUsersLeagues.objects.for_user("testuser1").iterator())
 
-        testsession = {'currency': 1, }
-
-        testplayer1 = FifaPlayer(player, username="testuser1", current_date="20230918", dict_cached_queries=qdata_dict, session=testsession)
+        testplayer1 = FifaPlayer(player, username="testuser1", current_date="20230918", dict_cached_queries=qdata_dict, currency=1)
         testteam = testplayer1.player_teams['club_team']['team']
         self.assertEquals(testteam['teamname'], "Chelsea")
         self.assertEquals(testteam['teamid'], 5)

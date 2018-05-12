@@ -421,9 +421,14 @@ class DataUsersManager(models.Model):
         db_table = 'datausersmanager'
 
 class DataUsersPlayers(models.Model):
+    # Custom fields
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(User, related_name='players', on_delete=models.CASCADE, null=True,)
+    value = models.IntegerField(blank=True, null=True)
+    wage = models.IntegerField(blank=True, null=True)
+
+    # Original fields
     firstname = models.ForeignKey(DataPlayernames, related_name='firstname', db_column='firstnameid', null=True, on_delete=models.CASCADE)
     lastname = models.ForeignKey(DataPlayernames, related_name='lastname',  db_column='lastnameid', null=True, on_delete=models.CASCADE)
     playerjerseyname = models.ForeignKey(DataPlayernames, related_name='playerjerseyname', db_column='playerjerseynameid', null=True, on_delete=models.CASCADE)
@@ -546,9 +551,14 @@ class DataUsersPlayers(models.Model):
         db_table = 'datausersplayers'
 
 class DataUsersPlayers17(models.Model):
+    # Custom fields
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(User, related_name='players17', on_delete=models.CASCADE, null=True,)
+    value = models.IntegerField(blank=True, null=True)
+    wage = models.IntegerField(blank=True, null=True)
+    
+    # Original fields
     firstname = models.ForeignKey(DataPlayernames17, related_name='firstname', db_column='firstnameid', null=True, on_delete=models.CASCADE)
     lastname = models.ForeignKey(DataPlayernames17, related_name='lastname',  db_column='lastnameid', null=True, on_delete=models.CASCADE)
     playerjerseyname = models.ForeignKey(DataPlayernames17, related_name='playerjerseyname', db_column='playerjerseynameid', null=True, on_delete=models.CASCADE)

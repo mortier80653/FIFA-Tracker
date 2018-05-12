@@ -473,6 +473,15 @@ class DataUsersPlayersFilter:
                 queryset = queryset.filter(Q(skillmoves__gte=sm_min), Q(skillmoves__lte=sm_max))
         except ValueError:
             pass
+
+        try:
+            if 'value__gte' in self.request_dict or 'value__lte' in self.request_dict:
+                player_value_min = int(self._check_key(self.request_dict, 'value__gte') or 0)
+                player_value_max = int(self._check_key(self.request_dict, 'value__lte') or 500000000)
+                
+                queryset = queryset.filter(Q(value__gte=player_value_min), Q(value__lte=player_value_max))
+        except ValueError:
+            pass
     
         try:
             if 'attackingworkrate' in self.request_dict:
@@ -517,7 +526,6 @@ class DataUsersPlayersFilter:
                     queryset = queryset.filter(~Q(playerid__in=player_release_clauses_ids))
                 elif int(self.request_dict['hasreleaseclause']) == 1:
                     queryset = queryset.filter(Q(playerid__in=player_release_clauses_ids))
-
         except ValueError:
             pass
 
@@ -527,7 +535,6 @@ class DataUsersPlayersFilter:
                     player_release_clauses_ids = player_release_clauses.get_player_ids()
 
                 queryset = queryset.filter(Q(playerid__in=player_release_clauses_ids))
-
         except ValueError:
             pass
         

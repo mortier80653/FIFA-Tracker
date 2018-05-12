@@ -389,8 +389,9 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
     dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(f_teamid).iterator())
 
     players_list = list()
+    currency = int(request.session['currency'])
     for player in data:
-        fp = FifaPlayer(player, current_user, current_date, dict_cached_queries, request.session, fifa_edition)
+        fp = FifaPlayer(player, current_user, current_date, dict_cached_queries, currency, fifa_edition)
         players_list.append(fp)
 
     context = {'players':players_list, 'paginator':paginator, 'request_query_dict': request_query_dict, 'dict_cached_queries': dict_cached_queries,}

@@ -33,6 +33,42 @@ class CareerSaveFileModel(models.Model):
     file_process_status_code = models.IntegerField(blank=True, null=True, default=0)
     file_process_status_msg = models.CharField(max_length=120, blank=True, null=True)
 
+class DataUsersCareerManagerpref(models.Model):
+    primary_key = models.BigAutoField(primary_key=True)
+    username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user = models.ForeignKey(User, related_name='managerpref', on_delete=models.CASCADE, null=True,)
+    managerprefid = models.IntegerField(blank=True, null=True)
+    clubformation1 = models.IntegerField(blank=True, null=True)
+    clubformation5 = models.IntegerField(blank=True, null=True)
+    intlformation4 = models.IntegerField(blank=True, null=True)
+    bonuspercentage = models.IntegerField(blank=True, null=True)
+    startofseasonplayerwages = models.IntegerField(blank=True, null=True)
+    startofseasonwagebudget = models.IntegerField(blank=True, null=True)
+    startofseasontransferbudget = models.IntegerField(blank=True, null=True)
+    matchdifficulty = models.IntegerField(blank=True, null=True)
+    halflength = models.IntegerField(blank=True, null=True)
+    transferbudget = models.IntegerField(blank=True, null=True)
+    stadiumid = models.IntegerField(blank=True, null=True)
+    clubformation4 = models.IntegerField(blank=True, null=True)
+    intlformation1 = models.IntegerField(blank=True, null=True)
+    intlformation5 = models.IntegerField(blank=True, null=True)
+    wagebudget = models.IntegerField(blank=True, null=True)
+    intlformation3 = models.IntegerField(blank=True, null=True)
+    clubformation2 = models.IntegerField(blank=True, null=True)
+    usedsquad = models.IntegerField(blank=True, null=True)
+    boardaidifficulty = models.IntegerField(blank=True, null=True)
+    boardfinancialstrictness = models.IntegerField(blank=True, null=True)
+    currency = models.IntegerField(blank=True, null=True)
+    intlformation2 = models.IntegerField(blank=True, null=True)
+    clubformation3 = models.IntegerField(blank=True, null=True)
+    skipfirsttransfer = models.IntegerField(blank=True, null=True)
+    playasaiteam = models.IntegerField(blank=True, null=True)
+
+    objects = UserDataManager()
+
+    class Meta:
+        db_table = "datauserscareermanagerpref"
+
 class DataUsersCareerManagerInfo(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)

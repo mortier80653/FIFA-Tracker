@@ -14,6 +14,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
 
+from core.fifa_utils import (
+    PlayerAge,
+    PlayerValue,
+)
+
 from players.models import (
     DataUsersCareerCalendar,
     DataUsersCareerUsers,
@@ -70,6 +75,59 @@ from core.models import (
     DataUsersTeamformdiff,
     DataUsersVersion,
 )
+
+class CalculateValues():
+    """ Calculate Values of all players and save it in "players.csv"
+        Parameters
+        ----------
+        csv_path : str
+            Path containing .csv files.
+    """
+    def __init__(self, csv_path):
+        self.csv_path = csv_path
+        
+        self.currdate = self._get_csv_val("career_calendar.csv", "currdate")
+        self.currency = self._get_csv_val("career_managerpref.csv", "currency")
+        players_file = os.path.join(self.csv_path, "players.csv")
+
+        with open(players_file, 'r', encoding='utf-8') as csvfile:
+            data = csvfile.readlines()
+
+            # Add "value" column
+            data[0] = data[0][:-1] + ",value,wage\n"
+
+            csvfile.seek(0)
+            reader = csv.DictReader(csvfile)
+
+            i = 1
+            for row in reader:
+                ovr = row['overallrating']
+                pot = row['potential']
+                age = PlayerAge(row['birthdate'], self.currdate).age
+                posid = row['preferredposition1']
+                pvalue = PlayerValue(ovr, pot, age, posid, self.currency).value
+                pwage = 0
+                data[i] = data[i][:-1] + ",{},{}\n".format(pvalue, pwage)
+                i += 1
+
+        # Write data
+        with open(players_file, 'w', encoding='utf-8') as csvfile:
+            csvfile.writelines( data )
+
+    def _get_csv_val(self, fname, fieldname):
+        fpath = os.path.join(self.csv_path, fname)
+        ret_val = None
+
+        with open(fpath, encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                ret_val = row[fieldname]
+                break
+
+        if ret_val is None:
+            raise
+
+        return ret_val
 
 class RestToCSV():
     """Convert Data after .db section to .csv format.
@@ -546,29 +604,26 @@ class ParseCareerSave():
         # Convert rest of the data to csv file format.
         RestToCSV(rest_path=self.data_path, user=self.user).convert_to_csv()
 
+        csv_path = db_to_csv.dest_path
+
+        # Calculate Values of all players and save it in "players.csv"
+        currency = CalculateValues(csv_path=csv_path).currency
+
+        # Set Default Currency
+        self._set_currency(currency=currency)
+
         # Import data from csv to our PostgreSQL database
-        #csv_path = "K:\Programowanie\Python\FIFA Tracker\Git\FIFATracker\media\Aranaktu\data\csv"
-        csv_path = db_to_csv.dest_path 
-        
         self._update_savefile_model(0, _("Importing data to FIFA Tracker database."))
         self.importCareerData(csv_path=csv_path)
         self.protectprivacy()
-        end = time.time()
 
         # Delete Files
-        shutil.rmtree(self.data_path)
+        #shutil.rmtree(self.data_path)
+
+        end = time.time()
 
         logging.info("Done")
         self._update_savefile_model(2, _("Completed in {}s").format(round(end - start, 3)))
-        '''
-
-        # TEST
-        self.xml_pkeys = {'career_managerinfo': 'userid', 'smmediaopposingleagueplayers': 'playerid', 'career_playasplayer': 'userid', 'stadiumassignments': 'teamid', 'career_playerlastgrowth': 'playerid', 'smteams': 'teamid', 'attributeprefpositionformula': 'position', 'BigAttendance': 'emotion', 'createplayerviews': 'attributeid', 'teamballremapping': 'ballid', 'previousteam': 'playerid', 'dlcboots': 'assetid', 'leaguerefereelinks': 'leagueid', 'NoAttendance': 'emotion', 'starratingboundaries': 'starratingfrom', 'fifaGameDefaults': 'gamesettingspk', 'nations': 'nationid', 'version': 'artificialkey', 'MatchIntensity': 'scorediff', 'transfers': 'playerid', 'rivals': 'teamid1', 'celebrations': 'celebrationid', 'career_commonnames': 'commonnameid', 'teamformdiff': 'teamid', 'commentarynames': 'commentaryid', 'presentationmodesettings': 'modeid', 'teamformationteamstylelinks': 'teamid', 'modeadboardlinks': 'artificialkey', 'career_playasplayerhistory': 'playasplayerhistoryid', 'sponsors': 'adsponserid', 'teamsheetanalysis': 'playerid', 'broadcastleague': 'artificialkey', 'stories': 'storyid', 'career_boardoutcomes': 'leagueid', 'smmatchopponentfanboosts': 'teamid', 'teamsponsorlinks': 'artificialkey', 'temp_formations': 'formationid', 'smbignamesigningplayers': 'teamid', 'career_firstnames': 'firstnameid', 'career_loanbuy': 'playerid', 'career_lastnames': 'lastnameid', 'temp_arenateam': 'teamid', 'career_blacklist': 'playerid', 'competitionsponsorlinks': 'artificialkey', 'temp_editedplayernames': 'playerid', 'career_playercontract': 'playerid', 'shoecolors': 'colorid', 'assetcryptokeys': 'artificialkey', 'competition': 'competitionid', 'manager': 'teamid', 'fieldpositionboundingboxes': 'positionid', 'career_transferoffer': 'offerid', 'stadiums': 'stadiumid', 'trainingteamplayernames': 'nameid', 'career_youthplayerhistory': 'playerid', 'playerformdiff': 'teamid', 'customteamstyles': 'teamstyleid', 'videos': 'artificialkey', 'temp_teamplayerlinks': 'artificialkey', 'career_managerpref': 'managerprefid', 'temp_arenaplayer': 'playerid', 'career_presignedcontract': 'offerid', 'dlcballs': 'assetid', 'referee': 'refereeid', 'career_users': 'userid', 'bannerplayers': 'playertechid', 'clubcommentarynames': 'commentaryid', 'career_teamofweek': 'artificialkey', 'cz_teams': 'teamid', 'trainingteamplayerlinks': 'playerid', 'smplayers': 'artificialkey', 'players': 'playerid', 'teamnationlinks': 'teamid', 'career_playergrowthuserseason': 'playerid', 'createplayerpositiontemplates': 'attributeid', 'defaultteamdata': 'teamid', 'temp_players': 'playerid', 'career_youthplayers': 'playerid', 'trainingteamplayers': 'playerid', 'career_squadranking': 'playerid', 'career_trophies': 'season', 'career_newsban': 'artificialkey', 'career_managerawards': 'artificialkey', 'temp_createplayer': 'create_artificialkey', 'cz_players': 'playerid', 'playerloans': 'playerid', 'eatrax': 'songid', 'career_playerawards': 'artificialkey', 'playerboots': 'shoetype', 'persistent_events': 'id', 'teamstadiumlinks': 'teamid', 'teams': 'teamid', 'temp_arenateamplayerlinks': 'artificialkey', 'formations': 'formationid', 'editedplayernames': 'playerid', 'career_growthcurveinfo': 'playerid', 'leagues': 'leagueid', 'factory_teams': 'teamid', 'cz_leagues': 'trophyid', 'playerbootremapping': 'shoetypecode', 'playersuspensions': 'artificialkey', 'career_scouts': 'scoutid', 'career_managerhistory': 'artificialkey', 'default_teamsheets': 'teamid', 'career_playerbonusper': 'clubleveltype', 'teamstadiumlinkscache': 'teamid', 'rowteamnationlinks': 'teamid', 'career_calendar': 'dateid', 'teamkits': 'teamtechid', 'songplaylistlinks': 'artificialkey', 'career_newspicweights': 'teamid', 'audionation': 'nationid', 'career_precontract': 'offerid', 'cmeventhistory': 'artificialkey', 'teamplayerlinks': 'artificialkey', 'createplayer': 'create_artificialkey', 'career_playerlastmatchhistory': 'artificialkey', 'teamballs': 'ballid', 'cz_assets': 'xms_media_id', 'career_scoutmission': 'scoutid', 'dcplayernames': 'nameid', 'smrivals': 'teamid1', 'formationoffsets': 'formationid', 'cmteameventhistory': 'artificialkey', 'customformations': 'formationid', 'leagueteamlinks': 'artificialkey', 'career_regenplayerattributes': 'playerposgroup', 'career_news': 'newsid', 'dynamicimages': 'dynamicimageid', 'career_clinchedobjectives': 'teamid', 'career_youthplayerattributes': 'playertype', 'playerpositionzones': 'positionid', 'playernames': 'nameid', 'player_grudgelove': 'playerid', 'temp_teams': 'teamid', 'cz_teamkits': 'artificialkey', 'teamsheets': 'teamsheetid', 'temp_arenaplayername': 'playerid', 'fifaGameSettings': 'gamesettingspk', 'audiostadium': 'stadiumid', 'career_competitionprogress': 'artificialkey', 'career_playermatchratinghistory': 'artificialkey', 'fixtures': 'fixtureid'}
-        csv_path = "K:\Programowanie\Python\FIFA Tracker\Git\FIFATracker\media\Aranaktu\data\csv"
-        self.importCareerData(csv_path=csv_path)
-        end = time.time()
-        print("Completed in {}s".format(round(end - start, 3)))
-        #'''
 
     def protectprivacy(self):
         ''' data in DataUsersCareerUsers may contain real user firstname and surname '''
@@ -582,6 +637,11 @@ class ParseCareerSave():
                 user.surname = surname.replace(surname[1:], "*"*(len(surname)-1))
 
                 user.save()
+
+    def _set_currency(self, currency):
+        self.user.profile.currency = currency
+        self.user.save()
+
 
     def importCareerData(self, csv_path):
         """Import data from csv files to PostgreSQL database
@@ -617,6 +677,7 @@ class ParseCareerSave():
             "career_trophies",
             "career_playasplayer",
             "career_playasplayerhistory",
+            "career_managerpref",
             "teamstadiumlinks",
             "teamkits",
             "player_grudgelove",
@@ -656,8 +717,6 @@ class ParseCareerSave():
         # Get user id
         user_id = self.user.id
         for csv in csv_list:
-            #start = time.time()
-            #print(csv)
             full_csv_path = os.path.join(csv_path, csv) + ".csv" # example: media\<user>\data\csv\career_calendar.csv
             if os.path.exists(full_csv_path):
                 if csv == "players":
@@ -671,14 +730,10 @@ class ParseCareerSave():
 
                 ct = ContentType.objects.get(model=model_name) 
                 model = ct.model_class()
-                #model_filter = model.objects.filter(ft_user_id=user_id).order_by(self.xml_pkeys[csv])
                 self._delete_data(model=model, user_id=user_id)
                 self._copy_from_csv(table=csv, full_csv_path=full_csv_path)
-                #self._update_table_from_csv(model=model, model_filter=model_filter, table=csv, full_csv_path=full_csv_path, user_id=user_id)
             else:
                 logging.warning("File not found: {}".format(csv))
-
-            #print("{} in - {}s".format(csv, round(time.time() - start, 5)))
 
     def _update_table_from_csv(self, model, model_filter, table, full_csv_path, user_id):
         """ Updates database model with content from csv file """
@@ -704,7 +759,6 @@ class ParseCareerSave():
             reader_sorted = sorted(reader, key=lambda d: float(d[self.xml_pkeys[table]]))
 
         for row in reader_sorted:
-            #start = time.time()
             # create lookup
             lookup = self._create_lookup(user_id, table, row)
 
@@ -720,7 +774,6 @@ class ParseCareerSave():
 
             # find
             valid_index = self._dict_filter(models_data_list, lookup, table, valid_pkeys_set)
-            #print("Valid index - {}".format(valid_index))
 
             if valid_index < 0:
                 # create
@@ -741,27 +794,17 @@ class ParseCareerSave():
                 # delete checked data.
                 del models_data_list[valid_index]
 
-            #t = round(time.time() - start, 5)
-            #if t > 0.03:
-            #    print("lookup: {}".format(lookup))
-            #    print("table {} - {}s".format(table, t))
-
-        #print("Updated rows: {}".format(updated))
-
         #objects.bulk_create
         if len(new_rows_array) > 0:
-            #print("create bulk: {}".format(len(new_rows_array)))
             model.objects.bulk_create(new_rows_array)
 
         # delete unused data
         if len(models_data_list) > 0:
-            #print("delete data: {}".format(len(models_data_list)))
             self._delete_unused(model, models_data_list)
 
     def _delete_unused(self, model, models_data_list):
         """ delete unused data. players from other save etc."""
         d_len = len(models_data_list)
-        #print("data to delete: {}".format(d_len))
 
         primary_keys = list()
         for i in range(d_len):
@@ -789,7 +832,6 @@ class ParseCareerSave():
 
     def _create_lookup(self, user_id, table, row):
         lookup = { "ft_user_id": user_id, self.xml_pkeys[table]: row[self.xml_pkeys[table]] }
-        #print("lookup pkey = {}".format(lookup[self.xml_pkeys[table]]))
         
         # tables with duplicated primary keys. lookup needs to be extended to find unique objects in model.
         if table == "career_transferoffer":    
@@ -862,7 +904,6 @@ class ParseCareerSave():
 
         # Check if model contains pkey from lookup
         if int(q[pkey]) not in valid_pkeys_set:
-            #print("{} not in validpkeys".format(q[pkey],))
             return -1
         
         # find

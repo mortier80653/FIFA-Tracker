@@ -57,6 +57,11 @@
 									<input class="form-control" type="number" min="1" max="99" name="age_min" value="{{ request_query_dict.age_min }}" placeholder="Min">
 									<input class="form-control" type="number" min="1" max="99" name="age_max" value="{{ request_query_dict.age_max }}" placeholder="Max">
 								</div>
+								<label for="value__gte">{% trans 'Value' %}</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="0" max="500000000" name="value__gte" value="{{ request_query_dict.value__gte }}" placeholder="Min">
+									<input class="form-control" type="number" min="0" max="500000000" name="value__lte" value="{{ request_query_dict.value__lte }}" placeholder="Max">
+								</div>
 								<label for="select-isretiring">{% trans 'Is Retiring?' %}</label>
 								<select id="select-isretiring" name="isretiring" placeholder="{% trans 'Any...' %}">
 									<option value="-1" selected>{% trans 'Any...' %}</option>
@@ -443,8 +448,36 @@
 							</a>
 						{% endif %}
 					</th>
-					<th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-					<th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
+					<th class="text-center hidden-xs hidden-sm">
+						{% if request_query_dict.order_by == "-contractvaliduntil" %}
+							<a href="{% url_params request '?order_by=' 'contractvaliduntil' %}">
+								{% trans 'CONTRACT' %} <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+							</a>
+						{% elif request_query_dict.order_by == "contractvaliduntil" %}
+							<a href="{% url_params request '?order_by=' '-contractvaliduntil' %}">
+								{% trans 'CONTRACT' %} <span class="glyphicon glyphicon-sort-by-order"></span>
+							</a>
+						{% else %}
+							<a href="{% url_params request '?order_by=' 'contractvaliduntil' %}">
+								{% trans 'CONTRACT' %} <span class="glyphicon glyphicon-sort"></span>
+							</a>
+						{% endif %}
+					</th>
+					<th class="text-center hidden-xs hidden-sm">
+						{% if request_query_dict.order_by == "-value" %}
+							<a href="{% url_params request '?order_by=' 'value' %}">
+								{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+							</a>
+						{% elif request_query_dict.order_by == "value" %}
+							<a href="{% url_params request '?order_by=' '-value' %}">
+								{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort-by-order"></span>
+							</a>
+						{% else %}
+							<a href="{% url_params request '?order_by=' '-value' %}">
+								{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span>
+							</a>
+						{% endif %}
+					</th>
 				</tr>
 			</thead>
 			<tbody>

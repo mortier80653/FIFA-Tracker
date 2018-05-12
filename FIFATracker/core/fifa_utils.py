@@ -413,7 +413,7 @@ class PlayerName():
             'playerjerseyname': int(self.player.playerjerseyname_id or 0),
         }
       
-        if (name['firstname'] == 0 or name['lastname'] == 0) and self.edited_player_names is not None:
+        if name['firstname'] == 0 and name['lastname'] == 0 and self.edited_player_names is not None:
             for i in range(len(self.edited_player_names)):
                 if self.edited_player_names[i].playerid == self.player.playerid:
                     name['firstname'] = self.edited_player_names[i].firstname
@@ -429,8 +429,10 @@ class PlayerName():
                 else:
                     # Get playername from playernames
                     get_attr = getattr(self.player, key, None)
-                    if get_attr is not None:
+                    if get_attr is not None and get_attr.name is not None:
                         name[key] = get_attr.name
+                    else:
+                        name[key] = ""
 
 
         # This name will be displayed on website

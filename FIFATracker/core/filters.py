@@ -560,7 +560,6 @@ class DataUsersPlayersFilter:
                 elif int(self.request_dict['isonloan']) == 1:
                     # Player is currently on loan.
                     queryset = queryset.filter(Q(playerid__in=player_loans_ids))
-
         except ValueError:
             pass
 

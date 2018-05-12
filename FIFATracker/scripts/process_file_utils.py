@@ -618,7 +618,7 @@ class ParseCareerSave():
         self.protectprivacy()
 
         # Delete Files
-        #shutil.rmtree(self.data_path)
+        shutil.rmtree(self.data_path)
 
         end = time.time()
 

@@ -374,7 +374,7 @@ class PlayerValue:
         try:
             return (factors[age] / 100)
         except IndexError:
-            return (factors[-1:] / 100)
+            return (factors[-1] / 100)
 
     def _sum_factors(self, basevalue, *args):
         summed_value = basevalue

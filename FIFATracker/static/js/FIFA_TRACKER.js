@@ -1,6 +1,7 @@
 $(document).ready(function(){
   selectizejs();
   updatePositions();
+  updateInGameRatings();
   updateStrongFoot();
   updateWorkrates();
   changeCurrency();
@@ -10,6 +11,480 @@ $(document).ready(function(){
   cleanUrl();
   careerFileUpload();
 });
+
+function updateInGameRatings() {
+    let positions = [
+        { position: 'GK', 	posid: '0'},
+        { position: 'SW', 	posid: '1'},
+        { position: 'RWB', 	posid: '2'},
+        { position: 'RB', 	posid: '3'},
+        { position: 'RCB', 	posid: '4'},
+        { position: 'CB', 	posid: '5'},
+        { position: 'LCB', 	posid: '6'},
+        { position: 'LB', 	posid: '7'},
+        { position: 'LWB', 	posid: '8'},
+        { position: 'RDM', 	posid: '9'},
+        { position: 'CDM', 	posid: '10'},
+        { position: 'LDM', 	posid: '11'},
+        { position: 'RM', 	posid: '12'},
+        { position: 'RCM', 	posid: '13'},
+        { position: 'CM', 	posid: '14'},
+        { position: 'LCM', 	posid: '15'},
+        { position: 'LM', 	posid: '16'},
+        { position: 'RAM', 	posid: '17'},
+        { position: 'CAM', 	posid: '18'},
+        { position: 'LAM', 	posid: '19'},
+        { position: 'RF', 	posid: '20'},
+        { position: 'CF', 	posid: '21'},
+        { position: 'LF', 	posid: '22'},
+        { position: 'RW', 	posid: '23'},
+        { position: 'RS', 	posid: '24'},
+        { position: 'ST', 	posid: '25'},
+        { position: 'LS', 	posid: '26'},
+        { position: 'LW', 	posid: '27'},
+    ];
+
+    let attr_val = [];
+    $('.attrib-table tr').each(function() {
+        attr_val.push($(this).find("td:eq(1) > span").text());
+    });
+
+    for (var i = 0; i < positions.length; i++) {
+        posid = positions[i].posid;
+        igr = calculateInGameRating(parseInt(posid), attr_val);
+        let div_igr = $('#pitch-igr-' + i);
+        div_igr.addClass('rat' + igr);
+
+        let pos_name = div_igr.find('div:eq(0) > span');
+        pos_name.text(positions[i].position);
+
+        let pos_ovr = div_igr.find('div:eq(1) > span');
+        pos_ovr.text(igr);
+    };
+}
+
+function calculateInGameRating(posid, attr_val) {
+    let ovr = [];
+    switch (posid) {
+        case 0:
+            // GK (id = 0)
+            ovr.push(parseFloat(attr_val[26] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 11%
+            ovr.push(parseFloat(attr_val[0] * 0.21).toFixed(2));			// PLAYER_ATTRIBUTE_GK_DIVING * 21%
+            ovr.push(parseFloat(attr_val[1] * 0.21).toFixed(2));			// PLAYER_ATTRIBUTE_GK_HANDLING * 21%
+            ovr.push(parseFloat(attr_val[2] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_GK_KICKING * 5%
+            ovr.push(parseFloat(attr_val[4] * 0.21).toFixed(2));			// PLAYER_ATTRIBUTE_GK_REFLEXES * 21%
+            ovr.push(parseFloat(attr_val[3] * 0.21).toFixed(2));			// PLAYER_ATTRIBUTE_GK_POSITIONING * 21%
+            break;
+        case 1:
+            // Don't calculate rating for 'SW' position.
+            ovr = 0
+            break;
+        case 2:
+            // RWB (id = 2)
+            ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
+            ovr.push(parseFloat(attr_val[20] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 10%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[30] * 0.12).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 12%
+            ovr.push(parseFloat(attr_val[17] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 8%
+            ovr.push(parseFloat(attr_val[5] * 0.12).toFixed(2));			// PLAYER_ATTRIBUTE_CROSSING * 12%
+            ovr.push(parseFloat(attr_val[13] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 4%
+            ovr.push(parseFloat(attr_val[8] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 10%
+            ovr.push(parseFloat(attr_val[10] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 7%
+            ovr.push(parseFloat(attr_val[11] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 8%
+            ovr.push(parseFloat(attr_val[12] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 11%
+            break;
+        case 3:
+        	// RB (id = 3)
+            ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
+            ovr.push(parseFloat(attr_val[24] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 7%
+            ovr.push(parseFloat(attr_val[20] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 8%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[30] * 0.12).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 12%
+            ovr.push(parseFloat(attr_val[17] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 7%
+            ovr.push(parseFloat(attr_val[5] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_CROSSING * 9%
+            ovr.push(parseFloat(attr_val[7] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 4%
+            ovr.push(parseFloat(attr_val[8] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 7%
+            ovr.push(parseFloat(attr_val[10] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 8%
+            ovr.push(parseFloat(attr_val[11] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 11%
+            ovr.push(parseFloat(attr_val[12] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 14%
+            break;
+        case 4:
+    		// RCB (id = 4)
+            ovr.push(parseFloat(attr_val[24] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 2%
+            ovr.push(parseFloat(attr_val[19] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_JUMPING * 3%
+            ovr.push(parseFloat(attr_val[21] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 10%
+            ovr.push(parseFloat(attr_val[26] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 5%
+            ovr.push(parseFloat(attr_val[28] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_AGGRESSION * 7%
+            ovr.push(parseFloat(attr_val[30] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 13%
+            ovr.push(parseFloat(attr_val[17] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 4%
+            ovr.push(parseFloat(attr_val[7] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 5%
+            ovr.push(parseFloat(attr_val[10] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 14%
+            ovr.push(parseFloat(attr_val[11] * 0.17).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 17%
+            ovr.push(parseFloat(attr_val[12] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 10%
+            break;
+        case 5:
+			// CB (id = 5)
+            ovr.push(parseFloat(attr_val[24] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 2%
+            ovr.push(parseFloat(attr_val[19] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_JUMPING * 3%
+            ovr.push(parseFloat(attr_val[21] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 10%
+            ovr.push(parseFloat(attr_val[26] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 5%
+            ovr.push(parseFloat(attr_val[28] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_AGGRESSION * 7%
+            ovr.push(parseFloat(attr_val[30] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 13%
+            ovr.push(parseFloat(attr_val[17] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 4%
+            ovr.push(parseFloat(attr_val[7] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 5%
+            ovr.push(parseFloat(attr_val[10] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 14%
+            ovr.push(parseFloat(attr_val[11] * 0.17).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 17%
+            ovr.push(parseFloat(attr_val[12] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 10%
+            break;
+        case 6:
+        	// LCB (id = 6)
+            ovr.push(parseFloat(attr_val[24] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 2%
+            ovr.push(parseFloat(attr_val[19] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_JUMPING * 3%
+            ovr.push(parseFloat(attr_val[21] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 10%
+            ovr.push(parseFloat(attr_val[26] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 5%
+            ovr.push(parseFloat(attr_val[28] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_AGGRESSION * 7%
+            ovr.push(parseFloat(attr_val[30] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 13%
+            ovr.push(parseFloat(attr_val[17] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 4%
+            ovr.push(parseFloat(attr_val[7] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 5%
+            ovr.push(parseFloat(attr_val[10] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 14%
+            ovr.push(parseFloat(attr_val[11] * 0.17).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 17%
+            ovr.push(parseFloat(attr_val[12] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 10%
+            break;
+        case 7:
+        	// LB (id = 7)
+            ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
+            ovr.push(parseFloat(attr_val[24] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 7%
+            ovr.push(parseFloat(attr_val[20] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 8%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[30] * 0.12).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 12%
+            ovr.push(parseFloat(attr_val[17] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 7%
+            ovr.push(parseFloat(attr_val[5] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_CROSSING * 9%
+            ovr.push(parseFloat(attr_val[7] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 4%
+            ovr.push(parseFloat(attr_val[8] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 7%
+            ovr.push(parseFloat(attr_val[10] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 8%
+            ovr.push(parseFloat(attr_val[11] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 11%
+            ovr.push(parseFloat(attr_val[12] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 14%
+            break;
+        case 8:
+    		// LWB (id = 8)
+            ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
+            ovr.push(parseFloat(attr_val[20] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 10%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[30] * 0.12).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 12%
+            ovr.push(parseFloat(attr_val[17] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 8%
+            ovr.push(parseFloat(attr_val[5] * 0.12).toFixed(2));			// PLAYER_ATTRIBUTE_CROSSING * 12%
+            ovr.push(parseFloat(attr_val[13] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 4%
+            ovr.push(parseFloat(attr_val[8] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 10%
+            ovr.push(parseFloat(attr_val[10] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 7%
+            ovr.push(parseFloat(attr_val[11] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 8%
+            ovr.push(parseFloat(attr_val[12] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 11%
+            break;
+        case 9:
+			// RDM (id = 9)
+            ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
+            ovr.push(parseFloat(attr_val[21] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 4%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[28] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_AGGRESSION * 5%
+            ovr.push(parseFloat(attr_val[30] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 14%
+            ovr.push(parseFloat(attr_val[32] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 4%
+            ovr.push(parseFloat(attr_val[17] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 10%
+            ovr.push(parseFloat(attr_val[16] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 14%
+            ovr.push(parseFloat(attr_val[10] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 9%
+            ovr.push(parseFloat(attr_val[11] * 0.12).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 12%
+            ovr.push(parseFloat(attr_val[12] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 5%
+            break;
+        case 10:
+   			// CDM (id = 10)
+            ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
+            ovr.push(parseFloat(attr_val[21] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 4%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[28] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_AGGRESSION * 5%
+            ovr.push(parseFloat(attr_val[30] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 14%
+            ovr.push(parseFloat(attr_val[32] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 4%
+            ovr.push(parseFloat(attr_val[17] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 10%
+            ovr.push(parseFloat(attr_val[16] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 14%
+            ovr.push(parseFloat(attr_val[10] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 9%
+            ovr.push(parseFloat(attr_val[11] * 0.12).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 12%
+            ovr.push(parseFloat(attr_val[12] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 5%
+            break;
+        case 11:
+ 			// LDM (id = 11)
+            ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
+            ovr.push(parseFloat(attr_val[21] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 4%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[28] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_AGGRESSION * 5%
+            ovr.push(parseFloat(attr_val[30] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 14%
+            ovr.push(parseFloat(attr_val[32] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 4%
+            ovr.push(parseFloat(attr_val[17] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 10%
+            ovr.push(parseFloat(attr_val[16] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 14%
+            ovr.push(parseFloat(attr_val[10] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_MARKING * 9%
+            ovr.push(parseFloat(attr_val[11] * 0.12).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 12%
+            ovr.push(parseFloat(attr_val[12] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 5%
+            break;
+        case 12:
+    		// RM (id = 12)
+            ovr.push(parseFloat(attr_val[23] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 7%
+            ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
+            ovr.push(parseFloat(attr_val[20] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 5%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[31] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 8%
+            ovr.push(parseFloat(attr_val[32] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 7%
+            ovr.push(parseFloat(attr_val[17] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 13%
+            ovr.push(parseFloat(attr_val[5] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_CROSSING * 10%
+            ovr.push(parseFloat(attr_val[13] * 0.15).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 15%
+            ovr.push(parseFloat(attr_val[6] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 6%
+            ovr.push(parseFloat(attr_val[16] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 5%
+            ovr.push(parseFloat(attr_val[8] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 11%
+            break;
+        case 13:
+        	// RCM (id = 13)
+            ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[30] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 5%
+            ovr.push(parseFloat(attr_val[31] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 6%
+            ovr.push(parseFloat(attr_val[32] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 13%
+            ovr.push(parseFloat(attr_val[17] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 14%
+            ovr.push(parseFloat(attr_val[13] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 7%
+            ovr.push(parseFloat(attr_val[6] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 2%
+            ovr.push(parseFloat(attr_val[16] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 13%
+            ovr.push(parseFloat(attr_val[8] * 0.17).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 17%
+            ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+            ovr.push(parseFloat(attr_val[11] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 5%
+            break;
+        case 14:
+        	// CM (id = 14)
+            ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[30] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 5%
+            ovr.push(parseFloat(attr_val[31] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 6%
+            ovr.push(parseFloat(attr_val[32] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 13%
+            ovr.push(parseFloat(attr_val[17] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 14%
+            ovr.push(parseFloat(attr_val[13] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 7%
+            ovr.push(parseFloat(attr_val[6] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 2%
+            ovr.push(parseFloat(attr_val[16] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 13%
+            ovr.push(parseFloat(attr_val[8] * 0.17).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 17%
+            ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+            ovr.push(parseFloat(attr_val[11] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 5%
+            break;
+        case 15:
+            // LCM (id = 15)
+            ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[30] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 5%
+            ovr.push(parseFloat(attr_val[31] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 6%
+            ovr.push(parseFloat(attr_val[32] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 13%
+            ovr.push(parseFloat(attr_val[17] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 14%
+            ovr.push(parseFloat(attr_val[13] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 7%
+            ovr.push(parseFloat(attr_val[6] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 2%
+            ovr.push(parseFloat(attr_val[16] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 13%
+            ovr.push(parseFloat(attr_val[8] * 0.17).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 17%
+            ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+            ovr.push(parseFloat(attr_val[11] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 5%
+            break;
+        case 16:
+        	// LM (id = 16)
+            ovr.push(parseFloat(attr_val[23] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 7%
+            ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
+            ovr.push(parseFloat(attr_val[20] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 5%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[31] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 8%
+            ovr.push(parseFloat(attr_val[32] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 7%
+            ovr.push(parseFloat(attr_val[17] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 13%
+            ovr.push(parseFloat(attr_val[5] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_CROSSING * 10%
+            ovr.push(parseFloat(attr_val[13] * 0.15).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 15%
+            ovr.push(parseFloat(attr_val[6] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 6%
+            ovr.push(parseFloat(attr_val[16] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 5%
+            ovr.push(parseFloat(attr_val[8] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 11%
+            break;
+        case 17:
+        	// RAM (id = 17)
+            ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.push(parseFloat(attr_val[24] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 3%
+            ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[31] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 9%
+            ovr.push(parseFloat(attr_val[32] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 14%
+            ovr.push(parseFloat(attr_val[17] * 0.15).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 15%
+            ovr.push(parseFloat(attr_val[13] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 13%
+            ovr.push(parseFloat(attr_val[6] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 7%
+            ovr.push(parseFloat(attr_val[16] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 4%
+            ovr.push(parseFloat(attr_val[8] * 0.16).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 16%
+            ovr.push(parseFloat(attr_val[22] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 5%
+            break;
+        case 18:
+        	// CAM (id = 18)
+            ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.push(parseFloat(attr_val[24] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 3%
+            ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[31] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 9%
+            ovr.push(parseFloat(attr_val[32] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 14%
+            ovr.push(parseFloat(attr_val[17] * 0.15).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 15%
+            ovr.push(parseFloat(attr_val[13] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 13%
+            ovr.push(parseFloat(attr_val[6] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 7%
+            ovr.push(parseFloat(attr_val[16] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 4%
+            ovr.push(parseFloat(attr_val[8] * 0.16).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 16%
+            ovr.push(parseFloat(attr_val[22] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 5%
+            break;
+        case 19:
+        	// LAM (id = 19)
+            ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.push(parseFloat(attr_val[24] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 3%
+            ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[31] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 9%
+            ovr.push(parseFloat(attr_val[32] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 14%
+            ovr.push(parseFloat(attr_val[17] * 0.15).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 15%
+            ovr.push(parseFloat(attr_val[13] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 13%
+            ovr.push(parseFloat(attr_val[6] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 7%
+            ovr.push(parseFloat(attr_val[16] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_LONG_PASSING * 4%
+            ovr.push(parseFloat(attr_val[8] * 0.16).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 16%
+            ovr.push(parseFloat(attr_val[22] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 5%
+            break;
+        case 20:
+        	// RF (id = 20)
+            ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
+            ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
+            ovr.push(parseFloat(attr_val[26] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 9%
+            ovr.push(parseFloat(attr_val[31] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 13%
+            ovr.push(parseFloat(attr_val[32] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 8%
+            ovr.push(parseFloat(attr_val[17] * 0.15).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 15%
+            ovr.push(parseFloat(attr_val[13] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 14%
+            ovr.push(parseFloat(attr_val[6] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 11%
+            ovr.push(parseFloat(attr_val[7] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 2%
+            ovr.push(parseFloat(attr_val[8] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 9%
+            ovr.push(parseFloat(attr_val[18] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SHOT_POWER * 5%
+            ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+            break;
+        case 21:
+        	// CF (id = 21)
+            ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
+            ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
+            ovr.push(parseFloat(attr_val[26] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 9%
+            ovr.push(parseFloat(attr_val[31] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 13%
+            ovr.push(parseFloat(attr_val[32] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 8%
+            ovr.push(parseFloat(attr_val[17] * 0.15).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 15%
+            ovr.push(parseFloat(attr_val[13] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 14%
+            ovr.push(parseFloat(attr_val[6] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 11%
+            ovr.push(parseFloat(attr_val[7] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 2%
+            ovr.push(parseFloat(attr_val[8] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 9%
+            ovr.push(parseFloat(attr_val[18] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SHOT_POWER * 5%
+            ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+            break;
+        case 22:
+        	// LF (id = 22)
+            ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
+            ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
+            ovr.push(parseFloat(attr_val[26] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 9%
+            ovr.push(parseFloat(attr_val[31] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 13%
+            ovr.push(parseFloat(attr_val[32] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 8%
+            ovr.push(parseFloat(attr_val[17] * 0.15).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 15%
+            ovr.push(parseFloat(attr_val[13] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 14%
+            ovr.push(parseFloat(attr_val[6] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 11%
+            ovr.push(parseFloat(attr_val[7] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 2%
+            ovr.push(parseFloat(attr_val[8] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 9%
+            ovr.push(parseFloat(attr_val[18] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SHOT_POWER * 5%
+            ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+            break;
+        case 23:
+        	// RW (id = 23)
+            ovr.push(parseFloat(attr_val[23] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 7%
+            ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
+            ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[31] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 9%
+            ovr.push(parseFloat(attr_val[32] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 6%
+            ovr.push(parseFloat(attr_val[17] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 14%
+            ovr.push(parseFloat(attr_val[5] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_CROSSING * 9%
+            ovr.push(parseFloat(attr_val[13] * 0.16).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 16%
+            ovr.push(parseFloat(attr_val[6] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 9%
+            ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+            break;
+        case 24:
+        	// RS (id = 24)
+            ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
+            ovr.push(parseFloat(attr_val[21] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 5%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[31] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 13%
+            ovr.push(parseFloat(attr_val[17] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 10%
+            ovr.push(parseFloat(attr_val[13] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 7%
+            ovr.push(parseFloat(attr_val[6] * 0.18).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 18%
+            ovr.push(parseFloat(attr_val[7] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 5%
+            ovr.push(parseFloat(attr_val[18] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SHOT_POWER * 10%
+            ovr.push(parseFloat(attr_val[22] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 3%
+            ovr.push(parseFloat(attr_val[9] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_VOLLEYS * 2%
+            break;
+        case 25:
+        	// ST (id = 25)
+            ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
+            ovr.push(parseFloat(attr_val[21] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 5%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[31] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 13%
+            ovr.push(parseFloat(attr_val[17] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 10%
+            ovr.push(parseFloat(attr_val[13] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 7%
+            ovr.push(parseFloat(attr_val[6] * 0.18).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 18%
+            ovr.push(parseFloat(attr_val[7] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 5%
+            ovr.push(parseFloat(attr_val[18] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SHOT_POWER * 10%
+            ovr.push(parseFloat(attr_val[22] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 3%
+            ovr.push(parseFloat(attr_val[9] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_VOLLEYS * 2%
+            break;
+        case 26:
+        	// LS (id = 26)
+            ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
+            ovr.push(parseFloat(attr_val[21] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 5%
+            ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.push(parseFloat(attr_val[31] * 0.13).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 13%
+            ovr.push(parseFloat(attr_val[17] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 10%
+            ovr.push(parseFloat(attr_val[13] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 7%
+            ovr.push(parseFloat(attr_val[6] * 0.18).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 18%
+            ovr.push(parseFloat(attr_val[7] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_HEADING_ACCURACY * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 5%
+            ovr.push(parseFloat(attr_val[18] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SHOT_POWER * 10%
+            ovr.push(parseFloat(attr_val[22] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 3%
+            ovr.push(parseFloat(attr_val[9] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_VOLLEYS * 2%
+            break;
+        case 27:
+        	// LW (id = 27)
+            ovr.push(parseFloat(attr_val[23] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 7%
+            ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
+            ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
+            ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.push(parseFloat(attr_val[31] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_POSITIONING * 9%
+            ovr.push(parseFloat(attr_val[32] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_VISION * 6%
+            ovr.push(parseFloat(attr_val[17] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_BALL_CONTROL * 14%
+            ovr.push(parseFloat(attr_val[5] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_CROSSING * 9%
+            ovr.push(parseFloat(attr_val[13] * 0.16).toFixed(2));			// PLAYER_ATTRIBUTE_DRIBBLING * 16%
+            ovr.push(parseFloat(attr_val[6] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_FINISHING * 10%
+            ovr.push(parseFloat(attr_val[8] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 9%
+            ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+            break;
+        default:
+            ovr = 0;
+    }
+
+    if (Array.isArray(ovr)) {
+        let sum = 0;
+        for (let i = 0; i < ovr.length; i++) {
+            sum += parseFloat(ovr[i]);
+        };
+        ovr = Math.round(sum);
+    }
+    return ovr;
+}
 
 function careerFileUpload() {
     /* https://simpleisbetterthancomplex.com/tutorial/2016/11/22/django-multiple-file-upload-using-ajax.html */

@@ -13,6 +13,17 @@ $(document).ready(function(){
 });
 
 function updateInGameRatings() {
+    let attr_tbl = $('.attrib-table tr'); 
+
+    // Return if table not found
+    if (attr_tbl.length == 0) { return;}
+
+    let attr_val = [];
+
+    attr_tbl.each(function() {
+        attr_val.push($(this).find("td:eq(1) > span").text());
+    });
+
     let positions = [
         { position: 'GK', 	posid: '0'},
         { position: 'SW', 	posid: '1'},
@@ -44,14 +55,15 @@ function updateInGameRatings() {
         { position: 'LW', 	posid: '27'},
     ];
 
-    let attr_val = [];
-    $('.attrib-table tr').each(function() {
-        attr_val.push($(this).find("td:eq(1) > span").text());
-    });
-
     for (var i = 0; i < positions.length; i++) {
+        // Skip SW position
+        if (i === 1) { continue; }
+
+        // Calculate OVR for position id
         posid = positions[i].posid;
         igr = calculateInGameRating(parseInt(posid), attr_val);
+
+        // Fill pitch for lg and md screen
         let div_igr = $('#pitch-igr-' + i);
         div_igr.addClass('rat' + igr);
 
@@ -60,6 +72,9 @@ function updateInGameRatings() {
 
         let pos_ovr = div_igr.find('div:eq(1) > span');
         pos_ovr.text(igr);
+        
+        // Fill Table for sm and xs screen
+        $('.ingameratings-table').append('<tr><td>' + positions[i].position + '</td><td align="right"><span class="ratinglabel rat' + igr + '">' + igr +'</span></td></tr>');
     };
 }
 
@@ -492,36 +507,40 @@ function careerFileUpload() {
     $(".js-upload-career-save").click(function () {
       $("#fileupload").click();
     });
-  
-    $("#fileupload").fileupload({
-      dataType: 'json',
-      singleFileUploads: true,
-      start: function (e) {
-        $('.js-upload-career-save').css('display', 'none')
-        $('.progress').css('display', '')
-        $( "p:first" ).text("Uploading your FIFA career save: 0%");
-      },
-      progressall: function (e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        $( "p:first" ).text("Uploading your FIFA career save: " + progress + "%");
-        $('.upload-progress-bar').css(
-            'width',
-            progress + '%'
-        );
-      },
-      done: function (e, data) {  
-        if (data.result.is_valid) {
-          $( "p:first" ).text("Upload completed. You will be redirected in a second.");
-          $('.progress').css('display', 'none');
-          location.reload();
-        } else {
-            alert("data is not valid.");
-            $( "p:first" ).text("Uploading your FIFA career save: FAILED");
+    
+    try {
+        $("#fileupload").fileupload({
+        dataType: 'json',
+        singleFileUploads: true,
+        start: function (e) {
+            $('.js-upload-career-save').css('display', 'none')
+            $('.progress').css('display', '')
+            $( "p:first" ).text("Uploading your FIFA career save: 0%");
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $( "p:first" ).text("Uploading your FIFA career save: " + progress + "%");
+            $('.upload-progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        },
+        done: function (e, data) {  
+            if (data.result.is_valid) {
+            $( "p:first" ).text("Upload completed. You will be redirected in a second.");
             $('.progress').css('display', 'none');
             location.reload();
+            } else {
+                alert("data is not valid.");
+                $( "p:first" ).text("Uploading your FIFA career save: FAILED");
+                $('.progress').css('display', 'none');
+                location.reload();
+            }
         }
-      }
-    });
+        });
+    } catch(err) {
+        return;
+    };
 };
 
 function selectizejs() {
@@ -1269,23 +1288,33 @@ function changeCurrency() {
 }
 
 function updatePositions() {
-    var available_positions = ['GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW', 'SUB', 'RES']
+    let available_positions = ['GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW', 'SUB', 'RES'];
     
-    $('.player-position').each(function() {
-        var content = $(this).html();
-        var posIDsArray = $(this).text().match(/(\d{1,2})/g);
-        var re = "";
+    let posclass = $('.player-position');
+
+    // Return if not found
+    if (posclass.length == 0) { return;}
+
+    posclass.each(function() {
+        let content = $(this).html();
+        let posIDsArray = $(this).text().match(/(\d{1,2})/g);
+        let re = "";
         for (var posID of posIDsArray) { 
             re = new RegExp("(^|[\\s])("+posID+"{1})([\\s]|$)", "g");
-            content = content.replace(re, "$1"+available_positions[posID]+"$3")
+            content = content.replace(re, "$1"+available_positions[posID]+"$3");
         }
         $(this).html(content); 
     });
 }
 
 function updateStrongFoot() {
-    $('.strong-foot').each(function() {
-        var content = $(this).text();
+    let strongfootclass = $('.strong-foot');
+
+    // Return if not found
+    if (strongfootclass.length == 0) { return;}
+
+    strongfootclass.each(function() {
+        let content = $(this).text();
         if (content == "1") {
             $(this).text("Right");
         } else {
@@ -1295,8 +1324,13 @@ function updateStrongFoot() {
 }
 
 function updateWorkrates() {
-    $('.workrate').each(function() {
-        var content = $(this).text();
+    let wrclass = $('.workrate');
+
+    // Return if not found
+    if (wrclass.length == 0) { return;}
+
+    wrclass.each(function() {
+        let content = $(this).text();
         if (content == "2") {
             $(this).text("High");
         } else if (content== "1") {

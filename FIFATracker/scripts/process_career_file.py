@@ -1,4 +1,5 @@
 import os
+import logging
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -19,7 +20,7 @@ def update_savefile_model(user_id, error, fpath=None):
         if os.path.exists(fpath):
             os.remove(fpath)
     except PermissionError as e:
-        print("PermissionError: {}".format(e))
+        logging.warning("update_savefile_model PermissionError: {}".format(e))
     except TypeError:
         pass
 
@@ -31,7 +32,7 @@ def run(*args):
 
     user = User.objects.get(id=user_id)
     if not user:
-        print("User not found, ID:{}".format(user_id))
+        logging.warning("process_career_file script - User not found, ID:{}".format(user_id))
         return
 
     save_file_model = CareerSaveFileModel.objects.filter(user_id=user.id).first()
@@ -58,7 +59,7 @@ def run(*args):
     except Exception as e:
         user.profile.is_save_processed = False
         user.save()
-        print(e)
+        logging.warning("process_career_file script - ParseCareerSave, Exception:{}".format(e))
         delete_data(user_id)
         update_savefile_model(user_id, e, fpath=fpath)
 

@@ -216,10 +216,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
-                        <th class="text-center">{% trans 'RAT' %}</th>
-                        <th class="text-center">{% trans 'POT' %}</th>
-                        <th class="text-center">{% trans 'AGE' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
+                        <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                     </tr>
@@ -237,7 +239,7 @@
                                 {{ p.player.preferredposition1 }}
                             {% endif %}
                         </td>
-                        <td width="250">
+                        <td style="padding-left: 5px!important;" width="250">
                             <div>
                                 <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
@@ -289,10 +291,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
-                        <th class="text-center">{% trans 'RAT' %}</th>
-                        <th class="text-center">{% trans 'POT' %}</th>
-                        <th class="text-center">{% trans 'AGE' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
+                        <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                     </tr>
@@ -310,7 +314,7 @@
                                 {{ p.player.preferredposition1 }}
                             {% endif %}
                         </td>
-                        <td width="250">
+                        <td style="padding-left: 5px!important;" width="250">
                             <div>
                                 <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
@@ -362,10 +366,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
-                        <th class="text-center">{% trans 'RAT' %}</th>
-                        <th class="text-center">{% trans 'POT' %}</th>
-                        <th class="text-center">{% trans 'AGE' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
+                        <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                     </tr>
@@ -383,7 +389,7 @@
                                 {{ p.player.preferredposition1 }}
                             {% endif %}
                         </td>
-                        <td width="250">
+                        <td style="padding-left: 5px!important;" width="250">
                             <div>
                                 <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
@@ -435,10 +441,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
-                        <th class="text-center">{% trans 'RAT' %}</th>
-                        <th class="text-center">{% trans 'POT' %}</th>
-                        <th class="text-center">{% trans 'AGE' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
+                        <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
+                        <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                     </tr>
@@ -456,7 +464,7 @@
                                 {{ p.player.preferredposition1 }}
                             {% endif %}
                         </td>
-                        <td width="250">
+                        <td style="padding-left: 5px!important;" width="250">
                             <div>
                                 <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
@@ -509,10 +517,12 @@
                     <table>
                         <thead>
                             <tr>
-                                <th class="text-center" colspan ="3">{% trans 'PLAYER' %}</th>
-                                <th class="text-center">{% trans 'RAT' %}</th>
-                                <th class="text-center">{% trans 'POT' %}</th>
-                                <th class="text-center">{% trans 'AGE' %}</th>
+                                <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
+                                <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
+                                <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
+                                <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
+                                <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
+                                <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
                                 <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
                                 <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
                             </tr>
@@ -524,7 +534,7 @@
                                 <td class="player-position text-center" width="65">
                                     {{p.player.preferredposition1}}
                                 </td>
-                                <td width="250">
+                                <td style="padding-left: 5px!important;" width="250">
                                     <div>
                                         <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                         <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>

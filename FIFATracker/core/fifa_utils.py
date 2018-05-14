@@ -522,7 +522,7 @@ class FifaPlayer():
         return 0
 
     def set_headshot(self):
-        if self.player.playerid < 240895:
+        if self.player.playerid < 280000:
             return "heads/p{playerid}.png".format(playerid=self.player.playerid)
         else:
             return "youthheads/p{headtypecode}{haircolorcode:02d}.png".format(headtypecode=self.player.headtypecode, haircolorcode=self.player.haircolorcode) 

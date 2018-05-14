@@ -505,7 +505,7 @@ class DataUsersPlayersFilter:
 
         try:
             if 'isreal' in self.request_dict and int(self.request_dict['isreal']) in range(0,2):
-                highest_real_playerid = 240895
+                highest_real_playerid = 280000
                 if int(self.request_dict['isreal']) == 0:
                     #All regens, pregens etc.
                     queryset = queryset.filter( Q(playerid__gte=highest_real_playerid) )

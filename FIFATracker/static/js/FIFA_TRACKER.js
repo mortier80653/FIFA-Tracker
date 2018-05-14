@@ -1,5 +1,6 @@
 $(document).ready(function(){
   selectizejs();
+  resizeableTables();
   updatePositions();
   updateInGameRatings();
   updateStrongFoot();
@@ -11,6 +12,10 @@ $(document).ready(function(){
   cleanUrl();
   careerFileUpload();
 });
+
+function resizeableTables() {
+    $("table").colResizable();
+};
 
 function updateInGameRatings() {
     let attr_tbl = $('.attrib-table tr'); 
@@ -76,7 +81,7 @@ function updateInGameRatings() {
         // Fill Table for sm and xs screen
         $('.ingameratings-table').append('<tr><td>' + positions[i].position + '</td><td align="right"><span class="ratinglabel rat' + igr + '">' + igr +'</span></td></tr>');
     };
-}
+};
 
 function calculateInGameRating(posid, attr_val) {
     let ovr = [];

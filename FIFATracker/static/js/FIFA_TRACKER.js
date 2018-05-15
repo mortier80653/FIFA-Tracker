@@ -11,7 +11,106 @@ $(document).ready(function(){
   changeProfilePublicStatus();
   cleanUrl();
   careerFileUpload();
+  ToolsCalculator();
 });
+
+function ToolsCalculator() {
+
+    // Calculate Player Potential
+    $('#btn-calc-pot').on("click", function() {
+        let currency = $("#calcpot-currency").val();
+
+        let playerValue = $("#calcpot-val").val();
+        if (playerValue == null || playerValue=='') {
+            alert("Player value input cannot be empty.");
+            return;
+        }
+
+        let positionid = $("#calcpot-position").val();
+
+        let age = $("#calcpot-age").val();
+        if (age == null || age=='') {
+            alert("Age input cannot be empty.");
+            return;
+        }
+
+        let ovr = $("#calcpot-ovr").val();
+        if (ovr == null || ovr=='') {
+            alert("Overall rating input cannot be empty.");
+            return;
+        }
+
+        $("#calcpot-result").text("Calculating...");
+
+        $.ajax({
+            url: '/tools/calculator/ajax/calc-pot/',
+            data: {
+                "currency": currency,
+                "player_value": playerValue,
+                "positionid": positionid,
+                "age": age,
+                "ovr": ovr,
+            },
+            dataType: 'json',
+            success: function (data) {
+                alert(data.result);
+                $("#calcpot-result").text(data.result);
+            }
+        });
+    });
+
+
+    // Calculate Player Wage
+    $('#btn-calc-wage').on("click", function() {
+        let currency = $("#calcwage-currency").val();
+
+        let leagueid = $("#leagues-input").val();
+        if (leagueid == null || leagueid=='') {
+            alert("Please, select league.");
+            return;
+        }
+
+        let teamid = $("#teams-input").val();
+        if (teamid == null || teamid=='') {
+            alert("Please, select team.");
+            return;
+        }
+
+        let positionid = $("#calcwage-position").val();
+
+        let age = $("#calcwage-age").val();
+        if (age == null || age=='') {
+            alert("Age input cannot be empty.");
+            return;
+        }
+
+        let ovr = $("#calcwage-ovr").val();
+        if (ovr == null || ovr=='') {
+            alert("Overall rating input cannot be empty.");
+            return;
+        }
+
+        $("#calcwage-result").text("Calculating...");
+
+        $.ajax({
+            url: '/tools/calculator/ajax/calc-wage/',
+            data: {
+                "currency": currency,
+                "leagueid": leagueid,
+                "teamid": teamid,
+                "positionid": positionid,
+                "age": age,
+                "ovr": ovr,
+            },
+            dataType: 'json',
+            success: function (data) {
+                alert(data.result);
+                $("#calcwage-result").text(data.result);
+            }
+        });
+    });
+
+}
 
 function resizeableTables() {
     $("table").colResizable();
@@ -549,10 +648,19 @@ function careerFileUpload() {
 };
 
 function selectizejs() {
+    /* Calculator */
+
+    $('.just-selectize').selectize({
+        allowEmptyOption: true
+    });
+
+    /* Upload */
+
     $('#select-fifa').selectize({
         allowEmptyOption: true,
     });
 
+    /* Filters */
     $('#select-max_per_page').selectize({
         allowEmptyOption: true,
         onInitialize: function() {
@@ -1007,7 +1115,7 @@ function selectizejs() {
             if (!query.length) return callback();
             this.settings.load = null;
             $.ajax({
-                url: 'ajax/leagues/',
+                url: '/players/ajax/leagues/',
                 data: {
                     'username': $('.current_user').text()
                 },
@@ -1025,7 +1133,7 @@ function selectizejs() {
             var selectized = this
             if (value) 
                 $.ajax({
-                    url: 'ajax/leagues/',
+                    url: '/players/ajax/leagues/',
                     data: {
                         'username': $('.current_user').text(),
                         'selected': value
@@ -1304,7 +1412,7 @@ function updatePositions() {
         let content = $(this).html();
         let posIDsArray = $(this).text().match(/(\d{1,2})/g);
         let re = "";
-        for (var posID of posIDsArray) { 
+        for (let posID of posIDsArray) { 
             re = new RegExp("(^|[\\s])("+posID+"{1})([\\s]|$)", "g");
             content = content.replace(re, "$1"+available_positions[posID]+"$3");
         }

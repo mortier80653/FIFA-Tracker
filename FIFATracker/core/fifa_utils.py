@@ -278,7 +278,7 @@ class PlayerWage:
 
 class PlayerValue:
     # All modifiers are defined in "playervalues.ini"
-    def __init__(self, ovr, pot, age, posid, currency=1, value=None):
+    def __init__(self, ovr=0, pot=0, age=0, posid=0, currency=1, value=None):
         if value:
             self.value = value
             self.formated_value = "{:,}".format(self.value)

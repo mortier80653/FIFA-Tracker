@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="{% static 'css/selectize.default.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}?v=3" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}?v=3">
 	{% block stylesheet %}{% endblock %}
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
@@ -22,7 +22,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="{% static 'js\colResizable-1.6.min.js' %}"></script>
 	<script src="{% static 'js\selectize.min.js' %}"></script>
-	<script src="{% static 'js\FIFA_TRACKER.js' %}?v=3"></script>
+	<script src="{% static 'js\FIFA_TRACKER.js' %}?v=4"></script>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112744715-1"></script>
 	<script>
@@ -59,11 +59,17 @@
 					<li><a href="{% url 'players' %}">{% trans 'Players' %}</a></li>
 					<li><a href="{% url 'teams' %}">{% trans 'Teams' %}</a></li>
 					<li><a href="{% url 'transfers' %}">{% trans 'Transfers' %}</a></li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="toolsdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>{% trans 'Tools' %}</span></a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="{% url 'calculator' %}">{% trans 'Calculator' %}</a>
+						</div>
+					</li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" id="userSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span></a>
+						<a class="nav-link dropdown-toggle" id="userSettings" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span></a>
 						<div class="dropdown-menu">
 							<h6 class="dropdown-header"><span>{% trans 'Currency' %}</span></h6>
 							{% if request.session.currency == '0' %}

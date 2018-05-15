@@ -73,4 +73,4 @@ def ajax_calcwage(request):
     return JsonResponse({'result': result})
 
 def calculator(request):
-    return render(request, 'tools\calculator.html')
+    return render(request, 'tools/calculator.html')

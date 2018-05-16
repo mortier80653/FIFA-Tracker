@@ -356,7 +356,7 @@ class PlayerValue:
 
     def _pot_factor(self, remaining_potential):
         if remaining_potential <= 0: return 0
-        factors = (0, 15, 20, 25, 30, 35, 40, 45, 55, 65, 75, 90, 100, 120, 160, 190, 235)
+        factors = (0, 15, 20, 25, 30, 35, 40, 45, 55, 65, 75, 90, 100, 120, 160, 160, 160, 160, 160, 160, 160, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235)
         if remaining_potential > len(factors):
             return (factors[-1] / 100)
 

@@ -15,21 +15,22 @@ def ajax_calcpot(request):
     age = int(request.GET.get('age') or 0)
     ovr = int(request.GET.get('ovr') or 0)
 
-    values = dict()
+    possible_potential = list()
     for pot in range(ovr, 100):
-        values[pot] = PlayerValue(ovr=ovr, pot=pot, age=age, posid=positionid, currency=currency).value
-        if values[pot] == player_value:
-            break
+        calc_player_value = PlayerValue(ovr=ovr, pot=pot, age=age, posid=positionid, currency=currency).value
+        if calc_player_value == player_value:
+            possible_potential.append(pot)
 
-    for key in values:
-        if values[key] == player_value:
-            result = "The potential of this player is {} or less.".format(key)
+        if calc_player_value > player_value:
             break
-        elif values[key] > player_value:
-            result = "The potential of this player is {} or less.".format(key)
-            break
+    
+    if possible_potential:
+        if len(possible_potential) == 1:
+            result = "The potential of this player is {} or less.".format(possible_potential[0])
         else:
-            result = "Player potential calculation has failed."
+            result = "The potential of this player is {}-{}".format(possible_potential[0], possible_potential[-1])
+    else:
+        result = "Player potential calculation has failed."            
 
     return JsonResponse({'result': result})
 

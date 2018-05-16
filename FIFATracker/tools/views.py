@@ -4,7 +4,8 @@ from django.http import JsonResponse
 from core.fifa_utils import PlayerWage, PlayerValue
 from players.models import (
     DataUsersTeams, 
-    DataUsersLeagues, 
+    DataUsersLeagues,
+    DataUsersLeagueteamlinks, 
 )
 
 
@@ -41,17 +42,22 @@ def ajax_calcwage(request):
         current_user = "guest"
 
     currency = int(request.GET.get('currency') or 1)
-    leagueid = (request.GET.get('leagueid') or "13") # 13 == ENG (1)
-    if "," in leagueid:
-        leagueid = int(leagueid.split(",")[0])
-    else:
-        leagueid = int(leagueid)
-    
+
     teamid = (request.GET.get('teamid') or "5") # 5 == Chelsea
     if "," in teamid:
         teamid = int(teamid.split(",")[0])
     else:
         teamid = int(teamid)
+
+    leagueid = (request.GET.get('leagueid') or 0)
+    
+    if leagueid == 0:
+        leagueid = DataUsersLeagueteamlinks.objects.for_user(current_user).filter(teamid=teamid).first().leagueid
+    else:
+        if "," in leagueid:
+            leagueid = int(leagueid.split(",")[0])
+        else:
+            leagueid = int(leagueid)
 
     positionid = int(request.GET.get('positionid') or 25)
     age = int(request.GET.get('age') or 0)

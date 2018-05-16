@@ -65,10 +65,6 @@ function ToolsCalculator() {
         let currency = $("#calcwage-currency").val();
 
         let leagueid = $("#leagues-input").val();
-        if (leagueid == null || leagueid=='') {
-            alert("Please, select league.");
-            return;
-        }
 
         let teamid = $("#teams-input").val();
         if (teamid == null || teamid=='') {

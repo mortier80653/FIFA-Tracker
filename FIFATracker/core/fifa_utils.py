@@ -356,7 +356,9 @@ class PlayerValue:
 
     def _pot_factor(self, remaining_potential):
         if remaining_potential <= 0: return 0
+        
         factors = (0, 15, 20, 25, 30, 35, 40, 45, 55, 65, 75, 90, 100, 120, 160, 160, 160, 160, 160, 160, 160, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235)
+        
         if remaining_potential > len(factors):
             return (factors[-1] / 100)
 
@@ -367,6 +369,9 @@ class PlayerValue:
     
     def _age_factor(self, age, posid):
         factors = (18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 30, 42, 50, 48, 48, 48, 48, 46, 44, 40, 35, 30, 25, 15, 0, -25, -40, -50, -65, -65, -65, -75, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000)
+
+        if age > len(factors):
+            return (factors[-1] / 100)
 
         if posid == 0 and age >= 28:
             age -= 2
@@ -576,21 +581,22 @@ class FifaPlayer():
                 for j in range(len(self.q_teams)):
                     if int(self.q_teams[j].teamid) == int(self.team_player_links[i].teamid):
                         league = self.get_league(self.q_teams[j].teamid)
-                        if league[1].leagueid == 78 or league[1].leagueid == 2136:
-                            # Men's National or Women's National
-                            teams['national_team'] = {
-                                'team': vars(self.q_teams[j]),
-                                'team_links': vars(self.team_player_links[i]),
-                                'league': vars(league[0]),
-                                'league_links': vars(league[1]),
-                            } 
-                        else:
-                            teams['club_team'] = {
-                                'team': vars(self.q_teams[j]),
-                                'team_links': vars(self.team_player_links[i]),
-                                'league': vars(league[0]),
-                                'league_links': vars(league[1]),
-                            } 
+                        if league:
+                            if league[1].leagueid == 78 or league[1].leagueid == 2136:
+                                # Men's National or Women's National
+                                teams['national_team'] = {
+                                    'team': vars(self.q_teams[j]),
+                                    'team_links': vars(self.team_player_links[i]),
+                                    'league': vars(league[0]),
+                                    'league_links': vars(league[1]),
+                                } 
+                            else:
+                                teams['club_team'] = {
+                                    'team': vars(self.q_teams[j]),
+                                    'team_links': vars(self.team_player_links[i]),
+                                    'league': vars(league[0]),
+                                    'league_links': vars(league[1]),
+                                } 
                         
                         if len(teams) >= max_teams:
                             # Player can only have club team and national team
@@ -604,3 +610,5 @@ class FifaPlayer():
                 for j in range(len(self.leagues)):
                     if self.leagues[j].leagueid == self.league_team_links[i].leagueid:
                         return self.leagues[j], self.league_team_links[i]
+
+        return None

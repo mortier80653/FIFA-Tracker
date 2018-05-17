@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-15 20:27+0200\n"
+"POT-Creation-Date: 2018-05-17 18:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,11 +151,11 @@ msgstr ""
 "zmieniona w Panelu Kontrolnym konta"
 
 #: .\core\generate_view_helper.py:130 .\core\generate_view_helper.py:187
-#: .\core\generate_view_helper.py:322 .\core\generate_view_helper.py:366
+#: .\core\generate_view_helper.py:325 .\core\generate_view_helper.py:369
 msgid "No results found. Try to change your filters"
 msgstr "Brak rezultatów wyszukiwania. Spróbuj zmienić filtry"
 
-#: .\core\generate_view_helper.py:343
+#: .\core\generate_view_helper.py:346
 msgid ""
 "Your career file hasn't been processed yet. Displaying default FIFA database "
 "data."
@@ -179,19 +179,19 @@ msgstr "Model nie znaleziony"
 msgid "Save file not found on the server."
 msgstr "Plik nie znaleziony na serwerze"
 
-#: .\scripts\process_file_utils.py:589
+#: .\scripts\process_file_utils.py:591
 msgid "Unpacking database from career file."
 msgstr "Wypakowywanie bazydanych z pliku kariery"
 
-#: .\scripts\process_file_utils.py:600
+#: .\scripts\process_file_utils.py:602
 msgid "Exporting data from FIFA database to csv files."
 msgstr "Exportowanie danych z bazy danych FIFA do pliku csv"
 
-#: .\scripts\process_file_utils.py:616
+#: .\scripts\process_file_utils.py:618
 msgid "Importing data to FIFA Tracker database."
 msgstr "Importowanie danych do bazy danych FIFA Trackera"
 
-#: .\scripts\process_file_utils.py:626
+#: .\scripts\process_file_utils.py:628
 msgid "Completed in {}s"
 msgstr "Proces zakończony w {}s"
 
@@ -1407,8 +1407,10 @@ msgid "Status (updates every 10s)"
 msgstr "Status (aktualizacja co 10s)"
 
 #: .\templates\upload.html:59
-msgid "Error during processing your career file"
-msgstr "Bład podczas przetwarzania pliku"
+msgid ""
+"Error during processing your career file. Please, contact with website "
+"administrator to solve this problem."
+msgstr "Wystąpił bład podczas przetwarzania pliku. Skontaktuj sie z administratorem strony aby rozwiaząć ten problem."
 
 #: .\templates\upload.html:60
 msgid "Reason"
@@ -1441,3 +1443,6 @@ msgstr "Tylko autoryzowani użytkownicy mogą przesyłać pliki."
 #: .\templates\upload.html:93
 msgid "Return to home"
 msgstr "Wróć na stronę główną"
+
+#~ msgid "Error during processing your career file"
+#~ msgstr "Bład podczas przetwarzania pliku"

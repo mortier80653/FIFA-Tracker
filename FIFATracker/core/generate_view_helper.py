@@ -193,16 +193,19 @@ def get_team(request, teamid=0, additional_filters=None):
             break
 
     # get valid leagueteamlink
+    valid_ltlink = None
     for ltlink in context_data['dict_cached_queries']['q_league_team_links']:
         if int(ltlink.teamid) == int(teamid):
             valid_ltlink = ltlink
             break
 
     # get valid league
-    for league in context_data['dict_cached_queries']['q_leagues']:
-        if int(league.leagueid) == int(valid_ltlink.leagueid):
-            valid_league = league
-            break
+    valid_league = None
+    if valid_ltlink:
+        for league in context_data['dict_cached_queries']['q_leagues']:
+            if int(league.leagueid) == int(valid_ltlink.leagueid):
+                valid_league = league
+                break
 
     # manager
     try:

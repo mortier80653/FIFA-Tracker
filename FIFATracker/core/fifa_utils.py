@@ -488,7 +488,7 @@ class FifaPlayer():
 
         # Currency
         try:
-            self.currency = currency
+            self.currency = int(currency)
         except KeyError:
             self.currency = 1 # Set Euro as default currency
 
@@ -501,8 +501,16 @@ class FifaPlayer():
         self.player_age = PlayerAge(self.player.birthdate, current_date)
 
         # Player Value
-        self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, int(self.currency), self.player.value)
-        
+        if self.currency == 0:
+            # USD
+            self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, self.currency, self.player.value_usd)
+        elif self.currency == 2:
+            # GBP
+            self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, self.currency, self.player.value_gbp)
+        else:
+            # EURO by default
+            self.player_value = PlayerValue(self.player.overallrating, self.player.potential, self.player_age.age, self.player.preferredposition1, self.currency, self.player.value_eur)
+            
         # Player Wage (slow)
         try:
             self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'], int(self.currency))

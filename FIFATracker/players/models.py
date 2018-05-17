@@ -425,7 +425,9 @@ class DataUsersPlayers(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(User, related_name='players', on_delete=models.CASCADE, null=True,)
-    value = models.IntegerField(blank=True, null=True)
+    value_usd = models.IntegerField(blank=True, null=True)
+    value_eur = models.IntegerField(blank=True, null=True)
+    value_gbp = models.IntegerField(blank=True, null=True)
     wage = models.IntegerField(blank=True, null=True)
 
     # Original fields
@@ -555,7 +557,9 @@ class DataUsersPlayers17(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(User, related_name='players17', on_delete=models.CASCADE, null=True,)
-    value = models.IntegerField(blank=True, null=True)
+    value_usd = models.IntegerField(blank=True, null=True)
+    value_eur = models.IntegerField(blank=True, null=True)
+    value_gbp = models.IntegerField(blank=True, null=True)
     wage = models.IntegerField(blank=True, null=True)
     
     # Original fields

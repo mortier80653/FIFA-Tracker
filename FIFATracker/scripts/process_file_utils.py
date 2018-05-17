@@ -93,8 +93,8 @@ class CalculateValues():
         with open(players_file, 'r', encoding='utf-8') as csvfile:
             data = csvfile.readlines()
 
-            # Add "value" column
-            data[0] = data[0][:-1] + ",value,wage\n"
+            # Add custom columns
+            data[0] = data[0][:-1] + ",value_usd,value_eur,value_gbp,wage\n"
 
             csvfile.seek(0)
             reader = csv.DictReader(csvfile)
@@ -105,9 +105,11 @@ class CalculateValues():
                 pot = row['potential']
                 age = PlayerAge(row['birthdate'], self.currdate).age
                 posid = row['preferredposition1']
-                pvalue = PlayerValue(ovr, pot, age, posid, self.currency).value
+                pvalue_usd = PlayerValue(ovr, pot, age, posid, 0).value
+                pvalue_eur = PlayerValue(ovr, pot, age, posid, 1).value
+                pvalue_gbp = PlayerValue(ovr, pot, age, posid, 2).value
                 pwage = 0
-                data[i] = data[i][:-1] + ",{},{}\n".format(pvalue, pwage)
+                data[i] = data[i][:-1] + ",{},{},{},{}\n".format(pvalue_usd, pvalue_eur, pvalue_gbp, pwage)
                 i += 1
 
         # Write data

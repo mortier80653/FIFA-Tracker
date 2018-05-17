@@ -10,6 +10,7 @@ from players.models import (
     DataUsersLeagues, 
     DataNations,
     DataPlayernames,
+    DataUsersCareerRestReleaseClauses,
 )
 
 from core.fifa_utils import FifaPlayer, FifaDate, PlayerAge, PlayerWage, PlayerValue, PlayerName
@@ -74,6 +75,9 @@ class FifaPlayerTests(TestCase):
             internationalrep=2,
             overallrating=88,
             potential=88,
+            value_usd = 65000000,
+            value_eur = 58000000,
+            value_gbp = 51000000,
         )
 
         player.save()
@@ -119,6 +123,7 @@ class FifaPlayerTests(TestCase):
         league_team_links.save()
 
     def test_player_team(self):
+        # TEST Malcom
         player = DataUsersPlayers.objects.for_user("testuser1").filter(playerid=222737).first()
 
         qdata_dict = dict()
@@ -127,14 +132,49 @@ class FifaPlayerTests(TestCase):
         qdata_dict['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user("testuser1").iterator())
         #qdata_dict['q_player_loans'] = list(DataUsersTeams.objects.for_user("testuser1").iterator())
         qdata_dict['q_leagues'] = list(DataUsersLeagues.objects.for_user("testuser1").iterator())
+        qdata_dict['q_release_clauses'] = list(DataUsersCareerRestReleaseClauses.objects.for_user("testuser1").iterator())
 
-        testplayer1 = FifaPlayer(player, username="testuser1", current_date="20230918", dict_cached_queries=qdata_dict, currency=1)
+        testplayer1 = FifaPlayer(player, username="testuser1", current_date="20260419", dict_cached_queries=qdata_dict, currency=1, fifa_edition=18)
         testteam = testplayer1.player_teams['club_team']['team']
         self.assertEquals(testteam['teamname'], "Chelsea")
         self.assertEquals(testteam['teamid'], 5)
         self.assertEquals(testteam['domesticprestige'], 10)
         self.assertEquals(testteam['internationalprestige'], 10)
 
+    def test_player_age(self):
+        player = DataUsersPlayers.objects.for_user("testuser1").filter(playerid=222737).first()
+
+        qdata_dict = dict()
+        qdata_dict['q_team_player_links'] = list(DataUsersTeamplayerlinks.objects.for_user("testuser1").iterator())
+        qdata_dict['q_teams'] = list(DataUsersTeams.objects.for_user("testuser1").iterator())
+        qdata_dict['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user("testuser1").iterator())
+        #qdata_dict['q_player_loans'] = list(DataUsersTeams.objects.for_user("testuser1").iterator())
+        qdata_dict['q_leagues'] = list(DataUsersLeagues.objects.for_user("testuser1").iterator())
+        qdata_dict['q_release_clauses'] = list(DataUsersCareerRestReleaseClauses.objects.for_user("testuser1").iterator())
+
+        testplayer_age = FifaPlayer(player, username="testuser1", current_date="20260419", dict_cached_queries=qdata_dict, currency=1, fifa_edition=18).player_age.age
+        self.assertEquals(testplayer_age, 29)
+
+    def test_player_value(self):
+        # TEST Malcom
+        player = DataUsersPlayers.objects.for_user("testuser1").filter(playerid=222737).first()
+
+        qdata_dict = dict()
+        qdata_dict['q_team_player_links'] = list(DataUsersTeamplayerlinks.objects.for_user("testuser1").iterator())
+        qdata_dict['q_teams'] = list(DataUsersTeams.objects.for_user("testuser1").iterator())
+        qdata_dict['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user("testuser1").iterator())
+        #qdata_dict['q_player_loans'] = list(DataUsersTeams.objects.for_user("testuser1").iterator())
+        qdata_dict['q_leagues'] = list(DataUsersLeagues.objects.for_user("testuser1").iterator())
+        qdata_dict['q_release_clauses'] = list(DataUsersCareerRestReleaseClauses.objects.for_user("testuser1").iterator())
+
+        testplayer_value_usd = FifaPlayer(player, username="testuser1", current_date="20260419", dict_cached_queries=qdata_dict, currency=0, fifa_edition=18).player_value.value
+        self.assertEquals(testplayer_value_usd, 65000000)
+
+        testplayer_value_euro = FifaPlayer(player, username="testuser1", current_date="20260419", dict_cached_queries=qdata_dict, currency=1, fifa_edition=18).player_value.value
+        self.assertEquals(testplayer_value_euro, 58000000)
+
+        testplayer_value_gbp = FifaPlayer(player, username="testuser1", current_date="20260419", dict_cached_queries=qdata_dict, currency=2, fifa_edition=18).player_value.value
+        self.assertEquals(testplayer_value_gbp, 51000000)
 
 # Views tests.
 class HomePageTests(TestCase):

@@ -20,7 +20,7 @@
         setTimeout(checkStatus, 10000);
       } else if (status_code == 1) {
         $( "h3:first" ).text("Failed.");
-        $(".process_status_info").text("Error during processing your career file.")
+        $(".process_status_info").text("Error during processing your career file. Please, contact with website administrator to solve this problem.")
         $(".status").text("Reason:")
       } else if (status_code == 2) {
         $( "h3:first" ).text("Success!");
@@ -56,7 +56,7 @@
         <p><strong><span class="status">{% trans 'Status (updates every 10s)' %}:</span></strong></p>
         <p><span class="process_status_msg">{{cs_model.file_process_status_msg}}</span></p>
       {% elif cs_model.file_process_status_code == 1 %}
-        <p>{% trans 'Error during processing your career file' %}.</p>
+        <p>{% trans 'Error during processing your career file. Please, contact with website administrator to solve this problem.' %}.</p>
         <p><strong>{% trans 'Reason' %}:</strong> {{cs_model.file_process_status_msg}}</p>
       {% elif cs_model.file_process_status_code == 2 %}
         <p>{% trans 'Career file has been processed. Everything should work' %} :)</p>

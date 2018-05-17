@@ -170,7 +170,7 @@ class RestToCSV():
         offset = mm.find(sign)
 
         if offset < 0:
-            logging.warning("release clause sign not found")
+            logging.error("release clause sign not found")
             return
 
         with open(os.path.join(self.dest_path, "career_rest_releaseclauses.csv") , 'w+', encoding='utf-8') as f_csv:
@@ -622,7 +622,7 @@ class ParseCareerSave():
 
         end = time.time()
 
-        logging.info("Done")
+        logging.info("ParseCareerSave Completed in {}s.".format(round(end - start, 3)))
         self._update_savefile_model(2, _("Completed in {}s").format(round(end - start, 3)))
 
     def protectprivacy(self):
@@ -732,8 +732,7 @@ class ParseCareerSave():
                 model = ct.model_class()
                 self._delete_data(model=model, user_id=user_id)
                 self._copy_from_csv(table=csv, full_csv_path=full_csv_path)
-            else:
-                logging.warning("File not found: {}".format(csv))
+
 
     def _update_table_from_csv(self, model, model_filter, table, full_csv_path, user_id):
         """ Updates database model with content from csv file """

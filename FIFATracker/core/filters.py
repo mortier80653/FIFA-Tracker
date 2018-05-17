@@ -113,7 +113,7 @@ class DataUsersCareerTransferOfferFilter:
             try:
                 if range_bottom in self.request_dict or range_top in self.request_dict:
                     val_bottom = (self._check_key(self.request_dict, range_bottom) or 1) 
-                    val_top = (self._check_key(self.request_dict, range_top) or 99) 
+                    val_top = (self._check_key(self.request_dict, range_top) or 500000000) 
                     queryset = queryset.filter(
                         Q((range_bottom, val_bottom)), 
                         Q((range_top, val_top)),
@@ -160,6 +160,12 @@ class DataUsersCareerTransferOfferFilter:
                 return queryset.order_by(self.request_dict['order_by'], 'offerid')
 
         return queryset.order_by('-offeredfee', 'offerid')
+
+    def _check_key(self, d, key):
+        if key in d:
+            return d[key]
+        else:
+            return None
 
 
 class DataUsersPlayerloansFilter:

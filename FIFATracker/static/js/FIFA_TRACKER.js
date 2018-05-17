@@ -20,9 +20,9 @@ function ToolsCalculator() {
     $('#btn-calc-pot').on("click", function() {
         let currency = $("#calcpot-currency").val();
 
-        let playerValue = $("#calcpot-val").val();
+        let playerValue = $("#calcpot-val").val().replace(/\D/g,'');
         if (playerValue == null || playerValue=='') {
-            alert("Player value input cannot be empty.");
+            alert("Player value input cannot be empty and must contain digits.");
             return;
         }
 

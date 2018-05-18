@@ -481,11 +481,29 @@ class DataUsersPlayersFilter:
             pass
 
         try:
-            if 'value__gte' in self.request_dict or 'value__lte' in self.request_dict:
-                player_value_min = int(self._check_key(self.request_dict, 'value__gte') or 0)
-                player_value_max = int(self._check_key(self.request_dict, 'value__lte') or 500000000)
+            if 'value_usd__gte' in self.request_dict or 'value_usd__lte' in self.request_dict:
+                player_value_usd_min = int(self._check_key(self.request_dict, 'value_usd__gte') or 0)
+                player_value_usd_max = int(self._check_key(self.request_dict, 'value_usd__lte') or 500000000)
                 
-                queryset = queryset.filter(Q(value__gte=player_value_min), Q(value__lte=player_value_max))
+                queryset = queryset.filter(Q(value_usd__gte=player_value_usd_min), Q(value_usd__lte=player_value_usd_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'value_eur__gte' in self.request_dict or 'value_eur__lte' in self.request_dict:
+                player_value_eur_min = int(self._check_key(self.request_dict, 'value_eur__gte') or 0)
+                player_value_eur_max = int(self._check_key(self.request_dict, 'value_eur__lte') or 500000000)
+                
+                queryset = queryset.filter(Q(value_eur__gte=player_value_eur_min), Q(value_eur__lte=player_value_eur_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'value_gbp__gte' in self.request_dict or 'value_gbp__lte' in self.request_dict:
+                player_value_gbp_min = int(self._check_key(self.request_dict, 'value_gbp__gte') or 0)
+                player_value_gbp_max = int(self._check_key(self.request_dict, 'value_gbp__lte') or 500000000)
+                
+                queryset = queryset.filter(Q(value_gbp__gte=player_value_gbp_min), Q(value_gbp__lte=player_value_gbp_max))
         except ValueError:
             pass
     

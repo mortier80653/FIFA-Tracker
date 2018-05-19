@@ -48,6 +48,7 @@
 
 {% block content %}
 <div id="upload-container" class="container">
+  <p class="alert alert-info">If upload button doesn't work, make sure to check extensions in your web browser. Some of them may block js code execution. Like "uBlock" for example. Add this website to the whitelist and it should work fine.</p>
     
     {% if cs_model %}
       <h3>{% trans 'Your file is being processed' %}.</h3>

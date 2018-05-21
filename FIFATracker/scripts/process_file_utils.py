@@ -86,10 +86,22 @@ class CalculateValues():
     def __init__(self, csv_path):
         self.csv_path = csv_path
         
+        self.players_real_ovr = dict()
         self.currdate = self._get_csv_val("career_calendar.csv", "currdate")
         self.currency = self._get_csv_val("career_managerpref.csv", "currency")
-        players_file = os.path.join(self.csv_path, "players.csv")
 
+        self._calc()
+        self._calc_teams_rating()
+
+    def _calc(self):
+        """ Calculate"""
+        def_positions = (0, 1, 2, 3, 4, 5, 6, 7, 8)
+        mid_positions = (9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)
+        att_positions = (20, 21, 22, 23, 24, 25, 26, 27)
+        
+        links = self._get_teamplayers_links()
+
+        players_file = os.path.join(self.csv_path, "players.csv")
         with open(players_file, 'r', encoding='utf-8') as csvfile:
             data = csvfile.readlines()
 
@@ -101,6 +113,35 @@ class CalculateValues():
 
             i = 1
             for row in reader:
+                # Calc Real Player OVR for actuall position
+
+                playerid = int(row['playerid'])
+                teamids, posids = self._get_team_and_pos(playerid, links)
+
+                if teamids and posids:
+                    for x in range(len(teamids)):
+                        posid = int(posids[x]) 
+                        ovr = self._calc_real_ovr(row, posid)
+                        try:
+                            players_real_ovr_list = self.players_real_ovr[int(teamids[x])]
+                        except KeyError:
+                            self.players_real_ovr[int(teamids[x])] = {
+                                "DEF": list(),
+                                "MID": list(),
+                                "ATT": list(),
+                            }
+                            players_real_ovr_list = self.players_real_ovr[int(teamids[x])]
+                        if posid in def_positions:
+                            players_real_ovr_list["DEF"].append(ovr)
+                        elif posid in mid_positions:
+                            players_real_ovr_list["MID"].append(ovr)
+                        elif posid in att_positions:
+                            players_real_ovr_list["ATT"].append(ovr)
+                        else:
+                            logging.warning("POS NOT MATCH. Playerid {} - Posid {}".format(playerid, posid))
+
+                # Calc Player Value in all currencies
+
                 ovr = row['overallrating']
                 pot = row['potential']
                 age = PlayerAge(row['birthdate'], self.currdate).age
@@ -116,6 +157,68 @@ class CalculateValues():
         with open(players_file, 'w', encoding='utf-8') as csvfile:
             csvfile.writelines( data )
 
+    def _calc_teams_rating(self):
+        """ Calculate Teams ovr, att, mid, def ratings. And Save Data in teams.csv """
+        players_ovr = self.players_real_ovr
+
+        # save
+        teams_csv = os.path.join(self.csv_path, "teams.csv")
+        with open(teams_csv, 'r', encoding='utf-8') as csvfile:
+            data = csvfile.readlines()
+
+            # important!
+            csvfile.seek(0)
+
+            headers = data[0].split(",")
+            reader = csv.DictReader(csvfile)
+
+            i = 1
+            for row in reader:
+                teamid = int(row['teamid'])
+                team_ovr, team_def, team_mid, team_att = self._get_team_ratings(players_ovr, teamid)
+
+                data[i] = self._edited_line(headers=headers, line=data[i].split(","), to_edit={'overallrating': team_ovr, 'attackrating': team_att, 'midfieldrating': team_mid, 'defenserating': team_def,})
+                i += 1
+        
+        # Write data
+        with open(teams_csv, 'w', encoding='utf-8') as csvfile:
+            csvfile.writelines( data )
+
+
+    def _get_team_ratings(self, players_ovr, teamid):
+        """ return team ovr, def, mid, att for teamid"""
+        team_ovr = 0
+        team_def = 0
+        team_mid = 0
+        team_att = 0
+
+        for k in players_ovr:
+            if k == teamid:
+                # calc
+                team_ovr = int((sum(players_ovr[k]['DEF']) + sum(players_ovr[k]['MID']) + sum(players_ovr[k]['ATT'])) / 11)
+                team_def = players_ovr[k]['DEF'] = int(sum(players_ovr[k]['DEF']) / len(players_ovr[k]['DEF']))
+                team_mid = players_ovr[k]['MID'] = int(sum(players_ovr[k]['MID']) / len(players_ovr[k]['MID']))
+                team_att = players_ovr[k]['ATT'] = int(sum(players_ovr[k]['ATT']) / len(players_ovr[k]['ATT']))
+                return team_ovr, team_def, team_mid, team_att
+
+        return team_ovr, team_def, team_mid, team_att
+
+
+    def _edited_line(self, headers, line, to_edit):
+        """Edit line"""
+
+        max_edits = len(to_edit)
+        edits_made = 0
+        for k in to_edit:
+            for x in range(len(headers)):
+                if headers[x] == k:
+                    line[x] = to_edit[k]
+                    edits_made += 1
+                    if edits_made >= max_edits:
+                        break
+
+        return ",".join(map(str, line))
+
     def _get_csv_val(self, fname, fieldname):
         fpath = os.path.join(self.csv_path, fname)
         ret_val = None
@@ -130,6 +233,200 @@ class CalculateValues():
             raise
 
         return ret_val
+
+    def _get_teamplayers_links(self):
+        """ return dict with starting 11 posids of all teams """
+        teamplayerlinks_file = os.path.join(self.csv_path, "teamplayerlinks.csv")
+
+        teamplayers = dict()
+        with open(teamplayerlinks_file, 'r', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                # skip SUB/RES players
+                if int(row['position']) > 27:
+                    continue
+
+                try:
+                    playerslist = teamplayers[int(row['teamid'])]
+                except KeyError:
+                    teamplayers[int(row['teamid'])] = dict()
+                    playerslist = teamplayers[int(row['teamid'])]
+
+                playerslist[row['position']] = int(row['playerid'])
+
+        return teamplayers
+
+    def _get_team_and_pos(self, pid, d):
+        # key == teamid
+        # k = posid
+        teamids = list()
+        posids = list()
+        for key in d:            
+            for k in d[key]:
+                if d[key][k] == pid:
+                    teamids.append(key)
+                    posids.append(k)
+
+        return teamids, posids
+    
+    def _calc_real_ovr(self, row, posid):
+        # Return player real ovr
+        if posid > 27 or posid == 1:
+            return 0
+
+        ovr = list()
+
+        if posid == 0:
+            # GK
+            ovr.append(round(float(row['reactions']) * 0.11, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 11%
+            ovr.append(round(float(row['gkdiving']) * 0.21, 2))             # PLAYER_ATTRIBUTE_GK_DIVING * 21%
+            ovr.append(round(float(row['gkhandling']) * 0.21, 2))           # PLAYER_ATTRIBUTE_GK_HANDLING * 21%
+            ovr.append(round(float(row['gkkicking']) * 0.05, 2))            # PLAYER_ATTRIBUTE_GK_KICKING * 5%
+            ovr.append(round(float(row['gkreflexes']) * 0.21, 2))           # PLAYER_ATTRIBUTE_GK_REFLEXES * 21%
+            ovr.append(round(float(row['gkpositioning']) * 0.21, 2))        # PLAYER_ATTRIBUTE_GK_POSITIONING * 21%
+        elif posid == 2 or posid == 8:
+            # RWB or LWB
+            ovr.append(round(float(row['acceleration']) * 0.04, 2))         # PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.append(round(float(row['sprintspeed']) * 0.06, 2))          # PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
+            ovr.append(round(float(row['stamina']) * 0.10, 2))              # PLAYER_ATTRIBUTE_STAMINA * 10%
+            ovr.append(round(float(row['reactions']) * 0.08, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.append(round(float(row['interceptions']) * 0.12, 2))        # PLAYER_ATTRIBUTE_INTERCEPTIONS * 12%
+            ovr.append(round(float(row['ballcontrol']) * 0.08, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 8%
+            ovr.append(round(float(row['crossing']) * 0.12, 2))             # PLAYER_ATTRIBUTE_CROSSING * 12%
+            ovr.append(round(float(row['dribbling']) * 0.04, 2))            # PLAYER_ATTRIBUTE_DRIBBLING * 4%
+            ovr.append(round(float(row['shortpassing']) * 0.10, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 10%
+            ovr.append(round(float(row['marking']) * 0.07, 2))              # PLAYER_ATTRIBUTE_MARKING * 7%
+            ovr.append(round(float(row['standingtackle']) * 0.08, 2))       # PLAYER_ATTRIBUTE_STANDING_TACKLE * 8%
+            ovr.append(round(float(row['slidingtackle']) * 0.11, 2))        # PLAYER_ATTRIBUTE_SLIDING_TACKLE * 11%
+        elif posid == 3 or posid == 7:
+            # RB or LB
+            ovr.append(round(float(row['acceleration']) * 0.05, 2))         # PLAYER_ATTRIBUTE_ACCELERATION * 5%
+            ovr.append(round(float(row['sprintspeed']) * 0.07, 2))          # PLAYER_ATTRIBUTE_SPRINT_SPEED * 7%
+            ovr.append(round(float(row['stamina']) * 0.08, 2))              # PLAYER_ATTRIBUTE_STAMINA * 8%
+            ovr.append(round(float(row['reactions']) * 0.08, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.append(round(float(row['interceptions']) * 0.12, 2))        # PLAYER_ATTRIBUTE_INTERCEPTIONS * 12%
+            ovr.append(round(float(row['ballcontrol']) * 0.07, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 7%
+            ovr.append(round(float(row['crossing']) * 0.09, 2))             # PLAYER_ATTRIBUTE_CROSSING * 9%
+            ovr.append(round(float(row['headingaccuracy']) * 0.04, 2))      # PLAYER_ATTRIBUTE_HEADING_ACCURACY * 4%
+            ovr.append(round(float(row['shortpassing']) * 0.07, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 7%
+            ovr.append(round(float(row['marking']) * 0.08, 2))              # PLAYER_ATTRIBUTE_MARKING * 8%
+            ovr.append(round(float(row['standingtackle']) * 0.11, 2))       # PLAYER_ATTRIBUTE_STANDING_TACKLE * 11%
+            ovr.append(round(float(row['slidingtackle']) * 0.14, 2))        # PLAYER_ATTRIBUTE_SLIDING_TACKLE * 14%
+        elif posid == 4 or posid == 5 or posid == 6:
+            # RCB or CB or LCB
+            ovr.append(round(float(row['sprintspeed']) * 0.02, 2))          # PLAYER_ATTRIBUTE_SPRINT_SPEED * 2%
+            ovr.append(round(float(row['jumping']) * 0.03, 2))              # PLAYER_ATTRIBUTE_JUMPING * 3%
+            ovr.append(round(float(row['strength']) * 0.10, 2))             # PLAYER_ATTRIBUTE_STRENGTH * 10%
+            ovr.append(round(float(row['reactions']) * 0.05, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 5%
+            ovr.append(round(float(row['aggression']) * 0.07, 2))           # PLAYER_ATTRIBUTE_AGGRESSION * 7%
+            ovr.append(round(float(row['interceptions']) * 0.13, 2))        # PLAYER_ATTRIBUTE_INTERCEPTIONS * 13%
+            ovr.append(round(float(row['ballcontrol']) * 0.04, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 4%
+            ovr.append(round(float(row['headingaccuracy']) * 0.10, 2))      # PLAYER_ATTRIBUTE_HEADING_ACCURACY * 10%
+            ovr.append(round(float(row['shortpassing']) * 0.05, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 5%
+            ovr.append(round(float(row['marking']) * 0.14, 2))              # PLAYER_ATTRIBUTE_MARKING * 14%
+            ovr.append(round(float(row['standingtackle']) * 0.17, 2))       # PLAYER_ATTRIBUTE_STANDING_TACKLE * 17%
+            ovr.append(round(float(row['slidingtackle']) * 0.10, 2))        # PLAYER_ATTRIBUTE_SLIDING_TACKLE * 10%
+        elif posid == 9 or posid == 10 or posid == 11:
+            # RDM or CDM or LDM
+            ovr.append(round(float(row['stamina']) * 0.06, 2))              # PLAYER_ATTRIBUTE_STAMINA * 6%
+            ovr.append(round(float(row['strength']) * 0.04, 2))             # PLAYER_ATTRIBUTE_STRENGTH * 4%
+            ovr.append(round(float(row['reactions']) * 0.07, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.append(round(float(row['aggression']) * 0.05, 2))           # PLAYER_ATTRIBUTE_AGGRESSION * 5%
+            ovr.append(round(float(row['interceptions']) * 0.14, 2))        # PLAYER_ATTRIBUTE_INTERCEPTIONS * 14%
+            ovr.append(round(float(row['vision']) * 0.04, 2))               # PLAYER_ATTRIBUTE_VISION * 4%
+            ovr.append(round(float(row['ballcontrol']) * 0.10, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 10%
+            ovr.append(round(float(row['longpassing']) * 0.10, 2))          # PLAYER_ATTRIBUTE_LONG_PASSING * 10%
+            ovr.append(round(float(row['shortpassing']) * 0.14, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 14%
+            ovr.append(round(float(row['marking']) * 0.09, 2))              # PLAYER_ATTRIBUTE_MARKING * 9%
+            ovr.append(round(float(row['standingtackle']) * 0.12, 2))       # PLAYER_ATTRIBUTE_STANDING_TACKLE * 12%
+            ovr.append(round(float(row['slidingtackle']) * 0.05, 2))        # PLAYER_ATTRIBUTE_SLIDING_TACKLE * 5%
+        elif posid == 12 or posid == 16:
+            # RM or LM
+            ovr.append(round(float(row['acceleration']) * 0.07, 2))         # PLAYER_ATTRIBUTE_ACCELERATION * 7%
+            ovr.append(round(float(row['sprintspeed']) * 0.06, 2))          # PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
+            ovr.append(round(float(row['stamina']) * 0.05, 2))              # PLAYER_ATTRIBUTE_STAMINA * 5%
+            ovr.append(round(float(row['reactions']) * 0.07, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.append(round(float(row['positioning']) * 0.08, 2))          # PLAYER_ATTRIBUTE_POSITIONING * 8%
+            ovr.append(round(float(row['vision']) * 0.07, 2))               # PLAYER_ATTRIBUTE_VISION * 7%
+            ovr.append(round(float(row['ballcontrol']) * 0.13, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 13%
+            ovr.append(round(float(row['crossing']) * 0.10, 2))             # PLAYER_ATTRIBUTE_CROSSING * 10%
+            ovr.append(round(float(row['dribbling']) * 0.15, 2))            # PLAYER_ATTRIBUTE_DRIBBLING * 15%
+            ovr.append(round(float(row['finishing']) * 0.06, 2))            # PLAYER_ATTRIBUTE_FINISHING * 6%
+            ovr.append(round(float(row['longpassing']) * 0.05, 2))          # PLAYER_ATTRIBUTE_LONG_PASSING * 5%
+            ovr.append(round(float(row['shortpassing']) * 0.11, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 11%
+        elif posid == 13 or posid == 14 or posid == 15:
+            # RCM or CM or LCM
+            ovr.append(round(float(row['stamina']) * 0.06, 2))              # PLAYER_ATTRIBUTE_STAMINA * 6%
+            ovr.append(round(float(row['reactions']) * 0.08, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.append(round(float(row['interceptions']) * 0.05, 2))        # PLAYER_ATTRIBUTE_INTERCEPTIONS * 5%
+            ovr.append(round(float(row['positioning']) * 0.06, 2))          # PLAYER_ATTRIBUTE_POSITIONING * 6%
+            ovr.append(round(float(row['vision']) * 0.13, 2))               # PLAYER_ATTRIBUTE_VISION * 13%
+            ovr.append(round(float(row['ballcontrol']) * 0.14, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 14%
+            ovr.append(round(float(row['dribbling']) * 0.07, 2))            # PLAYER_ATTRIBUTE_DRIBBLING * 7%
+            ovr.append(round(float(row['finishing']) * 0.02, 2))            # PLAYER_ATTRIBUTE_FINISHING * 2%
+            ovr.append(round(float(row['longpassing']) * 0.13, 2))          # PLAYER_ATTRIBUTE_LONG_PASSING * 13%
+            ovr.append(round(float(row['shortpassing']) * 0.17, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 17%
+            ovr.append(round(float(row['shotpower']) * 0.04, 2))            # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+            ovr.append(round(float(row['standingtackle']) * 0.05, 2))       # PLAYER_ATTRIBUTE_STANDING_TACKLE * 5%
+        elif posid == 17 or posid == 18 or posid == 19:
+            # RAM or CAM or LAM
+            ovr.append(round(float(row['acceleration']) * 0.04, 2))         # PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.append(round(float(row['sprintspeed']) * 0.03, 2))          # PLAYER_ATTRIBUTE_SPRINT_SPEED * 3%
+            ovr.append(round(float(row['agility']) * 0.03, 2))              # PLAYER_ATTRIBUTE_AGILITY * 3%
+            ovr.append(round(float(row['reactions']) * 0.07, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.append(round(float(row['positioning']) * 0.09, 2))          # PLAYER_ATTRIBUTE_POSITIONING * 9%
+            ovr.append(round(float(row['vision']) * 0.14, 2))               # PLAYER_ATTRIBUTE_VISION * 14%
+            ovr.append(round(float(row['ballcontrol']) * 0.15, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 15%
+            ovr.append(round(float(row['dribbling']) * 0.13, 2))            # PLAYER_ATTRIBUTE_DRIBBLING * 13%
+            ovr.append(round(float(row['finishing']) * 0.07, 2))            # PLAYER_ATTRIBUTE_FINISHING * 7%
+            ovr.append(round(float(row['longpassing']) * 0.04, 2))          # PLAYER_ATTRIBUTE_LONG_PASSING * 4%
+            ovr.append(round(float(row['shortpassing']) * 0.16, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 16%
+            ovr.append(round(float(row['shotpower']) * 0.05, 2))            # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 5%
+        elif posid == 20 or posid == 21 or posid == 22:
+            # RF or CF or LF
+            ovr.append(round(float(row['acceleration']) * 0.05, 2))         # PLAYER_ATTRIBUTE_ACCELERATION * 5%
+            ovr.append(round(float(row['sprintspeed']) * 0.05, 2))          # PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
+            ovr.append(round(float(row['reactions']) * 0.09, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 9%
+            ovr.append(round(float(row['positioning']) * 0.13, 2))          # PLAYER_ATTRIBUTE_POSITIONING * 13%
+            ovr.append(round(float(row['vision']) * 0.08, 2))               # PLAYER_ATTRIBUTE_VISION * 8%
+            ovr.append(round(float(row['ballcontrol']) * 0.15, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 15%
+            ovr.append(round(float(row['dribbling']) * 0.14, 2))            # PLAYER_ATTRIBUTE_DRIBBLING * 14%
+            ovr.append(round(float(row['finishing']) * 0.11, 2))            # PLAYER_ATTRIBUTE_FINISHING * 11%
+            ovr.append(round(float(row['headingaccuracy']) * 0.02, 2))      # PLAYER_ATTRIBUTE_HEADING_ACCURACY * 2%
+            ovr.append(round(float(row['shortpassing']) * 0.09, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 9%
+            ovr.append(round(float(row['shotpower']) * 0.05, 2))            # PLAYER_ATTRIBUTE_SHOT_POWER * 5%
+            ovr.append(round(float(row['shotpower']) * 0.04, 2))            # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+        elif posid == 23 or posid == 27:
+            # RW or LW
+            ovr.append(round(float(row['acceleration']) * 0.07, 2))         # PLAYER_ATTRIBUTE_ACCELERATION * 7%
+            ovr.append(round(float(row['sprintspeed']) * 0.06, 2))          # PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
+            ovr.append(round(float(row['agility']) * 0.03, 2))              # PLAYER_ATTRIBUTE_AGILITY * 3%
+            ovr.append(round(float(row['reactions']) * 0.07, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 7%
+            ovr.append(round(float(row['positioning']) * 0.09, 2))          # PLAYER_ATTRIBUTE_POSITIONING * 9%
+            ovr.append(round(float(row['vision']) * 0.06, 2))               # PLAYER_ATTRIBUTE_VISION * 6%
+            ovr.append(round(float(row['ballcontrol']) * 0.14, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 14%
+            ovr.append(round(float(row['crossing']) * 0.09, 2))             # PLAYER_ATTRIBUTE_CROSSING * 9%
+            ovr.append(round(float(row['dribbling']) * 0.16, 2))            # PLAYER_ATTRIBUTE_DRIBBLING * 16%
+            ovr.append(round(float(row['finishing']) * 0.10, 2))            # PLAYER_ATTRIBUTE_FINISHING * 10%
+            ovr.append(round(float(row['shortpassing']) * 0.09, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 9%
+            ovr.append(round(float(row['shotpower']) * 0.04, 2))            # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
+        elif posid == 24 or posid == 25 or posid == 26:
+            # RS or ST or LS
+            ovr.append(round(float(row['acceleration']) * 0.04, 2))         # PLAYER_ATTRIBUTE_ACCELERATION * 4%
+            ovr.append(round(float(row['sprintspeed']) * 0.05, 2))          # PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
+            ovr.append(round(float(row['strength']) * 0.05, 2))             # PLAYER_ATTRIBUTE_STRENGTH * 5%
+            ovr.append(round(float(row['reactions']) * 0.08, 2))            # PLAYER_ATTRIBUTE_REACTIONS * 8%
+            ovr.append(round(float(row['positioning']) * 0.13, 2))          # PLAYER_ATTRIBUTE_POSITIONING * 13%
+            ovr.append(round(float(row['ballcontrol']) * 0.10, 2))          # PLAYER_ATTRIBUTE_BALL_CONTROL * 10%
+            ovr.append(round(float(row['dribbling']) * 0.07, 2))            # PLAYER_ATTRIBUTE_DRIBBLING * 7%
+            ovr.append(round(float(row['finishing']) * 0.18, 2))            # PLAYER_ATTRIBUTE_FINISHING * 18%
+            ovr.append(round(float(row['headingaccuracy']) * 0.10, 2))      # PLAYER_ATTRIBUTE_HEADING_ACCURACY * 10%
+            ovr.append(round(float(row['shortpassing']) * 0.05, 2))         # PLAYER_ATTRIBUTE_SHORT_PASSING * 5%
+            ovr.append(round(float(row['shotpower']) * 0.10, 2))            # PLAYER_ATTRIBUTE_SHOT_POWER * 10%
+            ovr.append(round(float(row['shotpower']) * 0.03, 2))            # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 3%
+            ovr.append(round(float(row['volleys']) * 0.02, 2))              # PLAYER_ATTRIBUTE_VOLLEYS * 2%
+
+        return int(sum(ovr))
 
 class RestToCSV():
     """Convert Data after .db section to .csv format.
@@ -609,6 +906,7 @@ class ParseCareerSave():
         csv_path = db_to_csv.dest_path
 
         # Calculate Values of all players and save it in "players.csv"
+        self._update_savefile_model(0, _("Calculating Players Values and Teams Ratings"))
         currency = CalculateValues(csv_path=csv_path).currency
 
         # Set Default Currency

@@ -196,9 +196,23 @@ class CalculateValues():
             if k == teamid:
                 # calc
                 team_ovr = int((sum(players_ovr[k]['DEF']) + sum(players_ovr[k]['MID']) + sum(players_ovr[k]['ATT'])) / 11)
-                team_def = players_ovr[k]['DEF'] = int(sum(players_ovr[k]['DEF']) / len(players_ovr[k]['DEF']))
-                team_mid = players_ovr[k]['MID'] = int(sum(players_ovr[k]['MID']) / len(players_ovr[k]['MID']))
-                team_att = players_ovr[k]['ATT'] = int(sum(players_ovr[k]['ATT']) / len(players_ovr[k]['ATT']))
+                try:
+                    team_def = int(sum(players_ovr[k]['DEF']) / len(players_ovr[k]['DEF']))
+                except ZeroDivisionError:
+                    logging.error("team_def ZeroDivisionError: {}".format(players_ovr[k]['DEF']))
+                    team_def = int(sum(players_ovr[k]['DEF']))
+                try:
+                    team_mid = int(sum(players_ovr[k]['MID']) / len(players_ovr[k]['MID']))
+                except ZeroDivisionError:
+                    logging.error("team_mid ZeroDivisionError: {}".format(players_ovr[k]['MID']))
+                    team_mid = int(sum(players_ovr[k]['MID']))
+
+                try:
+                    team_att = int(sum(players_ovr[k]['ATT']) / len(players_ovr[k]['ATT']))
+                except ZeroDivisionError:
+                    logging.error("team_att ZeroDivisionError: {}".format(players_ovr[k]['ATT']))
+                    team_att = int(sum(players_ovr[k]['ATT']))
+                    
                 return team_ovr, team_def, team_mid, team_att
 
         return team_ovr, team_def, team_mid, team_att
@@ -933,8 +947,13 @@ class ParseCareerSave():
                 firstname = user.firstname
                 surname = user.surname 
 
-                user.firstname = firstname.replace(firstname[1:], "*"*(len(firstname)-1))
-                user.surname = surname.replace(surname[1:], "*"*(len(surname)-1))
+                try:
+                    user.firstname = firstname.replace(firstname[1:], "*"*(len(firstname)-1))
+                    user.surname = surname.replace(surname[1:], "*"*(len(surname)-1))
+                except Exception as e:
+                    logging.error("protectprivacy error - {}".format(e))
+                    user.firstname = "Mr."
+                    user.surname = "Manager"
 
                 user.save()
 

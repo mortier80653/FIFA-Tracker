@@ -11,8 +11,24 @@ $(document).ready(function(){
   changeProfilePublicStatus();
   cleanUrl();
   careerFileUpload();
+  numberWithCommas();
   ToolsCalculator();
 });
+
+function numberWithCommas() {
+    // Club Worth
+    let cwspan = $(".clubworth");
+    cwspan.each(function() {
+        $(this).text($(this).text().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + ",000");
+    });
+
+    // Transfer Budget
+    let tbspan = $(".transferbudget");
+    tbspan.each(function() {
+        $(this).text($(this).text().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+    });
+
+};
 
 function ToolsCalculator() {
 

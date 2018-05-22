@@ -132,11 +132,11 @@
                         <tbody>
                             <tr>
                                 <td>{% trans 'Budget' %}</td>
-                                <td align="right"> {{team.transferbudget}}</td>
+                                <td align="right"><span class="transferbudget">{{team.transferbudget}}</span> {{ request.session.currency_symbol }}</td>
                             </tr>
                             <tr>
                                 <td>{% trans 'Club worth' %}</td>
-                                <td align="right"> {{team.clubworth}}</td>
+                                <td align="right"><span class="clubworth">{{team.clubworth}}</span> {{ request.session.currency_symbol }}</td>
                             </tr>
                             <tr>
                                 <td>{% trans 'Popularity' %}</td>

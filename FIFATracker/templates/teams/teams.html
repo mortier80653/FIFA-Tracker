@@ -182,7 +182,7 @@
         <thead>
             <tr>
                 <th class="text-center" width="300px;">{% trans 'TEAM' %}</th>
-                <th class="text-center">
+                <th class="text-center" width="70px;">
                     {% if request_query_dict.order_by == "-overallrating" %}
                     <a href="{% url_params request '?order_by=' 'overallrating' %}">
                         {% trans 'OVR' %}
@@ -200,7 +200,7 @@
                     </a>
                     {% endif %}
                 </th>
-                <th class="text-center">
+                <th class="text-center" width="70px;">
                     {% if request_query_dict.order_by == "-attackrating" %}
                     <a href="{% url_params request '?order_by=' 'attackrating' %}">
                         {% trans 'ATT' %}
@@ -218,7 +218,7 @@
                     </a>
                     {% endif %}
                 </th>
-                <th class="text-center">
+                <th class="text-center" width="70px;">
                     {% if request_query_dict.order_by == "-midfieldrating" %}
                     <a href="{% url_params request '?order_by=' 'midfieldrating' %}">
                         {% trans 'MID' %}
@@ -236,7 +236,7 @@
                     </a>
                     {% endif %}
                 </th>
-                <th class="text-center">
+                <th class="text-center" width="70px;">
                     {% if request_query_dict.order_by == "-defenserating" %}
                     <a href="{% url_params request '?order_by=' 'defenserating' %}">
                         {% trans 'DEF' %}
@@ -254,7 +254,6 @@
                     </a>
                     {% endif %}
                 </th>
-
                 <th class="text-center">
                     {% if request_query_dict.order_by == "-transferbudget" %}
                     <a href="{% url_params request '?order_by=' 'transferbudget' %}">
@@ -269,6 +268,24 @@
                     {% else %}
                     <a href="{% url_params request '?order_by=' '-transferbudget' %}">
                         {% trans 'BUDGET' %}
+                        <span class="glyphicon glyphicon-sort"></span>
+                    </a>
+                    {% endif %}
+                </th>
+                <th class="text-center">
+                    {% if request_query_dict.order_by == "-clubworth" %}
+                    <a href="{% url_params request '?order_by=' 'clubworth' %}">
+                        {% trans 'Club worth' %}
+                        <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                    </a>
+                    {% elif request_query_dict.order_by == "clubworth" %}
+                    <a href="{% url_params request '?order_by=' '-clubworth' %}">
+                        {% trans 'Club worth' %}
+                        <span class="glyphicon glyphicon-sort-by-order"></span>
+                    </a>
+                    {% else %}
+                    <a href="{% url_params request '?order_by=' '-clubworth' %}">
+                        {% trans 'Club worth' %}
                         <span class="glyphicon glyphicon-sort"></span>
                     </a>
                     {% endif %}
@@ -302,7 +319,10 @@
                     <span class="ratinglabel rat{{team.defenserating}}">{{ team.defenserating }}</span>
                 </td>
                 <td class="text-center">
-                    {{team.transferbudget}}
+                    <span class="transferbudget">{{team.transferbudget}}</span> {{ request.session.currency_symbol }}
+                </td>
+                <td class="text-center">
+                    <span class="clubworth">{{team.clubworth}}</span> {{ request.session.currency_symbol }}
                 </td>
             </tr>
             {% endfor %}

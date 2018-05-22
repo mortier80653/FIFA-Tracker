@@ -59,7 +59,7 @@ def run(*args):
     except Exception as e:
         user.profile.is_save_processed = False
         user.save()
-        logging.error("process_career_file script - ParseCareerSave, Exception:{}".format(e))
+        logging.exception("process_career_file script - ParseCareerSave - user: {}".format(user))
         delete_data(user_id)
         update_savefile_model(user_id, e, fpath=fpath)
 

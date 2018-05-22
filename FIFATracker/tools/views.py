@@ -36,9 +36,8 @@ def ajax_calcpot(request):
         else:
             result = "Player potential calculation has failed. Invalid player value?"
     except Exception as e:
-        e = str(e)
-        logging.error("ajax_calcpot error: {}".format(e))
-        result = "Error: {}".format(e)          
+        logging.exception("ajax_calcpot error")
+        result = "Error: {}".format(str(e))          
 
     return JsonResponse({'result': result})
 
@@ -85,9 +84,8 @@ def ajax_calcwage(request):
         currency_symbols = ('$', '€', '£')
         result = "Weekly wage of a {} yo, {} rated player playing for {} in {} league is {} {}".format(age, ovr, team.teamname, league.leaguename, wage, currency_symbols[currency])
     except Exception as e:
-        e = str(e)
-        logging.error("ajax_calcwage error: {}".format(e))
-        result = "Error: {}".format(e) 
+        logging.exception("ajax_calcwage error")
+        result = "Error: {}".format(str(e)) 
 
     return JsonResponse({'result': result})
 

@@ -951,7 +951,7 @@ class ParseCareerSave():
                     user.firstname = firstname.replace(firstname[1:], "*"*(len(firstname)-1))
                     user.surname = surname.replace(surname[1:], "*"*(len(surname)-1))
                 except Exception as e:
-                    logging.error("protectprivacy error - {}".format(e))
+                    logging.exception("protectprivacy error")
                     user.firstname = "Mr."
                     user.surname = "Manager"
 
@@ -1146,7 +1146,7 @@ class ParseCareerSave():
         try:
             model.objects.filter(ft_user_id=user_id).delete()
         except Exception as e:
-            logging.warning(e)
+            logging.exception("_delete_data")
 
     def _create_lookup(self, user_id, table, row):
         lookup = { "ft_user_id": user_id, self.xml_pkeys[table]: row[self.xml_pkeys[table]] }

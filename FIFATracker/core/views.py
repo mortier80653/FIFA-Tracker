@@ -111,8 +111,8 @@ def process_status(request):
         }
     else:
         data = {
-            "status_code": 1,
-            "status_msg": "CareerSaveFileModel Not found",
+            "status_code": 0,
+            "status_msg": "Done?? Try to refresh website.",
         }
 
     return JsonResponse(data)

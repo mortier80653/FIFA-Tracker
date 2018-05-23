@@ -1245,10 +1245,6 @@ class ParseCareerSave():
         cs_model.file_process_status_code = code
         cs_model.file_process_status_msg = msg
         cs_model.save()
-
-        # Delete file if error or complete
-        if code > 0:
-           self._remove_savefile()
     
     def _remove_savefile(self):
         try:

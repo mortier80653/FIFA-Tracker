@@ -82,6 +82,7 @@ def upload_career_save_file(request):
 def process_status(request):
     if not request.user.is_authenticated:
         data = {"status": "user not authenticated"}
+        return JsonResponse(data)
 
     cs_model = CareerSaveFileModel.objects.filter(user_id=request.user.id).first()
     if cs_model:
@@ -111,7 +112,7 @@ def process_status(request):
     else:
         data = {
             "status_code": 1,
-            "status_msg": "Not found",
+            "status_msg": "CareerSaveFileModel Not found",
         }
 
     return JsonResponse(data)

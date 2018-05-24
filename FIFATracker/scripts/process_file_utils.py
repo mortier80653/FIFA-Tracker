@@ -199,19 +199,17 @@ class CalculateValues():
                 try:
                     team_def = int(sum(players_ovr[k]['DEF']) / len(players_ovr[k]['DEF']))
                 except ZeroDivisionError:
-                    logging.error("team_def ZeroDivisionError: {}".format(players_ovr[k]['DEF']))
-                    team_def = int(sum(players_ovr[k]['DEF']))
+                    logging.exception("team_def ZeroDivisionError")
+
                 try:
                     team_mid = int(sum(players_ovr[k]['MID']) / len(players_ovr[k]['MID']))
                 except ZeroDivisionError:
-                    logging.error("team_mid ZeroDivisionError: {}".format(players_ovr[k]['MID']))
-                    team_mid = int(sum(players_ovr[k]['MID']))
+                    logging.exception("team_mid ZeroDivisionError")
 
                 try:
                     team_att = int(sum(players_ovr[k]['ATT']) / len(players_ovr[k]['ATT']))
                 except ZeroDivisionError:
-                    logging.error("team_att ZeroDivisionError: {}".format(players_ovr[k]['ATT']))
-                    team_att = int(sum(players_ovr[k]['ATT']))
+                    logging.exception("team_att ZeroDivisionError")
                     
                 return team_ovr, team_def, team_mid, team_att
 
@@ -935,8 +933,7 @@ class ParseCareerSave():
         shutil.rmtree(self.data_path)
 
         end = time.time()
-
-        logging.info("ParseCareerSave Completed in {}s.".format(round(end - start, 3)))
+        
         self._update_savefile_model(2, _("Completed in {}s").format(round(end - start, 3)))
 
     def protectprivacy(self):
@@ -1240,6 +1237,8 @@ class ParseCareerSave():
         return True
 
     def _update_savefile_model(self, code, msg):
+        logging.info(msg)
+
         cs_model = self.cs_model
 
         cs_model.file_process_status_code = code

@@ -523,7 +523,95 @@ class FifaPlayer():
             self.player_wage = PlayerWage()
         self.release_clause = self.get_release_clause()
         self.player_contract = self.set_contract()
+        self.traits = self.set_traits()
         self.headshot = self.set_headshot()
+
+
+    def set_traits(self):
+        all_traits = list()
+        trait1 = int(self.player.trait1)
+        trait2 = int(self.player.trait2)
+
+        if trait1 > 0:
+            trait1_names = [
+                "Inflexibility",
+                "Long Throw-in",
+                "Power Free kick",
+                "Diver",
+                "Injury prone",
+                "Injury free",
+                "Avoids using weaker foot",
+                "Dives into tackles",
+                "Tries to beat defensive line",
+                "Selfish",
+                "Leadership",
+                "Argues With Referee",
+                "Early crosser",
+                "Finesse shot",
+                "Flair",
+                "Long passer",
+                "Long shot taker",
+                "Skilled dribbling",
+                "Playmaker",
+                "GK up for corners",
+                "Puncher",
+                "GK Long throw",
+                "Power header",
+                "GK One on One",
+                "Giant throw-in",
+                "Outsite foot shot",
+                "Fans favourite",
+                "Swerve Pass",
+                "Second Wind",
+                "Acrobatic Clearance",
+            ]
+
+            trait1_binary = bin(trait1)[2:]
+            i = 0
+            for t in reversed(trait1_binary):
+                if t == '1':
+                    all_traits.append(trait1_names[i])
+                i += 1
+
+        if trait2 > 0:
+            trait2_names = [
+                "Skilled Dribbling",
+                "Flair Passes",
+                "Fancy Flicks",
+                "Stutter Penalty",
+                "Chipped Penalty",
+                "Bicycle Kicks",
+                "Diving Header",
+                "Driven Pass",
+                "GK Flat Kick",
+                "One Club Player",
+                "Team Player",
+                "Chip shot",
+                "Technical Dribbler",
+                "Rushes Out Of Goal",
+                "Backs Into Player",
+                "Set Play Specialist",
+                "Takes Finesse Free Kicks",
+                "Target Forward",
+                "Cautious With Crosses",
+                "Comes For Crossess",
+                "Blames Teammates",
+                "Saves with Feet",
+                "Set Play Specialist",
+                "Tornado Skillmove",
+            ]
+
+            trait2_binary = bin(trait2)[2:]
+            i = 0
+            for t in reversed(trait2_binary):
+                if t == '1':
+                    all_traits.append(trait2_names[i])
+                i += 1
+
+        # remove ',' from the end of string
+        #if len(all_traits) >= 1: return all_traits[:-1]
+             
+        return all_traits
 
     def get_release_clause(self):
         for i in range(len(self.release_clauses)):

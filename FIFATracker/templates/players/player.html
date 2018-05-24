@@ -400,6 +400,22 @@
       </div>
     </div>
   </div>
+  {% if p.traits %}
+  <div class="container">
+    <h2 align="center">{% trans 'Player Traits' %}</h2>
+    <div class="row player-info">
+        <div class="col-md-6">
+          <table width="100%" class="traits-table">
+            <tbody>
+              {% for trait in p.traits %}
+                <tr><td>{{trait}}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </div>
+  {% endif %}
   <div class="container hidden-md hidden-lg">
     <h2 align="center">{% trans 'In-Game Ratings' %}</h2>
     <div class="col-xs-12">

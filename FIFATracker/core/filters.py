@@ -648,6 +648,68 @@ class DataUsersPlayersFilter:
                 queryset = queryset.filter(Q(contractvaliduntil__gte=contractvaliduntil_min), Q(contractvaliduntil__lte=contractvaliduntil_max))
         except ValueError:
             pass
+
+        try:
+            if 'hashighqualityhead' in self.request_dict and int(self.request_dict['hashighqualityhead']) in range(0,2):
+                queryset = queryset.filter( Q(hashighqualityhead=self.request_dict['hashighqualityhead']) )
+        except ValueError:
+            pass
+
+        try:
+            if 'shoetypecode' in self.request_dict:
+                value = list(self.request_dict['shoetypecode'].split(','))
+                queryset = queryset.filter( Q(shoetypecode__in=value) )
+        except ValueError:
+            pass
+
+        try:
+            if 'skintonecode' in self.request_dict:
+                value = list(self.request_dict['skintonecode'].split(','))
+                queryset = queryset.filter( Q(skintonecode__in=value) )
+        except ValueError:
+            pass
+
+        try:
+            if 'haircolorcode' in self.request_dict:
+                value = list(self.request_dict['haircolorcode'].split(','))
+                queryset = queryset.filter( Q(haircolorcode__in=value) )
+        except ValueError:
+            pass
+
+        try:
+            if 'headtype' in self.request_dict:
+                value = list(self.request_dict['headtype'].split(','))
+                headtypecodes = list()
+
+                for i in value:
+                    if i == '0':
+                        # Caucasian
+                        caucasians = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 5500, 5501, 5502, 5503, 5504, 5505]
+                        headtypecodes.extend(caucasians)
+                    elif i == '1':
+                        # African
+                        africans = [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024, 1025, 1026, 1027, 3000, 3001, 3002, 3003, 3004, 3005, 4500, 4501, 4502, 4503, 4504, 4505, 4506, 4507, 4508, 4509, 4510, 4511, 4512, 4513, 4514, 4515, 4516, 4517, 4518, 4519, 4520, 4521, 4522, 4523, 4524, 4525, 5000, 5001, 5002, 5003, 6500, 6501, 6502, 8500, 8501, 8502, 10000, 10001, 10002, 10500, 10501, 10502]
+                        headtypecodes.extend(africans)
+                    elif i == '2':
+                        # Latin
+                        latins = [1500, 1501, 1502, 1503, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 1515, 1516, 1517, 1518, 1519, 1520, 1521, 1522, 1523, 1524, 1525, 1526, 1527, 1528, 7000, 7001, 7002, 7003, 7004, 7005, 7006, 7007, 7008, 7009, 7010, 7011]
+                        headtypecodes.extend(latins)
+                    elif i == '3':
+                        # European
+                        europeans = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 3500, 3501, 3502, 3503, 3504, 3505, 4000, 4001, 4002, 4003, 7500, 7501, 7502, 9000, 9001, 9002, 9500, 9501, 9502]
+                        headtypecodes.extend(europeans)
+                    elif i == '4':
+                        # Arabic
+                        arabic = [2500, 2501, 2502, 2503, 2504, 2505, 2506, 2507, 2508, 2509, 2510, 2511, 2512, 2513, 2514, 2515, 2516, 2517, 2518, 8000, 8001, 8002]
+                        headtypecodes.extend(arabic)
+                    elif i == '5':
+                        # Asian
+                        asian = [500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 518, 519, 520, 521, 522, 523, 524, 525, 526, 527, 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543, 544, 545, 546, 547, 6000, 6001, 6002, 6003, 6004, 6005, 6006, 6007, 6008, 6009]
+                        headtypecodes.extend(asian)
+                
+                queryset = queryset.filter( Q(headtypecode__in=headtypecodes) )
+        except ValueError:
+            pass
         
         return queryset
     

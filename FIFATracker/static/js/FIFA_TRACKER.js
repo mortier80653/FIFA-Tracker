@@ -977,7 +977,7 @@ function selectizejs() {
             item: function(item, escape) {
                 return '<div>' +
                     (item.position ? '<span class="position">' + escape(item.position) + '</span>' : '') +
-                    '/div';
+                    '</div>';
             },
             option: function (item, escape) {
                 return '<div>' +
@@ -1009,7 +1009,7 @@ function selectizejs() {
             item: function(item, escape) {
                 return '<div>' +
                     (item.workrate ? '<span class="workrate">' + escape(item.workrate) + '</span>' : '') +
-                    '/div';
+                    '</div>';
             },
             option: function (item, escape) {
                 return '<div>' +
@@ -1041,7 +1041,7 @@ function selectizejs() {
             item: function(item, escape) {
                 return '<div>' +
                     (item.workrate ? '<span class="workrate">' + escape(item.workrate) + '</span>' : '') +
-                    '/div';
+                    '</div>';
             },
             option: function (item, escape) {
                 return '<div>' +
@@ -1311,6 +1311,576 @@ function selectizejs() {
         window.location = window.location.pathname;
     });
 
+
+    // Tab 3
+
+    $('#select-realface').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("hashighqualityhead")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+
+    $("#headmodel-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'headtype',
+        labelField: 'headtypename',
+        searchField: ['headtype', 'headtypename'],
+        options: [
+            { headtypename: 'Caucasian', 	    headtype: '0'},
+            { headtypename: 'African', 	        headtype: '1'},
+            { headtypename: 'Latin', 	        headtype: '2'},
+            { headtypename: 'European', 	    headtype: '3'},
+            { headtypename: 'Arabic', 	        headtype: '4'},
+            { headtypename: 'Asian', 	        headtype: '5'},
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.headtypename ? '<span class="headtypename">' + escape(item.headtypename) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.headtypename ? '<span class="caption">' + escape(item.headtypename) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("headtype")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    });
+
+    $("#hair-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'valuefield',
+        labelField: 'labelfield',
+        searchField: ['valuefield', 'labelfield'],
+        options: [
+            { labelfield: 'Short', 	valuefield: '1'},
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="item">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="caption">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("hairtypecode")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    });
+
+    $("#haircolor-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'valuefield',
+        labelField: 'labelfield',
+        searchField: ['valuefield', 'labelfield'],
+        options: [
+            { labelfield: 'Blonde', 	        valuefield: '0'},
+            { labelfield: 'Black', 	            valuefield: '1'},
+            { labelfield: 'Ash Blonde', 	    valuefield: '2'},
+            { labelfield: 'Dark Brown', 	    valuefield: '3'},
+            { labelfield: 'Platinum Blonde',    valuefield: '4'},
+            { labelfield: 'Light Brown', 	    valuefield: '5'},
+            { labelfield: 'Brown', 	            valuefield: '6'},
+            { labelfield: 'Red', 	            valuefield: '7'},
+            { labelfield: 'White', 	            valuefield: '8'},
+            { labelfield: 'Gray', 	            valuefield: '9'},
+            { labelfield: 'Green', 	            valuefield: '10'},
+            { labelfield: 'Violet', 	        valuefield: '11'},
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="item">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="caption">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("haircolorcode")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    });
+
+    $("#skincolor-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'valuefield',
+        labelField: 'labelfield',
+        searchField: ['valuefield', 'labelfield'],
+        options: [
+            { labelfield: 'Light Pink', 	valuefield: '1'},
+            { labelfield: 'Pink', 	valuefield: '2'},
+            { labelfield: 'Dark Pink', 	valuefield: '3'},
+            { labelfield: 'Light Yellow', 	valuefield: '4'},
+            { labelfield: 'Medium Yellow', 	valuefield: '5'},
+            { labelfield: 'Dark Yellow', 	valuefield: '6'},
+            { labelfield: 'Very Light Brown', 	valuefield: '7'},
+            { labelfield: 'Light Brown', 	valuefield: '8'},
+            { labelfield: 'Medium Brown', 	valuefield: '9'},
+            { labelfield: 'Dark Brown', 	valuefield: '10'},
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="item">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="caption">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("skintonecode")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    });
+
+    $("#bodytype-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'valuefield',
+        labelField: 'labelfield',
+        searchField: ['valuefield', 'labelfield'],
+        options: [
+            { labelfield: 'Average Height - Lean', 	valuefield: '1'},
+            { labelfield: 'Average Height - Normal', 	valuefield: '2'},
+            { labelfield: 'Average Height - Stocky', 	valuefield: '3'},
+            { labelfield: 'Tall (185+) Height - Lean', 	valuefield: '4'},
+            { labelfield: 'Tall (185+) Height - Normal', 	valuefield: '5'},
+            { labelfield: 'Tall (185+) Height - Stocky', 	valuefield: '6'},
+            { labelfield: 'Short (175-) Height - Lean', 	valuefield: '7'},
+            { labelfield: 'Short (175-) Height - Normal', 	valuefield: '8'},
+            { labelfield: 'Short (175-) Height - Stocky', 	valuefield: '9'},
+            { labelfield: 'Messi', 	valuefield: '10'},
+            { labelfield: 'Very Tall and Lean', 	valuefield: '11'},
+            { labelfield: 'Akinfenwa', 	valuefield: '12'},
+            { labelfield: 'Courtois', 	valuefield: '13'},
+            { labelfield: 'Neymar', 	valuefield: '14'},
+            { labelfield: 'Shaqiri', 	valuefield: '15'},
+            { labelfield: 'Cristiano Ronaldo', 	valuefield: '16'},
+            { labelfield: 'Leroux (Only Women)', 	valuefield: '18'},
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="item">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="caption">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("bodytypecode")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    }); 
+
+    $("#boots-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'valuefield',
+        labelField: 'labelfield',
+        searchField: ['valuefield', 'labelfield'],
+        options: [
+            { labelfield: '1. EA Black/White', 	        valuefield: '1'},
+            { labelfield: '2. EA Black/White', 	        valuefield: '2'},
+            { labelfield: '3. EA Black/White', 	        valuefield: '3'},
+            { labelfield: '4. EA Black/White', 	        valuefield: '4'},
+            { labelfield: '5. EA Black/White', 	        valuefield: '5'},
+            { labelfield: '6. EA Black/White', 	        valuefield: '6'},
+            { labelfield: '7. EA Black/White', 	        valuefield: '7'},
+            { labelfield: '8. EA Black/White', 	        valuefield: '8'},
+            { labelfield: '9. EA Black/White', 	        valuefield: '9'},
+            { labelfield: '10. EA Black/White', 	        valuefield: '10'},
+            { labelfield: '11. EA Black/White', 	        valuefield: '11'},
+            { labelfield: '12. EA Black/White', 	        valuefield: '12'},
+            { labelfield: '13. EA Black/White', 	        valuefield: '13'},
+            { labelfield: '14. EA Black/White', 	        valuefield: '14'},
+            { labelfield: '15. EA Black/White', 	        valuefield: '15'},
+            { labelfield: '16. EA Black/White', 	        valuefield: '16'},
+            { labelfield: '17. EA Black/White', 	        valuefield: '17'},
+            { labelfield: '18. EA Black/White', 	        valuefield: '18'},
+            { labelfield: '19. EA Black/White', 	        valuefield: '19'},
+            { labelfield: '20. EA Black/White', 	        valuefield: '20'},
+            { labelfield: '21. Adidas Ace 17+ PURECONTROL Magnetic Storm', 	        valuefield: '21'},
+            { labelfield: '22. Adidas Ace 17+ PURECONTROL Energy Aqua', 	        valuefield: '22'},
+            { labelfield: '23. Adidas Ace 17+ PURECONTROL Thunder Storm', 	        valuefield: '23'},
+            { labelfield: '24. EA Black/White', 	        valuefield: '24'},
+            { labelfield: '25. EA Black/White', 	        valuefield: '25'},
+            { labelfield: '26. Adidas Ace 17+ Purple/Red/Black', 	        valuefield: '26'},
+            { labelfield: '27. Adidas Copa 17.1 Dust Storm', 	        valuefield: '27'},
+            { labelfield: '28. EA Black/White', 	        valuefield: '28'},
+            { labelfield: '29. Adidas Copa 17.1 Ocean Storm', 	        valuefield: '29'},
+            { labelfield: '30. Adidas NEMEZIZ 17.0 Magnetic Storm', 	        valuefield: '30'},
+            { labelfield: '31. Adidas NEMEZIZ 17.0 Ocean Storm', 	        valuefield: '31'},
+            { labelfield: '32. Adidas NEMEZIZ 17.0 Black', 	        valuefield: '32'},
+            { labelfield: '33. EA Black/White', 	        valuefield: '33'},
+            { labelfield: '34. EA Black/White', 	        valuefield: '34'},
+            { labelfield: '35. Adidas NEMEZIZ 17.1 White/Red', 	        valuefield: '35'},
+            { labelfield: '36. Joma Vulcano 2.0', 	        valuefield: '36'},
+            { labelfield: '37. Hummel Rapid X Blade Bluebird', 	        valuefield: '37'},
+            { labelfield: '38. EA Black/White', 	        valuefield: '38'},
+            { labelfield: '39. EA Black/White', 	        valuefield: '39'},
+            { labelfield: '40. Adidas X17+ 360SPEED FG Magnetic Storm', 	        valuefield: '40'},
+            { labelfield: '41. Adidas X17+ 360SPEED FG Ocean Storm', 	        valuefield: '41'},
+            { labelfield: '42. Adidas X17+ 360SPEED FG Thunder Storm', 	        valuefield: '42'},
+            { labelfield: '43. EA Black/White', 	        valuefield: '43'},
+            { labelfield: '44. EA Black/White', 	        valuefield: '44'},
+            { labelfield: '45. Nike Mercurial Veloce III Dynamic', 	        valuefield: '45'},
+            { labelfield: '46. Nike Tiempo Legacy III', 	        valuefield: '46'},
+            { labelfield: '47. Nike Magista Onda II Dynamic Fit', 	        valuefield: '47'},
+            { labelfield: '48. Nike Hypervenom Phatal III', 	        valuefield: '48'},
+            { labelfield: '49. EA Black/White', 	        valuefield: '49'},
+            { labelfield: '50. EA Black/White', 	        valuefield: '50'},
+            { labelfield: '51. EA Black/White', 	        valuefield: '51'},
+            { labelfield: '52. EA Black/White', 	        valuefield: '52'},
+            { labelfield: '53. EA Black/White', 	        valuefield: '53'},
+            { labelfield: '54. EA Black/White', 	        valuefield: '54'},
+            { labelfield: '55. EA Black/White', 	        valuefield: '55'},
+            { labelfield: '56. EA Black/White', 	        valuefield: '56'},
+            { labelfield: '57. EA Black/White', 	        valuefield: '57'},
+            { labelfield: '58. EA Black/White', 	        valuefield: '58'},
+            { labelfield: '59. EA Black/White', 	        valuefield: '59'},
+            { labelfield: '60. EA Black/White', 	        valuefield: '60'},
+            { labelfield: '61. EA Black/White', 	        valuefield: '61'},
+            { labelfield: '62. EA Black/White', 	        valuefield: '62'},
+            { labelfield: '63. Nike Mercurial Superfly V CR7 Dynamic', 	        valuefield: '63'},
+            { labelfield: '64. EA Black/White', 	        valuefield: '64'},
+            { labelfield: '65. Puma evoPower Vigor 1 Red Coral/Silver/Black', 	        valuefield: '65'},
+            { labelfield: '66. EA Black/White', 	        valuefield: '66'},
+            { labelfield: '67. Puma One 17.1 White/Black', 	        valuefield: '67'},
+            { labelfield: '68. EA Black/White', 	        valuefield: '68'},
+            { labelfield: '69. EA Black/White', 	        valuefield: '69'},
+            { labelfield: '70. EA Black/White', 	        valuefield: '70'},
+            { labelfield: '71. Umbro Medusae 2 Electric Blue', 	        valuefield: '71'},
+            { labelfield: '72. Umbro Velocita 3 Yellow/Blue', 	        valuefield: '72'},
+            { labelfield: '73. Umbro Velocita 3 Yellow', 	        valuefield: '73'},
+            { labelfield: '74. EA Black/White', 	        valuefield: '74'},
+            { labelfield: '75. EA Black/White', 	        valuefield: '75'},
+            { labelfield: '76. EA Black/White', 	        valuefield: '76'},
+            { labelfield: '77. Umbro Velocita 3 Blue', 	        valuefield: '77'},
+            { labelfield: '78. Umbro Velocita 3 Black/Blue', 	        valuefield: '78'},
+            { labelfield: '79. Umbro Velocita 3 Black', 	        valuefield: '79'},
+            { labelfield: '80. Nike Mercurial Vapor XI Yellow/Black', 	        valuefield: '80'},
+            { labelfield: '81. EA Black/White', 	        valuefield: '81'},
+            { labelfield: '82. EA Black/White', 	        valuefield: '82'},
+            { labelfield: '83. Under Armour Clutchfit Force 3.0 Black/Orange', 	        valuefield: '83'},
+            { labelfield: '84. Under Armour Clutchfit Force 3.0 Yellow', 	        valuefield: '84'},
+            { labelfield: '85. Under Armour Spotlight White/Red/Black', 	        valuefield: '85'},
+            { labelfield: '86. Under Armour Spotlight Green/Black', 	        valuefield: '86'},
+            { labelfield: '87. New Balance Visaro 2.0 Green', 	        valuefield: '87'},
+            { labelfield: '88. New Balance Visaro 2.0 Black', 	        valuefield: '88'},
+            { labelfield: '89. EA Black/White', 	        valuefield: '89'},
+            { labelfield: '90. EA Black/White', 	        valuefield: '90'},
+            { labelfield: '91. EA Black/White', 	        valuefield: '91'},
+            { labelfield: '92. EA Black/White', 	        valuefield: '92'},
+            { labelfield: '93. EA Black/White', 	        valuefield: '93'},
+            { labelfield: '94. EA Black/White', 	        valuefield: '94'},
+            { labelfield: '95. EA Black/White', 	        valuefield: '95'},
+            { labelfield: '96. Mizuno Morelia Neo II Blue', 	        valuefield: '96'},
+            { labelfield: '97. Mizuno Morelia Neo II Orange', 	        valuefield: '97'},
+            { labelfield: '98. EA Black/White', 	        valuefield: '98'},
+            { labelfield: '99. EA Black/White', 	        valuefield: '99'},
+            { labelfield: '100. EA Black/White', 	        valuefield: '100'},
+            { labelfield: '101. EA Black/White', 	        valuefield: '101'},
+            { labelfield: '102. EA Black/White', 	        valuefield: '102'},
+            { labelfield: '103. EA Black/White', 	        valuefield: '103'},
+            { labelfield: '104. EA Black/White',            valuefield: '104'},
+            { labelfield: '105. Asics DS Light X-Fly 3', 	        valuefield: '105'},
+            { labelfield: '106. Asics DS Light X-Fly 3 SL', 	        valuefield: '106'},
+            { labelfield: '107. Nike Tiempo Legend V White/Black/Red', 	        valuefield: '107'},
+            { labelfield: '108. Nike Hypervenom Phantom White / Black / Total Orange / Volt / Pink',            valuefield: '108'},
+            { labelfield: '109. Nike Magista Obra White/Black/Pink Blast/Volt',         valuefield: '109'},
+            { labelfield: '110. Nike Tiempo Mystic V FG White/Black/Total Orange',          valuefield: '110'},
+            { labelfield: '111. Puma Evopower 1.3 Yellow/Atomic Blue', 	        valuefield: '111'},
+            { labelfield: '112. PUMA evoSPEED SL Safety Yellow', 	        valuefield: '112'},
+            { labelfield: '113. New Balance Visaro Red Wine/Green', 	        valuefield: '113'},
+            { labelfield: '114. New Balance Visaro Black/Green', 	        valuefield: '114'},
+            { labelfield: '115. New Balance Visaro Black/Yellow', 	        valuefield: '115'},
+            { labelfield: '116. New Balance Visaro Orange', 	        valuefield: '116'},
+            { labelfield: '117. New Balance Furon Green/Blue', 	        valuefield: '117'},
+            { labelfield: '118. New Balance Visaro White/Yellow', 	        valuefield: '118'},
+            { labelfield: '119. Umbro Geo Flare ProSafety Yellow Camo/Chrome/Black', 	        valuefield: '119'},
+            { labelfield: '120. Umbro Velocita 2.0 dazzling blue/white/fiery coral', 	        valuefield: '120'},
+            { labelfield: '121. Umbro Medusae - Black / White / Turquoise', 	        valuefield: '121'},
+            { labelfield: '122. Umbro UX-1 Black', 	        valuefield: '122'},
+            { labelfield: '123. Nike Mercurial Superfly White / Black / Volt / Total Orange / Hyper Pink', 	        valuefield: '123'},
+            { labelfield: '124. Nike Mercurial Superfly V Crimson/Yellow/Pink/Black', 	        valuefield: '124'},
+            { labelfield: '125. Adidas adiPURE III Black', 	        valuefield: '125'},
+            { labelfield: '126. Adidas ACE 16.1 Primeknit Womens White/Solar Gold/Shock', 	        valuefield: '126'},
+            { labelfield: '127. Adidas X 15.1 Fwhite/Blue/Red', 	        valuefield: '127'},
+            { labelfield: '128. Umbro Medusa Blue/Red', 	        valuefield: '128'},
+            { labelfield: '129. EA Black/White', 	        valuefield: '129'},
+            { labelfield: '130. Adidas ACE 16.1 Dark Space', 	        valuefield: '130'},
+            { labelfield: '131. Adidas ACE 16.1 Mercury Pack', 	        valuefield: '131'},
+            { labelfield: '132. Adidas ACE 16.1 Viper Pack', 	        valuefield: '132'},
+            { labelfield: '133. Adidas ACE 16.1 Stellar Pack', 	        valuefield: '133'},
+            { labelfield: '134. Adidas ACE 16.1 Speed of Light', 	        valuefield: '134'},
+            { labelfield: '135. Adidas Ace 16+ Dark Space', 	        valuefield: '135'},
+            { labelfield: '136. Adidas Ace 16+ Mercury Pack', 	        valuefield: '136'},
+            { labelfield: '137. Adidas Ace 16+ Viper Pack', 	        valuefield: '137'},
+            { labelfield: '138. Adidas Ace 16+ Speed of Light', 	        valuefield: '138'},
+            { labelfield: '139. Adidas Ace 16+ Stellar Pack', 	        valuefield: '139'},
+            { labelfield: '140. Adidas adiZero 99Gram', 	        valuefield: '140'},
+            { labelfield: '141. Adidas Messi 16.1 Speed of Light', 	        valuefield: '141'},
+            { labelfield: '142. Adidas Messi 16.1 Mercury Pack', 	        valuefield: '142'},
+            { labelfield: '143. Adidas Messi 16+ Blackout', 	        valuefield: '143'},
+            { labelfield: '144. Adidas Messi 16+ Mercury Pack', 	        valuefield: '144'},
+            { labelfield: '145. Adidas Messi 16+ Speed of Light', 	        valuefield: '145'},
+            { labelfield: '146. Adidas X 16.1 Dark Space', 	        valuefield: '146'},
+            { labelfield: '147. Adidas X 16.1 Mercury Pack', 	        valuefield: '147'},
+            { labelfield: '148. Adidas X 16.1 Speed of Light', 	        valuefield: '148'},
+            { labelfield: '149. Adidas X 16.1 Viper Pack', 	        valuefield: '149'},
+            { labelfield: '150. Adidas X 16.1 Stellar Pack', 	        valuefield: '150'},
+            { labelfield: '151. Adidas X 16+ Dark Space', 	        valuefield: '151'},
+            { labelfield: '152. Adidas X 16+ Intersport', 	        valuefield: '152'},
+            { labelfield: '153. Adidas X 16+ Mercury Pack', 	        valuefield: '153'},
+            { labelfield: '154. Adidas X 16+ Speed of Light', 	        valuefield: '154'},
+            { labelfield: '155. Adidas X 16+ Viper Pack', 	        valuefield: '155'},
+            { labelfield: '156. Adidas X 16+ Stellar Pack', 	        valuefield: '156'},
+            { labelfield: '157. Adidas Ace 16+ Pure Control Silver', 	        valuefield: '157'},
+            { labelfield: '158. Adidas X 16.1 Dark Space/White', 	        valuefield: '158'},
+            { labelfield: '159. Asics DS Light X-Fly 2 Pearl/White/Electric Blue', 	        valuefield: '159'},
+            { labelfield: '160. Asics Lethal Legacy Flash Yellow/Black', 	        valuefield: '160'},
+            { labelfield: '161. Asics Menace 3 Spice Orange/White', 	        valuefield: '161'},
+            { labelfield: '162. Lotto Zhero Gravity VIII 700  Orange/White', 	        valuefield: '162'},
+            { labelfield: '163. Joma Champion Max Black/Yellow', 	        valuefield: '163'},
+            { labelfield: '164. Joma Champion Max Blue/Green/White', 	        valuefield: '164'},
+            { labelfield: '165. ???', 	        valuefield: '165'},
+            { labelfield: '166. Joma Propulsion Lite Fluo Yellow', 	        valuefield: '166'},
+            { labelfield: '167. Mizuno Basara 101 KL - Black/Green Gecko', 	        valuefield: '167'},
+            { labelfield: '168. Mizuno Morelia II Blue', 	        valuefield: '168'},
+            { labelfield: '169. Mizuno Wave Ignitus 4 Blue', 	        valuefield: '169'},
+            { labelfield: '170. Mizuno Wave Ignitus 4 Red', 	        valuefield: '170'},
+            { labelfield: '171. New Balance Furon Bright Cherry/Galaxy/Firefly', 	        valuefield: '171'},
+            { labelfield: '172. New Balance Visaro Galaxy/Bright Cherry/Firefly', 	        valuefield: '172'},
+            { labelfield: '173. Nike Hypervenom Phantom II Pure Platinum/Black/Green', 	        valuefield: '173'},
+            { labelfield: '174. Nike Hypervenom Phantom II Volt/Black/Hyper Turq', 	        valuefield: '174'},
+            { labelfield: '175. Nike Hypervenom Phantom II Wolf Grey/Total Orange/Black/Black-Volt', 	        valuefield: '175'},
+            { labelfield: '176. Nike Magista Total Crimson/Black/Volt', 	        valuefield: '176'},
+            { labelfield: '177. Nike Magista Obra White/Black/Pink Blast/Volt', 	        valuefield: '177'},
+            { labelfield: '178. Nike Magista Obra II Pure Platinum/Black/Ghost Green', 	        valuefield: '178'},
+            { labelfield: '179. Nike Magista Obra II Volt/Black/Total Orange/Pink', 	        valuefield: '179'},
+            { labelfield: '180. Nike Mercurial Superfly V Pure Platinum/Black/Ghost Green', 	        valuefield: '180'},
+            { labelfield: '181. Nike Mercurial Superfly V Crimson/Yellow/Pink/Black', 	        valuefield: '181'},
+            { labelfield: '182. Nike Mercurial Superfly White / Black / Volt / Total Orange / Hyper Pink',         valuefield: '182'},
+            { labelfield: '183. Nike Tiempo Legend VI Clear Jade/Black/Volt', 	        valuefield: '183'},
+            { labelfield: '184. Nike Tiempo Mystic V FG White/Black/Total Orange', 	        valuefield: '184'},
+            { labelfield: '185. Nike Tiempo Legend VI Wolf Grey/Black/Clear Jade', 	        valuefield: '185'},
+            { labelfield: '186. Pirma Brasil Accurate Aqua/Silver', 	        valuefield: '186'},
+            { labelfield: '187. Pirma Supreme Spry Black/Green', 	        valuefield: '187'},
+            { labelfield: '188. Pirma Supreme Spry Black/Red', 	        valuefield: '188'},
+            { labelfield: '189. Puma evoPower 1.3 Tricks Yellow Pink', 	        valuefield: '189'},
+            { labelfield: '190. Puma evoPower 1.3 Blue/Red', 	        valuefield: '190'},
+            { labelfield: '191. Puma evoPower 1.3 Red/Black', 	        valuefield: '191'},
+            { labelfield: '192. Puma evoSpeed SL White/Red', 	        valuefield: '192'},
+            { labelfield: '193. Puma evoSpeed SL White/Red', 	        valuefield: '193'},
+            { labelfield: '194. Puma evoSpeed 1.5 Tricks Yellow Pink', 	        valuefield: '194'},
+            { labelfield: '195. Puma evoTouch Pro Black/Green', 	        valuefield: '195'},
+            { labelfield: '196. Umbro Medusae Black/White/Bluebird', 	        valuefield: '196'},
+            { labelfield: '197. Umbro Medusae Grenadine/White/Black', 	        valuefield: '197'},
+            { labelfield: '198. Umbro Medusae White/Black/Grenadine', 	        valuefield: '198'},
+            { labelfield: '199. Umbro UX-Accuro Black/Metallic/Grenadine', 	        valuefield: '199'},
+            { labelfield: '200. Umbro UX-Accuro Grenadine/Black', 	        valuefield: '200'},
+            { labelfield: '201. Umbro UX-Accuro White/Black/Bluebird', 	        valuefield: '201'},
+            { labelfield: '202. Umbro Velocita II  Black/White/Grenadine', 	        valuefield: '202'},
+            { labelfield: '203. Umbro Velocita II Bluebird/White', 	        valuefield: '203'},
+            { labelfield: '204. Umbro Velocita II Red/White', 	        valuefield: '204'},
+            { labelfield: '205. Under Armour Clutchfit Black/Rocket Red/White', 	        valuefield: '205'},
+            { labelfield: '206. Under Armour Clutchfit High-Vis Yellow/Black/Red', 	        valuefield: '206'},
+            { labelfield: '207. Under Armour Spotlight Pro 2.0Rocket Red/High Vis Yellow', 	        valuefield: '207'},
+            { labelfield: '208. Under Armour Spotlight Pro 2.0Rocket White/Black', 	        valuefield: '208'},
+            { labelfield: '209. Adidas Ace 17+ PURECONTROL White/Blue', 	        valuefield: '209'},
+            { labelfield: '210. Adidas Ace 17+ PURECONTROL Black', 	        valuefield: '210'},
+            { labelfield: '211. Adidas Ace 17+ PURECONTROL Black/Blue', 	        valuefield: '211'},
+            { labelfield: '212. Adidas Ace 17+ PURECONTROL Red/Black', 	        valuefield: '212'},
+            { labelfield: '213. Adidas Ace 17+ PURECONTROL Solar Green', 	        valuefield: '213'},
+            { labelfield: '214. Adidas Ace 17+ PURECONTROL Camouflage', 	        valuefield: '214'},
+            { labelfield: '215. Adidas Messi 16+ Blue/Red', 	        valuefield: '215'},
+            { labelfield: '216. Adidas Messi 16+ Gold/Black', 	        valuefield: '216'},
+            { labelfield: '217. Adidas Messi 16+ White/Red', 	        valuefield: '217'},
+            { labelfield: '218. Adidas X17 Blue/Red', 	        valuefield: '218'},
+            { labelfield: '219. Adidas X17 Black', 	        valuefield: '219'},
+            { labelfield: '220. Adidas X17 Red/Black', 	        valuefield: '220'},
+            { labelfield: '221. Adidas X17 Solar Green', 	        valuefield: '221'},
+            { labelfield: '222. Adidas X17.1 Camouflage', 	        valuefield: '222'},
+            { labelfield: '223. Adidas Copa 17.1 Red/White', 	        valuefield: '223'},
+            { labelfield: '224. Adidas Copa 17.1 Black/White', 	        valuefield: '224'},
+            { labelfield: '225. Adidas Copa 17.1 Blue/White', 	        valuefield: '225'},
+            { labelfield: '226. Adidas Copa 17.1 Black/Gold', 	        valuefield: '226'},
+            { labelfield: '227. Adidas Copa 17.1 Silver/Gold', 	        valuefield: '227'},
+            { labelfield: '228. EA Black/White', 	        valuefield: '228'},
+            { labelfield: '229. Adidas Copa 17.1 White/Black', 	        valuefield: '229'},
+            { labelfield: '230. Adidas X17.1 Women Core Black', 	        valuefield: '230'},
+            { labelfield: '231. Adidas Ace 17+ White/Black', 	        valuefield: '231'},
+            { labelfield: '232. Puma evoPower 17 green', 	        valuefield: '232'},
+            { labelfield: '233. Puma evospeed 17 green', 	        valuefield: '233'},
+            { labelfield: '234. Puma evospeed white/blue', 	        valuefield: '234'},
+            { labelfield: '235. Nike Hypervenom Phantom III Green/Orange', 	        valuefield: '235'},
+            { labelfield: '236. Nike Magista Obra II Red', 	        valuefield: '236'},
+            { labelfield: '237. Nike Mercurial Superfly V Green', 	        valuefield: '237'},
+            { labelfield: '238. Nike Tiempo Mystic V Yellow', 	        valuefield: '238'},
+            { labelfield: '239. Nike Mercurial Superfly EA SPORTS', 	        valuefield: '239'},
+            { labelfield: '240. Nike Hypervenom Phantom III White/Darkblue', 	        valuefield: '240'},
+            { labelfield: '241. Nike Magista Obra II White/Yellow', 	        valuefield: '241'},
+            { labelfield: '242. Nike Mercurial Superfly V Pink/White', 	        valuefield: '242'},
+            { labelfield: '243. Nike Tiempo V White/Green', 	        valuefield: '243'},
+            { labelfield: '244. Mizuno Morelia II Blue', 	        valuefield: '244'},
+            { labelfield: '245. Mizuno Morelia II Red', 	        valuefield: '245'},
+            { labelfield: '246. New Balance Furon Bright Cherry/Galaxy/Firefly', 	        valuefield: '246'},
+            { labelfield: '247. New Balance Visaro Galaxy/Bright Cherry/Firefly', 	        valuefield: '247'},
+            { labelfield: '248. New Balance Furon 2.0 Red', 	        valuefield: '248'},
+            { labelfield: '249. New Balance Visaro 2.0 Grey/Red', 	        valuefield: '249'},
+            { labelfield: '250. Umbro Velocita II Purple', 	        valuefield: '250'},
+            { labelfield: '251. Umbro Medusae II Purple', 	        valuefield: '251'},
+            { labelfield: '252. Umbro Velocita II Green/Purple', 	        valuefield: '252'},
+            { labelfield: '253. Nike Hypervenom Phantom III NJR X Jordan', 	        valuefield: '253'},
+            { labelfield: '254. EA Black/White', 	        valuefield: '254'},
+
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="item">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.labelfield ? '<span class="caption">' + escape(item.labelfield) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("shoetypecode")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    });
+
+    $("#traits-input").selectize({
+        delimiter: ',',
+        persist: false,
+        valueField: 'traitvalue',
+        labelField: 'traitname',
+        searchField: ['traitvalue', 'traitname'],
+        options: [
+            { traitname: 'Inflexibility', 	traitvalue: '1_1'},
+            { traitname: 'Long Throw-in', 	traitvalue: '1_2'},
+            { traitname: 'Power Free kick', 	traitvalue: '1_4'},
+            { traitname: 'Diver', 	traitvalue: '1_8'},
+            { traitname: 'Injury prone', 	traitvalue: '1_16'},
+            { traitname: 'Injury free', 	traitvalue: '1_32'},
+            { traitname: 'Avoids using weaker foot', 	traitvalue: '1_64'},
+            { traitname: 'Dives into tackles', 	traitvalue: '1_128'},
+            { traitname: 'Tries to beat defensive line', 	traitvalue: '1_256'},
+            { traitname: 'Selfish', 	traitvalue: '1_512'},
+            { traitname: 'Leadership', 	traitvalue: '1_1024'},
+            { traitname: 'Argues With Referee', 	traitvalue: '1_2048'},
+            { traitname: 'Early crosser', 	traitvalue: '1_4096'},
+            { traitname: 'Finesse shot', 	traitvalue: '1_8192'},
+            { traitname: 'Flair', 	traitvalue: '1_16384'},
+            { traitname: 'Long passer', 	traitvalue: '1_32768'},
+            { traitname: 'Long shot taker', 	traitvalue: '1_65536'},
+            { traitname: 'Skilled dribbling', 	traitvalue: '1_131072'},
+            { traitname: 'Playmaker', 	traitvalue: '1_262144'},
+            { traitname: 'GK up for corners', 	traitvalue: '1_524288'},
+            { traitname: 'Puncher', 	traitvalue: '1_1048576'},
+            { traitname: 'GK Long throw', 	traitvalue: '1_2097152'},
+            { traitname: 'Power header', 	traitvalue: '1_4194304'},
+            { traitname: 'GK One on One', 	traitvalue: '1_8388608'},
+            { traitname: 'Giant throw-in', 	traitvalue: '1_16777216'},
+            { traitname: 'Outsite foot shot', 	traitvalue: '1_33554432'},
+            { traitname: 'Fans favourite', 	traitvalue: '1_67108864'},
+            { traitname: 'Swerve Pass', 	traitvalue: '1_134217728'},
+            { traitname: 'Second Wind', 	traitvalue: '1_268435456'},
+            { traitname: 'Acrobatic Clearance', 	traitvalue: '1_536870912'},
+            { traitname: 'Skilled Dribbling', 	traitvalue: '2_1'},
+            { traitname: 'Flair Passes', 	traitvalue: '2_2'},
+            { traitname: 'Fancy Flicks', 	traitvalue: '2_4'},
+            { traitname: 'Stutter Penalty', 	traitvalue: '2_8'},
+            { traitname: 'Chipped Penalty', 	traitvalue: '2_16'},
+            { traitname: 'Bicycle Kicks', 	traitvalue: '2_32'},
+            { traitname: 'Diving Header', 	traitvalue: '2_64'},
+            { traitname: 'Driven Pass', 	traitvalue: '2_128'},
+            { traitname: 'GK Flat Kick', 	traitvalue: '2_256'},
+            { traitname: 'One Club Player', 	traitvalue: '2_512'},
+            { traitname: 'Team Player', 	traitvalue: '2_1024'},
+            { traitname: 'Chip shot', 	traitvalue: '2_2048'},
+            { traitname: 'Technical Dribbler', 	traitvalue: '2_4096'},
+            { traitname: 'Rushes Out Of Goal', 	traitvalue: '2_8192'},
+            { traitname: 'Backs Into Player', 	traitvalue: '2_16384'},
+            { traitname: 'Set Play Specialist', 	traitvalue: '2_32768'},
+            { traitname: 'Takes Finesse Free Kicks', 	traitvalue: '2_65536'},
+            { traitname: 'Target Forward', 	traitvalue: '2_131072'},
+            { traitname: 'Cautious With Crosses', 	traitvalue: '2_262144'},
+            { traitname: 'Comes For Crossess', 	traitvalue: '2_524288'},
+            { traitname: 'Blames Teammates', 	traitvalue: '2_1048576'},
+            { traitname: 'Saves with Feet', 	traitvalue: '2_2097152'},
+            { traitname: 'Set Play Specialist', 	traitvalue: '2_4194304'},
+            { traitname: 'Tornado Skillmove', 	traitvalue: '2_8388608'},
+        ],
+        render: {
+            item: function(item, escape) {
+                return '<div>' +
+                    (item.traitname ? '<span class="traitname">' + escape(item.traitname) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                return '<div>' +
+                    (item.traitname ? '<span class="caption">' + escape(item.traitname) + '</span>' : '') +
+                    '</div>';
+            },
+        },
+        onInitialize: function() {
+            var value = getUrlParameter("traits")
+            if (value) 
+                if (value.includes(','))
+                    value = value.split(',')
+                this.setValue(value);
+        }
+    });
+
     $( "#tabs" ).tabs();
 };
 
@@ -1496,7 +2066,7 @@ function changeProfilePublicStatus() {
 }
 
 function cleanUrl() {
-    var params = ["isretiring", "isreal", "isonloan", "hasreleaseclause", "teamtype", "iscputransfer", "isloan", "isloanbuy", "issnipe", "result"];
+    var params = ["isretiring", "isreal", "isonloan", "hasreleaseclause", "teamtype", "iscputransfer", "isloan", "isloanbuy", "issnipe", "result", "hashighqualityhead"];
     for (i = 0; i < params.length; i++) {
         if (getUrlParameter(params[i]) == "-1")
             removeParam(params[i])

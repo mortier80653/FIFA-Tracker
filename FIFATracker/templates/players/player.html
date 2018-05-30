@@ -91,7 +91,7 @@
           <table width="100%" class="info-table">
             <tbody>
               <tr>
-                <td>{% trans 'Name' %}</td>
+                <td style="width: 180px;">{% trans 'Name' %}</td>
                 <td align="right">{{p.player_name.firstname}} {{p.player_name.lastname}}</td>
               </tr>
               {% if p.player_name.commonname %}
@@ -113,6 +113,14 @@
               <tr>
                 <td>{% trans 'Height & Weight' %}</td>
                 <td align="right"><span id="p_height">{{ p.player.height }}</span> / <span id="p_weight">{{ p.player.weight }}</span></td>
+              </tr>
+              <tr>
+                <td>{% trans 'Body Type' %}</td>
+                <td align="right">{{ p.bodytype }} </td>
+              </tr>
+              <tr>
+                <td>{% trans 'Hair Color' %}</td>
+                <td align="right">{{ p.haircolor }} </td>
               </tr>
               <tr>
                 <td>{% trans 'Position' %}</td>
@@ -148,6 +156,10 @@
               <tr>
                 <td>{% trans 'Contract' %}</td>
                 <td align="right">{{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}</td>
+              </tr>
+              <tr>
+                <td>{% trans 'Boots' %}</td>
+                <td align="right">{{ p.boots }}</td>
               </tr>
             </tbody>
           </table>

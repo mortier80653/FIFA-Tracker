@@ -74,8 +74,8 @@
 										<input class="form-control" type="number" min="0" max="500000000" name="value_gbp__lte" value="{{ request_query_dict.value_gbp__lte }}" placeholder="Max">
 									{% endif %}
 								</div>
-								<label for="select-isretiring">{% trans 'Is Retiring?' %}</label>
-								<select id="select-isretiring" name="isretiring" placeholder="{% trans 'Any...' %}">
+								<label for="select-realface">{% trans 'Has Real Face?' %}</label>
+								<select id="select-realface" name="hashighqualityhead" placeholder="{% trans 'Any...' %}">
 									<option value="-1" selected>{% trans 'Any...' %}</option>
 									<option value="0">{% trans 'No' %}</option>
 									<option value="1">{% trans 'Yes' %}</option>
@@ -354,6 +354,28 @@
 					</div>
 					<div id="tabs-3">
 						<div class="row">
+							<div class="col-md-4">
+								<label for="select-isretiring">{% trans 'Is Retiring?' %}</label>
+								<select id="select-isretiring" name="isretiring" placeholder="{% trans 'Any...' %}">
+									<option value="-1" selected>{% trans 'Any...' %}</option>
+									<option value="0">{% trans 'No' %}</option>
+									<option value="1">{% trans 'Yes' %}</option>
+								</select>
+								<label>{% trans 'Head Model' %}</label>
+								<input id='headmodel-input' name="headtype" placeholder="{% trans 'Search for head model(s)...' %}">
+								<label>{% trans 'Hair Color' %}</label>
+								<input id='haircolor-input' name="haircolorcode" placeholder="{% trans 'Search for hair color(s)...' %}">
+							</div>
+							<div class="col-md-4">
+								<label>{% trans 'Skin Color' %}</label>
+								<input id='skincolor-input' name="skintonecode" placeholder="{% trans 'Seearch for skin color(s)...' %}">
+								<label>{% trans 'Body Type' %}</label>
+								<input id='bodytype-input' name="bodytypecode" placeholder="{% trans 'Search for body type(s)...' %}">
+							</div>
+							<div class="col-md-4">
+								<label>{% trans 'Boots' %}</label>
+								<input id='boots-input' name="shoetypecode" placeholder="{% trans 'Search for boots..' %}">
+							</div>
 						</div>
 					</div>
 				</div>

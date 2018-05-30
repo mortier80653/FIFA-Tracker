@@ -548,7 +548,7 @@ class FifaPlayer():
         try:
             return haircolors[int(self.player.haircolorcode)]
         except Exception as e:
-            return self.player.haircolorcode + ". Unknown"
+            return  "{}. Unknown".format(self.player.haircolorcode)
 
     def get_bodytype(self):
         bodytypes = (
@@ -575,7 +575,7 @@ class FifaPlayer():
         try:
             return bodytypes[int(self.player.bodytypecode)]
         except Exception as e:
-            return self.player.bodytypecode + ". Unknown"
+            return  "{}. Unknown".format(self.player.bodytypecode)
 
     def get_boots_name(self):
         boots_names = (
@@ -839,7 +839,7 @@ class FifaPlayer():
         try:
             return boots_names[int(self.player.shoetypecode)]
         except Exception as e:
-            return self.player.shoetypecode + ". Unknown"
+            return  "{}. Unknown".format(self.player.shoetypecode)
 
     def set_traits(self):
         all_traits = list()

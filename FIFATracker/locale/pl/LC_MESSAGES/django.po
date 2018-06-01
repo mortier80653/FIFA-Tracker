@@ -1292,11 +1292,11 @@ msgstr "PS"
 
 #: .\templates\tools\calculator.html:55 .\templates\tools\calculator.html:111
 msgid "RS"
-msgstr "RS"
+msgstr "PN"
 
 #: .\templates\tools\calculator.html:57 .\templates\tools\calculator.html:113
 msgid "LS"
-msgstr "LS"
+msgstr "LN"
 
 #: .\templates\tools\calculator.html:58 .\templates\tools\calculator.html:114
 msgid "LW"

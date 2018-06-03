@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-21 17:53+0200\n"
+"POT-Creation-Date: 2018-06-03 19:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Only authenticated users are allowed to upload files."
 msgstr "Tylko autoryzowani użytkownicy mogą przesyłać pliki."
 
-#: .\core\views.py:92
+#: .\core\views.py:93
 msgid "Processing Career Save File."
 msgstr "Przetwarzanie pliku z zapisanym stanem gry"
 
@@ -179,23 +179,23 @@ msgstr "Model nie znaleziony"
 msgid "Save file not found on the server."
 msgstr "Plik nie znaleziony na serwerze"
 
-#: .\scripts\process_file_utils.py:888
+#: .\scripts\process_file_utils.py:900
 msgid "Unpacking database from career file."
 msgstr "Wypakowywanie bazydanych z pliku kariery"
 
-#: .\scripts\process_file_utils.py:899
+#: .\scripts\process_file_utils.py:911
 msgid "Exporting data from FIFA database to csv files."
 msgstr "Exportowanie danych z bazy danych FIFA do pliku csv"
 
-#: .\scripts\process_file_utils.py:909
+#: .\scripts\process_file_utils.py:921
 msgid "Calculating Players Values and Teams Ratings"
 msgstr "Obliczanie wartośći zawodników i oceny drużyn"
 
-#: .\scripts\process_file_utils.py:916
+#: .\scripts\process_file_utils.py:928
 msgid "Importing data to FIFA Tracker database."
 msgstr "Importowanie danych do bazy danych FIFA Trackera"
 
-#: .\scripts\process_file_utils.py:926
+#: .\scripts\process_file_utils.py:937
 msgid "Completed in {}s"
 msgstr "Proces zakończony w {}s"
 
@@ -296,72 +296,72 @@ msgstr "Załóż konto"
 msgid "Success!"
 msgstr "Sukces!"
 
-#: .\templates\base.html:59 .\templates\upload.html:65
+#: .\templates\base.html:50 .\templates\upload.html:65
 msgid "Players"
 msgstr "Zawodnicy"
 
-#: .\templates\base.html:60 .\templates\upload.html:66
+#: .\templates\base.html:51 .\templates\upload.html:66
 msgid "Teams"
 msgstr "Drużyny"
 
-#: .\templates\base.html:61 .\templates\transfer_history\transfers.html:14
+#: .\templates\base.html:52 .\templates\transfer_history\transfers.html:14
 msgid "Transfers"
 msgstr "Transfery"
 
-#: .\templates\base.html:63
+#: .\templates\base.html:54
 msgid "Tools"
 msgstr "Narzędzia"
 
-#: .\templates\base.html:65 .\templates\tools\calculator.html:7
+#: .\templates\base.html:56 .\templates\tools\calculator.html:7
 msgid "Calculator"
 msgstr "Kalkulator"
 
-#: .\templates\base.html:74 .\templates\tools\calculator.html:21
+#: .\templates\base.html:65 .\templates\tools\calculator.html:21
 #: .\templates\tools\calculator.html:75
 msgid "Currency"
 msgstr "Waluta"
 
-#: .\templates\base.html:76 .\templates\base.html:78
+#: .\templates\base.html:67 .\templates\base.html:69
 #: .\templates\tools\calculator.html:23 .\templates\tools\calculator.html:77
 msgid "USDOLLAR"
 msgstr "DOLAR"
 
-#: .\templates\base.html:82 .\templates\base.html:84
+#: .\templates\base.html:73 .\templates\base.html:75
 #: .\templates\tools\calculator.html:22 .\templates\tools\calculator.html:24
 #: .\templates\tools\calculator.html:76 .\templates\tools\calculator.html:78
 msgid "EURO"
 msgstr "EURO"
 
-#: .\templates\base.html:88 .\templates\base.html:90
+#: .\templates\base.html:79 .\templates\base.html:81
 #: .\templates\tools\calculator.html:25 .\templates\tools\calculator.html:79
 msgid "POUND"
 msgstr "FUNT"
 
-#: .\templates\base.html:92
+#: .\templates\base.html:83
 msgid "Units"
 msgstr "SYSTEM MIAR"
 
-#: .\templates\base.html:94 .\templates\base.html:96
+#: .\templates\base.html:85 .\templates\base.html:87
 msgid "METRIC"
 msgstr "METRY"
 
-#: .\templates\base.html:100 .\templates\base.html:102
+#: .\templates\base.html:91 .\templates\base.html:93
 msgid "IMPERIAL"
 msgstr "BRYTYJSKI"
 
-#: .\templates\base.html:110
+#: .\templates\base.html:101
 msgid "Control Panel"
 msgstr "Panel Kontrolny"
 
-#: .\templates\base.html:112 .\templates\home.html:15
+#: .\templates\base.html:103 .\templates\home.html:15
 msgid "Upload"
 msgstr "Prześlij"
 
-#: .\templates\base.html:114
+#: .\templates\base.html:105
 msgid "Log out"
 msgstr "Wyloguj się"
 
-#: .\templates\base.html:118
+#: .\templates\base.html:109
 msgid "LOG-IN"
 msgstr "ZALOGUJ"
 
@@ -438,20 +438,20 @@ msgstr "Reprezentacja"
 msgid "Join Our Discord"
 msgstr "Dołącz do nas na Discordzie"
 
-#: .\templates\players\player.html:16 .\templates\players\player.html:128
+#: .\templates\players\player.html:16 .\templates\players\player.html:136
 #: .\templates\players\players.html:108
 msgid "Nationality"
 msgstr "Narodowość"
 
-#: .\templates\players\player.html:22 .\templates\players\player.html:132
-#: .\templates\players\player.html:642 .\templates\players\player.html:646
-#: .\templates\players\player.html:650 .\templates\players\players.html:110
+#: .\templates\players\player.html:22 .\templates\players\player.html:140
+#: .\templates\players\player.html:670 .\templates\players\player.html:674
+#: .\templates\players\player.html:678 .\templates\players\players.html:110
 #: .\templates\teams\team.html:108 .\templates\teams\teams.html:96
 #: .\templates\tools\calculator.html:81
 msgid "League"
 msgstr "Liga"
 
-#: .\templates\players\player.html:28 .\templates\players\player.html:136
+#: .\templates\players\player.html:28 .\templates\players\player.html:144
 msgid "Club"
 msgstr "Klub"
 
@@ -499,255 +499,271 @@ msgstr "Nazwisko na koszulce"
 msgid "Height & Weight"
 msgstr "Wzrost i Waga"
 
-#: .\templates\players\player.html:118 .\templates\tools\calculator.html:29
+#: .\templates\players\player.html:118 .\templates\players\players.html:372
+msgid "Body Type"
+msgstr "Typ Ciała"
+
+#: .\templates\players\player.html:122 .\templates\players\players.html:366
+msgid "Hair Color"
+msgstr "Kolor Włosów"
+
+#: .\templates\players\player.html:126 .\templates\tools\calculator.html:29
 #: .\templates\tools\calculator.html:85
 msgid "Position"
 msgstr "Pozycja"
 
-#: .\templates\players\player.html:123
+#: .\templates\players\player.html:131
 msgid "Other Positions"
 msgstr "Inne pozycje"
 
-#: .\templates\players\player.html:140
+#: .\templates\players\player.html:148
 msgid "This player is loaned from:"
 msgstr "Ten zawodnik jest wypożyczony z:"
 
-#: .\templates\players\player.html:141
+#: .\templates\players\player.html:149
 msgid "Loaned from:"
 msgstr "Wypożyczony z:"
 
-#: .\templates\players\player.html:149
+#: .\templates\players\player.html:157
 msgid "Contract"
 msgstr "Kontrakt"
 
-#: .\templates\players\player.html:159 .\templates\players\players.html:45
+#: .\templates\players\player.html:161 .\templates\players\players.html:376
+msgid "Boots"
+msgstr "Korki"
+
+#: .\templates\players\player.html:171 .\templates\players\players.html:45
 #: .\templates\teams\teams.html:32
 msgid "Overall"
 msgstr "Ocena Ogólna"
 
-#: .\templates\players\player.html:163 .\templates\players\players.html:50
+#: .\templates\players\player.html:175 .\templates\players\players.html:50
 #: .\templates\tools\calculator.html:11
 msgid "Potential"
 msgstr "Potencjał"
 
-#: .\templates\players\player.html:167
+#: .\templates\players\player.html:179
 msgid "Strong Foot"
 msgstr "Noga"
 
-#: .\templates\players\player.html:171
+#: .\templates\players\player.html:183
 msgid "Workrates"
 msgstr "Pracowitość"
 
-#: .\templates\players\player.html:175
+#: .\templates\players\player.html:187
 msgid "Skill moves"
 msgstr "Sztuczki"
 
-#: .\templates\players\player.html:179
+#: .\templates\players\player.html:191
 msgid "Weak foot"
 msgstr "Słabsza noga"
 
-#: .\templates\players\player.html:183
+#: .\templates\players\player.html:195
 msgid "Int. Reputation"
 msgstr "Reptuacja m-nar."
 
-#: .\templates\players\player.html:188 .\templates\players\players.html:152
+#: .\templates\players\player.html:200 .\templates\players\players.html:152
 msgid "Release Clause"
 msgstr "Klauzula wykupu"
 
-#: .\templates\players\player.html:193 .\templates\players\players.html:61
+#: .\templates\players\player.html:205 .\templates\players\players.html:61
 #: .\templates\players\players.html:66 .\templates\players\players.html:71
 msgid "Value"
 msgstr "Wartość"
 
-#: .\templates\players\player.html:197 .\templates\tools\calculator.html:14
+#: .\templates\players\player.html:209 .\templates\tools\calculator.html:14
 msgid "Wage"
 msgstr "Pensja"
 
-#: .\templates\players\player.html:206 .\templates\players\players.html:36
+#: .\templates\players\player.html:218 .\templates\players\players.html:36
 msgid "Player Attributes"
 msgstr "Atrybuty Zawodnika"
 
-#: .\templates\players\player.html:213
+#: .\templates\players\player.html:225
 msgid "GOALKEEPER"
 msgstr "BRAMKARZ"
 
-#: .\templates\players\player.html:217 .\templates\players\players.html:327
+#: .\templates\players\player.html:229 .\templates\players\players.html:327
 msgid "GK Diving"
 msgstr "Parady"
 
-#: .\templates\players\player.html:221 .\templates\players\players.html:332
+#: .\templates\players\player.html:233 .\templates\players\players.html:332
 msgid "GK Handling"
 msgstr "Łapanie Piłki"
 
-#: .\templates\players\player.html:225 .\templates\players\players.html:337
+#: .\templates\players\player.html:237 .\templates\players\players.html:337
 msgid "GK Kicking"
 msgstr "Wykopy"
 
-#: .\templates\players\player.html:229 .\templates\players\players.html:342
+#: .\templates\players\player.html:241 .\templates\players\players.html:342
 msgid "GK Positioning"
 msgstr "Pozycjonowanie"
 
-#: .\templates\players\player.html:233
+#: .\templates\players\player.html:245
 msgid "GK Reflex"
 msgstr "Refleks"
 
-#: .\templates\players\player.html:244
+#: .\templates\players\player.html:256
 msgid "ATTACK"
 msgstr "ATAK"
 
-#: .\templates\players\player.html:248 .\templates\players\players.html:164
+#: .\templates\players\player.html:260 .\templates\players\players.html:164
 msgid "Crossing"
 msgstr "Dośrodkowania"
 
-#: .\templates\players\player.html:252 .\templates\players\players.html:169
+#: .\templates\players\player.html:264 .\templates\players\players.html:169
 msgid "Finishing"
 msgstr "Wykończenie"
 
-#: .\templates\players\player.html:256 .\templates\players\players.html:174
+#: .\templates\players\player.html:268 .\templates\players\players.html:174
 msgid "Heading Accuracy"
 msgstr "Celność Główek"
 
-#: .\templates\players\player.html:260 .\templates\players\players.html:179
+#: .\templates\players\player.html:272 .\templates\players\players.html:179
 msgid "Short Passing"
 msgstr "Krótkie Podania"
 
-#: .\templates\players\player.html:264 .\templates\players\players.html:184
+#: .\templates\players\player.html:276 .\templates\players\players.html:184
 msgid "Volleys"
 msgstr "Woleje"
 
-#: .\templates\players\player.html:271
+#: .\templates\players\player.html:283
 msgid "DEFENDING"
 msgstr "OBRONA"
 
-#: .\templates\players\player.html:275 .\templates\players\players.html:192
+#: .\templates\players\player.html:287 .\templates\players\players.html:192
 msgid "Marking"
 msgstr "Krycie"
 
-#: .\templates\players\player.html:279 .\templates\players\players.html:197
+#: .\templates\players\player.html:291 .\templates\players\players.html:197
 msgid "Standing Tackle"
 msgstr "Odbiór Tradycyjny"
 
-#: .\templates\players\player.html:283 .\templates\players\players.html:202
+#: .\templates\players\player.html:295 .\templates\players\players.html:202
 msgid "Sliding Tackle"
 msgstr "Wślizg"
 
-#: .\templates\players\player.html:290
+#: .\templates\players\player.html:302
 msgid "SKILL"
 msgstr "DRYBLING"
 
-#: .\templates\players\player.html:294 .\templates\players\players.html:210
+#: .\templates\players\player.html:306 .\templates\players\players.html:210
 msgid "Dribbling"
 msgstr "Drybling"
 
-#: .\templates\players\player.html:298 .\templates\players\players.html:215
+#: .\templates\players\player.html:310 .\templates\players\players.html:215
 msgid "Curve"
 msgstr "Podkręcanie Piłki"
 
-#: .\templates\players\player.html:302 .\templates\players\players.html:220
+#: .\templates\players\player.html:314 .\templates\players\players.html:220
 msgid "Free Kick Accuracy"
 msgstr "Celność Wolnych"
 
-#: .\templates\players\player.html:306 .\templates\players\players.html:225
+#: .\templates\players\player.html:318 .\templates\players\players.html:225
 msgid "Long Passing"
 msgstr "Długie Podania"
 
-#: .\templates\players\player.html:310 .\templates\players\players.html:230
+#: .\templates\players\player.html:322 .\templates\players\players.html:230
 msgid "Ball Control"
 msgstr "Kontrola Piłki"
 
-#: .\templates\players\player.html:317
+#: .\templates\players\player.html:329
 msgid "POWER"
 msgstr "FIZYCZNE"
 
-#: .\templates\players\player.html:321 .\templates\players\players.html:238
+#: .\templates\players\player.html:333 .\templates\players\players.html:238
 msgid "Shot Power"
 msgstr "Siła Strzału"
 
-#: .\templates\players\player.html:325 .\templates\players\players.html:243
+#: .\templates\players\player.html:337 .\templates\players\players.html:243
 msgid "Jumping"
 msgstr "Skoczność"
 
-#: .\templates\players\player.html:329 .\templates\players\players.html:248
+#: .\templates\players\player.html:341 .\templates\players\players.html:248
 msgid "Stamina"
 msgstr "Wytrzymałość"
 
-#: .\templates\players\player.html:333 .\templates\players\players.html:253
+#: .\templates\players\player.html:345 .\templates\players\players.html:253
 msgid "Strength"
 msgstr "Siła"
 
-#: .\templates\players\player.html:337
+#: .\templates\players\player.html:349
 msgid "Long Shots"
 msgstr "Strzały z Daleka"
 
-#: .\templates\players\player.html:344
+#: .\templates\players\player.html:356
 msgid "MOVEMENT"
 msgstr "TEMPO"
 
-#: .\templates\players\player.html:348 .\templates\players\players.html:266
+#: .\templates\players\player.html:360 .\templates\players\players.html:266
 msgid "Acceleration"
 msgstr "Przyspieszenie"
 
-#: .\templates\players\player.html:352 .\templates\players\players.html:271
+#: .\templates\players\player.html:364 .\templates\players\players.html:271
 msgid "Sprint Speed"
 msgstr "Szybkość Biegu"
 
-#: .\templates\players\player.html:356 .\templates\players\players.html:276
+#: .\templates\players\player.html:368 .\templates\players\players.html:276
 msgid "Agility"
 msgstr "Zwinność"
 
-#: .\templates\players\player.html:360 .\templates\players\players.html:281
+#: .\templates\players\player.html:372 .\templates\players\players.html:281
 msgid "Reactions"
 msgstr "Reakcje"
 
-#: .\templates\players\player.html:364 .\templates\players\players.html:286
+#: .\templates\players\player.html:376 .\templates\players\players.html:286
 msgid "Balance"
 msgstr "Równowaga"
 
-#: .\templates\players\player.html:371
+#: .\templates\players\player.html:383
 msgid "MENTALITY"
 msgstr "MENTALNE"
 
-#: .\templates\players\player.html:375 .\templates\players\players.html:294
+#: .\templates\players\player.html:387 .\templates\players\players.html:294
 msgid "Aggression"
 msgstr "Agresja"
 
-#: .\templates\players\player.html:379 .\templates\players\players.html:299
+#: .\templates\players\player.html:391 .\templates\players\players.html:299
 msgid "Composure"
 msgstr "Opanowanie"
 
-#: .\templates\players\player.html:383 .\templates\players\players.html:304
+#: .\templates\players\player.html:395 .\templates\players\players.html:304
 msgid "Interceptions"
 msgstr "Przechwyty"
 
-#: .\templates\players\player.html:387 .\templates\players\players.html:309
+#: .\templates\players\player.html:399 .\templates\players\players.html:309
 msgid "Attack Positioning"
 msgstr "Ustawianie się"
 
-#: .\templates\players\player.html:391 .\templates\players\players.html:314
+#: .\templates\players\player.html:403 .\templates\players\players.html:314
 msgid "Vision"
 msgstr "Orientacja"
 
-#: .\templates\players\player.html:395 .\templates\players\players.html:319
+#: .\templates\players\player.html:407 .\templates\players\players.html:319
 msgid "Penalties"
 msgstr "Rzuty Karne"
 
-#: .\templates\players\player.html:404 .\templates\players\player.html:413
+#: .\templates\players\player.html:417
+msgid "Player Traits"
+msgstr "Cechy Zawodnika"
+
+#: .\templates\players\player.html:432 .\templates\players\player.html:441
 msgid "In-Game Ratings"
 msgstr "Oceny Ogólne w grze"
 
-#: .\templates\players\player.html:636
+#: .\templates\players\player.html:664
 msgid "Player Statistics"
 msgstr "Statystyki zawodnika"
 
-#: .\templates\players\player.html:642
+#: .\templates\players\player.html:670
 msgid "Goals"
 msgstr "Bramki"
 
-#: .\templates\players\player.html:646
+#: .\templates\players\player.html:674
 msgid "Yellow Cards"
 msgstr "Żółte Kartki"
 
-#: .\templates\players\player.html:650
+#: .\templates\players\player.html:678
 msgid "Red Cards"
 msgstr "Czerwone Kartki"
 
@@ -770,19 +786,21 @@ msgid "Age"
 msgstr "Wiek"
 
 #: .\templates\players\players.html:77
-msgid "Is Retiring?"
-msgstr "Konczy Kariere?"
+msgid "Has Real Face?"
+msgstr "Prawdziwa twarz?"
 
 #: .\templates\players\players.html:78 .\templates\players\players.html:79
 #: .\templates\players\players.html:85 .\templates\players\players.html:86
 #: .\templates\players\players.html:92 .\templates\players\players.html:93
 #: .\templates\players\players.html:99 .\templates\players\players.html:100
 #: .\templates\players\players.html:115 .\templates\players\players.html:117
+#: .\templates\players\players.html:359 .\templates\players\players.html:360
 msgid "Any..."
 msgstr "Każda..."
 
 #: .\templates\players\players.html:80 .\templates\players\players.html:87
 #: .\templates\players\players.html:94 .\templates\players\players.html:101
+#: .\templates\players\players.html:361
 #: .\templates\transfer_history\transfers.html:23
 #: .\templates\transfer_history\transfers.html:29
 #: .\templates\transfer_history\transfers.html:35
@@ -792,6 +810,7 @@ msgstr "Nie"
 
 #: .\templates\players\players.html:81 .\templates\players\players.html:88
 #: .\templates\players\players.html:95 .\templates\players\players.html:102
+#: .\templates\players\players.html:362
 #: .\templates\transfer_history\transfers.html:24
 #: .\templates\transfer_history\transfers.html:30
 #: .\templates\transfer_history\transfers.html:36
@@ -904,105 +923,137 @@ msgstr "Bramkarz"
 msgid "GK Reflexes"
 msgstr "Refleks"
 
-#: .\templates\players\players.html:363 .\templates\teams\teams.html:135
+#: .\templates\players\players.html:358
+msgid "Is Retiring?"
+msgstr "Konczy Kariere?"
+
+#: .\templates\players\players.html:364
+msgid "Head Model"
+msgstr "Model głowy"
+
+#: .\templates\players\players.html:365
+msgid "Search for head model(s)..."
+msgstr "Szukaj modelu głowy..."
+
+#: .\templates\players\players.html:367
+msgid "Search for hair color(s)..."
+msgstr "Szukaj koloru włosów..."
+
+#: .\templates\players\players.html:370
+msgid "Skin Color"
+msgstr "Kolor Skóry"
+
+#: .\templates\players\players.html:371
+msgid "Seearch for skin color(s)..."
+msgstr "Szukaj koloru skóry.."
+
+#: .\templates\players\players.html:373
+msgid "Search for body type(s)..."
+msgstr "Szukaj typu ciała..."
+
+#: .\templates\players\players.html:377
+msgid "Search for boots.."
+msgstr "Szukaj korków..."
+
+#: .\templates\players\players.html:385 .\templates\teams\teams.html:135
 #: .\templates\transfer_history\transfers.html:81
 msgid "Search"
 msgstr "Szukaj"
 
-#: .\templates\players\players.html:365 .\templates\teams\teams.html:137
+#: .\templates\players\players.html:387 .\templates\teams\teams.html:137
 #: .\templates\transfer_history\transfers.html:83
 msgid "Reset"
 msgstr "Resetuj"
 
-#: .\templates\players\players.html:368 .\templates\teams\teams.html:140
+#: .\templates\players\players.html:390 .\templates\teams\teams.html:140
 #: .\templates\transfer_history\transfers.html:86
 msgid "Results per page"
 msgstr "Rezultatów na strone"
 
-#: .\templates\players\players.html:382
+#: .\templates\players\players.html:404
 msgid "Displaying Players for user"
 msgstr "Zawodnicy użytkownika"
 
-#: .\templates\players\players.html:383
+#: .\templates\players\players.html:405
 msgid "Current Date"
 msgstr "Aktualna data"
 
-#: .\templates\players\players.html:388
+#: .\templates\players\players.html:410
 msgid "Total Players"
 msgstr "Wszystkich zawodników"
 
-#: .\templates\players\players.html:392 .\templates\players\players.html:551
-#: .\templates\teams\teams.html:158 .\templates\teams\teams.html:318
+#: .\templates\players\players.html:414 .\templates\players\players.html:573
+#: .\templates\teams\teams.html:158 .\templates\teams\teams.html:338
 #: .\templates\transfer_history\transfers.html:104
 #: .\templates\transfer_history\transfers.html:205
 msgid "First"
 msgstr "Pierwsza"
 
-#: .\templates\players\players.html:406 .\templates\players\players.html:565
-#: .\templates\teams\teams.html:174 .\templates\teams\teams.html:334
+#: .\templates\players\players.html:428 .\templates\players\players.html:587
+#: .\templates\teams\teams.html:174 .\templates\teams\teams.html:354
 #: .\templates\transfer_history\transfers.html:120
 #: .\templates\transfer_history\transfers.html:221
 msgid "Last"
 msgstr "Ostatnia"
 
-#: .\templates\players\players.html:417 .\templates\teams\team.html:219
+#: .\templates\players\players.html:439 .\templates\teams\team.html:219
 #: .\templates\teams\team.html:294 .\templates\teams\team.html:369
 #: .\templates\teams\team.html:444 .\templates\teams\team.html:520
 #: .\templates\transfer_history\transfers.html:130
 msgid "IMG"
 msgstr "ZDJ"
 
-#: .\templates\players\players.html:418 .\templates\teams\team.html:220
+#: .\templates\players\players.html:440 .\templates\teams\team.html:220
 #: .\templates\teams\team.html:295 .\templates\teams\team.html:370
 #: .\templates\teams\team.html:445 .\templates\teams\team.html:521
 #: .\templates\transfer_history\transfers.html:131
 msgid "POS"
 msgstr "POZ"
 
-#: .\templates\players\players.html:419 .\templates\teams\team.html:221
+#: .\templates\players\players.html:441 .\templates\teams\team.html:221
 #: .\templates\teams\team.html:296 .\templates\teams\team.html:371
 #: .\templates\teams\team.html:446 .\templates\teams\team.html:522
 #: .\templates\transfer_history\transfers.html:132
 msgid "PLAYER"
 msgstr "ZAWODNIK"
 
-#: .\templates\players\players.html:423 .\templates\players\players.html:427
-#: .\templates\players\players.html:431 .\templates\teams\team.html:222
+#: .\templates\players\players.html:445 .\templates\players\players.html:449
+#: .\templates\players\players.html:453 .\templates\teams\team.html:222
 #: .\templates\teams\team.html:297 .\templates\teams\team.html:372
 #: .\templates\teams\team.html:447 .\templates\teams\team.html:523
 #: .\templates\transfer_history\transfers.html:133
 msgid "RAT"
 msgstr "OGL"
 
-#: .\templates\players\players.html:438 .\templates\players\players.html:442
-#: .\templates\players\players.html:446 .\templates\teams\team.html:223
+#: .\templates\players\players.html:460 .\templates\players\players.html:464
+#: .\templates\players\players.html:468 .\templates\teams\team.html:223
 #: .\templates\teams\team.html:298 .\templates\teams\team.html:373
 #: .\templates\teams\team.html:448 .\templates\teams\team.html:524
 msgid "POT"
 msgstr "POT"
 
-#: .\templates\players\players.html:453 .\templates\players\players.html:457
-#: .\templates\players\players.html:461 .\templates\teams\team.html:224
+#: .\templates\players\players.html:475 .\templates\players\players.html:479
+#: .\templates\players\players.html:483 .\templates\teams\team.html:224
 #: .\templates\teams\team.html:299 .\templates\teams\team.html:374
 #: .\templates\teams\team.html:449 .\templates\teams\team.html:525
 msgid "AGE"
 msgstr "Wiek"
 
-#: .\templates\players\players.html:468 .\templates\players\players.html:472
-#: .\templates\players\players.html:476 .\templates\teams\team.html:225
+#: .\templates\players\players.html:490 .\templates\players\players.html:494
+#: .\templates\players\players.html:498 .\templates\teams\team.html:225
 #: .\templates\teams\team.html:300 .\templates\teams\team.html:375
 #: .\templates\teams\team.html:450 .\templates\teams\team.html:526
 msgid "CONTRACT"
 msgstr "KONTRAKT"
 
-#: .\templates\players\players.html:483 .\templates\players\players.html:487
-#: .\templates\players\players.html:491 .\templates\teams\team.html:226
+#: .\templates\players\players.html:505 .\templates\players\players.html:509
+#: .\templates\players\players.html:513 .\templates\teams\team.html:226
 #: .\templates\teams\team.html:301 .\templates\teams\team.html:376
 #: .\templates\teams\team.html:451 .\templates\teams\team.html:527
 msgid "VALUE"
 msgstr "WARTOŚĆ"
 
-#: .\templates\players\players.html:529
+#: .\templates\players\players.html:551
 msgid "This player is currently on loan."
 msgstr "Ten gracz przebywa na wypożyczeniu."
 
@@ -1057,7 +1108,8 @@ msgstr "Największy Rywal"
 msgid "Budget"
 msgstr "Budżet"
 
-#: .\templates\teams\team.html:138
+#: .\templates\teams\team.html:138 .\templates\teams\teams.html:278
+#: .\templates\teams\teams.html:283 .\templates\teams\teams.html:288
 msgid "Club worth"
 msgstr "Wartość klubu"
 
@@ -1162,7 +1214,7 @@ msgstr "Wartość klubu"
 msgid "Int. Prestige"
 msgstr "M-nar prestiż"
 
-#: .\templates\teams\teams.html:154 .\templates\teams\teams.html:314
+#: .\templates\teams\teams.html:154 .\templates\teams\teams.html:334
 msgid "Total Teams"
 msgstr "Wszystkich Drużyn"
 
@@ -1175,8 +1227,8 @@ msgstr "DRUŻYNA"
 msgid "OVR"
 msgstr "OGL"
 
-#: .\templates\teams\teams.html:261 .\templates\teams\teams.html:266
-#: .\templates\teams\teams.html:271
+#: .\templates\teams\teams.html:260 .\templates\teams\teams.html:265
+#: .\templates\teams\teams.html:270
 msgid "BUDGET"
 msgstr "BUDŻET"
 
@@ -1200,7 +1252,7 @@ msgstr "BR"
 
 #: .\templates\tools\calculator.html:32 .\templates\tools\calculator.html:88
 msgid "SW"
-msgstr ""
+msgstr "LI"
 
 #: .\templates\tools\calculator.html:33 .\templates\tools\calculator.html:89
 msgid "RWB"

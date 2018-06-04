@@ -61,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'accounts.middleware.LastUserActivityMiddleware',
 ]
 
 ROOT_URLCONF = 'Fifa_Tracker.urls'
@@ -181,5 +182,6 @@ if DEBUG:
     MIDDLEWARE += [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ]
-    
 
+# LastUserActivityMiddleware
+LAST_ACTIVITY_INTERVAL_SECS = 30

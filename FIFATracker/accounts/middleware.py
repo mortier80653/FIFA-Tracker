@@ -16,7 +16,7 @@ class LastUserActivityMiddleware(object):
         if request.user.is_authenticated:
             try:
                 last_activity = datetime.strptime(request.session.get("last-activity"), '"%Y-%m-%d %H:%M:%S.%f"')
-            except ValueError:
+            except ValueError, TypeError:
                 last_activity = None
             
             # If key is old enough, update database.

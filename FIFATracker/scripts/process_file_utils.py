@@ -199,17 +199,17 @@ class CalculateValues():
                 try:
                     team_def = int(sum(players_ovr[k]['DEF']) / len(players_ovr[k]['DEF']))
                 except ZeroDivisionError:
-                    logging.exception("team_def ZeroDivisionError")
-
+                    pass
+                    
                 try:
                     team_mid = int(sum(players_ovr[k]['MID']) / len(players_ovr[k]['MID']))
                 except ZeroDivisionError:
-                    logging.exception("team_mid ZeroDivisionError")
+                    pass
 
                 try:
                     team_att = int(sum(players_ovr[k]['ATT']) / len(players_ovr[k]['ATT']))
                 except ZeroDivisionError:
-                    logging.exception("team_att ZeroDivisionError")
+                    pass
                     
                 return team_ovr, team_def, team_mid, team_att
 

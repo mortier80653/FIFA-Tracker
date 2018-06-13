@@ -15,7 +15,7 @@ class Profile(models.Model):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,)
-    currency = models.CharField(max_length=1, choices=CURRENCY_CHOICES, default=EURO)
+    currency = models.IntegerField(blank=True, null=True, choices=CURRENCY_CHOICES, default=EURO)
     unit_system = models.BooleanField(default=0) # 0 - Metric, 1 - Imperial
     is_public = models.BooleanField(default=1)
     is_save_processed = models.BooleanField(default=1)

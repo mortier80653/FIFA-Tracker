@@ -1,4 +1,5 @@
 import time
+import logging
 
 from django.contrib.contenttypes.models import ContentType 
 
@@ -116,16 +117,26 @@ def delete_data(user_id):
         "datausersversion",
     ]
 
-    rows_deleted = 0
-    
-    start = time.time()
+    param_is_list = False
+
+    if isinstance(user_id, list):
+        param_is_list = True
+    else:
+        rows_deleted = 0
+        start = time.time()
+
     for model_name in model_names:
         ct = ContentType.objects.get(model=model_name) 
         model = ct.model_class()
-        rows_deleted += model.objects.filter(ft_user_id=user_id).delete()[0]
+        
+        if param_is_list:
+            model.objects.filter(ft_user_id__in=user_id).delete()
+        else:
+            rows_deleted += model.objects.filter(ft_user_id=user_id).delete()[0]
 
-    end = time.time()
-    print("Deleted {} rows for userid: {} - in {}s.".format(rows_deleted, user_id, round(end - start, 5)))
+    if not param_is_list:
+        end = time.time()
+        logging.info("Deleted {} rows for userid: {} - in {}s.".format(rows_deleted, user_id, round(end - start, 5)))
 
 # python manage.py runscript delete_user_data --script-args 14
 def run(*args):

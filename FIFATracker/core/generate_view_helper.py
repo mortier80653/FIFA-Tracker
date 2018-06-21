@@ -25,6 +25,7 @@ from players.models import (
     DataUsersManager,
     DataUsersCareerUsers,
     DataUsersCareerRestReleaseClauses,
+    DataUsersCareerCompdataPlayerStats,
 )
 
 from core.models import (
@@ -379,6 +380,7 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
     dict_cached_queries['q_player_loans'] = list(DataUsersPlayerloans.objects.for_user(current_user).filter(f_playerid).iterator())
     dict_cached_queries['q_edited_player_names'] = list(DataUsersEditedplayernames.objects.for_user(current_user).filter(f_playerid).iterator())
     dict_cached_queries['q_release_clauses'] = list(DataUsersCareerRestReleaseClauses.objects.for_user(current_user).filter(f_playerid).iterator())
+    dict_cached_queries['q_players_stats'] = list(DataUsersCareerCompdataPlayerStats.objects.for_user(current_user).filter(f_playerid).iterator())
 
     f_teamid = Q()
     for team in dict_cached_queries['q_team_player_links']:

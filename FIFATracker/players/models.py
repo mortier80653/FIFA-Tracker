@@ -12,6 +12,40 @@ class UserDataManager(models.Manager):
     def for_user(self, user):
         return self.get_queryset().for_user(user)
 
+class DataUsersCareerCompdataPlayerStats(models.Model):
+    primary_key = models.BigAutoField(primary_key=True)
+    username = models.CharField(db_index=True, max_length=150, blank=True, null=True)
+    ft_user = models.ForeignKey(User, related_name='compdataplayerstats', on_delete=models.CASCADE, null=True,)
+
+    teamid = models.IntegerField(blank=True, null=True)
+    playerid = models.IntegerField(blank=True, null=True)
+    tournamentid = models.IntegerField(blank=True, null=True)
+    unk1 = models.IntegerField(blank=True, null=True)
+    avg = models.IntegerField(blank=True, null=True)
+    app = models.IntegerField(blank=True, null=True)
+    goals = models.IntegerField(blank=True, null=True)
+    unk2 = models.IntegerField(blank=True, null=True)
+    assists = models.IntegerField(blank=True, null=True)
+    unk3 = models.IntegerField(blank=True, null=True)
+    yellowcards = models.IntegerField(blank=True, null=True)
+    redcards = models.IntegerField(blank=True, null=True)
+    unk6 = models.IntegerField(blank=True, null=True)
+    unk7 = models.IntegerField(blank=True, null=True)
+    cleansheets = models.IntegerField(blank=True, null=True)
+    unk9 = models.IntegerField(blank=True, null=True)
+    unk10 = models.IntegerField(blank=True, null=True)
+    unk11 = models.IntegerField(blank=True, null=True)
+    unk12 = models.IntegerField(blank=True, null=True)
+    unk13 = models.IntegerField(blank=True, null=True)
+    date1 = models.IntegerField(blank=True, null=True)
+    date2 = models.IntegerField(blank=True, null=True)
+    date3 = models.IntegerField(blank=True, null=True)
+
+    objects = UserDataManager()
+
+    class Meta: 
+        db_table = 'datauserscareercompdataplayerstats'
+
 class DataUsersCareerRestReleaseClauses(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(db_index=True, max_length=150, blank=True, null=True)

@@ -473,6 +473,7 @@ class FifaPlayer():
         self.league_team_links = dict_cached_queries['q_league_team_links']
         self.leagues = dict_cached_queries['q_leagues']
         self.release_clauses = dict_cached_queries['q_release_clauses']
+        self.players_stats = dict_cached_queries['q_players_stats']
 
         # FIFA 18/FIFA 17
         self.fifa_edition = fifa_edition
@@ -514,13 +515,15 @@ class FifaPlayer():
         # Player Wage (slow)
         try:
             self.player_wage = PlayerWage(self.player.overallrating, self.player_age.age, self.player.preferredposition1, self.player_teams['club_team'], int(self.currency))
-        except KeyError as e:
+        except KeyError:
             #print('KeyError: {}'.format(e))
             self.player_teams['club_team'] = {
                 'team': {'teamid': 0, 'teamname': "Not Found"},
                 'league': {'leagueid': 0, 'leaguename': "Not Found"}, 
             }
             self.player_wage = PlayerWage()
+
+        self.player_stats = self.get_player_stats()
         self.release_clause = self.get_release_clause()
         self.player_contract = self.set_contract()
         self.traits = self.set_traits()
@@ -528,6 +531,52 @@ class FifaPlayer():
         self.bodytype = self.get_bodytype()
         self.boots = self.get_boots_name()
         self.haircolor = self.get_hair_color()
+    
+    def get_player_stats(self):
+        stats = {
+            "total":    {
+                "avg":          0,
+                "app":          0,
+                "goals":        0,
+                "assists":      0,
+                "yellowcards":  0,
+                "redcards":     0,
+                "cleansheets":  0,
+            }
+        }
+        num_of_comps = 0
+        for i in range(len(self.players_stats)):
+            if self.players_stats[i].playerid == self.player.playerid:
+                num_of_comps += 1
+                stats["total"]["avg"] += self.players_stats[i].avg      # Avg. Rating
+                stats["total"]["app"] += self.players_stats[i].app      # Appearances
+                stats["total"]["goals"] += self.players_stats[i].goals
+                stats["total"]["assists"] += self.players_stats[i].assists
+                stats["total"]["yellowcards"] += self.players_stats[i].yellowcards
+                stats["total"]["redcards"] += self.players_stats[i].redcards
+                stats["total"]["cleansheets"] += self.players_stats[i].cleansheets
+                '''
+                stats[self.players_stats[i].tournamentid] = {
+                    "avg":          self.players_stats[i].avg,
+                    "app":          self.players_stats[i].app,
+                    "goals":        self.players_stats[i].goals,
+                    "assists":      self.players_stats[i].assists,
+                    "yellowcards":  self.players_stats[i].yellowcards,
+                    "redcards":     self.players_stats[i].redcards,
+                    "cleansheets":  self.players_stats[i].cleansheets,
+                    "date1":        self.players_stats[i].date1,
+                    "date2":        self.players_stats[i].date2,
+                    "date3":        self.players_stats[i].date3,
+                }
+                '''
+                
+
+        if num_of_comps > 0:
+            if num_of_comps >= 2:
+                stats["total"]["avg"] = int(stats["total"]["avg"] / num_of_comps)
+            return stats
+
+        return None
 
     def get_hair_color(self):
         haircolors = (
@@ -547,7 +596,7 @@ class FifaPlayer():
 
         try:
             return haircolors[int(self.player.haircolorcode)]
-        except Exception as e:
+        except Exception:
             return  "{}. Unknown".format(self.player.haircolorcode)
 
     def get_bodytype(self):
@@ -574,7 +623,7 @@ class FifaPlayer():
 
         try:
             return bodytypes[int(self.player.bodytypecode)]
-        except Exception as e:
+        except Exception:
             return  "{}. Unknown".format(self.player.bodytypecode)
 
     def get_boots_name(self):
@@ -1012,7 +1061,7 @@ class FifaPlayer():
         
         try:
             return boots_names[int(self.player.shoetypecode)]
-        except Exception as e:
+        except Exception:
             return  "{}. Unknown".format(self.player.shoetypecode)
 
     def set_traits(self):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-03 19:54+0200\n"
+"POT-Creation-Date: 2018-06-21 13:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,11 +20,11 @@ msgstr ""
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: .\Fifa_Tracker\settings.py:117
+#: .\Fifa_Tracker\settings.py:118
 msgid "English"
 msgstr "Angielski"
 
-#: .\Fifa_Tracker\settings.py:118
+#: .\Fifa_Tracker\settings.py:119
 msgid "Polish"
 msgstr "Polski"
 
@@ -142,7 +142,7 @@ msgid "Password has been reset. You can login now using your new credentials."
 msgstr ""
 "Hasło zostało zresetowane. Możesz już się zalogować używając nowych danych."
 
-#: .\core\generate_view_helper.py:58
+#: .\core\generate_view_helper.py:59
 msgid ""
 "Sorry, {}'s profile is private. Profile visibility can be changed in Control "
 "Panel."
@@ -150,12 +150,12 @@ msgstr ""
 "Niestety, profil użytkownika {} jest prywatny. Widoczność profilu może być "
 "zmieniona w Panelu Kontrolnym konta"
 
-#: .\core\generate_view_helper.py:130 .\core\generate_view_helper.py:187
-#: .\core\generate_view_helper.py:325 .\core\generate_view_helper.py:369
+#: .\core\generate_view_helper.py:131 .\core\generate_view_helper.py:188
+#: .\core\generate_view_helper.py:326 .\core\generate_view_helper.py:370
 msgid "No results found. Try to change your filters"
 msgstr "Brak rezultatów wyszukiwania. Spróbuj zmienić filtry"
 
-#: .\core\generate_view_helper.py:346
+#: .\core\generate_view_helper.py:347
 msgid ""
 "Your career file hasn't been processed yet. Displaying default FIFA database "
 "data."
@@ -179,23 +179,23 @@ msgstr "Model nie znaleziony"
 msgid "Save file not found on the server."
 msgstr "Plik nie znaleziony na serwerze"
 
-#: .\scripts\process_file_utils.py:900
+#: .\scripts\process_file_utils.py:1017
 msgid "Unpacking database from career file."
 msgstr "Wypakowywanie bazydanych z pliku kariery"
 
-#: .\scripts\process_file_utils.py:911
+#: .\scripts\process_file_utils.py:1028
 msgid "Exporting data from FIFA database to csv files."
 msgstr "Exportowanie danych z bazy danych FIFA do pliku csv"
 
-#: .\scripts\process_file_utils.py:921
+#: .\scripts\process_file_utils.py:1038
 msgid "Calculating Players Values and Teams Ratings"
 msgstr "Obliczanie wartośći zawodników i oceny drużyn"
 
-#: .\scripts\process_file_utils.py:928
+#: .\scripts\process_file_utils.py:1045
 msgid "Importing data to FIFA Tracker database."
 msgstr "Importowanie danych do bazy danych FIFA Trackera"
 
-#: .\scripts\process_file_utils.py:937
+#: .\scripts\process_file_utils.py:1054
 msgid "Completed in {}s"
 msgstr "Proces zakończony w {}s"
 
@@ -444,10 +444,8 @@ msgid "Nationality"
 msgstr "Narodowość"
 
 #: .\templates\players\player.html:22 .\templates\players\player.html:140
-#: .\templates\players\player.html:670 .\templates\players\player.html:674
-#: .\templates\players\player.html:678 .\templates\players\players.html:110
-#: .\templates\teams\team.html:108 .\templates\teams\teams.html:96
-#: .\templates\tools\calculator.html:81
+#: .\templates\players\players.html:110 .\templates\teams\team.html:108
+#: .\templates\teams\teams.html:96 .\templates\tools\calculator.html:81
 msgid "League"
 msgstr "Liga"
 
@@ -755,17 +753,48 @@ msgstr "Oceny Ogólne w grze"
 msgid "Player Statistics"
 msgstr "Statystyki zawodnika"
 
-#: .\templates\players\player.html:670
+#: .\templates\players\player.html:664
+msgid "Current season"
+msgstr "Aktualny sezon"
+
+#: .\templates\players\player.html:671 .\templates\players\player.html:675
+#: .\templates\players\player.html:679 .\templates\players\player.html:683
+#: .\templates\players\player.html:687 .\templates\players\player.html:691
+#: .\templates\players\player.html:695
+msgid "Total"
+msgstr "Wszystkie"
+
+#: .\templates\players\player.html:671
+msgid "Avg. Rating"
+msgstr "Średnia ocena"
+
+#: .\templates\players\player.html:675
+msgid "Appearances"
+msgstr "Występy"
+
+#: .\templates\players\player.html:679
 msgid "Goals"
 msgstr "Bramki"
 
-#: .\templates\players\player.html:674
+#: .\templates\players\player.html:683
+msgid "Assists"
+msgstr "Asysty"
+
+#: .\templates\players\player.html:687
+msgid "Clean Sheets"
+msgstr "Czyste konta"
+
+#: .\templates\players\player.html:691
 msgid "Yellow Cards"
 msgstr "Żółte Kartki"
 
-#: .\templates\players\player.html:678
+#: .\templates\players\player.html:695
 msgid "Red Cards"
 msgstr "Czerwone Kartki"
+
+#: .\templates\players\player.html:701
+msgid "No statistics available for this player"
+msgstr "Brak statystyk dla tego zawodnika"
 
 #: .\templates\players\players.html:16
 msgid "Search for player..."

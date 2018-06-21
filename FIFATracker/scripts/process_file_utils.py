@@ -472,8 +472,73 @@ class RestToCSV():
 
         with open(rf_full_path, 'rb') as rf:
             mm = mmap.mmap(rf.fileno(), length=0, access=mmap.ACCESS_READ)
+            self._players_stats(mm)
             self._release_clauses(mm)
 
+    def _players_stats(self, mm):
+        """Current season players statistics"""
+        sign_mp002 = b"\x6D\x70\x30\x30\x32\x00" # mp002 - MonitoredPlayers
+        sign_jo002 = b"\x6A\x6F\x30\x30\x32\x00" # jo002 - JobOffers?
+        MP002_SIZE = 1616   # 0x650
+
+        offset_start = mm.find(sign_mp002) + MP002_SIZE
+        if offset_start < MP002_SIZE:
+            logging.error("_players_stats - mp002 not found")
+            return False
+
+        offset_end = mm.find(sign_jo002)
+        if offset_end < 0:
+            logging.error("_players_stats - jo002 not found")
+            return False
+        
+        stats_offset = self._get_stats_offset(mm, offset_end)
+
+        if stats_offset < 0:
+            logging.error("_players_stats - stats_offset not found")
+            return False
+
+        # Save to file
+        with open(os.path.join(self.dest_path, "career_compdata_playerstats.csv") , 'w+', encoding='utf-8') as f_csv:
+            # create columns
+            headers = "username,ft_user_id,teamid,playerid,tournamentid,unk1,avg,app,goals,unk2,assists,unk3,yellowcards,redcards,unk6,unk7,cleansheets,unk9,unk10,unk11,unk12,unk13,date1,date2,date3\n"
+            f_csv.write(headers)
+
+            cur_pos = stats_offset
+            mm.seek(cur_pos, 0)
+
+            for p in range(7000):
+                mm.read(3)  # index
+                teamid = self.ReadInt32(mm.read(4))
+                playerid = self.ReadInt32(mm.read(4))
+                tournamentid = self.ReadInt16(mm.read(2))
+
+                if teamid == 4294967295 and playerid == 4294967295:
+                    break
+
+                unk1 = self.ReadInt16(mm.read(2))
+                avg = self.ReadInt16(mm.read(2))
+                app = self.ReadInt8(mm.read(1))
+                goals = self.ReadInt8(mm.read(1))
+                unk2 = self.ReadInt8(mm.read(1))
+                assists = self.ReadInt8(mm.read(1))
+                unk3 = self.ReadInt8(mm.read(1))
+                yellowcards = self.ReadInt8(mm.read(1))
+                redcards = self.ReadInt8(mm.read(1))
+                unk6 = self.ReadInt8(mm.read(1))
+                unk7 = self.ReadInt8(mm.read(1))
+                cleansheets = self.ReadInt8(mm.read(1))
+                unk9 = self.ReadInt8(mm.read(1))
+                unk10 = self.ReadInt32(mm.read(4))
+                unk11 = self.ReadInt8(mm.read(1))
+                unk12 = self.ReadInt16(mm.read(2))
+                unk13 = self.ReadInt8(mm.read(1))
+                date1 = self.ReadInt32(mm.read(4))
+                date2 = self.ReadInt32(mm.read(4))
+                date3 = self.ReadInt32(mm.read(4))
+
+                avg = int(avg / app)
+                f_csv.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(self.username, self.user_id, teamid, playerid, tournamentid, unk1, avg, app, goals, unk2, assists,unk3,yellowcards,redcards,unk6,unk7,cleansheets,unk9,unk10,unk11,unk12,unk13,date1,date2,date3))
+        
 
     def _release_clauses(self, mm):
         """Players Release Clauses"""
@@ -499,8 +564,60 @@ class RestToCSV():
                 clause = self.ReadInt32(mm.read(4))
                 f_csv.write("{},{},{},{},{}\n".format(self.username, self.user_id, playerid, teamid, clause))
 
+    def _get_stats_offset(self, mm, compdata_end):
+        '''Return offset to stats at compdata'''
+        # stats
+        # Struct size   -   48         (0x30)
+        # Records       -   7000(?)    (0x1B58)
+
+        struct_size = 48
+
+        sign = b"\x00\x00\x01"
+        offset = mm.find(sign, mm.tell(), compdata_end)
+
+        if offset < 0:
+            return -1
+
+        while offset >= 0:
+            if offset > compdata_end:
+                return -1
+            
+            # Set cursor at offset
+            mm.seek(offset, 0)
+
+            # verify first 255 players 
+            if self._verify_index(mm, struct_size, 255):
+                return offset
+
+            offset = mm.find(sign, mm.tell()+1, compdata_end)
+        
+        return -1
+
+    def _verify_index(self, mm, struct_size, range_max):
+        """Verify compobj index"""
+
+        mm.seek(struct_size, 1)
+        for x in range(1, range_max):
+            current_pos = mm.tell()
+            next_unit = bytes([x]) + b"\x00\x01"
+            find = mm.find(next_unit, current_pos, current_pos+struct_size)
+            if find != current_pos:
+                return False
+            mm.seek(struct_size, 1)
+
+        return True
+
+    def ReadInt8(self, x):
+        return int(x[0])
+
+    def ReadInt16(self, x):
+        return int(x[0]) | int(x[1]) << 8
+
     def ReadInt32(self, x):
         return int(x[0]) | int(x[1]) << 8 | int(x[2]) << 16 | int(x[3]) << 24
+
+    def ReadInt64(self, x):
+        return int(x[0]) | int(x[1]) << 8 | int(x[2]) << 16 | int(x[3]) << 24 | int(x[4]) << 32 | int(x[5]) << 40 | int(x[6]) << 48 | int(x[7]) << 56
 
 class DatabaseToCSV():
     """Convert FIFA .db to .csv format.
@@ -976,6 +1093,7 @@ class ParseCareerSave():
         # List of csv files that we want to import to our PostgreSQL database
         #'''
         csv_list = [
+            "career_compdata_playerstats",
             "career_rest_releaseclauses",
             "career_calendar",
             "career_playercontract",

@@ -661,25 +661,45 @@
       </div>
   </div>
   <div class="container">
-    <h2 align="center">{% trans 'Player Statistics' %}</h2>
+    <h2 align="center">{% trans 'Player Statistics' %} - {% trans 'Current season' %}</h2>
     <div class="row player-statistics">
         <div class="col-md-6">
-          <table width="100%">
-            <tbody>
-              <tr>
-                <td>{% trans 'League' %} - {% trans 'Goals' %}</td>
-                <td align="right"> {{ p.player_teams.club_team.team_links.leaguegoals }} </td>
-              </tr>
-              <tr>
-                <td>{% trans 'League' %} - {% trans 'Yellow Cards' %}</td>
-                <td align="right"> {{ p.player_teams.club_team.team_links.yellows }} </td>
-              </tr>
-              <tr>
-                <td>{% trans 'League' %} - {% trans 'Red Cards' %}</td>
-                <td align="right"> {{ p.player_teams.club_team.team_links.reds }} </td>
-              </tr>
-            </tbody>
-          </table>
+          {% if p.player_stats %}
+            <table width="100%">
+              <tbody>
+                <tr>
+                  <td>{% trans 'Total' %} - {% trans 'Avg. Rating' %}</td>
+                  <td align="right"> {{ p.player_stats.total.avg }} </td>
+                </tr>
+                <tr>
+                  <td>{% trans 'Total' %} - {% trans 'Appearances' %}</td>
+                  <td align="right"> {{ p.player_stats.total.app }} </td>
+                </tr>
+                <tr>
+                  <td>{% trans 'Total' %} - {% trans 'Goals' %}</td>
+                  <td align="right"> {{ p.player_stats.total.goals }} </td>
+                </tr>
+                <tr>
+                  <td>{% trans 'Total' %} - {% trans 'Assists' %}</td>
+                  <td align="right"> {{ p.player_stats.total.assists }} </td>
+                </tr>
+                <tr>
+                  <td>{% trans 'Total' %} - {% trans 'Clean Sheets' %}</td>
+                  <td align="right"> {{ p.player_stats.total.cleansheets }} </td>
+                </tr>
+                <tr>
+                  <td>{% trans 'Total' %} - {% trans 'Yellow Cards' %}</td>
+                  <td align="right"> {{ p.player_stats.total.yellowcards }} </td>
+                </tr>
+                <tr>
+                  <td>{% trans 'Total' %} - {% trans 'Red Cards' %}</td>
+                  <td align="right"> {{ p.player_stats.total.redcards }} </td>
+                </tr>
+              </tbody>
+            </table>
+          {% else %}
+            {% trans 'No statistics available for this player' %}
+          {% endif %}
         </div>
       </div>
     </div>

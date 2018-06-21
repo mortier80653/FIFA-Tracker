@@ -9,11 +9,65 @@ from players.models import (
     DataUsersLeagueteamlinks, 
     DataUsersPlayerloans,
     DataUsersCareerRestReleaseClauses,
+    DataUsersCareerCompdataPlayerStats,
 )
 
 from core.models import (
     DataUsersCareerTransferOffer,
 )
+
+class DataUsersCareerCompdataPlayerStatsFilter:
+    def __init__(self, request, for_user):
+        self.request_dict = request
+        self.for_user = for_user
+
+        queryset = DataUsersCareerCompdataPlayerStats.objects.for_user(self.for_user).all()
+        queryset = self.filter(queryset)
+        queryset = self.order(queryset)
+        self.qs = queryset
+        
+
+    def filter(self, queryset):
+        try:
+            if 'playerid' in self.request_dict:
+                value = list(self.request_dict['playerid'].split(','))
+                queryset = queryset.filter( Q(playerid__in=value) )
+        except ValueError:
+            pass
+
+        try:
+            if 'teamid' in self.request_dict:
+                value = list(self.request_dict['teamid'].split(','))
+                queryset = queryset.filter( Q(teamid__in=value) )
+        except ValueError:
+            pass
+
+        return queryset
+
+    def order(self, queryset):
+        if 'order_by' in self.request_dict:
+            valid_fields = [f.name for f in DataUsersCareerCompdataPlayerStats._meta.get_fields()]
+            orderby = self.request_dict['order_by'].replace('-', "")
+            if orderby in valid_fields:
+                return queryset.order_by(self.request_dict['order_by'], 'playerid')
+
+        return queryset
+        #return queryset.order_by('-release_clause', 'playerid')
+
+    def get_player_ids(self):
+        eval_DataUsersCareerRestReleaseClauses_qs = list(self.qs.iterator())
+        list_filtered_players = list()
+
+        for player in eval_DataUsersCareerRestReleaseClauses_qs:
+            list_filtered_players.append(player.playerid)
+
+        return list_filtered_players
+
+    def _check_key(self, d, key):
+        if key in d:
+            return d[key]
+        else:
+            return None
 
 class DataUsersCareerRestReleaseClausesFilter:
     def __init__(self, request, for_user):

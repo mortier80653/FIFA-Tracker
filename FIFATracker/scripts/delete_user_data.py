@@ -18,6 +18,8 @@ from players.models import (
     DataUsersPlayers,
     DataUsersPlayers17,
     DataUsersPlayerloans,
+    DataUsersCareerRestReleaseClauses,
+    DataUsersCareerCompdataPlayerStats,
 )
 
 from core.models import (
@@ -65,6 +67,8 @@ from core.models import (
 def delete_data(user_id):
     # Models which will be cleaned
     model_names = [
+        "datauserscareercompdataplayerstats",
+        "datauserscareerrestreleaseclauses",
         "datauserscareercalendar",
         "datauserscareerusers",
         "datauserscareerplayercontract",

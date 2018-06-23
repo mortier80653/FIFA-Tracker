@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 from scripts.delete_user_data import delete_data
 
+
 def cleardb():
     # Delete inactive users career data.
     logging.info("cleardb script - START")
@@ -16,9 +17,10 @@ def cleardb():
 
     for user in users:
         try:
-            last_activity = datetime.datetime.strptime(user.profile.last_activity, '"%Y-%m-%d %H:%M:%S.%f"')
+            last_activity = datetime.datetime.strptime(
+                user.profile.last_activity, '"%Y-%m-%d %H:%M:%S.%f"')
             since_last_activity = now - last_activity
-            
+
             # Delete data after 28 days of inactivity
             if since_last_activity.days >= 28:
                 inactive_users.append(user.id)
@@ -35,5 +37,7 @@ def cleardb():
     logging.info("cleardb script - DONE")
 
 # python manage.py runscript cleardb
+
+
 def run(*args):
     cleardb()

@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'Fifa_Tracker.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-#DATABASES are located in "secret_settings.py"
+# DATABASES are located in "secret_settings.py"
 
 
 # Password validation
@@ -154,9 +154,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # LOGS
 logging.basicConfig(
-    level = logging.INFO,
-    format = '%(asctime)s %(levelname)s %(message)s',
-    filename = os.path.join(os.path.dirname(BASE_DIR), 'FIFA_TRACKER_LOGS.log'),
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(message)s',
+    filename=os.path.join(os.path.dirname(BASE_DIR), 'FIFA_TRACKER_LOGS.log'),
 )
 
 # Tests without migrations
@@ -165,8 +165,10 @@ RUN_MODE = sys.argv[1] if len(sys.argv) > 1 else None
 if RUN_MODE == 'test':
     class DisableMigrations(dict):
         except_apps = {'app_to_run_migrations_for'}
+
         def __contains__(self, item):
             return item not in self.except_apps
+
         def __getitem__(self, item):
             return super(DisableMigrations, self).__getitem__(item) if item in self.except_apps else None
 

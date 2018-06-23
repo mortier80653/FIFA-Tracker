@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='profile',
             name='last_activity',
-            field=models.CharField(blank=True, default='2008-06-04 16:46:22.179423', max_length=34, null=True),
+            field=models.CharField(
+                blank=True, default='2008-06-04 16:46:22.179423', max_length=34, null=True),
         ),
     ]

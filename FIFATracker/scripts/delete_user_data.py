@@ -1,7 +1,7 @@
 import time
 import logging
 
-from django.contrib.contenttypes.models import ContentType 
+from django.contrib.contenttypes.models import ContentType
 
 from players.models import (
     DataUsersCareerCalendar,
@@ -61,7 +61,6 @@ from core.models import (
     DataUsersTeamformdiff,
     DataUsersVersion,
 )
-
 
 
 def delete_data(user_id):
@@ -130,19 +129,23 @@ def delete_data(user_id):
         start = time.time()
 
     for model_name in model_names:
-        ct = ContentType.objects.get(model=model_name) 
+        ct = ContentType.objects.get(model=model_name)
         model = ct.model_class()
-        
+
         if param_is_list:
             model.objects.filter(ft_user_id__in=user_id).delete()
         else:
-            rows_deleted += model.objects.filter(ft_user_id=user_id).delete()[0]
+            rows_deleted += model.objects.filter(
+                ft_user_id=user_id).delete()[0]
 
     if not param_is_list:
         end = time.time()
-        logging.info("Deleted {} rows for userid: {} - in {}s.".format(rows_deleted, user_id, round(end - start, 5)))
+        logging.info("Deleted {} rows for userid: {} - in {}s.".format(
+            rows_deleted, user_id, round(end - start, 5)))
 
 # python manage.py runscript delete_user_data --script-args 14
+
+
 def run(*args):
     user_id = args[0]
     delete_data(user_id)

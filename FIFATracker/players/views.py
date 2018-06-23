@@ -12,16 +12,17 @@ from core.generate_view_helper import get_fifaplayers
 from core.fifa_utils import PlayerName
 
 from players.models import (
-    DataUsersPlayers, 
-    DataUsersPlayers17, 
-    DataUsersEditedplayernames, 
-    DataUsersTeams, 
-    DataUsersLeagues, 
-    DataNations, 
+    DataUsersPlayers,
+    DataUsersPlayers17,
+    DataUsersEditedplayernames,
+    DataUsersTeams,
+    DataUsersLeagues,
+    DataNations,
     DataUsersDcplayernames,
     DataPlayernames,
     DataPlayernames17,
 )
+
 
 def ajax_players_by_name(request):
     if request.user.is_authenticated:
@@ -35,28 +36,33 @@ def ajax_players_by_name(request):
 
     playername = request.GET.get('playername', None)
     if playername and len(playername) > 1:
-        playername = playername.split() # split space
+        playername = playername.split()  # split space
         dict_cached_queries = dict()
         valid_nameids = list()
-        query = reduce(lambda x, y: x | y, [Q(name__unaccent__istartswith=name) for name in playername])
+        query = reduce(lambda x, y: x | y, [
+                       Q(name__unaccent__istartswith=name) for name in playername])
         if fifa_edition == 18:
-            table_playernames = list(DataPlayernames.objects.all().filter(query).iterator())
+            table_playernames = list(
+                DataPlayernames.objects.all().filter(query).iterator())
         else:
-            table_playernames = list(DataPlayernames17.objects.all().filter(query).iterator())
+            table_playernames = list(
+                DataPlayernames17.objects.all().filter(query).iterator())
 
         for player in table_playernames:
             if player.nameid in valid_nameids:
                 continue
             valid_nameids.append(player.nameid)
-        
-        dict_cached_queries['q_dcplayernames'] = list(DataUsersDcplayernames.objects.for_user(current_user).all().filter(query).iterator())
+
+        dict_cached_queries['q_dcplayernames'] = list(
+            DataUsersDcplayernames.objects.for_user(current_user).all().filter(query).iterator())
 
         for player in dict_cached_queries['q_dcplayernames']:
             if player.nameid in valid_nameids:
                 continue
             valid_nameids.append(player.nameid)
 
-        dict_cached_queries['q_dcplayernames'] = list(DataUsersDcplayernames.objects.for_user(current_user).all().iterator())
+        dict_cached_queries['q_dcplayernames'] = list(
+            DataUsersDcplayernames.objects.for_user(current_user).all().iterator())
 
         valid_playerids = list()
         query_fn = Q()
@@ -70,7 +76,7 @@ def ajax_players_by_name(request):
 
         dict_cached_queries['q_edited_player_names'] = list(DataUsersEditedplayernames.objects.for_user(current_user).all().filter(
             query_fn | query_sn | query_cn
-            ).iterator())
+        ).iterator())
 
         for player in dict_cached_queries['q_edited_player_names']:
             if player.playerid in valid_playerids:
@@ -79,27 +85,31 @@ def ajax_players_by_name(request):
 
         if fifa_edition == 18:
             players = list(DataUsersPlayers.objects.for_user(current_user).select_related(
-                    'firstname', 'lastname', 'playerjerseyname', 'commonname',
-                    ).filter(
-                        Q (playerid__in=valid_playerids) | Q (firstname_id__in=valid_nameids) | 
-                        Q (lastname_id__in=valid_nameids) | Q(commonname_id__in=valid_nameids)
-                    ).all().order_by('-overallrating')[:12].iterator())
+                'firstname', 'lastname', 'playerjerseyname', 'commonname',
+            ).filter(
+                Q(playerid__in=valid_playerids) | Q(firstname_id__in=valid_nameids) |
+                Q(lastname_id__in=valid_nameids) | Q(
+                    commonname_id__in=valid_nameids)
+            ).all().order_by('-overallrating')[:12].iterator())
         else:
             players = list(DataUsersPlayers17.objects.for_user(current_user).select_related(
-                    'firstname', 'lastname', 'playerjerseyname', 'commonname',
-                    ).filter(
-                        Q (playerid__in=valid_playerids) | Q (firstname_id__in=valid_nameids) | 
-                        Q (lastname_id__in=valid_nameids) | Q(commonname_id__in=valid_nameids)
-                    ).all().order_by('-overallrating')[:12].iterator())
+                'firstname', 'lastname', 'playerjerseyname', 'commonname',
+            ).filter(
+                Q(playerid__in=valid_playerids) | Q(firstname_id__in=valid_nameids) |
+                Q(lastname_id__in=valid_nameids) | Q(
+                    commonname_id__in=valid_nameids)
+            ).all().order_by('-overallrating')[:12].iterator())
 
-        available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
+        available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM',
+                               'RM', 'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS', 'LW')
 
         for player in players:
             p = dict()
             p['playerid'] = player.playerid
             p['overallrating'] = player.overallrating
             p['position'] = available_positions[player.preferredposition1]
-            p['playername'] = PlayerName(player, dict_cached_queries).playername['knownas']
+            p['playername'] = PlayerName(
+                player, dict_cached_queries).playername['knownas']
             players_found.append(p)
 
     data = {
@@ -107,6 +117,7 @@ def ajax_players_by_name(request):
     }
 
     return JsonResponse(data)
+
 
 def ajax_teams(request):
     if request.user.is_authenticated:
@@ -118,15 +129,18 @@ def ajax_teams(request):
 
     if selected:
         selected = list(selected.split(","))
-        teams = list(DataUsersTeams.objects.for_user(current_user).all().filter(Q(teamid__in=selected)).values())
+        teams = list(DataUsersTeams.objects.for_user(
+            current_user).all().filter(Q(teamid__in=selected)).values())
     else:
-        teams = list(DataUsersTeams.objects.for_user(current_user).all().values())
+        teams = list(DataUsersTeams.objects.for_user(
+            current_user).all().values())
 
     data = {
         'teams': teams
     }
 
     return JsonResponse(data)
+
 
 def ajax_leagues(request):
     if request.user.is_authenticated:
@@ -138,9 +152,11 @@ def ajax_leagues(request):
 
     if selected:
         selected = list(selected.split(","))
-        leagues = list(DataUsersLeagues.objects.for_user(current_user).all().filter(Q(leagueid__in=selected)).values())
+        leagues = list(DataUsersLeagues.objects.for_user(
+            current_user).all().filter(Q(leagueid__in=selected)).values())
     else:
-        leagues = list(DataUsersLeagues.objects.for_user(current_user).all().values())
+        leagues = list(DataUsersLeagues.objects.for_user(
+            current_user).all().values())
 
     data = {
         'leagues': leagues,
@@ -148,24 +164,27 @@ def ajax_leagues(request):
 
     return JsonResponse(data)
 
+
 def ajax_nationality(request):
     if request.user.is_authenticated:
         current_user = request.user
     else:
         current_user = "guest"
-        
+
     selected = request.GET.get('selected', None)
     if selected:
         selected = list(selected.split(","))
-        nations = list(DataNations.objects.all().filter(Q(nationid__in=selected)).values())
+        nations = list(DataNations.objects.all().filter(
+            Q(nationid__in=selected)).values())
     else:
         nations = list(DataNations.objects.all().values())
 
     data = {
         'nations': nations,
     }
-    
+
     return JsonResponse(data)
+
 
 def players(request):
     try:
@@ -179,7 +198,8 @@ def players(request):
 def player(request, playerid):
     try:
         additional_filters = {'playerid': playerid}
-        context = get_fifaplayers(request, additional_filters=additional_filters, paginate=False)
+        context = get_fifaplayers(
+            request, additional_filters=additional_filters, paginate=False)
 
         return render(request, 'players/player.html', {'p': context['players'][0]})
     except (NoResultsError, PrivateProfileError, UnknownError) as e:

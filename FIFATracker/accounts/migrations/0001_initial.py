@@ -17,8 +17,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Profile',
             fields=[
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('currency', models.CharField(choices=[(0, 'USD'), (1, 'Euro'), (2, 'Pound')], default=1, max_length=1)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                              primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
+                ('currency', models.CharField(choices=[
+                 (0, 'USD'), (1, 'Euro'), (2, 'Pound')], default=1, max_length=1)),
                 ('unit_system', models.BooleanField(default=0)),
                 ('is_public', models.BooleanField(default=1)),
             ],

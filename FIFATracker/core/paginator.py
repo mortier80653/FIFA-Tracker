@@ -1,6 +1,7 @@
 from math import ceil
 import re
 
+
 class MyPaginator():
     def __init__(self, num_of_objects, request, max_per_page):
         self.request = request
@@ -11,16 +12,16 @@ class MyPaginator():
         get_page = self.get_page()
         self.results_bottom = get_page[0]
         self.results_top = get_page[1]
-    
+
     def validate_page(self, page):
         try:
             page = int(page)
         except (TypeError, ValueError):
             page = 1
-        
-        if page < 1: 
+
+        if page < 1:
             page = 1
-        
+
         return page
 
     def get_page(self):
@@ -28,7 +29,7 @@ class MyPaginator():
         bottom = (page - 1) * self.max_per_page
         top = bottom + self.max_per_page
 
-        if top > self.num_of_objects: 
+        if top > self.num_of_objects:
             top = self.num_of_objects
 
         return bottom, top

@@ -30,13 +30,17 @@ urlpatterns = [
     url(r'^contact/$', core_views.contact, name='contact'),
     url(r'^donate/$', core_views.donate, name='donate'),
     url(r'^privacy-policy/$', core_views.privacypolicy, name='privacypolicy'),
-    url(r'^upload/$', core_views.upload_career_save_file, name='upload_career_save_file'),
-    url(r'^upload/process_status/$', core_views.process_status, name='process_status'),
+    url(r'^upload/$', core_views.upload_career_save_file,
+        name='upload_career_save_file'),
+    url(r'^upload/process_status/$',
+        core_views.process_status, name='process_status'),
     url(r'^login/$', accounts_views.login_view, name='login_view'),
     url(r'^signup/$', accounts_views.signup, name='signup'),
-    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', accounts_views.activate, name='activate'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        accounts_views.activate, name='activate'),
     url(r'^reset-password/$', accounts_views.password_reset,  name='reset_password'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', accounts_views.reset, name='reset'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        accounts_views.reset, name='reset'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^players/', include('players.urls')),
     url(r'^transfers/', include('transfer_history.urls')),
@@ -51,5 +55,4 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         url(r'^debug/', include(debug_toolbar.urls)),
-    ] 
-
+    ]

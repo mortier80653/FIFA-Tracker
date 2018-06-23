@@ -8,13 +8,14 @@ from django.contrib.auth.models import User
 from django.db import connection
 
 from core.exceptions import NoResultsError, PrivateProfileError, UnknownError
-from core.generate_view_helper import get_team, get_teams 
+from core.generate_view_helper import get_team, get_teams
 
 from players.models import (
-    DataUsersTeams, 
-    DataUsersLeagueteamlinks, 
-    DataUsersLeagues, 
+    DataUsersTeams,
+    DataUsersLeagueteamlinks,
+    DataUsersLeagues,
 )
+
 
 def ajax_team_by_name(request):
     if request.user.is_authenticated:
@@ -26,10 +27,12 @@ def ajax_team_by_name(request):
 
     teamname = request.GET.get('teamname', None)
     if teamname and len(teamname) > 1:
-        teamname = teamname.split() # split space
-        query = reduce(lambda x, y: x | y, [Q(teamname__unaccent__icontains=name) for name in teamname])
+        teamname = teamname.split()  # split space
+        query = reduce(lambda x, y: x | y, [
+                       Q(teamname__unaccent__icontains=name) for name in teamname])
 
-        teams = list(DataUsersTeams.objects.for_user(current_user).filter(query).all().order_by('-overallrating', 'teamid')[:12].iterator())
+        teams = list(DataUsersTeams.objects.for_user(current_user).filter(
+            query).all().order_by('-overallrating', 'teamid')[:12].iterator())
 
         for team in teams:
             t = dict()
@@ -44,6 +47,7 @@ def ajax_team_by_name(request):
 
     return JsonResponse(data)
 
+
 def ajax_leagues(request):
     if request.user.is_authenticated:
         current_user = request.user
@@ -54,15 +58,18 @@ def ajax_leagues(request):
 
     if selected:
         selected = list(selected.split(","))
-        leagues = list(DataUsersLeagues.objects.for_user(current_user).all().filter(Q(leagueid__in=selected)).values())
+        leagues = list(DataUsersLeagues.objects.for_user(
+            current_user).all().filter(Q(leagueid__in=selected)).values())
     else:
-        leagues = list(DataUsersLeagues.objects.for_user(current_user).all().values())
+        leagues = list(DataUsersLeagues.objects.for_user(
+            current_user).all().values())
 
     data = {
         'leagues': leagues,
     }
 
     return JsonResponse(data)
+
 
 def teams(request):
     try:
@@ -71,7 +78,8 @@ def teams(request):
     except (NoResultsError, PrivateProfileError, UnknownError) as e:
         messages.error(request, e)
         return redirect('home')
-    
+
+
 def team(request, teamid):
     try:
         context = get_team(request, teamid=teamid)
@@ -79,4 +87,3 @@ def team(request, teamid):
     except (NoResultsError, PrivateProfileError, UnknownError) as e:
         messages.error(request, e)
         return redirect('teams')
-    

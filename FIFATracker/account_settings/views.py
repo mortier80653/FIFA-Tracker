@@ -8,11 +8,12 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import User
 
+
 def ajax_change_currency(request):
     currency = request.GET.get('currency', 1)
 
     if int(currency) not in range(0, 3):
-        currency = 1 # euros
+        currency = 1  # euros
 
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.id)
@@ -22,15 +23,17 @@ def ajax_change_currency(request):
     request.session['currency'] = currency
 
     currency_symbols = ('$', '€', '£')
-    request.session['currency_symbol'] = currency_symbols[int(request.session['currency'])]
+    request.session['currency_symbol'] = currency_symbols[int(
+        request.session['currency'])]
 
     return JsonResponse({'currency': currency})
+
 
 def ajax_change_unit_system(request):
     unit_system = request.GET.get('units', 0)
 
-    if int(unit_system) not in range(0,2):
-        unit_system = 0 # metric
+    if int(unit_system) not in range(0, 2):
+        unit_system = 0  # metric
 
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.id)
@@ -41,11 +44,12 @@ def ajax_change_unit_system(request):
 
     return JsonResponse({'units': unit_system})
 
+
 def ajax_change_profile_status(request):
     is_profile_public = request.GET.get('is_profile_public')
 
-    if int(is_profile_public) not in range(0,2):
-        is_profile_public = 0 # Profile is private
+    if int(is_profile_public) not in range(0, 2):
+        is_profile_public = 0  # Profile is private
     else:
         is_profile_public = int(is_profile_public)
 
@@ -63,6 +67,7 @@ def ajax_change_profile_status(request):
 
     return JsonResponse({'status': status})
 
+
 @login_required
 def settings(request):
     if request.method == 'POST':
@@ -76,7 +81,8 @@ def settings(request):
     else:
         form_passwordchange = PasswordChangeForm(request.user)
 
-    return render(request, 'account_settings/settings.html', {'form_passwordchange': form_passwordchange,})
+    return render(request, 'account_settings/settings.html', {'form_passwordchange': form_passwordchange, })
+
 
 @login_required
 def change_password(request):

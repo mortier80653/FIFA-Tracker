@@ -18,24 +18,33 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CareerSaveFileModel',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('uploaded_at', models.DateTimeField(auto_now_add=True)),
-                ('uploadedfile', models.FileField(upload_to=core.models.user_dir_path, validators=[core.models.CareerSaveFileModel.validate_size], verbose_name='FIFA 18 Career File')),
-                ('fifa_edition', models.IntegerField(blank=True, default=18, null=True)),
-                ('file_process_status_code', models.IntegerField(blank=True, default=0, null=True)),
-                ('file_process_status_msg', models.CharField(blank=True, max_length=120, null=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('uploadedfile', models.FileField(upload_to=core.models.user_dir_path, validators=[
+                 core.models.CareerSaveFileModel.validate_size], verbose_name='FIFA 18 Career File')),
+                ('fifa_edition', models.IntegerField(
+                    blank=True, default=18, null=True)),
+                ('file_process_status_code', models.IntegerField(
+                    blank=True, default=0, null=True)),
+                ('file_process_status_msg', models.CharField(
+                    blank=True, max_length=120, null=True)),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='DataUsersBannerplayers',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('playertechid', models.IntegerField(blank=True, null=True)),
                 ('teamtechid', models.IntegerField(blank=True, null=True)),
                 ('legend', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='bannerplayers', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='bannerplayers', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersbannerplayers',
@@ -44,15 +53,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerManagerawards',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('artificialkey', models.IntegerField(blank=True, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('typeid', models.IntegerField(blank=True, null=True)),
                 ('season', models.IntegerField(blank=True, null=True)),
                 ('count', models.IntegerField(blank=True, null=True)),
                 ('compobjid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='managerawards', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='managerawards', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareermanagerawards',
@@ -61,8 +73,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerManagerhistory',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('artificialkey', models.IntegerField(blank=True, null=True)),
                 ('leagueobjective', models.IntegerField(blank=True, null=True)),
                 ('continentalcuptrophies', models.IntegerField(blank=True, null=True)),
@@ -86,10 +100,13 @@ class Migration(migrations.Migration):
                 ('goals_for', models.IntegerField(blank=True, null=True)),
                 ('europe_cup_objective', models.IntegerField(blank=True, null=True)),
                 ('leagueobjectiveresult', models.IntegerField(blank=True, null=True)),
-                ('bigsellplayername', models.CharField(blank=True, max_length=256, null=True)),
-                ('bigbuyplayername', models.CharField(blank=True, max_length=256, null=True)),
+                ('bigsellplayername', models.CharField(
+                    blank=True, max_length=256, null=True)),
+                ('bigbuyplayername', models.CharField(
+                    blank=True, max_length=256, null=True)),
                 ('europe_cup_result', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='managerhistory', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='managerhistory', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareermanagerhistory',
@@ -98,12 +115,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerManagerInfo',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('seasonobjectiveresult1', models.IntegerField(blank=True, null=True)),
                 ('userid', models.IntegerField(blank=True, null=True)),
                 ('internationalteamid', models.IntegerField(blank=True, null=True)),
-                ('playersreleasedthisseason', models.IntegerField(blank=True, null=True)),
+                ('playersreleasedthisseason',
+                 models.IntegerField(blank=True, null=True)),
                 ('bigwinoppscore', models.IntegerField(blank=True, null=True)),
                 ('seasonobjective2', models.IntegerField(blank=True, null=True)),
                 ('boardconfidence', models.IntegerField(blank=True, null=True)),
@@ -125,7 +145,8 @@ class Migration(migrations.Migration):
                 ('seasonobjectiveresult3', models.IntegerField(blank=True, null=True)),
                 ('biglossoppscore', models.IntegerField(blank=True, null=True)),
                 ('totalearnings', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='managerinfo', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='managerinfo', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareermanagerinfo',
@@ -134,8 +155,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerPlayasplayer',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('userid', models.IntegerField(blank=True, null=True)),
                 ('playedlastmatch', models.IntegerField(blank=True, null=True)),
                 ('requestactiondays', models.IntegerField(blank=True, null=True)),
@@ -148,7 +171,8 @@ class Migration(migrations.Migration):
                 ('numconsecclubbenched', models.IntegerField(blank=True, null=True)),
                 ('numtransferrequests', models.IntegerField(blank=True, null=True)),
                 ('position', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='playasplayer', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='playasplayer', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerplayasplayer',
@@ -157,8 +181,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerPlayasplayerhistory',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('playasplayerhistoryid', models.IntegerField(blank=True, null=True)),
                 ('clublevel', models.IntegerField(blank=True, null=True)),
                 ('continentalcuptrophies', models.IntegerField(blank=True, null=True)),
@@ -194,7 +220,8 @@ class Migration(migrations.Migration):
                 ('shotsontarget', models.IntegerField(blank=True, null=True)),
                 ('position', models.IntegerField(blank=True, null=True)),
                 ('goals', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='playasplayerhistory', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='playasplayerhistory', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerplayasplayerhistory',
@@ -203,8 +230,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerPlayerawards',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('artificialkey', models.IntegerField(blank=True, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('typeid', models.IntegerField(blank=True, null=True)),
@@ -212,7 +241,8 @@ class Migration(migrations.Migration):
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('count', models.IntegerField(blank=True, null=True)),
                 ('compobjid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='playerawards', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='playerawards', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerplayerawards',
@@ -221,8 +251,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerPlayergrowthuserseason',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('gkkicking', models.IntegerField(blank=True, null=True)),
                 ('dribbling', models.IntegerField(blank=True, null=True)),
@@ -260,7 +292,8 @@ class Migration(migrations.Migration):
                 ('gkreflexes', models.IntegerField(blank=True, null=True)),
                 ('composure', models.IntegerField(blank=True, null=True)),
                 ('ballcontrol', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='playergrowthuserseason', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='playergrowthuserseason', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerplayergrowthuserseason',
@@ -269,8 +302,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerPlayerlastmatchhistory',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('artificialkey', models.IntegerField(blank=True, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('minsplayed', models.IntegerField(blank=True, null=True)),
@@ -278,7 +313,8 @@ class Migration(migrations.Migration):
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('playerfact', models.IntegerField(blank=True, null=True)),
                 ('position', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='playerlastmatchhistory', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='playerlastmatchhistory', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerplayerlastmatchhistory',
@@ -287,15 +323,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerPlayermatchratinghistory',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('artificialkey', models.IntegerField(blank=True, null=True)),
                 ('minsplayed', models.IntegerField(blank=True, null=True)),
                 ('rating', models.IntegerField(blank=True, null=True)),
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('date', models.IntegerField(blank=True, null=True)),
                 ('position', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='playermatchratinghistory', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='playermatchratinghistory', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerplayermatchratinghistory',
@@ -304,8 +343,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerPrecontract',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('offerid', models.IntegerField(blank=True, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('offeredcontracttype', models.IntegerField(blank=True, null=True)),
@@ -316,7 +357,8 @@ class Migration(migrations.Migration):
                 ('date', models.IntegerField(blank=True, null=True)),
                 ('offeredwage', models.IntegerField(blank=True, null=True)),
                 ('completedate', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='precontract', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='precontract', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerprecontract',
@@ -325,8 +367,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerPresignedContract',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('offerid', models.IntegerField(blank=True, null=True)),
                 ('offeredfee', models.IntegerField(blank=True, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
@@ -348,7 +392,8 @@ class Migration(migrations.Migration):
                 ('completedate', models.IntegerField(blank=True, null=True)),
                 ('performancebonusvalue', models.IntegerField(blank=True, null=True)),
                 ('exchangeplayerwage', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='presignedcontract', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='presignedcontract', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerpresignedcontract',
@@ -357,8 +402,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerScouts',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('firstname', models.CharField(blank=True, max_length=60, null=True)),
                 ('lastname', models.CharField(blank=True, max_length=60, null=True)),
                 ('scoutid', models.IntegerField(blank=True, null=True)),
@@ -367,7 +414,8 @@ class Migration(migrations.Migration):
                 ('state', models.IntegerField(blank=True, null=True)),
                 ('regionid', models.IntegerField(blank=True, null=True)),
                 ('experience', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='scouts', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='scouts', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerscouts',
@@ -376,12 +424,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerSquadRanking',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('curroverall', models.IntegerField(blank=True, null=True)),
                 ('lastoverall', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='squadranking', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='squadranking', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareersquadranking',
@@ -390,14 +441,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerTeamofweek',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('artificialkey', models.IntegerField(blank=True, null=True)),
                 ('matchrating', models.IntegerField(blank=True, null=True)),
                 ('weekswon', models.IntegerField(blank=True, null=True)),
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('month', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='teamofweek', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='teamofweek', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareerteamofweek',
@@ -406,8 +460,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerTransferOffer',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('offerid', models.IntegerField(blank=True, null=True)),
                 ('offeredfee', models.IntegerField(blank=True, null=True)),
                 ('snipedteamid', models.IntegerField(blank=True, null=True)),
@@ -434,7 +490,8 @@ class Migration(migrations.Migration):
                 ('offeredwage', models.IntegerField(blank=True, null=True)),
                 ('approachreason', models.IntegerField(blank=True, null=True)),
                 ('stage', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='transferoffer', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='transferoffer', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareertransferoffer',
@@ -443,12 +500,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerTrophies',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('season', models.IntegerField(blank=True, null=True)),
                 ('flags', models.IntegerField(blank=True, null=True)),
                 ('userid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='trophies', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='trophies', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareertrophies',
@@ -457,12 +517,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCareerYouthPlayerHistory',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('appearances', models.IntegerField(blank=True, null=True)),
                 ('goals', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='youthplayerhistory', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='youthplayerhistory', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscareeryouthplayerhistory',
@@ -471,25 +534,35 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersCompetition',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('competitionid', models.IntegerField(blank=True, null=True)),
-                ('iscenterpitchflagenabled', models.IntegerField(blank=True, null=True)),
+                ('iscenterpitchflagenabled',
+                 models.IntegerField(blank=True, null=True)),
                 ('onpitchgraphics', models.IntegerField(blank=True, null=True)),
-                ('isvanishingsprayenabled', models.IntegerField(blank=True, null=True)),
+                ('isvanishingsprayenabled',
+                 models.IntegerField(blank=True, null=True)),
                 ('adboardplacement', models.IntegerField(blank=True, null=True)),
                 ('competitioncolor2b', models.IntegerField(blank=True, null=True)),
                 ('colorregion', models.IntegerField(blank=True, null=True)),
                 ('adboardplacementstage', models.IntegerField(blank=True, null=True)),
                 ('competitioncolor2r', models.IntegerField(blank=True, null=True)),
-                ('isstadiumdressingunique', models.IntegerField(blank=True, null=True)),
-                ('isgoallinetechcompenabled', models.IntegerField(blank=True, null=True)),
+                ('isstadiumdressingunique',
+                 models.IntegerField(blank=True, null=True)),
+                ('isgoallinetechcompenabled',
+                 models.IntegerField(blank=True, null=True)),
                 ('replay360degree', models.IntegerField(blank=True, null=True)),
                 ('competitioncolor1b', models.IntegerField(blank=True, null=True)),
-                ('iscompetitionpodiumenabled', models.IntegerField(blank=True, null=True)),
-                ('isflamethrowercannonsenabled', models.IntegerField(blank=True, null=True)),
-                ('isintroconfettienabledstage', models.IntegerField(blank=True, null=True)),
-                ('isballplinthenabledstage', models.IntegerField(blank=True, null=True)),
+                ('iscompetitionpodiumenabled',
+                 models.IntegerField(blank=True, null=True)),
+                ('isflamethrowercannonsenabled',
+                 models.IntegerField(blank=True, null=True)),
+                ('isintroconfettienabledstage',
+                 models.IntegerField(blank=True, null=True)),
+                ('isballplinthenabledstage',
+                 models.IntegerField(blank=True, null=True)),
                 ('stanchionflamethrower', models.IntegerField(blank=True, null=True)),
                 ('isballplinthenabled', models.IntegerField(blank=True, null=True)),
                 ('competitioncolor1r', models.IntegerField(blank=True, null=True)),
@@ -497,41 +570,61 @@ class Migration(migrations.Migration):
                 ('pitchtarps', models.IntegerField(blank=True, null=True)),
                 ('competitioncolor1g', models.IntegerField(blank=True, null=True)),
                 ('abbapenalties', models.IntegerField(blank=True, null=True)),
-                ('ispitchtarpsenabledstage', models.IntegerField(blank=True, null=True)),
-                ('isgoallinetechcompenabledstage', models.IntegerField(blank=True, null=True)),
-                ('isuniquetrophypedestalenabled', models.IntegerField(blank=True, null=True)),
-                ('iscompetitionpoleflagenabled', models.IntegerField(blank=True, null=True)),
-                ('isstadiumdressinguniquestage', models.IntegerField(blank=True, null=True)),
+                ('ispitchtarpsenabledstage',
+                 models.IntegerField(blank=True, null=True)),
+                ('isgoallinetechcompenabledstage',
+                 models.IntegerField(blank=True, null=True)),
+                ('isuniquetrophypedestalenabled',
+                 models.IntegerField(blank=True, null=True)),
+                ('iscompetitionpoleflagenabled',
+                 models.IntegerField(blank=True, null=True)),
+                ('isstadiumdressinguniquestage',
+                 models.IntegerField(blank=True, null=True)),
                 ('introconfetti', models.IntegerField(blank=True, null=True)),
                 ('competitioncolor2g', models.IntegerField(blank=True, null=True)),
-                ('isteampitchflagenabledstage', models.IntegerField(blank=True, null=True)),
-                ('isuniqueadboardscompenabled', models.IntegerField(blank=True, null=True)),
+                ('isteampitchflagenabledstage',
+                 models.IntegerField(blank=True, null=True)),
+                ('isuniqueadboardscompenabled',
+                 models.IntegerField(blank=True, null=True)),
                 ('isarchwayenabledstage', models.IntegerField(blank=True, null=True)),
                 ('isteampitchflagenabled', models.IntegerField(blank=True, null=True)),
                 ('crowdskintonecode', models.IntegerField(blank=True, null=True)),
                 ('stadiumcrowdmap', models.IntegerField(blank=True, null=True)),
-                ('iscenterpitchflagenabledstage', models.IntegerField(blank=True, null=True)),
+                ('iscenterpitchflagenabledstage',
+                 models.IntegerField(blank=True, null=True)),
                 ('isinjuryboardenabled', models.IntegerField(blank=True, null=True)),
                 ('goaljingle', models.IntegerField(blank=True, null=True)),
-                ('isuniqueleagueflagenabled', models.IntegerField(blank=True, null=True)),
+                ('isuniqueleagueflagenabled',
+                 models.IntegerField(blank=True, null=True)),
                 ('languageregion', models.IntegerField(blank=True, null=True)),
-                ('isgoalnetadsenabledstage', models.IntegerField(blank=True, null=True)),
-                ('isvanishingsprayhomeenabled', models.IntegerField(blank=True, null=True)),
-                ('iscompetitionscarfenabled', models.IntegerField(blank=True, null=True)),
+                ('isgoalnetadsenabledstage',
+                 models.IntegerField(blank=True, null=True)),
+                ('isvanishingsprayhomeenabled',
+                 models.IntegerField(blank=True, null=True)),
+                ('iscompetitionscarfenabled',
+                 models.IntegerField(blank=True, null=True)),
                 ('isarchwayenabled', models.IntegerField(blank=True, null=True)),
                 ('inflatables', models.IntegerField(blank=True, null=True)),
-                ('isstadiumdressingenabledstage', models.IntegerField(blank=True, null=True)),
+                ('isstadiumdressingenabledstage',
+                 models.IntegerField(blank=True, null=True)),
                 ('ballid', models.IntegerField(blank=True, null=True)),
                 ('isbannerenabled', models.IntegerField(blank=True, null=True)),
-                ('isstanchionflamethrowerenabledstage', models.IntegerField(blank=True, null=True)),
-                ('isflamethrowercannonsenabledstage', models.IntegerField(blank=True, null=True)),
-                ('isgoallinetechhomeleagueenabled', models.IntegerField(blank=True, null=True)),
+                ('isstanchionflamethrowerenabledstage',
+                 models.IntegerField(blank=True, null=True)),
+                ('isflamethrowercannonsenabledstage',
+                 models.IntegerField(blank=True, null=True)),
+                ('isgoallinetechhomeleagueenabled',
+                 models.IntegerField(blank=True, null=True)),
                 ('goalnetads', models.IntegerField(blank=True, null=True)),
-                ('iscompetitioncrowdcardsenabled', models.IntegerField(blank=True, null=True)),
-                ('isstadiumdressingenabled', models.IntegerField(blank=True, null=True)),
+                ('iscompetitioncrowdcardsenabled',
+                 models.IntegerField(blank=True, null=True)),
+                ('isstadiumdressingenabled',
+                 models.IntegerField(blank=True, null=True)),
                 ('authenticpodiumskin', models.IntegerField(blank=True, null=True)),
-                ('isuniquehandshakeboardenabled', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='competition', to=settings.AUTH_USER_MODEL)),
+                ('isuniquehandshakeboardenabled',
+                 models.IntegerField(blank=True, null=True)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='competition', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserscompetition',
@@ -540,8 +633,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersDefaultTeamsheets',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('customsub1in', models.IntegerField(blank=True, null=True)),
                 ('customsub2out', models.IntegerField(blank=True, null=True)),
@@ -627,7 +722,8 @@ class Migration(migrations.Migration):
                 ('playerid23', models.IntegerField(blank=True, null=True)),
                 ('playerid27', models.IntegerField(blank=True, null=True)),
                 ('defteamwidth', models.IntegerField(blank=True, null=True)),
-                ('offset10x', models.FloatField(blank=True, default=None, null=True)),
+                ('offset10x', models.FloatField(
+                    blank=True, default=None, null=True)),
                 ('ccshooting', models.IntegerField(blank=True, null=True)),
                 ('customsub0out', models.IntegerField(blank=True, null=True)),
                 ('offset2x', models.FloatField(blank=True, default=None, null=True)),
@@ -649,7 +745,8 @@ class Migration(migrations.Migration):
                 ('defmentality', models.IntegerField(blank=True, null=True)),
                 ('offset6x', models.FloatField(blank=True, default=None, null=True)),
                 ('playerid26', models.IntegerField(blank=True, null=True)),
-                ('offset10y', models.FloatField(blank=True, default=None, null=True)),
+                ('offset10y', models.FloatField(
+                    blank=True, default=None, null=True)),
                 ('playerid22', models.IntegerField(blank=True, null=True)),
                 ('rightcornerkicktakerid', models.IntegerField(blank=True, null=True)),
                 ('playerinstruction10_1', models.IntegerField(blank=True, null=True)),
@@ -689,7 +786,8 @@ class Migration(migrations.Migration):
                 ('defmentalityvstrong', models.IntegerField(blank=True, null=True)),
                 ('defmentalityvequal', models.IntegerField(blank=True, null=True)),
                 ('defmentalityvsweak', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='defaultteamsheets', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='defaultteamsheets', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersdefaultteamsheets',
@@ -698,8 +796,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersFixtures',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('fixtureid', models.IntegerField(blank=True, null=True)),
                 ('fanflags', models.IntegerField(blank=True, null=True)),
                 ('awayteamskill', models.IntegerField(blank=True, null=True)),
@@ -724,7 +824,8 @@ class Migration(migrations.Migration):
                 ('legno', models.IntegerField(blank=True, null=True)),
                 ('drawmode', models.IntegerField(blank=True, null=True)),
                 ('competitiontype', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='fixtures', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='fixtures', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersfixtures',
@@ -733,13 +834,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersFormations',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('formationid', models.IntegerField(blank=True, null=True)),
                 ('position3', models.IntegerField(blank=True, null=True)),
                 ('position7', models.IntegerField(blank=True, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
-                ('midfielders', models.FloatField(blank=True, default=None, null=True)),
+                ('midfielders', models.FloatField(
+                    blank=True, default=None, null=True)),
                 ('offset8y', models.FloatField(blank=True, default=None, null=True)),
                 ('offensiverating', models.IntegerField(blank=True, null=True)),
                 ('formationaudioid', models.IntegerField(blank=True, null=True)),
@@ -747,8 +851,10 @@ class Migration(migrations.Migration):
                 ('offset9x', models.FloatField(blank=True, default=None, null=True)),
                 ('playerinstruction10_2', models.IntegerField(blank=True, null=True)),
                 ('offset8x', models.FloatField(blank=True, default=None, null=True)),
-                ('attackers', models.FloatField(blank=True, default=None, null=True)),
-                ('defenders', models.FloatField(blank=True, default=None, null=True)),
+                ('attackers', models.FloatField(
+                    blank=True, default=None, null=True)),
+                ('defenders', models.FloatField(
+                    blank=True, default=None, null=True)),
                 ('playerinstruction8_1', models.IntegerField(blank=True, null=True)),
                 ('playerinstruction9_1', models.IntegerField(blank=True, null=True)),
                 ('playerinstruction0_1', models.IntegerField(blank=True, null=True)),
@@ -764,7 +870,8 @@ class Migration(migrations.Migration):
                 ('offset1x', models.FloatField(blank=True, default=None, null=True)),
                 ('position10', models.IntegerField(blank=True, null=True)),
                 ('offset4y', models.FloatField(blank=True, default=None, null=True)),
-                ('formationname', models.CharField(blank=True, max_length=50, null=True)),
+                ('formationname', models.CharField(
+                    blank=True, max_length=50, null=True)),
                 ('offset5y', models.FloatField(blank=True, default=None, null=True)),
                 ('position8', models.IntegerField(blank=True, null=True)),
                 ('offset0x', models.FloatField(blank=True, default=None, null=True)),
@@ -772,13 +879,15 @@ class Migration(migrations.Migration):
                 ('position4', models.IntegerField(blank=True, null=True)),
                 ('relativeformationid', models.IntegerField(blank=True, null=True)),
                 ('offset7y', models.FloatField(blank=True, default=None, null=True)),
-                ('offset10x', models.FloatField(blank=True, default=None, null=True)),
+                ('offset10x', models.FloatField(
+                    blank=True, default=None, null=True)),
                 ('offset2x', models.FloatField(blank=True, default=None, null=True)),
                 ('offset3x', models.FloatField(blank=True, default=None, null=True)),
                 ('offset6y', models.FloatField(blank=True, default=None, null=True)),
                 ('offset3y', models.FloatField(blank=True, default=None, null=True)),
                 ('offset6x', models.FloatField(blank=True, default=None, null=True)),
-                ('offset10y', models.FloatField(blank=True, default=None, null=True)),
+                ('offset10y', models.FloatField(
+                    blank=True, default=None, null=True)),
                 ('playerinstruction10_1', models.IntegerField(blank=True, null=True)),
                 ('offset7x', models.FloatField(blank=True, default=None, null=True)),
                 ('offset2y', models.FloatField(blank=True, default=None, null=True)),
@@ -800,7 +909,8 @@ class Migration(migrations.Migration):
                 ('offset4x', models.FloatField(blank=True, default=None, null=True)),
                 ('playerinstruction9_2', models.IntegerField(blank=True, null=True)),
                 ('playerinstruction8_2', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='formations', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='formations', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersformations',
@@ -809,11 +919,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersLeaguerefereelinks',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('leagueid', models.IntegerField(blank=True, null=True)),
                 ('refereeid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='leaguerefereelinks', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='leaguerefereelinks', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersleaguerefereelinks',
@@ -822,14 +935,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersPlayerformdiff',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('newoverallrating', models.IntegerField(blank=True, null=True)),
                 ('overallratingdiff', models.IntegerField(blank=True, null=True)),
                 ('oldoverallrating', models.IntegerField(blank=True, null=True)),
                 ('playerid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='playerformdiff', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='playerformdiff', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersplayerformdiff',
@@ -838,12 +954,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersPlayerGrudgelove',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('level_of_emotion', models.IntegerField(blank=True, null=True)),
                 ('emotional_teamid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='playerdrudgelove', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='playerdrudgelove', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersplayergrudgelove',
@@ -852,14 +971,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersPlayersuspensions',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('artificialkey', models.IntegerField(blank=True, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('enddate', models.IntegerField(blank=True, null=True)),
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('games', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='playersuspensions', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='playersuspensions', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersplayersuspensions',
@@ -868,11 +990,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersPreviousteam',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('playerid', models.IntegerField(blank=True, null=True)),
                 ('previousteamid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='previousteam', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='previousteam', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserspreviousteam',
@@ -881,8 +1006,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersReferee',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('refereeid', models.IntegerField(blank=True, null=True)),
                 ('headvariation', models.IntegerField(blank=True, null=True)),
                 ('haircolorcode', models.IntegerField(blank=True, null=True)),
@@ -928,7 +1055,8 @@ class Migration(migrations.Migration):
                 ('stylecode', models.IntegerField(blank=True, null=True)),
                 ('haireffecttypecode', models.IntegerField(blank=True, null=True)),
                 ('hairstateid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='referee', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='referee', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersreferee',
@@ -937,12 +1065,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersRivals',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('teamid1', models.IntegerField(blank=True, null=True)),
                 ('teamid2', models.IntegerField(blank=True, null=True)),
                 ('rivaltype', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='rivals', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='rivals', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersrivals',
@@ -951,11 +1082,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersRowteamnationlinks',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('nationid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='rowteamnationlinks', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='rowteamnationlinks', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersrowteamnationlinks',
@@ -964,12 +1098,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersSmrivals',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('teamid1', models.IntegerField(blank=True, null=True)),
                 ('teamid2', models.IntegerField(blank=True, null=True)),
                 ('rivaltype', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='smrivals', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='smrivals', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datauserssmrivals',
@@ -978,8 +1115,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersTeamformdiff',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('oldmidfieldrating', models.IntegerField(blank=True, null=True)),
                 ('newmidfieldrating', models.IntegerField(blank=True, null=True)),
@@ -990,7 +1129,8 @@ class Migration(migrations.Migration):
                 ('olddefenserating', models.IntegerField(blank=True, null=True)),
                 ('oldattackrating', models.IntegerField(blank=True, null=True)),
                 ('newattackrating', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='teamformdiff', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='teamformdiff', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersteamformdiff',
@@ -999,23 +1139,28 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersTeamkits',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('teamtechid', models.IntegerField(blank=True, null=True)),
                 ('jerseynumbercolorterg', models.IntegerField(blank=True, null=True)),
                 ('jerseyfit', models.IntegerField(blank=True, null=True)),
                 ('shortsnumbercolorprimg', models.IntegerField(blank=True, null=True)),
                 ('isembargoed', models.IntegerField(blank=True, null=True)),
-                ('jerseyfrontnumberplacementcode', models.IntegerField(blank=True, null=True)),
+                ('jerseyfrontnumberplacementcode',
+                 models.IntegerField(blank=True, null=True)),
                 ('isinheritbasedetailmap', models.IntegerField(blank=True, null=True)),
-                ('jerseycollargeometrytype', models.IntegerField(blank=True, null=True)),
+                ('jerseycollargeometrytype',
+                 models.IntegerField(blank=True, null=True)),
                 ('shortsnumbercolorsecg', models.IntegerField(blank=True, null=True)),
                 ('teamcolorprimb', models.IntegerField(blank=True, null=True)),
                 ('teamcolorprimr', models.IntegerField(blank=True, null=True)),
                 ('teamcolorsecpercent', models.IntegerField(blank=True, null=True)),
                 ('hasadvertisingkit', models.IntegerField(blank=True, null=True)),
                 ('shortsnumbercolorsecr', models.IntegerField(blank=True, null=True)),
-                ('shortsnumberplacementcode', models.IntegerField(blank=True, null=True)),
+                ('shortsnumberplacementcode',
+                 models.IntegerField(blank=True, null=True)),
                 ('jerseyshapestyle', models.IntegerField(blank=True, null=True)),
                 ('shortsnumbercolorsecb', models.IntegerField(blank=True, null=True)),
                 ('teamkittypetechid', models.IntegerField(blank=True, null=True)),
@@ -1033,7 +1178,8 @@ class Migration(migrations.Migration):
                 ('jerseynamefonttype', models.IntegerField(blank=True, null=True)),
                 ('shortsnumbercolorterb', models.IntegerField(blank=True, null=True)),
                 ('teamcolortertb', models.IntegerField(blank=True, null=True)),
-                ('jerseyrenderingdetailmaptype', models.IntegerField(blank=True, null=True)),
+                ('jerseyrenderingdetailmaptype',
+                 models.IntegerField(blank=True, null=True)),
                 ('jerseynumbercolorprimb', models.IntegerField(blank=True, null=True)),
                 ('jerseynumbercolorsecr', models.IntegerField(blank=True, null=True)),
                 ('numberfonttype', models.IntegerField(blank=True, null=True)),
@@ -1044,7 +1190,8 @@ class Migration(migrations.Migration):
                 ('jerseynumbercolorprimr', models.IntegerField(blank=True, null=True)),
                 ('jerseynumbercolorsecb', models.IntegerField(blank=True, null=True)),
                 ('powid', models.IntegerField(blank=True, null=True)),
-                ('shortsrenderingdetailmaptype', models.IntegerField(blank=True, null=True)),
+                ('shortsrenderingdetailmaptype',
+                 models.IntegerField(blank=True, null=True)),
                 ('teamcolorsecr', models.IntegerField(blank=True, null=True)),
                 ('dlc', models.IntegerField(blank=True, null=True)),
                 ('shortsnumberfonttype', models.IntegerField(blank=True, null=True)),
@@ -1052,14 +1199,16 @@ class Migration(migrations.Migration):
                 ('jerseynumbercolorprimg', models.IntegerField(blank=True, null=True)),
                 ('teamcolorsecb', models.IntegerField(blank=True, null=True)),
                 ('jerseynamecolorr', models.IntegerField(blank=True, null=True)),
-                ('jerseybacknameplacementcode', models.IntegerField(blank=True, null=True)),
+                ('jerseybacknameplacementcode',
+                 models.IntegerField(blank=True, null=True)),
                 ('shortstyle', models.IntegerField(blank=True, null=True)),
                 ('shortsnumbercolorterg', models.IntegerField(blank=True, null=True)),
                 ('teamcolortertg', models.IntegerField(blank=True, null=True)),
                 ('teamkitid', models.IntegerField(blank=True, null=True)),
                 ('jerseybacknamefontcase', models.IntegerField(blank=True, null=True)),
                 ('jerseynamecolorb', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='teamkits', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='teamkits', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersteamkits',
@@ -1068,11 +1217,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersTeamnationlinks',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
                 ('nationid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='teamnationlinks', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='teamnationlinks', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersteamnationlinks',
@@ -1081,13 +1233,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersTeamstadiumlinks',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('teamid', models.IntegerField(blank=True, null=True)),
-                ('stadiumname', models.CharField(blank=True, max_length=510, null=True)),
+                ('stadiumname', models.CharField(
+                    blank=True, max_length=510, null=True)),
                 ('forcedhome', models.IntegerField(blank=True, null=True)),
                 ('stadiumid', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='teamstadiumlinks', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='teamstadiumlinks', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersteamstadiumlinks',
@@ -1096,15 +1252,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DataUsersVersion',
             fields=[
-                ('primary_key', models.BigAutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
+                ('primary_key', models.BigAutoField(
+                    primary_key=True, serialize=False)),
+                ('username', models.CharField(blank=True,
+                                              db_index=True, max_length=150, null=True)),
                 ('artificialkey', models.IntegerField(blank=True, null=True)),
                 ('major', models.IntegerField(blank=True, null=True)),
                 ('exportdate', models.IntegerField(blank=True, null=True)),
                 ('minor', models.IntegerField(blank=True, null=True)),
                 ('schema', models.CharField(blank=True, max_length=80, null=True)),
                 ('isonline', models.IntegerField(blank=True, null=True)),
-                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='version', to=settings.AUTH_USER_MODEL)),
+                ('ft_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='version', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'datausersversion',

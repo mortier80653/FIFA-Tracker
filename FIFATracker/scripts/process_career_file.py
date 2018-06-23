@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from scripts.process_file_utils import ParseCareerSave
 from scripts.delete_user_data import delete_data
 
+
 def update_savefile_model(user_id, error, fpath=None):
     cs_model = CareerSaveFileModel.objects.filter(user_id=user_id).first()
     if cs_model:
@@ -25,45 +26,46 @@ def update_savefile_model(user_id, error, fpath=None):
         pass
 
 
-
 def run(*args):
     user_id = args[0]
-    fifa_edition = args[1]  
+    fifa_edition = args[1]
 
     user = User.objects.get(id=user_id)
     if not user:
-        logging.warning("process_career_file script - User not found, ID:{}".format(user_id))
+        logging.warning(
+            "process_career_file script - User not found, ID:{}".format(user_id))
         return
 
-    save_file_model = CareerSaveFileModel.objects.filter(user_id=user.id).first()
+    save_file_model = CareerSaveFileModel.objects.filter(
+        user_id=user.id).first()
     if not save_file_model:
         update_savefile_model(user_id, _("Save file model not found."))
         return
 
     # Path to meta XML file for a FIFA database.
-    FIFA_XML_PATH = os.path.join(settings.BASE_DIR, "scripts", "Data", fifa_edition, "XML", "fifa_ng_db-meta.xml") 
-    
-    fpath = os.path.join(settings.MEDIA_ROOT, str(save_file_model.uploadedfile))
+    FIFA_XML_PATH = os.path.join(
+        settings.BASE_DIR, "scripts", "Data", fifa_edition, "XML", "fifa_ng_db-meta.xml")
+
+    fpath = os.path.join(settings.MEDIA_ROOT, str(
+        save_file_model.uploadedfile))
     if not os.path.exists(fpath):
         update_savefile_model(user_id, _("Save file not found on the server."))
         return
 
-    careersave_data_path = os.path.join(settings.MEDIA_ROOT, user.username, "data")
-    
+    careersave_data_path = os.path.join(
+        settings.MEDIA_ROOT, user.username, "data")
+
     # Parse Career Save
     try:
-        ParseCareerSave(career_file_fullpath=fpath, careersave_data_path=careersave_data_path, user=user, xml_file=FIFA_XML_PATH, fifa_edition=fifa_edition)
+        ParseCareerSave(career_file_fullpath=fpath, careersave_data_path=careersave_data_path,
+                        user=user, xml_file=FIFA_XML_PATH, fifa_edition=fifa_edition)
         user.profile.is_save_processed = True
         user.profile.fifa_edition = fifa_edition
         user.save()
     except Exception as e:
         user.profile.is_save_processed = False
         user.save()
-        logging.exception("process_career_file script - ParseCareerSave - user: {}".format(user))
+        logging.exception(
+            "process_career_file script - ParseCareerSave - user: {}".format(user))
         delete_data(user_id)
         update_savefile_model(user_id, e, fpath=fpath)
-
-
-        
-        
-    

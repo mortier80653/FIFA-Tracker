@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='profile',
             name='last_activity',
-            field=models.DateTimeField(blank=True, default=django.utils.timezone.now),
+            field=models.DateTimeField(
+                blank=True, default=django.utils.timezone.now),
         ),
     ]

@@ -12,14 +12,14 @@ from core.paginator import MyPaginator
 from core.filters import DataUsersPlayersFilter, DataUsersTeamsFilter, DataUsersCareerTransferOfferFilter
 
 from players.models import (
-    DataUsersTeamplayerlinks, 
-    DataUsersPlayerloans, 
-    DataUsersEditedplayernames, 
-    DataUsersTeams, 
+    DataUsersTeamplayerlinks,
+    DataUsersPlayerloans,
+    DataUsersEditedplayernames,
+    DataUsersTeams,
     DataUsersLeagueteamlinks,
-    DataUsersCareerCalendar, 
-    DataUsersLeagues, 
-    DataNations, 
+    DataUsersCareerCalendar,
+    DataUsersLeagues,
+    DataNations,
     DataUsersDcplayernames,
     DataPlayernames,
     DataUsersManager,
@@ -32,6 +32,7 @@ from core.models import (
     DataUsersCareerTransferOffer,
 )
 
+
 def set_currency(request):
     # Set Currency
     currency_symbols = ('$', '€', '£')
@@ -40,9 +41,11 @@ def set_currency(request):
             request.session['currency'] = request.user.profile.currency
         except:
             request.session['currency'] = 1
-            
+
     if request.session.get('currency_symbol', None) is None:
-        request.session['currency_symbol'] = currency_symbols[int(request.session['currency'])]
+        request.session['currency_symbol'] = currency_symbols[int(
+            request.session['currency'])]
+
 
 def get_current_user(request):
     # Set current User
@@ -56,8 +59,9 @@ def get_current_user(request):
             raise UnknownError(e)
 
         if not is_profile_public:
-            raise PrivateProfileError(_("Sorry, {}'s profile is private. Profile visibility can be changed in Control Panel.").format(owner))
-        
+            raise PrivateProfileError(
+                _("Sorry, {}'s profile is private. Profile visibility can be changed in Control Panel.").format(owner))
+
         current_user = owner
     elif request.user.is_authenticated:
         current_user = request.user
@@ -69,6 +73,7 @@ def get_current_user(request):
     return current_user, int(fifa_edition)
 
 # Transfers
+
 
 def transfer_info(playerid, data):
     for transfer in data:
@@ -101,8 +106,9 @@ def transfer_info(playerid, data):
                 "result": transfer.result,
                 "approachreason": transfer.approachreason,
             }
-        
+
     return None
+
 
 def get_transfers(request, additional_filters=None, paginate=False):
     request_query_dict = request.GET.copy()
@@ -113,16 +119,19 @@ def get_transfers(request, additional_filters=None, paginate=False):
         for k, v in additional_filters.items():
             request_query_dict[k] = str(v)
 
-    transfer_offer_filter = DataUsersCareerTransferOfferFilter(request_query_dict, for_user=current_user)
+    transfer_offer_filter = DataUsersCareerTransferOfferFilter(
+        request_query_dict, for_user=current_user)
 
     # Paginate results if needed
     if paginate:
         max_per_page = int(request.GET.get('max_per_page', 50))
         if not 25 <= max_per_page <= 100:
             max_per_page = 50
-        paginator = MyPaginator(transfer_offer_filter.qs.count(), request=request_query_dict, max_per_page=max_per_page)
+        paginator = MyPaginator(transfer_offer_filter.qs.count(
+        ), request=request_query_dict, max_per_page=max_per_page)
 
-        data = list(transfer_offer_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
+        data = list(
+            transfer_offer_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
     else:
         paginator = None
         data = list(transfer_offer_filter.qs.iterator())
@@ -134,7 +143,8 @@ def get_transfers(request, additional_filters=None, paginate=False):
 
     additional_filters = {'playerid': playerids, }
     try:
-        context_data = get_fifaplayers(request, additional_filters=additional_filters, paginate=False, sort=False)
+        context_data = get_fifaplayers(
+            request, additional_filters=additional_filters, paginate=False, sort=False)
     except (NoResultsError):
         context_data = dict()
         context_data['players'] = None
@@ -151,10 +161,9 @@ def get_transfers(request, additional_filters=None, paginate=False):
                     if t_info:
                         setattr(p, 'transfer_info', t_info)
                     players_original_order.append(p)
-    
-        context_data['players'] = players_original_order 
 
-    
+        context_data['players'] = players_original_order
+
     context_data['paginator'] = paginator
     return context_data
 
@@ -169,21 +178,24 @@ def get_team(request, teamid=0, additional_filters=None):
     #additional_filters = {'teamid': teamid, }
     additional_filters = {'teamid': teamid, 'teamidloanedfrom': teamid, }
     try:
-        context_data = get_fifaplayers(request, additional_filters=additional_filters, paginate=False)
+        context_data = get_fifaplayers(
+            request, additional_filters=additional_filters, paginate=False)
     except (NoResultsError):
         context_data = dict()
         context_data['dict_cached_queries'] = dict()
         context_data['players'] = None
-        context_data['dict_cached_queries']['q_teams'] = list(DataUsersTeams.objects.for_user(current_user).filter(teamid=teamid).iterator())
-        context_data['dict_cached_queries']['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(teamid=teamid).iterator())
-        context_data['dict_cached_queries']['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
+        context_data['dict_cached_queries']['q_teams'] = list(
+            DataUsersTeams.objects.for_user(current_user).filter(teamid=teamid).iterator())
+        context_data['dict_cached_queries']['q_league_team_links'] = list(
+            DataUsersLeagueteamlinks.objects.for_user(current_user).filter(teamid=teamid).iterator())
+        context_data['dict_cached_queries']['q_leagues'] = list(
+            DataUsersLeagues.objects.for_user(current_user).all().iterator())
 
     if context_data['players']:
         players = context_data['players'][:]
     else:
         players = None
 
-    
     if not context_data['dict_cached_queries']['q_teams']:
         raise NoResultsError(_('No results found. Try to change your filters'))
 
@@ -210,7 +222,8 @@ def get_team(request, teamid=0, additional_filters=None):
 
     # manager
     try:
-        manager = list(DataUsersManager.objects.for_user(current_user).filter(teamid=teamid).iterator())[0]
+        manager = list(DataUsersManager.objects.for_user(
+            current_user).filter(teamid=teamid).iterator())[0]
         if manager.firstname is None and manager.surname is None:
             manager.firstname = valid_team.teamname
             manager.surname = "Manager"
@@ -225,12 +238,11 @@ def get_team(request, teamid=0, additional_filters=None):
             'headid': "None",
         }
 
-
     # group players
     is_club_team = True
     is_national_team = False
     if players:
-        try:                
+        try:
             if int(players[0].player_teams['national_team']['team']['teamid']) == int(teamid):
                 is_national_team = True
                 is_club_team = False
@@ -249,8 +261,8 @@ def get_team(request, teamid=0, additional_filters=None):
         grouped_players['value_DEF'] = 0
         grouped_players['value_MID'] = 0
         grouped_players['value_ATT'] = 0
-        grouped_players['value_LOANED_OUT'] = 0   
-        grouped_players['total_team_value'] = 0 
+        grouped_players['value_LOANED_OUT'] = 0
+        grouped_players['total_team_value'] = 0
 
         for p in players:
             grouped_players['total_team_value'] += p.player_value.value
@@ -282,21 +294,23 @@ def get_team(request, teamid=0, additional_filters=None):
         grouped_players = None
 
     # print("Queries: {}".format(len(connection.queries)))
-    total_careers = len(list(DataUsersCareerUsers.objects.all().filter(Q(clubteamid=teamid) | Q(nationalteamid=teamid)).iterator()))
-    
+    total_careers = len(list(DataUsersCareerUsers.objects.all().filter(
+        Q(clubteamid=teamid) | Q(nationalteamid=teamid)).iterator()))
+
     context = {
-        'team': valid_team, 
-        'leagueteamlink': valid_ltlink, 
+        'team': valid_team,
+        'leagueteamlink': valid_ltlink,
         'league': valid_league,
         'players': context_data['players'],
         'grouped_players': grouped_players,
         'manager': manager,
         'is_club_team': is_club_team,
         'is_national_team': is_national_team,
-        'total_careers': total_careers, 
+        'total_careers': total_careers,
     }
 
     return context
+
 
 def get_teams(request, additional_filters=None, paginate=False):
     request_query_dict = request.GET.copy()
@@ -309,15 +323,18 @@ def get_teams(request, additional_filters=None, paginate=False):
         for k, v in additional_filters.items():
             request_query_dict[k] = str(v)
 
-    teams_filter = DataUsersTeamsFilter(request_query_dict, for_user=current_user)
+    teams_filter = DataUsersTeamsFilter(
+        request_query_dict, for_user=current_user)
 
     # Paginate results if needed
     if paginate:
         max_per_page = int(request.GET.get('max_per_page', 50))
         if not 25 <= max_per_page <= 100:
             max_per_page = 50
-        paginator = MyPaginator(teams_filter.qs.count(), request=request_query_dict, max_per_page=max_per_page)
-        data = list(teams_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
+        paginator = MyPaginator(teams_filter.qs.count(
+        ), request=request_query_dict, max_per_page=max_per_page)
+        data = list(
+            teams_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
     else:
         paginator = None
         data = list(teams_filter.qs.iterator())
@@ -326,10 +343,13 @@ def get_teams(request, additional_filters=None, paginate=False):
         raise NoResultsError(_('No results found. Try to change your filters'))
 
     dict_cached_queries = dict()
-    dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).iterator())
-    dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).iterator())
+    dict_cached_queries['q_league_team_links'] = list(
+        DataUsersLeagueteamlinks.objects.for_user(current_user).iterator())
+    dict_cached_queries['q_leagues'] = list(
+        DataUsersLeagues.objects.for_user(current_user).iterator())
 
-    context = {'teams': data, 'paginator':paginator, 'request_query_dict': request_query_dict, 'dict_cached_queries': dict_cached_queries,}
+    context = {'teams': data, 'paginator': paginator,
+               'request_query_dict': request_query_dict, 'dict_cached_queries': dict_cached_queries, }
     return context
 
 
@@ -342,26 +362,32 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
 
     # Current date according to in-game calendar
     try:
-        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[
+            0].currdate
     except IndexError:
-        messages.error(request, _("Your career file hasn't been processed yet. Displaying default FIFA database data."))
+        messages.error(request, _(
+            "Your career file hasn't been processed yet. Displaying default FIFA database data."))
         current_user = "guest"
-        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
+        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[
+            0].currdate
 
     # Apply filters
     if additional_filters:
         for k, v in additional_filters.items():
             request_query_dict[k] = str(v)
 
-    player_filter = DataUsersPlayersFilter(request_query_dict, for_user=current_user, current_date=current_date, sort=sort, fifa_edition=fifa_edition)
+    player_filter = DataUsersPlayersFilter(
+        request_query_dict, for_user=current_user, current_date=current_date, sort=sort, fifa_edition=fifa_edition)
 
     # Paginate results if needed
     if paginate:
         max_per_page = int(request.GET.get('max_per_page', 50))
         if not 25 <= max_per_page <= 100:
             max_per_page = 50
-        paginator = MyPaginator(player_filter.qs.count(), request=request_query_dict, max_per_page=max_per_page)
-        data = list(player_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
+        paginator = MyPaginator(player_filter.qs.count(
+        ), request=request_query_dict, max_per_page=max_per_page)
+        data = list(
+            player_filter.qs[paginator.results_bottom:paginator.results_top].iterator())
     else:
         paginator = None
         data = list(player_filter.qs.iterator())
@@ -370,17 +396,25 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
         raise NoResultsError(_('No results found. Try to change your filters'))
 
     dict_cached_queries = dict()
-    
-    dict_cached_queries['q_leagues'] = list(DataUsersLeagues.objects.for_user(current_user).all().iterator())
-    dict_cached_queries['q_dcplayernames'] = list(DataUsersDcplayernames.objects.for_user(current_user).all().iterator())
-    
-    f_playerid = reduce(lambda x, y: x | y, [Q(playerid=player.playerid) for player in data])
 
-    dict_cached_queries['q_team_player_links'] = list(DataUsersTeamplayerlinks.objects.for_user(current_user).filter(f_playerid).iterator())
-    dict_cached_queries['q_player_loans'] = list(DataUsersPlayerloans.objects.for_user(current_user).filter(f_playerid).iterator())
-    dict_cached_queries['q_edited_player_names'] = list(DataUsersEditedplayernames.objects.for_user(current_user).filter(f_playerid).iterator())
-    dict_cached_queries['q_release_clauses'] = list(DataUsersCareerRestReleaseClauses.objects.for_user(current_user).filter(f_playerid).iterator())
-    dict_cached_queries['q_players_stats'] = list(DataUsersCareerCompdataPlayerStats.objects.for_user(current_user).filter(f_playerid).iterator())
+    dict_cached_queries['q_leagues'] = list(
+        DataUsersLeagues.objects.for_user(current_user).all().iterator())
+    dict_cached_queries['q_dcplayernames'] = list(
+        DataUsersDcplayernames.objects.for_user(current_user).all().iterator())
+
+    f_playerid = reduce(lambda x, y: x | y, [
+                        Q(playerid=player.playerid) for player in data])
+
+    dict_cached_queries['q_team_player_links'] = list(
+        DataUsersTeamplayerlinks.objects.for_user(current_user).filter(f_playerid).iterator())
+    dict_cached_queries['q_player_loans'] = list(
+        DataUsersPlayerloans.objects.for_user(current_user).filter(f_playerid).iterator())
+    dict_cached_queries['q_edited_player_names'] = list(
+        DataUsersEditedplayernames.objects.for_user(current_user).filter(f_playerid).iterator())
+    dict_cached_queries['q_release_clauses'] = list(
+        DataUsersCareerRestReleaseClauses.objects.for_user(current_user).filter(f_playerid).iterator())
+    dict_cached_queries['q_players_stats'] = list(
+        DataUsersCareerCompdataPlayerStats.objects.for_user(current_user).filter(f_playerid).iterator())
 
     f_teamid = Q()
     for team in dict_cached_queries['q_team_player_links']:
@@ -390,14 +424,18 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
         for team in dict_cached_queries['q_player_loans']:
             f_teamid.add(Q(teamid=team.teamidloanedfrom), Q.OR)
 
-    dict_cached_queries['q_teams'] = list(DataUsersTeams.objects.for_user(current_user).filter(f_teamid).iterator())
-    dict_cached_queries['q_league_team_links'] = list(DataUsersLeagueteamlinks.objects.for_user(current_user).filter(f_teamid).iterator())
+    dict_cached_queries['q_teams'] = list(
+        DataUsersTeams.objects.for_user(current_user).filter(f_teamid).iterator())
+    dict_cached_queries['q_league_team_links'] = list(
+        DataUsersLeagueteamlinks.objects.for_user(current_user).filter(f_teamid).iterator())
 
     players_list = list()
     currency = int(request.session['currency'])
     for player in data:
-        fp = FifaPlayer(player, current_user, current_date, dict_cached_queries, currency, fifa_edition)
+        fp = FifaPlayer(player, current_user, current_date,
+                        dict_cached_queries, currency, fifa_edition)
         players_list.append(fp)
 
-    context = {'players':players_list, 'paginator':paginator, 'request_query_dict': request_query_dict, 'dict_cached_queries': dict_cached_queries,}
+    context = {'players': players_list, 'paginator': paginator,
+               'request_query_dict': request_query_dict, 'dict_cached_queries': dict_cached_queries, }
     return context

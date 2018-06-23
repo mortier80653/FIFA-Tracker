@@ -536,7 +536,8 @@ class RestToCSV():
                 date2 = self.ReadInt32(mm.read(4))
                 date3 = self.ReadInt32(mm.read(4))
 
-                avg = int(avg / app)
+                if app > 1:
+                    avg = int(avg / app)
                 f_csv.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(self.username, self.user_id, teamid, playerid, tournamentid, unk1, avg, app, goals, unk2, assists,unk3,yellowcards,redcards,unk6,unk7,cleansheets,unk9,unk10,unk11,unk12,unk13,date1,date2,date3))
         
 

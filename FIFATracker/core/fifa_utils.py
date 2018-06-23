@@ -573,7 +573,11 @@ class FifaPlayer():
 
         if num_of_comps > 0:
             if num_of_comps >= 2:
-                stats["total"]["avg"] = int(stats["total"]["avg"] / num_of_comps)
+                try:
+                    stats["total"]["avg"] = int(stats["total"]["avg"] / num_of_comps)
+                except ZeroDivisionError:
+                    pass
+                    
             return stats
 
         return None

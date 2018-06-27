@@ -613,8 +613,8 @@ class RestToCSV():
 
         with open(rf_full_path, 'rb') as rf:
             mm = mmap.mmap(rf.fileno(), length=0, access=mmap.ACCESS_READ)
-            self._players_stats(mm)
             self._release_clauses(mm)
+            self._players_stats(mm)
 
     def _players_stats(self, mm):
         """Current season players statistics"""
@@ -622,6 +622,7 @@ class RestToCSV():
         sign_jo002 = b"\x6A\x6F\x30\x30\x32\x00"  # jo002 - JobOffers?
         MP002_SIZE = 1616   # 0x650
 
+        mm.seek(0)
         offset_start = mm.find(sign_mp002) + MP002_SIZE
         if offset_start < MP002_SIZE:
             logging.error("_players_stats - mp002 not found")
@@ -685,6 +686,7 @@ class RestToCSV():
     def _release_clauses(self, mm):
         """Players Release Clauses"""
         sign = b"\x72\x6C\x63\x74\x72\x6B\x00"  # rlctrk - release clause sign (?)
+        mm.seek(0)
         offset = mm.find(sign)
 
         if offset < 0:

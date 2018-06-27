@@ -937,6 +937,15 @@ function selectizejs() {
         }
     });
 
+    $('#select-hasstats').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("hasstats")
+            if (value) 
+                this.setValue(value);
+        }
+    });
+
     $("#positions-input").selectize({
         delimiter: ',',
         persist: false,
@@ -2002,7 +2011,7 @@ function changeProfilePublicStatus() {
 }
 
 function cleanUrl() {
-    var params = ["isretiring", "isreal", "isonloan", "hasreleaseclause", "teamtype", "iscputransfer", "isloan", "isloanbuy", "issnipe", "result", "hashighqualityhead"];
+    var params = ["isretiring", "isreal", "isonloan", "hasreleaseclause", "hasstats", "teamtype", "iscputransfer", "isloan", "isloanbuy", "issnipe", "result", "hashighqualityhead"];
     for (i = 0; i < params.length; i++) {
         if (getUrlParameter(params[i]) == "-1")
             removeParam(params[i])

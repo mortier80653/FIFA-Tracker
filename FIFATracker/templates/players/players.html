@@ -36,7 +36,10 @@
 							<a href="#tabs-2">{% trans 'Player Attributes' %}</a>
 						</li>
 						<li>
-							<a href="#tabs-3">{% trans 'Other' %}</a>
+							<a href="#tabs-3">{% trans 'Player Statistics' %}</a>
+						</li>
+						<li>
+							<a href="#tabs-4">{% trans 'Other' %}</a>
 						</li>
 					</ul>
 					<div id="tabs-1">
@@ -62,18 +65,20 @@
 									<div class="input-group justified">
 										<input class="form-control" type="number" min="0" max="500000000" name="value_usd__gte" value="{{ request_query_dict.value_usd__gte }}" placeholder="Min">
 										<input class="form-control" type="number" min="0" max="500000000" name="value_usd__lte" value="{{ request_query_dict.value_usd__lte }}" placeholder="Max">
+									</div>
 									{% elif request.session.currency == '1' %}
 									<label for="value_eur__gte">{% trans 'Value' %}</label>
 									<div class="input-group justified">
 										<input class="form-control" type="number" min="0" max="500000000" name="value_eur__gte" value="{{ request_query_dict.value_eur__gte }}" placeholder="Min">
 										<input class="form-control" type="number" min="0" max="500000000" name="value_eur__lte" value="{{ request_query_dict.value_eur__lte }}" placeholder="Max">
+									</div>
 									{% else %}
 									<label for="value_gbp__gte">{% trans 'Value' %}</label>
 									<div class="input-group justified">
 										<input class="form-control" type="number" min="0" max="500000000" name="value_gbp__gte" value="{{ request_query_dict.value_gbp__gte }}" placeholder="Min">
 										<input class="form-control" type="number" min="0" max="500000000" name="value_gbp__lte" value="{{ request_query_dict.value_gbp__lte }}" placeholder="Max">
+									</div>
 									{% endif %}
-								</div>
 								<label for="select-realface">{% trans 'Has Real Face?' %}</label>
 								<select id="select-realface" name="hashighqualityhead" placeholder="{% trans 'Any...' %}">
 									<option value="-1" selected>{% trans 'Any...' %}</option>
@@ -353,6 +358,68 @@
 						</div>
 					</div>
 					<div id="tabs-3">
+						<div class="row">
+							<div class="col-md-4">
+								<label for="select-hasstats">{% trans 'Player have statistics?' %}</label>
+								<select id="select-hasstats" name="hasstats" placeholder="{% trans 'Any...' %}">
+									<option value="-1" selected>{% trans 'Any...' %}</option>
+									<option value="0">{% trans 'No' %}</option>
+									<option value="1">{% trans 'Yes' %}</option>
+								</select>
+					
+								<label for="stats_app_min">{% trans 'Appearances' %}</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="0" max="255" name="stats_app_min" value="{{ request_query_dict.stats_app_min }}"
+									placeholder="Min">
+									<input class="form-control" type="number" min="0" max="255" name="stats_app_max" value="{{ request_query_dict.stats_app_max }}"
+									placeholder="Max">
+								</div>
+								<label for="stats_avg_min">{% trans 'Avg. Rating' %}</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="0" max="100" name="stats_avg_min" value="{{ request_query_dict.stats_avg_min }}"
+									placeholder="Min">
+									<input class="form-control" type="number" min="0" max="100" name="stats_avg_max" value="{{ request_query_dict.stats_avg_max }}"
+									placeholder="Max">
+								</div>
+								<label for="stats_goals_min">{% trans 'Goals Scored' %}</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="0" max="255" name="stats_goals_min" value="{{ request_query_dict.stats_goals_min }}"
+									placeholder="Min">
+									<input class="form-control" type="number" min="0" max="255" name="stats_goals_max" value="{{ request_query_dict.stats_goals_max }}"
+									placeholder="Max">
+								</div>
+								<label for="stats_assists_min">{% trans 'Assists' %}</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="0" max="255" name="stats_assists_min" value="{{ request_query_dict.stats_assists_min }}"
+									placeholder="Min">
+									<input class="form-control" type="number" min="0" max="255" name="stats_assists_max" value="{{ request_query_dict.stats_assists_max }}"
+									placeholder="Max">
+								</div>
+								<label for="stats_cleansheets_min">{% trans 'Clean Sheets' %}</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="0" max="255" name="stats_cleansheets_min" value="{{ request_query_dict.stats_cleansheets_min }}"
+									placeholder="Min">
+									<input class="form-control" type="number" min="0" max="255" name="stats_cleansheets_max" value="{{ request_query_dict.stats_cleansheets_max }}"
+									placeholder="Max">
+								</div>
+								<label for="stats_yc_min">{% trans 'Yellow Cards' %}</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="0" max="255" name="stats_yc_min" value="{{ request_query_dict.stats_yc_min }}"
+									placeholder="Min">
+									<input class="form-control" type="number" min="0" max="255" name="stats_yc_max" value="{{ request_query_dict.stats_yc_max }}"
+									placeholder="Max">
+								</div>
+								<label for="stats_rc_min">{% trans 'Red Cards' %}</label>
+								<div class="input-group justified">
+									<input class="form-control" type="number" min="0" max="255" name="stats_rc_min" value="{{ request_query_dict.stats_rc_min }}"
+									placeholder="Min">
+									<input class="form-control" type="number" min="0" max="255" name="stats_rc_max" value="{{ request_query_dict.stats_rc_max }}"
+									placeholder="Max">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tabs-4">
 						<div class="row">
 							<div class="col-md-4">
 								<label for="select-isretiring">{% trans 'Is Retiring?' %}</label>

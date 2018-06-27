@@ -30,6 +30,14 @@ class DataUsersCareerCompdataPlayerStatsFilter:
 
     def filter(self, queryset):
         try:
+            if 'teamid' in self.request_dict:
+                teams_list = self.request_dict['teamid']
+                queryset = queryset.filter(
+                    Q(teamid__in=list(teams_list.split(','))))
+        except ValueError:
+            pass
+
+        try:
             if 'playerid' in self.request_dict:
                 value = list(self.request_dict['playerid'].split(','))
                 queryset = queryset.filter(Q(playerid__in=value))
@@ -37,9 +45,86 @@ class DataUsersCareerCompdataPlayerStatsFilter:
             pass
 
         try:
-            if 'teamid' in self.request_dict:
-                value = list(self.request_dict['teamid'].split(','))
-                queryset = queryset.filter(Q(teamid__in=value))
+            if 'stats_app_min' in self.request_dict or 'stats_app_max' in self.request_dict:
+                app_min = (self._check_key(
+                    self.request_dict, 'stats_app_min') or 1)
+                app_max = (self._check_key(
+                    self.request_dict, 'stats_app_max') or 255)
+
+                queryset = queryset.filter(
+                    Q(app__gte=app_min), Q(app__lte=app_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'stats_avg_min' in self.request_dict or 'stats_avg_max' in self.request_dict:
+                avg_min = (self._check_key(
+                    self.request_dict, 'stats_avg_min') or 1)
+                avg_max = (self._check_key(
+                    self.request_dict, 'stats_avg_max') or 100)
+
+                queryset = queryset.filter(
+                    Q(avg__gte=avg_min), Q(avg__lte=avg_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'stats_goals_min' in self.request_dict or 'stats_goals_max' in self.request_dict:
+                goals_min = (self._check_key(
+                    self.request_dict, 'stats_goals_min') or 1)
+                goals_max = (self._check_key(
+                    self.request_dict, 'stats_goals_max') or 255)
+
+                queryset = queryset.filter(
+                    Q(goals__gte=goals_min), Q(goals__lte=goals_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'stats_assists_min' in self.request_dict or 'stats_assists_max' in self.request_dict:
+                assists_min = (self._check_key(
+                    self.request_dict, 'stats_assists_min') or 1)
+                assists_max = (self._check_key(
+                    self.request_dict, 'stats_assists_max') or 255)
+
+                queryset = queryset.filter(
+                    Q(assists__gte=assists_min), Q(assists__lte=assists_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'stats_cleansheets_min' in self.request_dict or 'stats_cleansheets_max' in self.request_dict:
+                cleansheets_min = (self._check_key(
+                    self.request_dict, 'stats_cleansheets_min') or 1)
+                cleansheets_max = (self._check_key(
+                    self.request_dict, 'stats_cleansheets_max') or 255)
+
+                queryset = queryset.filter(
+                    Q(cleansheets__gte=cleansheets_min), Q(cleansheets__lte=cleansheets_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'stats_yc_min' in self.request_dict or 'stats_yc_max' in self.request_dict:
+                yellowcards_min = (self._check_key(
+                    self.request_dict, 'stats_yellowcards_min') or 1)
+                yellowcards_max = (self._check_key(
+                    self.request_dict, 'stats_yellowcards_max') or 255)
+
+                queryset = queryset.filter(
+                    Q(yellowcards__gte=yellowcards_min), Q(yellowcards__lte=yellowcards_max))
+        except ValueError:
+            pass
+
+        try:
+            if 'stats_rc_min' in self.request_dict or 'stats_rc_max' in self.request_dict:
+                redcards_min = (self._check_key(
+                    self.request_dict, 'stats_redcards_min') or 1)
+                redcards_max = (self._check_key(
+                    self.request_dict, 'stats_redcards_max') or 255)
+
+                queryset = queryset.filter(
+                    Q(redcards__gte=redcards_min), Q(redcards__lte=redcards_max))
         except ValueError:
             pass
 
@@ -55,13 +140,13 @@ class DataUsersCareerCompdataPlayerStatsFilter:
                     self.request_dict['order_by'], 'playerid')
 
         return queryset
-        # return queryset.order_by('-release_clause', 'playerid')
 
     def get_player_ids(self):
-        eval_DataUsersCareerRestReleaseClauses_qs = list(self.qs.iterator())
+        eval_DataUsersCareerCompdataPlayerStatsFilter_qs = list(
+            self.qs.iterator())
         list_filtered_players = list()
 
-        for player in eval_DataUsersCareerRestReleaseClauses_qs:
+        for player in eval_DataUsersCareerCompdataPlayerStatsFilter_qs:
             list_filtered_players.append(player.playerid)
 
         return list_filtered_players
@@ -702,9 +787,9 @@ class DataUsersPlayersFilter:
         player_release_clauses = DataUsersCareerRestReleaseClausesFilter(
             request=self.request_dict, for_user=self.for_user)
         player_release_clauses_ids = None
+
         try:
-            if 'hasreleaseclause' in self.request_dict and int(
-                    self.request_dict['hasreleaseclause']) in range(0, 2):
+            if 'hasreleaseclause' in self.request_dict and int(self.request_dict['hasreleaseclause']) in range(0, 2):
                 if player_release_clauses_ids is None:
                     player_release_clauses_ids = player_release_clauses.get_player_ids()
                 if int(self.request_dict['hasreleaseclause']) == 0:
@@ -832,6 +917,23 @@ class DataUsersPlayersFilter:
 
                 queryset = queryset.filter(Q(contractvaliduntil__gte=contractvaliduntil_min), Q(
                     contractvaliduntil__lte=contractvaliduntil_max))
+        except ValueError:
+            pass
+
+        # DataUsersCareerCompdataPlayerStatsFilter
+        player_stats_filter = DataUsersCareerCompdataPlayerStatsFilter(
+            for_user=self.for_user, request=self.request_dict,)
+
+        player_stats_filtered_ids = None
+
+        try:
+            if 'hasstats' in self.request_dict and int(self.request_dict['hasstats']) in range(0, 2):
+                if player_stats_filtered_ids is None:
+                    player_stats_filtered_ids = player_stats_filter.get_player_ids()
+                if int(self.request_dict['hasstats']) == 0:
+                    queryset = queryset.filter(~Q(playerid__in=player_stats_filtered_ids))
+                elif int(self.request_dict['hasstats']) == 1:
+                    queryset = queryset.filter(Q(playerid__in=player_stats_filtered_ids))
         except ValueError:
             pass
 

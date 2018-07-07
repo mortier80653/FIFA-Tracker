@@ -625,18 +625,18 @@ class RestToCSV():
         mm.seek(0)
         offset_start = mm.find(sign_mp002) + MP002_SIZE
         if offset_start < MP002_SIZE:
-            logging.error("_players_stats - mp002 not found")
+            # logging.error("_players_stats - mp002 not found")
             return False
 
         offset_end = mm.find(sign_jo002)
         if offset_end < 0:
-            logging.error("_players_stats - jo002 not found")
+            # logging.error("_players_stats - jo002 not found")
             return False
 
         stats_offset = self._get_stats_offset(mm, offset_end)
 
         if stats_offset < 0:
-            logging.error("_players_stats - stats_offset not found")
+            # logging.error("_players_stats - stats_offset not found")
             return False
 
         # Save to file
@@ -690,7 +690,7 @@ class RestToCSV():
         offset = mm.find(sign)
 
         if offset < 0:
-            logging.error("release clause sign not found")
+            # release clause sign not found
             return
 
         with open(os.path.join(self.dest_path, "career_rest_releaseclauses.csv"), 'w+', encoding='utf-8') as f_csv:
@@ -1233,6 +1233,8 @@ class ParseCareerSave():
 
         # Delete Files
         shutil.rmtree(self.data_path)
+        if os.path.isfile(self.career_file_fullpath):
+            os.remove(self.career_file_fullpath)
 
         end = time.time()
 
@@ -1253,14 +1255,13 @@ class ParseCareerSave():
                         firstname[1:], "*"*(len(firstname)-1))
                 except AttributeError:
                     logging.exception("protectprivacy error")
-                    pass
+                    user.firstname = "Mr."
 
                 try:
                     user.surname = surname.replace(
                         surname[1:], "*"*(len(surname)-1))
                 except AttributeError:
                     logging.exception("protectprivacy error")
-                    user.firstname = "Mr."
                     user.surname = "Manager"
 
                 user.save()

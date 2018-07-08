@@ -1254,14 +1254,14 @@ class ParseCareerSave():
                     user.firstname = firstname.replace(
                         firstname[1:], "*"*(len(firstname)-1))
                 except AttributeError:
-                    logging.exception("protectprivacy error")
+                    # logging.exception("protectprivacy error")
                     user.firstname = "Mr."
 
                 try:
                     user.surname = surname.replace(
                         surname[1:], "*"*(len(surname)-1))
                 except AttributeError:
-                    logging.exception("protectprivacy error")
+                    # logging.exception("protectprivacy error")
                     user.surname = "Manager"
 
                 user.save()

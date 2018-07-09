@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-27 17:43+0200\n"
+"POT-Creation-Date: 2018-07-09 14:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,12 +150,12 @@ msgstr ""
 "Niestety, profil użytkownika {} jest prywatny. Widoczność profilu może być "
 "zmieniona w Panelu Kontrolnym konta"
 
-#: .\core\generate_view_helper.py:140 .\core\generate_view_helper.py:200
-#: .\core\generate_view_helper.py:343 .\core\generate_view_helper.py:396
+#: .\core\generate_view_helper.py:140 .\core\generate_view_helper.py:199
+#: .\core\generate_view_helper.py:342 .\core\generate_view_helper.py:395
 msgid "No results found. Try to change your filters"
 msgstr "Brak rezultatów wyszukiwania. Spróbuj zmienić filtry"
 
-#: .\core\generate_view_helper.py:369
+#: .\core\generate_view_helper.py:368
 msgid ""
 "Your career file hasn't been processed yet. Displaying default FIFA database "
 "data."
@@ -179,23 +179,23 @@ msgstr "Model nie znaleziony"
 msgid "Save file not found on the server."
 msgstr "Plik nie znaleziony na serwerze"
 
-#: .\scripts\process_file_utils.py:1194
+#: .\scripts\process_file_utils.py:1196
 msgid "Unpacking database from career file."
 msgstr "Wypakowywanie bazydanych z pliku kariery"
 
-#: .\scripts\process_file_utils.py:1208
+#: .\scripts\process_file_utils.py:1210
 msgid "Exporting data from FIFA database to csv files."
 msgstr "Exportowanie danych z bazy danych FIFA do pliku csv"
 
-#: .\scripts\process_file_utils.py:1220
+#: .\scripts\process_file_utils.py:1222
 msgid "Calculating Players Values and Teams Ratings"
 msgstr "Obliczanie wartośći zawodników i oceny drużyn"
 
-#: .\scripts\process_file_utils.py:1228
+#: .\scripts\process_file_utils.py:1230
 msgid "Importing data to FIFA Tracker database."
 msgstr "Importowanie danych do bazy danych FIFA Trackera"
 
-#: .\scripts\process_file_utils.py:1238
+#: .\scripts\process_file_utils.py:1242
 msgid "Completed in {}s"
 msgstr "Proces zakończony w {}s"
 
@@ -444,7 +444,7 @@ msgid "Nationality"
 msgstr "Narodowość"
 
 #: .\templates\players\player.html:22 .\templates\players\player.html:140
-#: .\templates\players\players.html:115 .\templates\teams\team.html:108
+#: .\templates\players\players.html:115 .\templates\teams\team.html:102
 #: .\templates\teams\teams.html:96 .\templates\tools\calculator.html:81
 msgid "League"
 msgstr "Liga"
@@ -738,6 +738,7 @@ msgid "Vision"
 msgstr "Orientacja"
 
 #: .\templates\players\player.html:407 .\templates\players\players.html:324
+#: .\templates\teams\team.html:178
 msgid "Penalties"
 msgstr "Rzuty Karne"
 
@@ -1034,60 +1035,60 @@ msgstr "Pierwsza"
 msgid "Last"
 msgstr "Ostatnia"
 
-#: .\templates\players\players.html:506 .\templates\teams\team.html:219
-#: .\templates\teams\team.html:294 .\templates\teams\team.html:369
-#: .\templates\teams\team.html:444 .\templates\teams\team.html:520
+#: .\templates\players\players.html:506 .\templates\teams\team.html:282
+#: .\templates\teams\team.html:357 .\templates\teams\team.html:432
+#: .\templates\teams\team.html:507 .\templates\teams\team.html:583
 #: .\templates\transfer_history\transfers.html:130
 msgid "IMG"
 msgstr "ZDJ"
 
-#: .\templates\players\players.html:507 .\templates\teams\team.html:220
-#: .\templates\teams\team.html:295 .\templates\teams\team.html:370
-#: .\templates\teams\team.html:445 .\templates\teams\team.html:521
+#: .\templates\players\players.html:507 .\templates\teams\team.html:283
+#: .\templates\teams\team.html:358 .\templates\teams\team.html:433
+#: .\templates\teams\team.html:508 .\templates\teams\team.html:584
 #: .\templates\transfer_history\transfers.html:131
 msgid "POS"
 msgstr "POZ"
 
-#: .\templates\players\players.html:508 .\templates\teams\team.html:221
-#: .\templates\teams\team.html:296 .\templates\teams\team.html:371
-#: .\templates\teams\team.html:446 .\templates\teams\team.html:522
+#: .\templates\players\players.html:508 .\templates\teams\team.html:284
+#: .\templates\teams\team.html:359 .\templates\teams\team.html:434
+#: .\templates\teams\team.html:509 .\templates\teams\team.html:585
 #: .\templates\transfer_history\transfers.html:132
 msgid "PLAYER"
 msgstr "ZAWODNIK"
 
 #: .\templates\players\players.html:512 .\templates\players\players.html:516
-#: .\templates\players\players.html:520 .\templates\teams\team.html:222
-#: .\templates\teams\team.html:297 .\templates\teams\team.html:372
-#: .\templates\teams\team.html:447 .\templates\teams\team.html:523
+#: .\templates\players\players.html:520 .\templates\teams\team.html:285
+#: .\templates\teams\team.html:360 .\templates\teams\team.html:435
+#: .\templates\teams\team.html:510 .\templates\teams\team.html:586
 #: .\templates\transfer_history\transfers.html:133
 msgid "RAT"
 msgstr "OGL"
 
 #: .\templates\players\players.html:527 .\templates\players\players.html:531
-#: .\templates\players\players.html:535 .\templates\teams\team.html:223
-#: .\templates\teams\team.html:298 .\templates\teams\team.html:373
-#: .\templates\teams\team.html:448 .\templates\teams\team.html:524
+#: .\templates\players\players.html:535 .\templates\teams\team.html:286
+#: .\templates\teams\team.html:361 .\templates\teams\team.html:436
+#: .\templates\teams\team.html:511 .\templates\teams\team.html:587
 msgid "POT"
 msgstr "POT"
 
 #: .\templates\players\players.html:542 .\templates\players\players.html:546
-#: .\templates\players\players.html:550 .\templates\teams\team.html:224
-#: .\templates\teams\team.html:299 .\templates\teams\team.html:374
-#: .\templates\teams\team.html:449 .\templates\teams\team.html:525
+#: .\templates\players\players.html:550 .\templates\teams\team.html:287
+#: .\templates\teams\team.html:362 .\templates\teams\team.html:437
+#: .\templates\teams\team.html:512 .\templates\teams\team.html:588
 msgid "AGE"
 msgstr "Wiek"
 
 #: .\templates\players\players.html:557 .\templates\players\players.html:561
-#: .\templates\players\players.html:565 .\templates\teams\team.html:225
-#: .\templates\teams\team.html:300 .\templates\teams\team.html:375
-#: .\templates\teams\team.html:450 .\templates\teams\team.html:526
+#: .\templates\players\players.html:565 .\templates\teams\team.html:288
+#: .\templates\teams\team.html:363 .\templates\teams\team.html:438
+#: .\templates\teams\team.html:513 .\templates\teams\team.html:589
 msgid "CONTRACT"
 msgstr "KONTRAKT"
 
 #: .\templates\players\players.html:572 .\templates\players\players.html:576
-#: .\templates\players\players.html:580 .\templates\teams\team.html:226
-#: .\templates\teams\team.html:301 .\templates\teams\team.html:376
-#: .\templates\teams\team.html:451 .\templates\teams\team.html:527
+#: .\templates\players\players.html:580 .\templates\teams\team.html:289
+#: .\templates\teams\team.html:364 .\templates\teams\team.html:439
+#: .\templates\teams\team.html:514 .\templates\teams\team.html:590
 msgid "VALUE"
 msgstr "WARTOŚĆ"
 
@@ -1115,32 +1116,32 @@ msgid "Team Info"
 msgstr "Informacje o Drużynie"
 
 #: .\templates\teams\team.html:92
-msgid "Foundation Year"
-msgstr "Rok założenia"
-
-#: .\templates\teams\team.html:98
 msgid "Careers"
 msgstr "Kariery"
 
-#: .\templates\teams\team.html:104
+#: .\templates\teams\team.html:98
 msgid "Manager"
 msgstr "Menedżer"
 
-#: .\templates\teams\team.html:112
+#: .\templates\teams\team.html:106
 msgid "League Position"
 msgstr "Pozycja w lidze"
 
-#: .\templates\teams\team.html:116 .\templates\teams\teams.html:100
+#: .\templates\teams\team.html:110 .\templates\teams\teams.html:100
 msgid "League Titles"
 msgstr "Tytuły ligowe"
 
-#: .\templates\teams\team.html:120 .\templates\teams\teams.html:107
+#: .\templates\teams\team.html:114 .\templates\teams\teams.html:107
 msgid "Domestic Cups"
 msgstr "Puchary krajowe"
 
-#: .\templates\teams\team.html:124
+#: .\templates\teams\team.html:118
 msgid "Rival Team"
 msgstr "Największy Rywal"
+
+#: .\templates\teams\team.html:128
+msgid "Foundation Year"
+msgstr "Rok założenia"
 
 #: .\templates\teams\team.html:134
 msgid "Budget"
@@ -1164,47 +1165,67 @@ msgid "Int. prestige"
 msgstr "M-nar. prestiż"
 
 #: .\templates\teams\team.html:154
-msgid "numtransfersin"
-msgstr "numtransfersin"
-
-#: .\templates\teams\team.html:158
 msgid "Profitability"
 msgstr "Rentowność"
 
-#: .\templates\teams\team.html:162 .\templates\teams\teams.html:121
+#: .\templates\teams\team.html:158 .\templates\teams\teams.html:121
 msgid "Youth Development"
 msgstr "Rozwój młodieży."
 
-#: .\templates\teams\team.html:215
+#: .\templates\teams\team.html:170
+msgid "Captain"
+msgstr "Kapitan"
+
+#: .\templates\teams\team.html:186
+msgid "Left Short Free Kick"
+msgstr "Bliski Wolny (z lewej)"
+
+#: .\templates\teams\team.html:194
+msgid "Right Short Free Kick"
+msgstr "Bliski Wolny (z prawej)"
+
+#: .\templates\teams\team.html:202
+msgid "Long Free Kick"
+msgstr "Daleki Rzut Wolny"
+
+#: .\templates\teams\team.html:210
+msgid "Left Corner"
+msgstr "Rożny z Lewej"
+
+#: .\templates\teams\team.html:218
+msgid "Right Corner"
+msgstr "Rożny z Prawej"
+
+#: .\templates\teams\team.html:278
 msgid "GOALKEEPERS"
 msgstr "Bramkarze"
 
-#: .\templates\teams\team.html:267 .\templates\teams\team.html:342
-#: .\templates\teams\team.html:417 .\templates\teams\team.html:492
+#: .\templates\teams\team.html:330 .\templates\teams\team.html:405
+#: .\templates\teams\team.html:480 .\templates\teams\team.html:555
 msgid "Loaned from"
 msgstr "Wypożyczony z"
 
-#: .\templates\teams\team.html:290
+#: .\templates\teams\team.html:353
 msgid "DEFENDERS"
 msgstr "Obrońcy"
 
-#: .\templates\teams\team.html:365
+#: .\templates\teams\team.html:428
 msgid "MIDFIELDERS"
 msgstr "Pomocnicy"
 
-#: .\templates\teams\team.html:440
+#: .\templates\teams\team.html:503
 msgid "FORWARDS"
 msgstr "Napastnicy"
 
-#: .\templates\teams\team.html:516
+#: .\templates\teams\team.html:579
 msgid "LOANED OUT"
 msgstr "Wypożyczeni"
 
-#: .\templates\teams\team.html:555
+#: .\templates\teams\team.html:618
 msgid "Loaned to"
 msgstr "Wypożyczony do"
 
-#: .\templates\teams\team.html:577
+#: .\templates\teams\team.html:640
 msgid "This team dont have any players"
 msgstr "Ta drużyna nie ma żadnych zawodników"
 
@@ -1540,6 +1561,9 @@ msgstr "Tylko autoryzowani użytkownicy mogą przesyłać pliki."
 #: .\templates\upload.html:94
 msgid "Return to home"
 msgstr "Wróć na stronę główną"
+
+#~ msgid "numtransfersin"
+#~ msgstr "numtransfersin"
 
 #~ msgid "Error during processing your career file"
 #~ msgstr "Bład podczas przetwarzania pliku"

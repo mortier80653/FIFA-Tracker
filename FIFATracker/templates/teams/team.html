@@ -79,19 +79,13 @@
         <div class="container-fluid">
         <h2 align="center">{% trans 'Team Info' %}</h2>
             <div class="row team-info">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <table width="100%" class="info-table">
                         <tbody>
                             <tr>
                                 <td>{% trans 'Team' %}</td>
                                 <td align="right">
                                     {{team.teamname}} <a href="{% url 'teams' %}{{team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID: {{team.teamid}})" class="crest"></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>{% trans 'Foundation Year' %}</td>
-                                <td align="right">
-                                    {{team.foundationyear}}
                                 </td>
                             </tr>
                             <tr>
@@ -127,9 +121,15 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <table width="100%" class="info-table">
                         <tbody>
+                            <tr>
+                                <td>{% trans 'Foundation Year' %}</td>
+                                <td align="right">
+                                    {{team.foundationyear}}
+                                </td>
+                            </tr>
                             <tr>
                                 <td>{% trans 'Budget' %}</td>
                                 <td align="right"><span class="transferbudget">{{team.transferbudget}}</span> {{ request.session.currency_symbol }}</td>
@@ -151,10 +151,6 @@
                                 <td align="right"> {{team.internationalprestige}}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'numtransfersin' %}</td>
-                                <td align="right"> {{team.numtransfersin}}</td>
-                            </tr>
-                            <tr>
                                 <td>{% trans 'Profitability' %}</td>
                                 <td align="right"> {{team.profitability}}</td>
                             </tr>
@@ -165,12 +161,76 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="col-md-4">
+                    <table width="100%" class="info-table">
+                        <tbody>
+                            {% for p in players %}
+                                {% if p.player.playerid == team.captainid %}
+                                    <tr>
+                                        <td>{% trans 'Captain' %}</td>
+                                        <td align="right">
+                                            <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if p.player.playerid == team.penaltytakerid %}
+                                    <tr>
+                                        <td>{% trans 'Penalties' %}</td>
+                                        <td align="right">
+                                            <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if p.player.playerid == team.leftfreekicktakerid %}
+                                    <tr>
+                                        <td>{% trans 'Left Short Free Kick' %}</td>
+                                        <td align="right">
+                                            <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if p.player.playerid == team.rightfreekicktakerid %}
+                                    <tr>
+                                        <td>{% trans 'Right Short Free Kick' %}</td>
+                                        <td align="right">
+                                            <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if p.player.playerid == team.longkicktakerid %}
+                                    <tr>
+                                        <td>{% trans 'Long Free Kick' %}</td>
+                                        <td align="right">
+                                            <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if p.player.playerid == team.leftcornerkicktakerid %}
+                                    <tr>
+                                        <td>{% trans 'Left Corner' %}</td>
+                                        <td align="right">
+                                            <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if p.player.playerid == team.rightcornerkicktakerid %}
+                                    <tr>
+                                        <td>{% trans 'Right Corner' %}</td>
+                                        <td align="right">
+                                            <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         {% if players %}
-        <div class="container-fluid hidden-xs hidden-sm">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-md-8" id="footballpitch">
+                <div class="col-md-8 hidden-xs hidden-sm" id="footballpitch">
                     <div class="container-fluid">
                         {% if is_club_team %}
                             {% for p in players %}
@@ -198,8 +258,8 @@
                                             {{p.player.overallrating}}
                                         </div>
                                         <div class="pitch-pos-name player-position" title="POS ID: {{p.player_teams.national_team.team_links.position}}">
-                                                {{p.player_teams.national_team.team_links.position}}
-                                            </div>
+                                            {{p.player_teams.national_team.team_links.position}}
+                                        </div>
                                         <div class="pitch-playername" title="{{ p.player_name.knownas }}">
                                             <marquee behavior="scroll" direction="left" scrollamount="2">{{ p.player_name.knownas }}</marquee>
                                         </div>
@@ -208,6 +268,9 @@
                             {% endfor %}
                         {% endif %}
                     </div>
+                </div>
+                <div class="col-md-4">
+                    
                 </div>
             </div>
         </div>

@@ -175,7 +175,6 @@ def get_team(request, teamid=0, additional_filters=None):
     set_currency(request)
     current_user, fifa_edition = get_current_user(request)
 
-    #additional_filters = {'teamid': teamid, }
     additional_filters = {'teamid': teamid, 'teamidloanedfrom': teamid, }
     try:
         context_data = get_fifaplayers(

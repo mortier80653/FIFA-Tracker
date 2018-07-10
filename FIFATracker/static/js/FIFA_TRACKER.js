@@ -1,18 +1,18 @@
 $(document).ready(function(){
-  selectizejs();
-  resizeableTables();
-  updatePositions();
-  updateInGameRatings();
-  updateStrongFoot();
-  updateWorkrates();
-  changeCurrency();
-  changeUnits();
-  convertUnits();
-  changeProfilePublicStatus();
-  cleanUrl();
-  careerFileUpload();
-  numberWithCommas();
-  ToolsCalculator();
+    selectizejs();
+    resizeableTables();
+    updatePositions();
+    updateInGameRatings();
+    updateStrongFoot();
+    updateWorkrates();
+    changeCurrency();
+    changeUnits();
+    convertUnits();
+    changeProfilePublicStatus();
+    cleanUrl();
+    careerFileUpload();
+    numberWithCommas();
+    ToolsCalculator();
 });
 
 function numberWithCommas() {
@@ -2054,4 +2054,129 @@ function removeParam(parameter) {
   }
   
   return url;
+}
+
+function sortTable(tableid, column) {
+    let shouldSort, sorting, table, rows, x, y, changes;
+    changes = 0;
+    shouldSort = false;
+    sorting = true;
+    table = $('#' + tableid);
+
+    while (sorting) {
+        rows = table.find('tr');
+        sorting = false;
+        for (i = 1; i < (rows.length - 1); i++) {
+            row_x = $(rows[i]).find('td');
+            row_y = $(rows[i + 1]).find('td');
+            [x,y] = toCompare(column, row_x, row_y);
+
+            // ascending direction
+            if (x > y) {
+                shouldSort = true;
+                break;
+            }
+        }
+
+        if (shouldSort) {
+            try {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                sorting = true;
+                changes += 1;
+            } catch {
+                sorting = false;
+            }
+        }
+    }
+
+    // descending direction
+    if (changes == 0) {
+        $('#' + tableid + " tbody").each(function(){
+            var arr = $.makeArray($("tr",this).detach());
+            arr.reverse();
+            $(this).append(arr);
+        });
+    }
+}
+
+function toCompare(column, row_x, row_y){
+    let x = 0;
+    let y = 0;
+    switch (column) {
+        case 1:
+            // Column - PlayerPos
+            x = posToID(row_x[column].innerText);
+            y = posToID(row_y[column].innerText);
+            break;
+        case 2:
+            // Column - Player (order by jersey number)
+            x = parseInt(row_x[column].innerText.match(/(\d{1,2})/g)[0]);
+            y = parseInt(row_y[column].innerText.match(/(\d{1,2})/g)[0]);
+            break;
+        case 3:
+        case 4:
+        case 5:
+            // Column - OVR/POT/AGE
+            x = parseInt(row_x[column].innerText);
+            y = parseInt(row_y[column].innerText);
+            break;
+        case 7:
+            // Column - PlayerValue
+            try {
+                x = parseInt(row_x[column].innerText.match(/(\d{1,3},\d{1,3},\d{1,3})/g)[0].replace(',',''));
+            } catch {
+                x = 0;
+            }
+
+            try {
+                y = parseInt(row_y[column].innerText.match(/(\d{1,3},\d{1,3},\d{1,3})/g)[0].replace(',',''));
+            } catch {
+                y = 0;
+            }
+            break;
+        default:
+            break;
+    }
+    return [x,y];
+}
+
+function posToID(position) {
+    let positions = [
+        { position: 'GK', 	posid: 0},
+        { position: 'SW', 	posid: 1},
+        { position: 'RWB', 	posid: 2},
+        { position: 'RB', 	posid: 3},
+        { position: 'RCB', 	posid: 4},
+        { position: 'CB', 	posid: 5},
+        { position: 'LCB', 	posid: 6},
+        { position: 'LB', 	posid: 7},
+        { position: 'LWB', 	posid: 8},
+        { position: 'RDM', 	posid: 9},
+        { position: 'CDM', 	posid: 10},
+        { position: 'LDM', 	posid: 11},
+        { position: 'RM', 	posid: 12},
+        { position: 'RCM', 	posid: 13},
+        { position: 'CM', 	posid: 14},
+        { position: 'LCM', 	posid: 15},
+        { position: 'LM', 	posid: 16},
+        { position: 'RAM', 	posid: 17},
+        { position: 'CAM', 	posid: 18},
+        { position: 'LAM', 	posid: 19},
+        { position: 'RF', 	posid: 20},
+        { position: 'CF', 	posid: 21},
+        { position: 'LF', 	posid: 22},
+        { position: 'RW', 	posid: 23},
+        { position: 'RS', 	posid: 24},
+        { position: 'ST', 	posid: 25},
+        { position: 'LS', 	posid: 26},
+        { position: 'LW', 	posid: 27},
+        { position: 'SUB', 	posid: 28},
+        { position: 'RES', 	posid: 29},
+    ];
+
+    for (let i = 0; i < positions.length; i++) {
+        if (positions[i]['position'] == position) {
+            return positions[i]['posid'];
+        }
+    };
 }

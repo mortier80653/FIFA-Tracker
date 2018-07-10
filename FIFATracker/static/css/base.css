@@ -115,6 +115,10 @@ tr:hover {
     border: 2px solid yellow;
 }
 
+.teamplayerstable>thead>tr {
+    cursor: pointer;
+}
+
 #footballpitch {
     background: url("/static/img/web-assets/football-pitch.png") no-repeat;
     height: 605px;

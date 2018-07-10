@@ -276,17 +276,17 @@
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
         <h2 align="center">{% trans 'GOALKEEPERS' %}</h2>
-            <table>
+            <table class ="teamplayerstable" id="tpgktable">
                 <thead>
                     <tr>
                         <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
-                        <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
+                        <th onclick="sortTable('tpgktable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpgktable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpgktable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpgktable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpgktable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                        <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
+                        <th onclick="sortTable('tpgktable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -351,17 +351,17 @@
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
         <h2 align="center">{% trans 'DEFENDERS' %}</h2>
-            <table>
+            <table class ="teamplayerstable" id="tpdeftable">
                 <thead>
                     <tr>
                         <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
-                        <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
+                        <th onclick="sortTable('tpdeftable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpdeftable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpdeftable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpdeftable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpdeftable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                        <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
+                        <th onclick="sortTable('tpdeftable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -426,17 +426,17 @@
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
         <h2 align="center">{% trans 'MIDFIELDERS' %}</h2>
-            <table>
+            <table class ="teamplayerstable" id="tpmidtable">
                 <thead>
                     <tr>
                         <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
-                        <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
+                        <th onclick="sortTable('tpmidtable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpmidtable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpmidtable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpmidtable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpmidtable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                        <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
+                        <th onclick="sortTable('tpmidtable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -501,17 +501,17 @@
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
         <h2 align="center">{% trans 'FORWARDS' %}</h2>
-            <table>
+            <table class ="teamplayerstable" id="tpatttable">
                 <thead>
                     <tr>
                         <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
-                        <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
-                        <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
+                        <th onclick="sortTable('tpatttable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpatttable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpatttable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpatttable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th onclick="sortTable('tpatttable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
                         <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                        <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
+                        <th onclick="sortTable('tpatttable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -577,17 +577,17 @@
             {% if is_club_team %}
                 <div id="table-container" class="container-fluid" style="margin-top: 10px;">
                 <h2 align="center">{% trans 'LOANED OUT' %}</h2>
-                    <table>
+                    <table class ="teamplayerstable" id="tploanedouttable">
                         <thead>
                             <tr>
                                 <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                                <th class="text-center" style="width: 65px;">{% trans 'POS' %}</th>
-                                <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
-                                <th class="text-center" style="width: 65px;">{% trans 'RAT' %}</th>
-                                <th class="text-center" style="width: 65px;">{% trans 'POT' %}</th>
-                                <th class="text-center" style="width: 65px;">{% trans 'AGE' %}</th>
+                                <th onclick="sortTable('tploanedouttable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
+                                <th onclick="sortTable('tploanedouttable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
+                                <th onclick="sortTable('tploanedouttable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                                <th onclick="sortTable('tploanedouttable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
+                                <th onclick="sortTable('tploanedouttable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
                                 <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                                <th class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %}</th>
+                                <th onclick="sortTable('tploanedouttable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
                             </tr>
                         </thead>
                         <tbody>

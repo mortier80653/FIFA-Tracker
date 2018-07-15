@@ -929,7 +929,11 @@ class DatabaseToCSV():
                                 shortnames[v] = copyshortnames[sortedBitOffsets[v]]
                                 # [r10+C]
                                 bitdepth[v] = copybitdepth[sortedBitOffsets[v]]
-                                headers += (xml_field_names[shortnames[v]] + ",")
+                                try:
+                                    headers += (xml_field_names[shortnames[v]] + ",")
+                                except KeyError:
+                                    raise KeyError('Database contains unsupported columns.')
+
 
                             # CSV - table headers
                             f_csv.write(headers.rstrip(',') + "\n")

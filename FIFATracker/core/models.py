@@ -23,7 +23,7 @@ def user_dir_path(instance, filename):
 class CareerSaveFileModel(models.Model):
     def validate_size(filefield_obj):
         filesize = filefield_obj.file.size
-        min_size = 1000000
+        min_size = 6500000
         max_size = 15000000
         if filesize < min_size:
             raise ValidationError("Your file is not a FIFA 18 Career File.")

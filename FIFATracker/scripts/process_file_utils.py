@@ -885,7 +885,13 @@ class DatabaseToCSV():
                         if CountValidRecords <= 0:
                             continue
 
-                        with open(os.path.join(csv_path, "{}.csv".format(xml_table_names[table_names[x]])), 'w+', encoding='utf-8') as f_csv:
+                        # Skip unsupported database tables
+                        try:
+                            table_name = xml_table_names[table_names[x]]
+                        except KeyError:
+                            continue
+
+                        with open(os.path.join(csv_path, "{}.csv".format(table_name)), 'w+', encoding='utf-8') as f_csv:
 
                             fieldtypes = list()
                             bitoffsets = list()

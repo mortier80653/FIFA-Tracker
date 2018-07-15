@@ -89,8 +89,8 @@ class CalculateValues():
         self.csv_path = csv_path
 
         self.players_real_ovr = dict()
-        self.currdate = self._get_csv_val("career_calendar.csv", "currdate")
-        self.currency = self._get_csv_val("career_managerpref.csv", "currency")
+        self.currdate = self._get_csv_val("career_calendar.csv", "currdate") or 20170701
+        self.currency = self._get_csv_val("career_managerpref.csv", "currency") or 1
 
         self._calc()
         self._calc_teams_rating()
@@ -246,14 +246,14 @@ class CalculateValues():
         fpath = os.path.join(self.csv_path, fname)
         ret_val = None
 
+        if not os.path.isfile(fpath):
+            return None
+
         with open(fpath, encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 ret_val = row[fieldname]
                 break
-
-        if ret_val is None:
-            raise
 
         return ret_val
 

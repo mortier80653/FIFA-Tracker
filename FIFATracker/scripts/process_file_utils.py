@@ -938,7 +938,7 @@ class DatabaseToCSV():
                                 try:
                                     headers += (xml_field_names[shortnames[v]] + ",")
                                 except KeyError:
-                                    raise KeyError('Database contains unsupported columns.')
+                                    raise KeyError('Database contains unsupported columns. Did you choose correct FIFA version?')
 
 
                             # CSV - table headers
@@ -1055,23 +1055,18 @@ class DatabaseToCSV():
             try:
                 for node in child.getiterator():
                     try:
-                        table_names[node.attrib['shortname']
-                                    ] = node.attrib['name']
+                        table_names[node.attrib['shortname']] = node.attrib['name']
                         for a in node.getiterator():
                             if a.tag == 'field':
-                                field_names[a.attrib['shortname']
-                                            ] = a.attrib['name']
+                                field_names[a.attrib['shortname']] = a.attrib['name']
                                 if a.attrib['type'] == "DBOFIELDTYPE_INTEGER":
-                                    field_range_low[node.attrib['name'] +
-                                                    a.attrib['name']] = a.attrib['rangelow']
+                                    field_range_low[node.attrib['name'] + a.attrib['name']] = a.attrib['rangelow']
                                 else:
-                                    field_range_low[node.attrib['name'] +
-                                                    a.attrib['name']] = 0
+                                    field_range_low[node.attrib['name'] + a.attrib['name']] = 0
 
                                 if 'key' in a.attrib:
                                     if a.attrib['key'] == "True":
-                                        field_pkey[node.attrib['name']
-                                                   ] = a.attrib['name']
+                                        field_pkey[node.attrib['name']] = a.attrib['name']
                     except (ValueError):
                         continue
             except (KeyError, IndexError):

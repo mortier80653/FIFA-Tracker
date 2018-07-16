@@ -65,6 +65,7 @@
         <p><a href="{% url 'players' %}">{% trans 'Players' %}</a></p>
         <p><a href="{% url 'teams' %}">{% trans 'Teams' %}</a></p>
       {% endif %}
+      <a href="{% url 'abort_upload' %}" class="btn btn-primary">{% trans 'Abort' %}</a>
     {% endif %}
       
     {% if form %}  

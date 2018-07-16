@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-16 12:06+0200\n"
+"POT-Creation-Date: 2018-07-16 15:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,7 +151,7 @@ msgstr ""
 "zmieniona w Panelu Kontrolnym konta"
 
 #: .\core\generate_view_helper.py:140 .\core\generate_view_helper.py:199
-#: .\core\generate_view_helper.py:342 .\core\generate_view_helper.py:395
+#: .\core\generate_view_helper.py:342 .\core\generate_view_helper.py:399
 msgid "No results found. Try to change your filters"
 msgstr "Brak rezultatów wyszukiwania. Spróbuj zmienić filtry"
 
@@ -163,13 +163,21 @@ msgstr ""
 "Twoj plik kariery nie został jeszcze przetworzony. Przeglądasz domyślną baze "
 "danych FIFA"
 
-#: .\core\views.py:23
+#: .\core\views.py:25
 msgid "Only authenticated users are allowed to upload files."
 msgstr "Tylko autoryzowani użytkownicy mogą przesyłać pliki."
 
-#: .\core\views.py:100
+#: .\core\views.py:102
 msgid "Processing Career Save File."
 msgstr "Przetwarzanie pliku z zapisanym stanem gry"
+
+#: .\core\views.py:124
+msgid "Done?? Try to refresh website."
+msgstr "Udało się?? Spróbuj odświeżyć stronę."
+
+#: .\core\views.py:132
+msgid "Not authenticated."
+msgstr "Użytkownik nie jest autoryzowany."
 
 #: .\scripts\process_career_file.py:42
 msgid "Save file model not found."
@@ -1534,11 +1542,15 @@ msgstr "Powód"
 msgid "Career file has been processed. Everything should work"
 msgstr "Plik został przetworzony. Wszystko powinno działać"
 
-#: .\templates\upload.html:71
+#: .\templates\upload.html:68
+msgid "Abort"
+msgstr "Przerwij"
+
+#: .\templates\upload.html:72
 msgid "Upload your FIFA Manager Mode Career File"
 msgstr "Prześlij swój zapisany stan gry z trybu kariery"
 
-#: .\templates\upload.html:74
+#: .\templates\upload.html:75
 msgid ""
 "On PC you can find your save file in \"Documents\" -> \"FIFA 18\" -> "
 "\"settings\" -> \"CareerXXX\""
@@ -1546,14 +1558,14 @@ msgstr ""
 "Na PC Twój plik z zapisanym stanem gry powinien znajdować się w \"Documents"
 "\" -> \"FIFA 18\" -> \"settings\" -> \"CareerXXX\""
 
-#: .\templates\upload.html:79
+#: .\templates\upload.html:80
 msgid "Upload Career Save"
 msgstr "Prześlij stan gry"
 
-#: .\templates\upload.html:91
+#: .\templates\upload.html:92
 msgid "Only authenticated users are allowed to upload files"
 msgstr "Tylko autoryzowani użytkownicy mogą przesyłać pliki."
 
-#: .\templates\upload.html:94
+#: .\templates\upload.html:95
 msgid "Return to home"
 msgstr "Wróć na stronę główną"

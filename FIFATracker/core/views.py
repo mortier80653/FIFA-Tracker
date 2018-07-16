@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 
+import os
+import shutil
 import shlex
 import subprocess
 
@@ -119,11 +121,34 @@ def process_status(request):
     else:
         data = {
             "status_code": 0,
-            "status_msg": "Done?? Try to refresh website.",
+            "status_msg": _("Done?? Try to refresh website."),
         }
 
     return JsonResponse(data)
 
+def abort_upload(request):
+    user = request.user
+    if not user.is_authenticated:
+        messages.error(request, _('Not authenticated.'))
+        return redirect('home')
+
+    cs_model = CareerSaveFileModel.objects.filter(user_id=user.id)
+    if cs_model:
+        # Delete original uploaded file
+        for model in cs_model:
+            fpath = os.path.join(settings.MEDIA_ROOT, str(model.uploadedfile))
+            if os.path.isfile(fpath):
+                os.remove(fpath)
+
+            # Delete Model
+            model.delete()
+
+    # Delete Files
+    careersave_data_path = os.path.join(settings.MEDIA_ROOT, user.username, "data")
+    if os.path.exists(careersave_data_path):
+        shutil.rmtree(careersave_data_path)
+
+    return redirect('home')
 
 def privacypolicy(request):
     return render(request, 'privacy.html')

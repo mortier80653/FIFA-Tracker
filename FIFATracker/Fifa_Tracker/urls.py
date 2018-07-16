@@ -34,6 +34,7 @@ urlpatterns = [
         name='upload_career_save_file'),
     url(r'^upload/process_status/$',
         core_views.process_status, name='process_status'),
+    url(r'^upload/abort/$', core_views.abort_upload, name='abort_upload'),
     url(r'^login/$', accounts_views.login_view, name='login_view'),
     url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

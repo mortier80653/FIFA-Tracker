@@ -658,7 +658,7 @@ tr:hover {
 .navbar {
     font-family: Montserrat, sans-serif;
     margin-bottom: 0;
-    background-color: #16181dcc;
+    background-color: rgba(22,24,29,0.75);
     border: 0;
     font-size: 14px !important;
     letter-spacing: 2px;

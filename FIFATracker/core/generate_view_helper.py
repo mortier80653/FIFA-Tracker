@@ -380,7 +380,11 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
 
     # Paginate results if needed
     if paginate:
-        max_per_page = int(request.GET.get('max_per_page', 50))
+        try:
+            max_per_page = int(request.GET.get('max_per_page', 50))
+        except ValueError:
+            max_per_page = 50
+
         if not 25 <= max_per_page <= 100:
             max_per_page = 50
         paginator = MyPaginator(player_filter.qs.count(

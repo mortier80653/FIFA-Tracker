@@ -687,7 +687,7 @@ class RestToCSV():
         """Players Release Clauses"""
         sign = b"\x72\x6C\x63\x74\x72\x6B\x00"  # rlctrk - release clause sign (?)
         mm.seek(0)
-        offset = mm.find(sign)
+        offset = mm.rfind(sign)
 
         if offset < 0:
             # release clause sign not found

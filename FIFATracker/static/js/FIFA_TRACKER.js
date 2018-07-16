@@ -654,7 +654,8 @@ function careerFileUpload() {
             }
         }
         });
-    } catch(err) {
+    } 
+    catch(err) {
         return;
     };
 };
@@ -2083,7 +2084,8 @@ function sortTable(tableid, column) {
                 rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                 sorting = true;
                 changes += 1;
-            } catch {
+            } 
+            catch (error) {
                 sorting = false;
             }
         }
@@ -2124,13 +2126,15 @@ function toCompare(column, row_x, row_y){
             // Column - PlayerValue
             try {
                 x = parseInt(row_x[column].innerText.match(/(\d{1,3},\d{1,3},\d{1,3})/g)[0].replace(',',''));
-            } catch {
+            } 
+            catch (error) {
                 x = 0;
             }
 
             try {
                 y = parseInt(row_y[column].innerText.match(/(\d{1,3},\d{1,3},\d{1,3})/g)[0].replace(',',''));
-            } catch {
+            } 
+            catch (error) {
                 y = 0;
             }
             break;

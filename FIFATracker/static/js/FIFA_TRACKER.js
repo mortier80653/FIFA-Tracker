@@ -1940,10 +1940,17 @@ function updatePositions() {
         let content = $(this).html();
         let posIDsArray = $(this).text().match(/(\d{1,2})/g);
         let re = "";
+        for(let i = 0; i < posIDsArray.length; i++) {
+            let posID = posIDsArray[i];
+            re = new RegExp("(^|[\\s])("+posID+"{1})([\\s]|$)", "g");
+            content = content.replace(re, "$1"+available_positions[posID]+"$3");
+        }
+        /*
         for (let posID of posIDsArray) { 
             re = new RegExp("(^|[\\s])("+posID+"{1})([\\s]|$)", "g");
             content = content.replace(re, "$1"+available_positions[posID]+"$3");
         }
+        */
         $(this).html(content); 
     });
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-16 15:24+0200\n"
+"POT-Creation-Date: 2018-07-16 15:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -178,6 +178,10 @@ msgstr "Udało się?? Spróbuj odświeżyć stronę."
 #: .\core\views.py:132
 msgid "Not authenticated."
 msgstr "Użytkownik nie jest autoryzowany."
+
+#: .\core\views.py:146 .\core\views.py:154
+msgid "File is still processed."
+msgstr "Twój plik jest ciągle przetwarzany"
 
 #: .\scripts\process_career_file.py:42
 msgid "Save file model not found."
@@ -1543,8 +1547,8 @@ msgid "Career file has been processed. Everything should work"
 msgstr "Plik został przetworzony. Wszystko powinno działać"
 
 #: .\templates\upload.html:68
-msgid "Abort"
-msgstr "Przerwij"
+msgid "Abort if stuck"
+msgstr "Przerwij jeśli się zacięło"
 
 #: .\templates\upload.html:72
 msgid "Upload your FIFA Manager Mode Career File"

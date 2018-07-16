@@ -138,15 +138,20 @@ def abort_upload(request):
         for model in cs_model:
             fpath = os.path.join(settings.MEDIA_ROOT, str(model.uploadedfile))
             if os.path.isfile(fpath):
-                os.remove(fpath)
-
-            # Delete Model
-            model.delete()
+                try:
+                    os.remove(fpath)
+                    # Delete Model
+                    model.delete()
+                except PermissionError:
+                    messages.error(request, _('File is still processed.'))
 
     # Delete Files
     careersave_data_path = os.path.join(settings.MEDIA_ROOT, user.username, "data")
     if os.path.exists(careersave_data_path):
-        shutil.rmtree(careersave_data_path)
+        try:
+            shutil.rmtree(careersave_data_path)
+        except PermissionError:
+            messages.error(request, _('File is still processed.'))
 
     return redirect('home')
 

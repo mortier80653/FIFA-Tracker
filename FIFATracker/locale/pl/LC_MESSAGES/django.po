@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-09 14:25+0200\n"
+"POT-Creation-Date: 2018-07-16 12:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -179,23 +179,23 @@ msgstr "Model nie znaleziony"
 msgid "Save file not found on the server."
 msgstr "Plik nie znaleziony na serwerze"
 
-#: .\scripts\process_file_utils.py:1196
+#: .\scripts\process_file_utils.py:1201
 msgid "Unpacking database from career file."
 msgstr "Wypakowywanie bazydanych z pliku kariery"
 
-#: .\scripts\process_file_utils.py:1210
+#: .\scripts\process_file_utils.py:1215
 msgid "Exporting data from FIFA database to csv files."
 msgstr "Exportowanie danych z bazy danych FIFA do pliku csv"
 
-#: .\scripts\process_file_utils.py:1222
+#: .\scripts\process_file_utils.py:1227
 msgid "Calculating Players Values and Teams Ratings"
 msgstr "Obliczanie wartośći zawodników i oceny drużyn"
 
-#: .\scripts\process_file_utils.py:1230
+#: .\scripts\process_file_utils.py:1235
 msgid "Importing data to FIFA Tracker database."
 msgstr "Importowanie danych do bazy danych FIFA Trackera"
 
-#: .\scripts\process_file_utils.py:1242
+#: .\scripts\process_file_utils.py:1247
 msgid "Completed in {}s"
 msgstr "Proces zakończony w {}s"
 
@@ -685,7 +685,7 @@ msgstr "Wytrzymałość"
 msgid "Strength"
 msgstr "Siła"
 
-#: .\templates\players\player.html:349
+#: .\templates\players\player.html:349 .\templates\players\players.html:263
 msgid "Long Shots"
 msgstr "Strzały z Daleka"
 
@@ -933,10 +933,6 @@ msgstr "Drybling"
 #: .\templates\players\players.html:242
 msgid "Power"
 msgstr "Fizyczne"
-
-#: .\templates\players\players.html:263
-msgid "Longh Shots"
-msgstr "Strzały z Daleka"
 
 #: .\templates\players\players.html:270
 msgid "Movement"
@@ -1561,9 +1557,3 @@ msgstr "Tylko autoryzowani użytkownicy mogą przesyłać pliki."
 #: .\templates\upload.html:94
 msgid "Return to home"
 msgstr "Wróć na stronę główną"
-
-#~ msgid "numtransfersin"
-#~ msgstr "numtransfersin"
-
-#~ msgid "Error during processing your career file"
-#~ msgstr "Bład podczas przetwarzania pliku"

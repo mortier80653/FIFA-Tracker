@@ -11,12 +11,38 @@ from players.models import (
     DataNations,
     DataPlayernames,
     DataUsersCareerRestReleaseClauses,
+    DataUsersCareerCompdataPlayerStats,
 )
 
 from core.fifa_utils import FifaPlayer, FifaDate, PlayerAge, PlayerWage, PlayerValue, PlayerName
 from core.views import home, privacypolicy, about, contact, donate, upload_career_save_file
 
 # fifa_utils tests.
+class PlayerValueTests(TestCase):
+    def test_player_value(self):
+        test_player1 = {
+            "ovr": 94,
+            "pot": 94,
+            "age": 32,
+            "posid": 27,    # LW
+            "currency": 0,  # USD
+        }
+
+        test_player2 = {
+            "ovr": 46,
+            "pot": 81,
+            "age": 16,
+            "posid": 0,     # GK
+            "currency": 0,  # USD
+        }
+
+        # test_player1
+        test_playervalue = PlayerValue(ovr=test_player1["ovr"], pot=test_player1["pot"], age=test_player1["age"], posid=test_player1["posid"], currency=test_player1["currency"]).value
+        self.assertEquals(test_playervalue, 107000000)
+
+        # test_player2
+        test_playervalue = PlayerValue(ovr=test_player2["ovr"], pot=test_player2["pot"], age=test_player2["age"], posid=test_player2["posid"], currency=test_player2["currency"]).value
+        self.assertEquals(test_playervalue, 70000)
 
 
 class FifaPlayerTests(TestCase):
@@ -78,6 +104,8 @@ class FifaPlayerTests(TestCase):
             internationalrep=2,
             overallrating=88,
             potential=88,
+            trait1=0,
+            trait2=0,
             value_usd=65000000,
             value_eur=58000000,
             value_gbp=51000000,
@@ -125,6 +153,36 @@ class FifaPlayerTests(TestCase):
         )
         league_team_links.save()
 
+        # stats
+        player_stats = DataUsersCareerCompdataPlayerStats.objects.create(
+            username="testuser1",
+            ft_user=test_user1,
+            teamid = 5, # Chelsea
+            playerid = 222737, # Malcom
+            tournamentid = 0, #Unk
+            unk1 = 0,
+            avg = 100,
+            app = 1,
+            goals = 5,
+            unk2 = 0,
+            assists = 3,
+            unk3 = 0,
+            yellowcards = 7,
+            redcards = 2,
+            unk6 = 0,
+            unk7 = 0,
+            cleansheets = 2,
+            unk9 = 0,
+            unk10 = 0,
+            unk11 = 0,
+            unk12 = 0,
+            unk13 = 0,
+            date1 = 20170701,
+            date2 = 20170701,
+            date3 = 20170701,
+        )
+        player_stats.save()
+
     def test_player_team(self):
         # TEST Malcom
         player = DataUsersPlayers.objects.for_user(
@@ -142,6 +200,8 @@ class FifaPlayerTests(TestCase):
             DataUsersLeagues.objects.for_user("testuser1").iterator())
         qdata_dict['q_release_clauses'] = list(
             DataUsersCareerRestReleaseClauses.objects.for_user("testuser1").iterator())
+        qdata_dict['q_players_stats'] = list(
+            DataUsersCareerCompdataPlayerStats.objects.for_user("testuser1").iterator())
 
         testplayer1 = FifaPlayer(player, username="testuser1", current_date="20260419",
                                  dict_cached_queries=qdata_dict, currency=1, fifa_edition=18)
@@ -167,6 +227,8 @@ class FifaPlayerTests(TestCase):
             DataUsersLeagues.objects.for_user("testuser1").iterator())
         qdata_dict['q_release_clauses'] = list(
             DataUsersCareerRestReleaseClauses.objects.for_user("testuser1").iterator())
+        qdata_dict['q_players_stats'] = list(
+            DataUsersCareerCompdataPlayerStats.objects.for_user("testuser1").iterator())
 
         testplayer_age = FifaPlayer(player, username="testuser1", current_date="20260419",
                                     dict_cached_queries=qdata_dict, currency=1, fifa_edition=18).player_age.age
@@ -189,6 +251,8 @@ class FifaPlayerTests(TestCase):
             DataUsersLeagues.objects.for_user("testuser1").iterator())
         qdata_dict['q_release_clauses'] = list(
             DataUsersCareerRestReleaseClauses.objects.for_user("testuser1").iterator())
+        qdata_dict['q_players_stats'] = list(
+            DataUsersCareerCompdataPlayerStats.objects.for_user("testuser1").iterator())
 
         testplayer_value_usd = FifaPlayer(player, username="testuser1", current_date="20260419",
                                           dict_cached_queries=qdata_dict, currency=0, fifa_edition=18).player_value.value

@@ -36,6 +36,22 @@ class PlayerValueTests(TestCase):
             "currency": 0,  # USD
         }
 
+        test_player3 = {
+            "ovr": 58,
+            "pot": 58,
+            "age": 37,
+            "posid": 5,     # CB
+            "currency": 0,  # USD
+        }
+
+        test_player4 = {
+            "ovr": 46,
+            "pot": 46,
+            "age": 48,
+            "posid": 0,     # GK
+            "currency": 0,  # USD
+        }
+
         # test_player1
         test_playervalue = PlayerValue(ovr=test_player1["ovr"], pot=test_player1["pot"], age=test_player1["age"], posid=test_player1["posid"], currency=test_player1["currency"]).value
         self.assertEquals(test_playervalue, 107000000)
@@ -43,6 +59,14 @@ class PlayerValueTests(TestCase):
         # test_player2
         test_playervalue = PlayerValue(ovr=test_player2["ovr"], pot=test_player2["pot"], age=test_player2["age"], posid=test_player2["posid"], currency=test_player2["currency"]).value
         self.assertEquals(test_playervalue, 70000)
+
+        # test_player3
+        test_playervalue = PlayerValue(ovr=test_player3["ovr"], pot=test_player3["pot"], age=test_player3["age"], posid=test_player3["posid"], currency=test_player3["currency"]).value
+        self.assertEquals(test_playervalue, 10000)
+
+        # test_player4
+        test_playervalue = PlayerValue(ovr=test_player4["ovr"], pot=test_player4["pot"], age=test_player4["age"], posid=test_player4["posid"], currency=test_player4["currency"]).value
+        self.assertEquals(test_playervalue, 0)
 
 
 class FifaPlayerTests(TestCase):

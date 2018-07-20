@@ -735,7 +735,7 @@ class RestToCSV():
             if self._verify_index(mm, struct_size, 255):
                 return offset
 
-            offset = mm.find(sign, mm.tell()+1, compdata_end)
+            offset = mm.find(sign, mm.tell() + 1, compdata_end)
 
         return -1
 
@@ -746,7 +746,7 @@ class RestToCSV():
         for x in range(1, range_max):
             current_pos = mm.tell()
             next_unit = bytes([x]) + b"\x00\x01"
-            find = mm.find(next_unit, current_pos, current_pos+struct_size)
+            find = mm.find(next_unit, current_pos, current_pos + struct_size)
             if find != current_pos:
                 return False
             mm.seek(struct_size, 1)
@@ -829,7 +829,7 @@ class DatabaseToCSV():
         else:
             user_id = str(self.user_id)
 
-        for db in range(1, max_databases):
+        for db in range(1, max_databases + 1):
             database_full_path = os.path.join(
                 database_path, "{}.db".format(db))
             if os.path.exists(database_full_path):
@@ -843,7 +843,7 @@ class DatabaseToCSV():
                     if offset == -1:
                         continue   # File header not matching
 
-                    mm.seek(offset+len(database_header))
+                    mm.seek(offset + len(database_header))
                     dbSize = self.ReadInt32(mm.read(4))
 
                     if dbSize != mm.size():
@@ -860,6 +860,7 @@ class DatabaseToCSV():
                     for x in range(countTables):
                         table_names.append(mm.read(4).decode("utf-8"))
                         TableOffsets.append(self.ReadInt32(mm.read(4)))
+
                     CrcShortNames = self.ReadInt32(mm.read(4))   # CRC32
                     TablesStartOffset = mm.tell()
                     allshortnames = list()
@@ -892,7 +893,6 @@ class DatabaseToCSV():
                             continue
 
                         with open(os.path.join(csv_path, "{}.csv".format(table_name)), 'w+', encoding='utf-8') as f_csv:
-
                             fieldtypes = list()
                             bitoffsets = list()
                             bitdepth = list()
@@ -909,11 +909,11 @@ class DatabaseToCSV():
                                 bitdepth.append(
                                     self.ReadInt32(mm.read(4)))  # depth
 
-                                if fieldtype == 0:  # String
+                                if fieldtype == 0:      # String
                                     strFieldIndex.append(y)
-                                elif fieldtype == 3:  # Int
+                                elif fieldtype == 3:    # Int
                                     pass
-                                else:                                           # Float aka REAL?
+                                else:                   # Float aka REAL?
                                     pass
 
                             # Sort
@@ -938,8 +938,9 @@ class DatabaseToCSV():
                                 try:
                                     headers += (xml_field_names[shortnames[v]] + ",")
                                 except KeyError:
+                                    # print("missing {}:{}\n".format(table_name, shortnames[v]))
+                                    # headers += str(shortnames[v]).lower() + ","
                                     raise KeyError('Database contains unsupported columns. Did you choose correct FIFA version?')
-
 
                             # CSV - table headers
                             f_csv.write(headers.rstrip(',') + "\n")
@@ -952,16 +953,16 @@ class DatabaseToCSV():
                             for i in range(CountValidRecords):
                                 position = mm.tell()
                                 for j in range(CountFields):
-                                    num = int(bitoffsets[j]/8)
+                                    num = int(bitoffsets[j] / 8)
                                     fieldtype = fieldtypes[j]
                                     if fieldtype == 0:  # String
-                                        mm.seek(position+num)
+                                        mm.seek(position + num)
                                         currentbyte = 0
                                         currentbitpos = 0
                                         writevalue = self.ReadNullByteStr(
-                                            mm, int(bitdepth[j]/8))
+                                            mm, int(bitdepth[j] / 8))
                                     elif fieldtype == 4:  # Float
-                                        mm.seek(position+num)
+                                        mm.seek(position + num)
                                         writevalue = self.ReadFloat(mm.read(4))
                                     else:  # Int and ... ?
                                         num = 0
@@ -979,12 +980,11 @@ class DatabaseToCSV():
                                         num2 = int(int(1 << depth) - 1)
                                         num &= num2
                                         writevalue = num + \
-                                            int(
-                                                xml_field_range[xml_table_names[table_names[x]] + xml_field_names[shortnames[j]]])
+                                            int(xml_field_range[xml_table_names[table_names[x]] + xml_field_names[shortnames[j]]])
                                     values += (str(writevalue) + ",")
                                 f_csv.write(values.rstrip(',') + '\n')
                                 values = username + "," + user_id + ","
-                                mm.seek(position+RecordSize)
+                                mm.seek(position + RecordSize)
                                 currentbyte = 0
                                 currentbitpos = 0
 
@@ -1041,7 +1041,7 @@ class DatabaseToCSV():
         dict
             dict with all field names
 
-        dict 
+        dict
             dict with rangelow values
         """
         tree = ET.parse(XML_FULL_PATH)
@@ -1138,7 +1138,7 @@ class UnpackDatabase():
                 cur_pos = offset + len(database_header)
                 mm.seek(cur_pos, 0)
                 dbSize = self.ReadInt32(mm.read(4))
-                end_of_data = offset+dbSize
+                end_of_data = offset + dbSize
 
                 # Create .db file
                 with open(os.path.join(self.dest_path, "{}.db".format(current_db)), "wb") as database_file:
@@ -1161,7 +1161,7 @@ class ParseCareerSave():
     """Parse FIFA Career Save.
         Parameters
         ----------
-        career_file_fullpath : str 
+        career_file_fullpath : str
             Full path to save file. media/<USERNAME>/CareerData
 
         careersave_data_path : str
@@ -1257,14 +1257,14 @@ class ParseCareerSave():
 
                 try:
                     user.firstname = firstname.replace(
-                        firstname[1:], "*"*(len(firstname)-1))
+                        firstname[1:], "*" * (len(firstname) - 1))
                 except AttributeError:
                     # logging.exception("protectprivacy error")
                     user.firstname = "Mr."
 
                 try:
                     user.surname = surname.replace(
-                        surname[1:], "*"*(len(surname)-1))
+                        surname[1:], "*" * (len(surname) - 1))
                 except AttributeError:
                     # logging.exception("protectprivacy error")
                     user.surname = "Manager"
@@ -1280,7 +1280,7 @@ class ParseCareerSave():
 
             Parameters
             ----------
-            csv_path : str 
+            csv_path : str
                 Path to csv files. ex: media/<USERNAME>/data/csv
         """
 
@@ -1326,8 +1326,8 @@ class ParseCareerSave():
             "smrivals",
             "rowteamnationlinks",
             "teamnationlinks",
-            "referee",
-            "leaguerefereelinks",
+            # "referee",
+            # "leaguerefereelinks",
             "fixtures",
             "playersuspensions",
             "bannerplayers",
@@ -1342,7 +1342,7 @@ class ParseCareerSave():
         ]
 
         '''
-        csv_list = [   
+        csv_list = [
             "players",
         ]
         #'''
@@ -1387,7 +1387,7 @@ class ParseCareerSave():
         # Prepare list for "bulk_create"
         new_rows_array = list()
 
-        #updated = 0
+        # updated = 0
 
         with open(full_csv_path, encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
@@ -1421,7 +1421,7 @@ class ParseCareerSave():
                     obj = self._get_model_obj(
                         model_filter, models_data_list[valid_index])
                     if obj is not None:
-                        #updated += 1
+                        # updated += 1
                         for key, value in row.items():
                             setattr(obj, key, value)
 
@@ -1453,7 +1453,7 @@ class ParseCareerSave():
     def _get_model_obj(self, model_filter, model_data):
         ''' Return model to update '''
 
-        for i, m in enumerate(model_filter, self.enum_start-1):
+        for i, m in enumerate(model_filter, self.enum_start - 1):
             if int(model_data['primary_key']) == m.primary_key:
                 # start next iteration from i
                 self.enum_start = i

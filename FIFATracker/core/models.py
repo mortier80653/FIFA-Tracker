@@ -74,6 +74,11 @@ class DataUsersCareerManagerpref(models.Model):
     skipfirsttransfer = models.IntegerField(blank=True, null=True)
     playasaiteam = models.IntegerField(blank=True, null=True)
 
+    # FIFA 18 - Nintendo Switch
+    rsjn = models.IntegerField(blank=True, null=True)
+    dgou = models.IntegerField(blank=True, null=True)
+    nket = models.IntegerField(blank=True, null=True)
+
     objects = UserDataManager()
 
     class Meta:
@@ -731,6 +736,9 @@ class DataUsersFormations(models.Model):
     offset4x = models.FloatField(null=True, blank=True, default=None)
     playerinstruction9_2 = models.IntegerField(blank=True, null=True)
     playerinstruction8_2 = models.IntegerField(blank=True, null=True)
+
+    # FIFA 18 - Nintendo Switch
+    igcc = models.IntegerField(blank=True, null=True)
 
     objects = UserDataManager()
 

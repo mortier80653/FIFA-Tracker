@@ -261,6 +261,11 @@ class DataUsersTeams(models.Model):
     trait1vstrong = models.IntegerField(blank=True, null=True)
     matchdayattackrating = models.IntegerField(blank=True, null=True)
 
+    # FIFA 18 - Nintendo Switch
+    aisd = models.IntegerField(blank=True, null=True)  # physioid_secondary
+    knkp = models.IntegerField(blank=True, null=True)  # physioid_primary
+
+
     # FIFA 17
     trait1 = models.IntegerField(blank=True, null=True)
     busbuildupspeedvstrong = models.IntegerField(blank=True, null=True)

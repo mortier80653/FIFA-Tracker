@@ -93,7 +93,7 @@ def transfer_info(playerid, data):
                 "counteroffers": transfer.counteroffers,
                 "date": transfer.date,
                 "from_team": transfer.teamid,
-                "to_team":  transfer.offerteamid,
+                "to_team": transfer.offerteamid,
                 "valuation": "{:,}".format(transfer.valuation),
                 "offeredfee": "{:,}".format(transfer.offeredfee),
                 "offeredwage": "{:,}".format(transfer.offeredwage),

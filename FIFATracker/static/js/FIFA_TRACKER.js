@@ -141,34 +141,34 @@ function updateInGameRatings() {
     });
 
     let positions = [
-        { position: 'GK', 	posid: '0'},
-        { position: 'SW', 	posid: '1'},
-        { position: 'RWB', 	posid: '2'},
-        { position: 'RB', 	posid: '3'},
-        { position: 'RCB', 	posid: '4'},
-        { position: 'CB', 	posid: '5'},
-        { position: 'LCB', 	posid: '6'},
-        { position: 'LB', 	posid: '7'},
-        { position: 'LWB', 	posid: '8'},
-        { position: 'RDM', 	posid: '9'},
-        { position: 'CDM', 	posid: '10'},
-        { position: 'LDM', 	posid: '11'},
-        { position: 'RM', 	posid: '12'},
-        { position: 'RCM', 	posid: '13'},
-        { position: 'CM', 	posid: '14'},
-        { position: 'LCM', 	posid: '15'},
-        { position: 'LM', 	posid: '16'},
-        { position: 'RAM', 	posid: '17'},
-        { position: 'CAM', 	posid: '18'},
-        { position: 'LAM', 	posid: '19'},
-        { position: 'RF', 	posid: '20'},
-        { position: 'CF', 	posid: '21'},
-        { position: 'LF', 	posid: '22'},
-        { position: 'RW', 	posid: '23'},
-        { position: 'RS', 	posid: '24'},
-        { position: 'ST', 	posid: '25'},
-        { position: 'LS', 	posid: '26'},
-        { position: 'LW', 	posid: '27'},
+        { position: 'GK',    posid: '0'},
+        { position: 'SW',    posid: '1'},
+        { position: 'RWB',    posid: '2'},
+        { position: 'RB',    posid: '3'},
+        { position: 'RCB',    posid: '4'},
+        { position: 'CB',    posid: '5'},
+        { position: 'LCB',    posid: '6'},
+        { position: 'LB',    posid: '7'},
+        { position: 'LWB',    posid: '8'},
+        { position: 'RDM',    posid: '9'},
+        { position: 'CDM',    posid: '10'},
+        { position: 'LDM',    posid: '11'},
+        { position: 'RM',    posid: '12'},
+        { position: 'RCM',    posid: '13'},
+        { position: 'CM',    posid: '14'},
+        { position: 'LCM',    posid: '15'},
+        { position: 'LM',    posid: '16'},
+        { position: 'RAM',    posid: '17'},
+        { position: 'CAM',    posid: '18'},
+        { position: 'LAM',    posid: '19'},
+        { position: 'RF',    posid: '20'},
+        { position: 'CF',    posid: '21'},
+        { position: 'LF',    posid: '22'},
+        { position: 'RW',    posid: '23'},
+        { position: 'RS',    posid: '24'},
+        { position: 'ST',    posid: '25'},
+        { position: 'LS',    posid: '26'},
+        { position: 'LW',    posid: '27'},
     ];
 
     for (var i = 0; i < positions.length; i++) {
@@ -226,7 +226,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[12] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 11%
             break;
         case 3:
-        	// RB (id = 3)
+           // RB (id = 3)
             ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
             ovr.push(parseFloat(attr_val[24] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 7%
             ovr.push(parseFloat(attr_val[20] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 8%
@@ -241,7 +241,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[12] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 14%
             break;
         case 4:
-    		// RCB (id = 4)
+       	// RCB (id = 4)
             ovr.push(parseFloat(attr_val[24] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 2%
             ovr.push(parseFloat(attr_val[19] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_JUMPING * 3%
             ovr.push(parseFloat(attr_val[21] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 10%
@@ -271,7 +271,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[12] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 10%
             break;
         case 6:
-        	// LCB (id = 6)
+           // LCB (id = 6)
             ovr.push(parseFloat(attr_val[24] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 2%
             ovr.push(parseFloat(attr_val[19] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_JUMPING * 3%
             ovr.push(parseFloat(attr_val[21] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 10%
@@ -286,7 +286,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[12] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 10%
             break;
         case 7:
-        	// LB (id = 7)
+           // LB (id = 7)
             ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
             ovr.push(parseFloat(attr_val[24] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 7%
             ovr.push(parseFloat(attr_val[20] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 8%
@@ -301,7 +301,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[12] * 0.14).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 14%
             break;
         case 8:
-    		// LWB (id = 8)
+       	// LWB (id = 8)
             ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
             ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
             ovr.push(parseFloat(attr_val[20] * 0.10).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 10%
@@ -331,7 +331,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[12] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 5%
             break;
         case 10:
-   			// CDM (id = 10)
+      		// CDM (id = 10)
             ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
             ovr.push(parseFloat(attr_val[21] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 4%
             ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
@@ -346,7 +346,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[12] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 5%
             break;
         case 11:
- 			// LDM (id = 11)
+    		// LDM (id = 11)
             ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
             ovr.push(parseFloat(attr_val[21] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 4%
             ovr.push(parseFloat(attr_val[26] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 7%
@@ -361,7 +361,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[12] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SLIDING_TACKLE * 5%
             break;
         case 12:
-    		// RM (id = 12)
+       	// RM (id = 12)
             ovr.push(parseFloat(attr_val[23] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 7%
             ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
             ovr.push(parseFloat(attr_val[20] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 5%
@@ -376,7 +376,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[8] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 11%
             break;
         case 13:
-        	// RCM (id = 13)
+           // RCM (id = 13)
             ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
             ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
             ovr.push(parseFloat(attr_val[30] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 5%
@@ -391,7 +391,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[11] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 5%
             break;
         case 14:
-        	// CM (id = 14)
+           // CM (id = 14)
             ovr.push(parseFloat(attr_val[20] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 6%
             ovr.push(parseFloat(attr_val[26] * 0.08).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 8%
             ovr.push(parseFloat(attr_val[30] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_INTERCEPTIONS * 5%
@@ -421,7 +421,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[11] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STANDING_TACKLE * 5%
             break;
         case 16:
-        	// LM (id = 16)
+           // LM (id = 16)
             ovr.push(parseFloat(attr_val[23] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 7%
             ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
             ovr.push(parseFloat(attr_val[20] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STAMINA * 5%
@@ -436,7 +436,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[8] * 0.11).toFixed(2));			// PLAYER_ATTRIBUTE_SHORT_PASSING * 11%
             break;
         case 17:
-        	// RAM (id = 17)
+           // RAM (id = 17)
             ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
             ovr.push(parseFloat(attr_val[24] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 3%
             ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
@@ -451,7 +451,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[22] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 5%
             break;
         case 18:
-        	// CAM (id = 18)
+           // CAM (id = 18)
             ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
             ovr.push(parseFloat(attr_val[24] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 3%
             ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
@@ -466,7 +466,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[22] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 5%
             break;
         case 19:
-        	// LAM (id = 19)
+           // LAM (id = 19)
             ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
             ovr.push(parseFloat(attr_val[24] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 3%
             ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
@@ -481,7 +481,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[22] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 5%
             break;
         case 20:
-        	// RF (id = 20)
+           // RF (id = 20)
             ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
             ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
             ovr.push(parseFloat(attr_val[26] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 9%
@@ -496,7 +496,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
             break;
         case 21:
-        	// CF (id = 21)
+           // CF (id = 21)
             ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
             ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
             ovr.push(parseFloat(attr_val[26] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 9%
@@ -511,7 +511,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
             break;
         case 22:
-        	// LF (id = 22)
+           // LF (id = 22)
             ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
             ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
             ovr.push(parseFloat(attr_val[26] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 9%
@@ -526,7 +526,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
             break;
         case 23:
-        	// RW (id = 23)
+           // RW (id = 23)
             ovr.push(parseFloat(attr_val[23] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 7%
             ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
             ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
@@ -541,7 +541,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
             break;
         case 24:
-        	// RS (id = 24)
+           // RS (id = 24)
             ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
             ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
             ovr.push(parseFloat(attr_val[21] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 5%
@@ -557,7 +557,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[9] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_VOLLEYS * 2%
             break;
         case 25:
-        	// ST (id = 25)
+           // ST (id = 25)
             ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
             ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
             ovr.push(parseFloat(attr_val[21] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 5%
@@ -573,7 +573,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[9] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_VOLLEYS * 2%
             break;
         case 26:
-        	// LS (id = 26)
+           // LS (id = 26)
             ovr.push(parseFloat(attr_val[23] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 4%
             ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
             ovr.push(parseFloat(attr_val[21] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_STRENGTH * 5%
@@ -589,7 +589,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[9] * 0.02).toFixed(2));			// PLAYER_ATTRIBUTE_VOLLEYS * 2%
             break;
         case 27:
-        	// LW (id = 27)
+           // LW (id = 27)
             ovr.push(parseFloat(attr_val[23] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 7%
             ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
             ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%
@@ -954,34 +954,34 @@ function selectizejs() {
         labelField: 'position',
         searchField: ['posid', 'position'],
         options: [
-            { position: 'GK', 	posid: '0'},
-            { position: 'SW', 	posid: '1'},
-            { position: 'RWB', 	posid: '2'},
-            { position: 'RB', 	posid: '3'},
-            { position: 'RCB', 	posid: '4'},
-            { position: 'CB', 	posid: '5'},
-            { position: 'LCB', 	posid: '6'},
-            { position: 'LB', 	posid: '7'},
-            { position: 'LWB', 	posid: '8'},
-            { position: 'RDM', 	posid: '9'},
-            { position: 'CDM', 	posid: '10'},
-            { position: 'LDM', 	posid: '11'},
-            { position: 'RM', 	posid: '12'},
-            { position: 'RCM', 	posid: '13'},
-            { position: 'CM', 	posid: '14'},
-            { position: 'LCM', 	posid: '15'},
-            { position: 'LM', 	posid: '16'},
-            { position: 'RAM', 	posid: '17'},
-            { position: 'CAM', 	posid: '18'},
-            { position: 'LAM', 	posid: '19'},
-            { position: 'RF', 	posid: '20'},
-            { position: 'CF', 	posid: '21'},
-            { position: 'LF', 	posid: '22'},
-            { position: 'RW', 	posid: '23'},
-            { position: 'RS', 	posid: '24'},
-            { position: 'ST', 	posid: '25'},
-            { position: 'LS', 	posid: '26'},
-            { position: 'LW', 	posid: '27'},
+            { position: 'GK',    posid: '0'},
+            { position: 'SW',    posid: '1'},
+            { position: 'RWB',    posid: '2'},
+            { position: 'RB',    posid: '3'},
+            { position: 'RCB',    posid: '4'},
+            { position: 'CB',    posid: '5'},
+            { position: 'LCB',    posid: '6'},
+            { position: 'LB',    posid: '7'},
+            { position: 'LWB',    posid: '8'},
+            { position: 'RDM',    posid: '9'},
+            { position: 'CDM',    posid: '10'},
+            { position: 'LDM',    posid: '11'},
+            { position: 'RM',    posid: '12'},
+            { position: 'RCM',    posid: '13'},
+            { position: 'CM',    posid: '14'},
+            { position: 'LCM',    posid: '15'},
+            { position: 'LM',    posid: '16'},
+            { position: 'RAM',    posid: '17'},
+            { position: 'CAM',    posid: '18'},
+            { position: 'LAM',    posid: '19'},
+            { position: 'RF',    posid: '20'},
+            { position: 'CF',    posid: '21'},
+            { position: 'LF',    posid: '22'},
+            { position: 'RW',    posid: '23'},
+            { position: 'RS',    posid: '24'},
+            { position: 'ST',    posid: '25'},
+            { position: 'LS',    posid: '26'},
+            { position: 'LW',    posid: '27'},
         ],
         render: {
             item: function(item, escape) {
@@ -1011,9 +1011,9 @@ function selectizejs() {
         labelField: 'workrate',
         searchField: ['workrateValue', 'workrate'],
         options: [
-            { workrate: 'Low', 			workrateValue: '1'},
-            { workrate: 'Medium', 		workrateValue: '0'},
-            { workrate: 'High', 		workrateValue: '2'},
+            { workrate: 'Low',    		workrateValue: '1'},
+            { workrate: 'Medium',    	workrateValue: '0'},
+            { workrate: 'High',    	workrateValue: '2'},
         ],
         render: {
             item: function(item, escape) {
@@ -1043,9 +1043,9 @@ function selectizejs() {
         labelField: 'workrate',
         searchField: ['workrateValue', 'workrate'],
         options: [
-            { workrate: 'Low', 			workrateValue: '1'},
-            { workrate: 'Medium', 		workrateValue: '0'},
-            { workrate: 'High', 		workrateValue: '2'},
+            { workrate: 'Low',    		workrateValue: '1'},
+            { workrate: 'Medium',    	workrateValue: '0'},
+            { workrate: 'High',    	workrateValue: '2'},
         ],
         render: {
             item: function(item, escape) {
@@ -1340,12 +1340,12 @@ function selectizejs() {
         labelField: 'headtypename',
         searchField: ['headtype', 'headtypename'],
         options: [
-            { headtypename: 'Caucasian', 	    headtype: '0'},
-            { headtypename: 'African', 	        headtype: '1'},
-            { headtypename: 'Latin', 	        headtype: '2'},
-            { headtypename: 'European', 	    headtype: '3'},
-            { headtypename: 'Arabic', 	        headtype: '4'},
-            { headtypename: 'Asian', 	        headtype: '5'},
+            { headtypename: 'Caucasian',        headtype: '0'},
+            { headtypename: 'African',            headtype: '1'},
+            { headtypename: 'Latin',            headtype: '2'},
+            { headtypename: 'European',        headtype: '3'},
+            { headtypename: 'Arabic',            headtype: '4'},
+            { headtypename: 'Asian',            headtype: '5'},
         ],
         render: {
             item: function(item, escape) {
@@ -1375,7 +1375,7 @@ function selectizejs() {
         labelField: 'labelfield',
         searchField: ['valuefield', 'labelfield'],
         options: [
-            { labelfield: 'Short', 	valuefield: '1'},
+            { labelfield: 'Short',    valuefield: '1'},
         ],
         render: {
             item: function(item, escape) {
@@ -1405,18 +1405,18 @@ function selectizejs() {
         labelField: 'labelfield',
         searchField: ['valuefield', 'labelfield'],
         options: [
-            { labelfield: 'Blonde', 	        valuefield: '0'},
-            { labelfield: 'Black', 	            valuefield: '1'},
-            { labelfield: 'Ash Blonde', 	    valuefield: '2'},
-            { labelfield: 'Dark Brown', 	    valuefield: '3'},
+            { labelfield: 'Blonde',            valuefield: '0'},
+            { labelfield: 'Black',                valuefield: '1'},
+            { labelfield: 'Ash Blonde',        valuefield: '2'},
+            { labelfield: 'Dark Brown',        valuefield: '3'},
             { labelfield: 'Platinum Blonde',    valuefield: '4'},
-            { labelfield: 'Light Brown', 	    valuefield: '5'},
-            { labelfield: 'Brown', 	            valuefield: '6'},
-            { labelfield: 'Red', 	            valuefield: '7'},
-            { labelfield: 'White', 	            valuefield: '8'},
-            { labelfield: 'Gray', 	            valuefield: '9'},
-            { labelfield: 'Green', 	            valuefield: '10'},
-            { labelfield: 'Violet', 	        valuefield: '11'},
+            { labelfield: 'Light Brown',        valuefield: '5'},
+            { labelfield: 'Brown',                valuefield: '6'},
+            { labelfield: 'Red',                valuefield: '7'},
+            { labelfield: 'White',                valuefield: '8'},
+            { labelfield: 'Gray',                valuefield: '9'},
+            { labelfield: 'Green',                valuefield: '10'},
+            { labelfield: 'Violet',            valuefield: '11'},
         ],
         render: {
             item: function(item, escape) {
@@ -1446,16 +1446,16 @@ function selectizejs() {
         labelField: 'labelfield',
         searchField: ['valuefield', 'labelfield'],
         options: [
-            { labelfield: 'Light Pink', 	valuefield: '1'},
-            { labelfield: 'Pink', 	valuefield: '2'},
-            { labelfield: 'Dark Pink', 	valuefield: '3'},
-            { labelfield: 'Light Yellow', 	valuefield: '4'},
-            { labelfield: 'Medium Yellow', 	valuefield: '5'},
-            { labelfield: 'Dark Yellow', 	valuefield: '6'},
-            { labelfield: 'Very Light Brown', 	valuefield: '7'},
-            { labelfield: 'Light Brown', 	valuefield: '8'},
-            { labelfield: 'Medium Brown', 	valuefield: '9'},
-            { labelfield: 'Dark Brown', 	valuefield: '10'},
+            { labelfield: 'Light Pink',    valuefield: '1'},
+            { labelfield: 'Pink',    valuefield: '2'},
+            { labelfield: 'Dark Pink',    valuefield: '3'},
+            { labelfield: 'Light Yellow',    valuefield: '4'},
+            { labelfield: 'Medium Yellow',    valuefield: '5'},
+            { labelfield: 'Dark Yellow',    valuefield: '6'},
+            { labelfield: 'Very Light Brown',    valuefield: '7'},
+            { labelfield: 'Light Brown',    valuefield: '8'},
+            { labelfield: 'Medium Brown',    valuefield: '9'},
+            { labelfield: 'Dark Brown',    valuefield: '10'},
         ],
         render: {
             item: function(item, escape) {
@@ -1485,23 +1485,23 @@ function selectizejs() {
         labelField: 'labelfield',
         searchField: ['valuefield', 'labelfield'],
         options: [
-            { labelfield: 'Average Height - Lean', 	valuefield: '1'},
-            { labelfield: 'Average Height - Normal', 	valuefield: '2'},
-            { labelfield: 'Average Height - Stocky', 	valuefield: '3'},
-            { labelfield: 'Tall (185+) Height - Lean', 	valuefield: '4'},
-            { labelfield: 'Tall (185+) Height - Normal', 	valuefield: '5'},
-            { labelfield: 'Tall (185+) Height - Stocky', 	valuefield: '6'},
-            { labelfield: 'Short (175-) Height - Lean', 	valuefield: '7'},
-            { labelfield: 'Short (175-) Height - Normal', 	valuefield: '8'},
-            { labelfield: 'Short (175-) Height - Stocky', 	valuefield: '9'},
-            { labelfield: 'Messi', 	valuefield: '10'},
-            { labelfield: 'Very Tall and Lean', 	valuefield: '11'},
-            { labelfield: 'Akinfenwa', 	valuefield: '12'},
-            { labelfield: 'Courtois', 	valuefield: '13'},
-            { labelfield: 'Neymar', 	valuefield: '14'},
-            { labelfield: 'Shaqiri', 	valuefield: '15'},
-            { labelfield: 'Cristiano Ronaldo', 	valuefield: '16'},
-            { labelfield: 'Leroux (Only Women)', 	valuefield: '18'},
+            { labelfield: 'Average Height - Lean',    valuefield: '1'},
+            { labelfield: 'Average Height - Normal',    valuefield: '2'},
+            { labelfield: 'Average Height - Stocky',    valuefield: '3'},
+            { labelfield: 'Tall (185+) Height - Lean',    valuefield: '4'},
+            { labelfield: 'Tall (185+) Height - Normal',    valuefield: '5'},
+            { labelfield: 'Tall (185+) Height - Stocky',    valuefield: '6'},
+            { labelfield: 'Short (175-) Height - Lean',    valuefield: '7'},
+            { labelfield: 'Short (175-) Height - Normal',    valuefield: '8'},
+            { labelfield: 'Short (175-) Height - Stocky',    valuefield: '9'},
+            { labelfield: 'Messi',    valuefield: '10'},
+            { labelfield: 'Very Tall and Lean',    valuefield: '11'},
+            { labelfield: 'Akinfenwa',    valuefield: '12'},
+            { labelfield: 'Courtois',    valuefield: '13'},
+            { labelfield: 'Neymar',    valuefield: '14'},
+            { labelfield: 'Shaqiri',    valuefield: '15'},
+            { labelfield: 'Cristiano Ronaldo',    valuefield: '16'},
+            { labelfield: 'Leroux (Only Women)',    valuefield: '18'},
         ],
         render: {
             item: function(item, escape) {
@@ -1751,60 +1751,60 @@ function selectizejs() {
         labelField: 'traitname',
         searchField: ['traitvalue', 'traitname'],
         options: [
-            { traitname: 'Inflexibility', 	traitvalue: '1_1'},
-            { traitname: 'Long Throw-in', 	traitvalue: '1_2'},
-            { traitname: 'Power Free kick', 	traitvalue: '1_4'},
-            { traitname: 'Diver', 	traitvalue: '1_8'},
-            { traitname: 'Injury prone', 	traitvalue: '1_16'},
-            { traitname: 'Injury free', 	traitvalue: '1_32'},
-            { traitname: 'Avoids using weaker foot', 	traitvalue: '1_64'},
-            { traitname: 'Dives into tackles', 	traitvalue: '1_128'},
-            { traitname: 'Tries to beat defensive line', 	traitvalue: '1_256'},
-            { traitname: 'Selfish', 	traitvalue: '1_512'},
-            { traitname: 'Leadership', 	traitvalue: '1_1024'},
-            { traitname: 'Argues With Referee', 	traitvalue: '1_2048'},
-            { traitname: 'Early crosser', 	traitvalue: '1_4096'},
-            { traitname: 'Finesse shot', 	traitvalue: '1_8192'},
-            { traitname: 'Flair', 	traitvalue: '1_16384'},
-            { traitname: 'Long passer', 	traitvalue: '1_32768'},
-            { traitname: 'Long shot taker', 	traitvalue: '1_65536'},
-            { traitname: 'Skilled dribbling', 	traitvalue: '1_131072'},
-            { traitname: 'Playmaker', 	traitvalue: '1_262144'},
-            { traitname: 'GK up for corners', 	traitvalue: '1_524288'},
-            { traitname: 'Puncher', 	traitvalue: '1_1048576'},
-            { traitname: 'GK Long throw', 	traitvalue: '1_2097152'},
-            { traitname: 'Power header', 	traitvalue: '1_4194304'},
-            { traitname: 'GK One on One', 	traitvalue: '1_8388608'},
-            { traitname: 'Giant throw-in', 	traitvalue: '1_16777216'},
-            { traitname: 'Outsite foot shot', 	traitvalue: '1_33554432'},
-            { traitname: 'Fans favourite', 	traitvalue: '1_67108864'},
-            { traitname: 'Swerve Pass', 	traitvalue: '1_134217728'},
-            { traitname: 'Second Wind', 	traitvalue: '1_268435456'},
-            { traitname: 'Acrobatic Clearance', 	traitvalue: '1_536870912'},
-            { traitname: 'Skilled Dribbling', 	traitvalue: '2_1'},
-            { traitname: 'Flair Passes', 	traitvalue: '2_2'},
-            { traitname: 'Fancy Flicks', 	traitvalue: '2_4'},
-            { traitname: 'Stutter Penalty', 	traitvalue: '2_8'},
-            { traitname: 'Chipped Penalty', 	traitvalue: '2_16'},
-            { traitname: 'Bicycle Kicks', 	traitvalue: '2_32'},
-            { traitname: 'Diving Header', 	traitvalue: '2_64'},
-            { traitname: 'Driven Pass', 	traitvalue: '2_128'},
-            { traitname: 'GK Flat Kick', 	traitvalue: '2_256'},
-            { traitname: 'One Club Player', 	traitvalue: '2_512'},
-            { traitname: 'Team Player', 	traitvalue: '2_1024'},
-            { traitname: 'Chip shot', 	traitvalue: '2_2048'},
-            { traitname: 'Technical Dribbler', 	traitvalue: '2_4096'},
-            { traitname: 'Rushes Out Of Goal', 	traitvalue: '2_8192'},
-            { traitname: 'Backs Into Player', 	traitvalue: '2_16384'},
-            { traitname: 'Set Play Specialist', 	traitvalue: '2_32768'},
-            { traitname: 'Takes Finesse Free Kicks', 	traitvalue: '2_65536'},
-            { traitname: 'Target Forward', 	traitvalue: '2_131072'},
-            { traitname: 'Cautious With Crosses', 	traitvalue: '2_262144'},
-            { traitname: 'Comes For Crossess', 	traitvalue: '2_524288'},
-            { traitname: 'Blames Teammates', 	traitvalue: '2_1048576'},
-            { traitname: 'Saves with Feet', 	traitvalue: '2_2097152'},
-            { traitname: 'Set Play Specialist', 	traitvalue: '2_4194304'},
-            { traitname: 'Tornado Skillmove', 	traitvalue: '2_8388608'},
+            { traitname: 'Inflexibility',    traitvalue: '1_1'},
+            { traitname: 'Long Throw-in',    traitvalue: '1_2'},
+            { traitname: 'Power Free kick',    traitvalue: '1_4'},
+            { traitname: 'Diver',    traitvalue: '1_8'},
+            { traitname: 'Injury prone',    traitvalue: '1_16'},
+            { traitname: 'Injury free',    traitvalue: '1_32'},
+            { traitname: 'Avoids using weaker foot',    traitvalue: '1_64'},
+            { traitname: 'Dives into tackles',    traitvalue: '1_128'},
+            { traitname: 'Tries to beat defensive line',    traitvalue: '1_256'},
+            { traitname: 'Selfish',    traitvalue: '1_512'},
+            { traitname: 'Leadership',    traitvalue: '1_1024'},
+            { traitname: 'Argues With Referee',    traitvalue: '1_2048'},
+            { traitname: 'Early crosser',    traitvalue: '1_4096'},
+            { traitname: 'Finesse shot',    traitvalue: '1_8192'},
+            { traitname: 'Flair',    traitvalue: '1_16384'},
+            { traitname: 'Long passer',    traitvalue: '1_32768'},
+            { traitname: 'Long shot taker',    traitvalue: '1_65536'},
+            { traitname: 'Skilled dribbling',    traitvalue: '1_131072'},
+            { traitname: 'Playmaker',    traitvalue: '1_262144'},
+            { traitname: 'GK up for corners',    traitvalue: '1_524288'},
+            { traitname: 'Puncher',    traitvalue: '1_1048576'},
+            { traitname: 'GK Long throw',    traitvalue: '1_2097152'},
+            { traitname: 'Power header',    traitvalue: '1_4194304'},
+            { traitname: 'GK One on One',    traitvalue: '1_8388608'},
+            { traitname: 'Giant throw-in',    traitvalue: '1_16777216'},
+            { traitname: 'Outsite foot shot',    traitvalue: '1_33554432'},
+            { traitname: 'Fans favourite',    traitvalue: '1_67108864'},
+            { traitname: 'Swerve Pass',    traitvalue: '1_134217728'},
+            { traitname: 'Second Wind',    traitvalue: '1_268435456'},
+            { traitname: 'Acrobatic Clearance',    traitvalue: '1_536870912'},
+            { traitname: 'Skilled Dribbling',    traitvalue: '2_1'},
+            { traitname: 'Flair Passes',    traitvalue: '2_2'},
+            { traitname: 'Fancy Flicks',    traitvalue: '2_4'},
+            { traitname: 'Stutter Penalty',    traitvalue: '2_8'},
+            { traitname: 'Chipped Penalty',    traitvalue: '2_16'},
+            { traitname: 'Bicycle Kicks',    traitvalue: '2_32'},
+            { traitname: 'Diving Header',    traitvalue: '2_64'},
+            { traitname: 'Driven Pass',    traitvalue: '2_128'},
+            { traitname: 'GK Flat Kick',    traitvalue: '2_256'},
+            { traitname: 'One Club Player',    traitvalue: '2_512'},
+            { traitname: 'Team Player',    traitvalue: '2_1024'},
+            { traitname: 'Chip shot',    traitvalue: '2_2048'},
+            { traitname: 'Technical Dribbler',    traitvalue: '2_4096'},
+            { traitname: 'Rushes Out Of Goal',    traitvalue: '2_8192'},
+            { traitname: 'Backs Into Player',    traitvalue: '2_16384'},
+            { traitname: 'Set Play Specialist',    traitvalue: '2_32768'},
+            { traitname: 'Takes Finesse Free Kicks',    traitvalue: '2_65536'},
+            { traitname: 'Target Forward',    traitvalue: '2_131072'},
+            { traitname: 'Cautious With Crosses',    traitvalue: '2_262144'},
+            { traitname: 'Comes For Crossess',    traitvalue: '2_524288'},
+            { traitname: 'Blames Teammates',    traitvalue: '2_1048576'},
+            { traitname: 'Saves with Feet',    traitvalue: '2_2097152'},
+            { traitname: 'Set Play Specialist',    traitvalue: '2_4194304'},
+            { traitname: 'Tornado Skillmove',    traitvalue: '2_8388608'},
         ],
         render: {
             item: function(item, escape) {
@@ -2153,36 +2153,36 @@ function toCompare(column, row_x, row_y){
 
 function posToID(position) {
     let positions = [
-        { position: 'GK', 	posid: 0},
-        { position: 'SW', 	posid: 1},
-        { position: 'RWB', 	posid: 2},
-        { position: 'RB', 	posid: 3},
-        { position: 'RCB', 	posid: 4},
-        { position: 'CB', 	posid: 5},
-        { position: 'LCB', 	posid: 6},
-        { position: 'LB', 	posid: 7},
-        { position: 'LWB', 	posid: 8},
-        { position: 'RDM', 	posid: 9},
-        { position: 'CDM', 	posid: 10},
-        { position: 'LDM', 	posid: 11},
-        { position: 'RM', 	posid: 12},
-        { position: 'RCM', 	posid: 13},
-        { position: 'CM', 	posid: 14},
-        { position: 'LCM', 	posid: 15},
-        { position: 'LM', 	posid: 16},
-        { position: 'RAM', 	posid: 17},
-        { position: 'CAM', 	posid: 18},
-        { position: 'LAM', 	posid: 19},
-        { position: 'RF', 	posid: 20},
-        { position: 'CF', 	posid: 21},
-        { position: 'LF', 	posid: 22},
-        { position: 'RW', 	posid: 23},
-        { position: 'RS', 	posid: 24},
-        { position: 'ST', 	posid: 25},
-        { position: 'LS', 	posid: 26},
-        { position: 'LW', 	posid: 27},
-        { position: 'SUB', 	posid: 28},
-        { position: 'RES', 	posid: 29},
+        { position: 'GK',    posid: 0},
+        { position: 'SW',    posid: 1},
+        { position: 'RWB',    posid: 2},
+        { position: 'RB',    posid: 3},
+        { position: 'RCB',    posid: 4},
+        { position: 'CB',    posid: 5},
+        { position: 'LCB',    posid: 6},
+        { position: 'LB',    posid: 7},
+        { position: 'LWB',    posid: 8},
+        { position: 'RDM',    posid: 9},
+        { position: 'CDM',    posid: 10},
+        { position: 'LDM',    posid: 11},
+        { position: 'RM',    posid: 12},
+        { position: 'RCM',    posid: 13},
+        { position: 'CM',    posid: 14},
+        { position: 'LCM',    posid: 15},
+        { position: 'LM',    posid: 16},
+        { position: 'RAM',    posid: 17},
+        { position: 'CAM',    posid: 18},
+        { position: 'LAM',    posid: 19},
+        { position: 'RF',    posid: 20},
+        { position: 'CF',    posid: 21},
+        { position: 'LF',    posid: 22},
+        { position: 'RW',    posid: 23},
+        { position: 'RS',    posid: 24},
+        { position: 'ST',    posid: 25},
+        { position: 'LS',    posid: 26},
+        { position: 'LW',    posid: 27},
+        { position: 'SUB',    posid: 28},
+        { position: 'RES',    posid: 29},
     ];
 
     for (let i = 0; i < positions.length; i++) {

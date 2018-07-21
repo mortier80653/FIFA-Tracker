@@ -11,11 +11,83 @@
 <nav class="navbar navbar-default">
 	<div class="container" style="margin-top: 55px;">
 		<div class="row">
-			<div class="col-sm-4" style="padding-top:5px;">
+			<div class="col-md-4 col-xs-12" style="padding-top:5px;">
 				<div class="form-group">
 					<input id='player-search-input' name="playersearch" placeholder="{% trans 'Search for player...' %}">
 				</div>
 			</div>
+			<div class="col-md-8 col-xs-12" style="padding-top:5px;">
+				<div class="row">
+					<div class="col-xs-3">
+						<div>
+							<span style="display:table; margin:0 auto;">
+								<a href="{% url 'players' %}?teamid=111592"><img src="{% get_static_prefix %}img/assets/crest/l111592.png" title="{% trans 'Free Agents' %} (ID: 111592)" class="crest"></a>
+							</span>
+						</div>
+						<div>
+							<span style="display:table; margin:0 auto;">
+								<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?teamid=111592">{% trans 'Free Agents' %}</a></span>
+								<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?teamid=111592">{% trans 'FA' %}</a></span>
+							</span> 
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div>
+							<span style="display:table; margin:0 auto;">
+								<a href="{% url 'players' %}?isreal=0"><img src="{% get_static_prefix %}img/assets/youthheads/p150406.png" title="{% trans 'Generic Players' %}" class="crest"></a>
+							</span>
+						</div>
+						<div>
+							<span style="display:table; margin:0 auto;">
+								<span class="hidden-md hidden-sm hidden-xs"><a href="{% url 'players' %}?isreal=0">{% trans 'Generic Players' %}</a></span>
+								<span class="hidden-xl hidden-lg"><a href="{% url 'players' %}?isreal=0">{% trans 'Generic' %}</a></span>
+							</span> 
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div>
+							<span style="display:table; margin:0 auto;">
+								{% if request.session.currency == '0' %}
+									<a href="{% url 'players' %}?value_usd__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_0.png" title="{% trans 'Players for' %} 0$" class="crest"></a>
+								{% elif request.session.currency == '1' %}
+									<a href="{% url 'players' %}?value_eur__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_1.png" title="{% trans 'Players for' %} 0€" class="crest"></a>
+								{% else %}
+									<a href="{% url 'players' %}?value_gbp__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_2.png" title="{% trans 'Players for' %} 0£" class="crest"></a>
+								{% endif %}
+							</span>
+						</div>
+						<div>
+							<span style="display:table; margin:0 auto;">
+								{% if request.session.currency == '0' %}
+									<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?value_usd__lte=0">{% trans 'Free Players' %}</a></span>
+									<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?value_usd__lte=0">{% trans 'Free' %}</a></span>
+								{% elif request.session.currency == '1' %}
+									<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?value_eur__lte=0">{% trans 'Free Players' %}</a></span>
+									<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?value_eur__lte=0">{% trans 'Free' %}</a></span>
+								{% else %}
+									<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?value_gbp__lte=0">{% trans 'Free Players' %}</a></span>
+									<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?value_gbp__lte=0">{% trans 'Free' %}</a></span>
+								{% endif %}
+							</span> 
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div>
+							<span style="display:table; margin:0 auto;">
+								{% with player=players|first %}
+									<a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}"><img src="{% get_static_prefix %}img/assets/other/warning.png" title="{% trans 'Expiring Contract' %}" class="crest"></a>
+								{% endwith %}
+							</span>
+		</div>
+						<div>
+							<span style="display:table; margin:0 auto;">
+								<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Exp. Con.' %}</a></span>
+								<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Expiring' %}</a></span>
+							</span> 
+						</div>
+					</div>
+				</div>
+	</div>
 		</div>
 	</div>
 </nav>

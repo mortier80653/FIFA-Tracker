@@ -81,8 +81,10 @@
 		</div>
 						<div>
 							<span style="display:table; margin:0 auto;">
-								<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Exp. Con.' %}</a></span>
-								<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Expiring' %}</a></span>
+								{% with player=players|first %}
+									<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Exp. Con.' %}</a></span>
+									<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Expiring' %}</a></span>
+								{% endwith %}
 							</span> 
 						</div>
 					</div>

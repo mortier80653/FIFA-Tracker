@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 
+import logging
 import os
 import shutil
 import shlex
@@ -136,6 +137,8 @@ def abort_upload(request):
     if not user.is_authenticated:
         messages.error(request, _('Not authenticated.'))
         return redirect('home')
+
+    logging.info("{} pressed abort button".format(user))
 
     cs_model = CareerSaveFileModel.objects.filter(user_id=user.id)
     if cs_model:

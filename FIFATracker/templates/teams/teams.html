@@ -254,7 +254,7 @@
                     </a>
                     {% endif %}
                 </th>
-                <th class="text-center">
+                <th class="text-center hidden-xs">
                     {% if request_query_dict.order_by == "-transferbudget" %}
                     <a href="{% url_params request '?order_by=' 'transferbudget' %}">
                         {% trans 'BUDGET' %}
@@ -272,7 +272,7 @@
                     </a>
                     {% endif %}
                 </th>
-                <th class="text-center">
+                <th class="text-center hidden-xs">
                     {% if request_query_dict.order_by == "-clubworth" %}
                     <a href="{% url_params request '?order_by=' 'clubworth' %}">
                         {% trans 'Club worth' %}
@@ -318,10 +318,10 @@
                 <td class="text-center">
                     <span class="ratinglabel rat{{team.defenserating}}">{{ team.defenserating }}</span>
                 </td>
-                <td class="text-center">
+                <td class="text-center hidden-xs">
                     <span class="transferbudget">{{team.transferbudget}}</span> {{ request.session.currency_symbol }}
                 </td>
-                <td class="text-center">
+                <td class="text-center hidden-xs">
                     <span class="clubworth">{{team.clubworth}}</span> {{ request.session.currency_symbol }}
                 </td>
             </tr>

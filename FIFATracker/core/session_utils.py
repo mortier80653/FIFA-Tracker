@@ -62,29 +62,36 @@ def get_career_user(request, current_user=None):
     if request.session.get('career_user', None) is None:
         career_user = DataUsersCareerUsers.objects.for_user(current_user).first()
 
-        clubteamid = career_user.clubteamid
-        nationalteamid = career_user.nationalteamid
+        try:
+            clubteamid = career_user.clubteamid
+        except AttributeError:
+            clubteamid = -1
+
+        try:
+            nationalteamid = career_user.nationalteamid
+        except AttributeError:
+            nationalteamid = -1
+
         fteamids = [clubteamid, nationalteamid]
         teams = list(DataUsersTeams.objects.for_user(current_user).filter(Q(teamid__in=fteamids)).iterator())
 
         clubteamname = ""
         nationalteamname = ""
-        for team in teams:
-            teamid = team.teamid
-            if teamid == clubteamid:
-                clubteamname = team.teamname
-            elif teamid == nationalteamid:
-                nationalteamname = team.teamname
-
-        career_user.clubteamid
-        career_user.nationalteamid
+        try:
+            for team in teams:
+                teamid = team.teamid
+                if teamid == clubteamid:
+                    clubteamname = team.teamname
+                elif teamid == nationalteamid:
+                    nationalteamname = team.teamname
+        except AttributeError:
+            pass
 
         request.session['career_user'] = {
             'clubteamid': clubteamid,
             'clubteamname': clubteamname,
             'nationalteamid': nationalteamid,
             'nationalteamname': nationalteamname,
-            'nationalityid': career_user.nationalityid,
         }
 
     return request.session.get('career_user', None)

@@ -104,6 +104,9 @@ class CalculateValues():
         links = self._get_teamplayers_links()
 
         players_file = os.path.join(self.csv_path, "players.csv")
+        if not os.path.isfile(players_file):
+            return None
+
         with open(players_file, 'r', encoding='utf-8') as csvfile:
             data = csvfile.readlines()
 
@@ -161,6 +164,9 @@ class CalculateValues():
                 i += 1
 
         # Write data
+        if not os.path.isfile(players_file):
+            return None
+
         with open(players_file, 'w', encoding='utf-8') as csvfile:
             csvfile.writelines(data)
 
@@ -1518,6 +1524,9 @@ class ParseCareerSave():
 
     def _copy_from_csv(self, table, full_csv_path):
         """ Populate data in table with content from csv file """
+        if not os.path.isfile(full_csv_path):
+            return None
+
         with connection.cursor() as cur:
             with open(full_csv_path, 'r', encoding='utf-8') as f:
                 columns = f.readline()

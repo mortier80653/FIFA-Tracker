@@ -62,10 +62,13 @@ def run(*args):
         user.profile.is_save_processed = True
         user.profile.fifa_edition = fifa_edition
         user.save()
+    except FileNotFoundError:
+        user.profile.is_save_processed = False
+        user.save()
     except Exception as e:
         user.profile.is_save_processed = False
         user.save()
         logging.exception(
             "process_career_file script - ParseCareerSave - user: {}".format(user))
-        delete_data(user_id)
+        # delete_data(user_id)
         update_savefile_model(user_id, e, fpath=fpath)

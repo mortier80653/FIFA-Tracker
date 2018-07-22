@@ -13,6 +13,7 @@ import subprocess
 
 from collections import Counter
 
+from core.session_utils import del_session_key
 from .fifa_utils import get_team_name
 from players.models import DataUsersTeams
 from .models import CareerSaveFileModel
@@ -48,6 +49,9 @@ def upload_career_save_file(request):
     if request.method == 'POST':
         form = CareerSaveFileForm(request.POST, request.FILES)
         if form.is_valid():
+            # Clear previous save data from session
+            del_session_key(request, "career_user")
+
             fifa_edition = int(request.POST.get('fifa_edition'))
 
             # FIFA 17 and FIFA 18 is supported.
@@ -126,6 +130,7 @@ def process_status(request):
 
     return JsonResponse(data)
 
+
 def abort_upload(request):
     user = request.user
     if not user.is_authenticated:
@@ -154,6 +159,7 @@ def abort_upload(request):
             messages.error(request, _('File is still processed.'))
 
     return redirect('home')
+
 
 def privacypolicy(request):
     return render(request, 'privacy.html')

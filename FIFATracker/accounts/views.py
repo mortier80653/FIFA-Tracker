@@ -11,6 +11,7 @@ from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 
+from core.session_utils import del_session_key
 from .forms import SignUpForm, LoginForm, PasswordResetForm, SetNewPasswordForm
 from .tokens import account_activation_token, reset_password_token
 
@@ -67,6 +68,9 @@ def login_view(request):
 
     form = LoginForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
+        # clear guest data from session
+        del_session_key(request, "career_user")
+
         user = form.login(request)
         if user is not None:
             login(request, user)

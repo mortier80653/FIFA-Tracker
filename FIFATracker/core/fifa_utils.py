@@ -317,8 +317,8 @@ class PlayerValue:
         pot_mod = basevalue * self._pot_factor(self.pot - self.ovr)
         age_mod = basevalue * self._age_factor(self.age, self.posid)
         player_value = self._sum_factors(basevalue, pos_mod, pot_mod, age_mod)
-        #print("\nbase value: {}\npos_mod: {}\npot_mod: {}\nage_mod: {}\nplayer_value: {}".format(basevalue, pos_mod, pot_mod, age_mod, player_value))
-        
+        # print("\nbase value: {}\npos_mod: {}\npot_mod: {}\nage_mod: {}\nplayer_value: {}".format(basevalue, pos_mod, pot_mod, age_mod, player_value))
+
         if player_value < 0:
             player_value = 0
         elif player_value < 1000:
@@ -607,10 +607,10 @@ class PlayerValue:
             return (factors[-1] / 100)
 
         # For GK
-        if posid == 0 and age >= 28: 
+        if posid == 0 and age >= 28:
             if age >= 40:
                 age = 36
-            elif age in range(37,40):
+            elif age in range(37, 40):
                 age = 35
             else:
                 age -= 2

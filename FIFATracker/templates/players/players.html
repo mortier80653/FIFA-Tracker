@@ -78,7 +78,7 @@
 									<a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}"><img src="{% get_static_prefix %}img/assets/other/warning.png" title="{% trans 'Expiring Contract' %}" class="crest"></a>
 								{% endwith %}
 							</span>
-		</div>
+						</div>
 						<div>
 							<span style="display:table; margin:0 auto;">
 								{% with player=players|first %}

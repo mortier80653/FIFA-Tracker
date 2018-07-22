@@ -10,6 +10,7 @@ from core.exceptions import NoResultsError, PrivateProfileError, UnknownError
 from core.fifa_utils import FifaPlayer
 from core.paginator import MyPaginator
 from core.filters import DataUsersPlayersFilter, DataUsersTeamsFilter, DataUsersCareerTransferOfferFilter
+from core.session_utils import set_currency, get_current_user, get_fifa_edition, get_career_user
 
 from players.models import (
     DataUsersTeamplayerlinks,
@@ -33,48 +34,7 @@ from core.models import (
 )
 
 
-def set_currency(request):
-    # Set Currency
-    currency_symbols = ('$', '€', '£')
-    if request.session.get('currency', None) is None:
-        try:
-            request.session['currency'] = request.user.profile.currency
-        except:
-            request.session['currency'] = 1
-
-    if request.session.get('currency_symbol', None) is None:
-        request.session['currency_symbol'] = currency_symbols[int(
-            request.session['currency'])]
-
-
-def get_current_user(request):
-    # Set current User
-    if 'owner' in request.GET:
-        owner = request.GET['owner']
-        try:
-            user = User.objects.get(username=owner)
-            is_profile_public = user.profile.is_public
-            fifa_edition = user.profile.fifa_edition
-        except Exception as e:
-            raise UnknownError(e)
-
-        if not is_profile_public:
-            raise PrivateProfileError(
-                _("Sorry, {}'s profile is private. Profile visibility can be changed in Control Panel.").format(owner))
-
-        current_user = owner
-    elif request.user.is_authenticated:
-        current_user = request.user
-        fifa_edition = request.user.profile.fifa_edition
-    else:
-        current_user = "guest"
-        fifa_edition = 18
-
-    return current_user, int(fifa_edition)
-
 # Transfers
-
-
 def transfer_info(playerid, data):
     for transfer in data:
         if int(transfer.playerid) == int(playerid):
@@ -113,7 +73,8 @@ def transfer_info(playerid, data):
 def get_transfers(request, additional_filters=None, paginate=False):
     request_query_dict = request.GET.copy()
 
-    current_user, fifa_edition = get_current_user(request)
+    current_user = get_current_user(request)
+    fifa_edition = get_fifa_edition(request)
 
     if additional_filters:
         for k, v in additional_filters.items():
@@ -173,7 +134,8 @@ def get_team(request, teamid=0, additional_filters=None):
     request_query_dict = request.GET.copy()
 
     set_currency(request)
-    current_user, fifa_edition = get_current_user(request)
+    current_user = get_current_user(request)
+    fifa_edition = get_fifa_edition(request)
 
     additional_filters = {'teamid': teamid, 'teamidloanedfrom': teamid, }
     try:
@@ -315,7 +277,10 @@ def get_teams(request, additional_filters=None, paginate=False):
     request_query_dict = request.GET.copy()
 
     set_currency(request)
-    current_user, fifa_edition = get_current_user(request)
+    current_user = get_current_user(request)
+    fifa_edition = get_fifa_edition(request)
+
+    career_user = get_career_user(request, current_user=current_user)
 
     # Apply filters
     if additional_filters:
@@ -347,8 +312,14 @@ def get_teams(request, additional_filters=None, paginate=False):
     dict_cached_queries['q_leagues'] = list(
         DataUsersLeagues.objects.for_user(current_user).iterator())
 
-    context = {'teams': data, 'paginator': paginator,
-               'request_query_dict': request_query_dict, 'dict_cached_queries': dict_cached_queries, }
+    context = {
+        'teams': data,
+        'paginator': paginator,
+        'request_query_dict': request_query_dict,
+        'dict_cached_queries': dict_cached_queries,
+        'career_user': career_user,
+    }
+
     return context
 
 
@@ -357,7 +328,8 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
     request_query_dict = request.GET.copy()
 
     set_currency(request)
-    current_user, fifa_edition = get_current_user(request)
+    current_user = get_current_user(request)
+    fifa_edition = get_fifa_edition(request)
 
     # Current date according to in-game calendar
     try:

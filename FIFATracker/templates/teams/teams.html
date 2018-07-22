@@ -3,15 +3,60 @@
 
 {% block secondnav %}
 <nav class="navbar navbar-default">
-	<div class="container" style="margin-top: 55px;">
-		<div class="row">
-			<div class="col-sm-4" style="padding-top:5px;">
-				<div class="form-group">
-					<input id='team-search-input' name="teamsearch" placeholder="{% trans 'Search for team...' %}">
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container" style="margin-top: 55px;">
+        <div class="row">
+            <div class="col-md-4" style="padding-top:5px;">
+                <div class="form-group">
+                    <input id='team-search-input' name="teamsearch" placeholder="{% trans 'Search for team...' %}">
+                </div>
+            </div>
+            <div class="col-md-8 col-xs-12" style="padding-top:5px;">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div>
+                            <span style="display:table; margin:0 auto;">
+                                <a href="{% url 'teams' %}{{ career_user.clubteamid }}"><img src="{% get_static_prefix %}img/assets/crest/l{{ career_user.clubteamid }}.png" title="{{ career_user.clubteamname }} (ID: {{ career_user.clubteamid }})" class="crest"></a>
+                            </span>
+                        </div>
+                        <div>
+                            <span style="display:table; margin:0 auto;">
+                                <span class="hidden-xs hidden-sm"><a href="{% url 'teams' %}{{ career_user.clubteamid }}">{{ career_user.clubteamname }}</a></span>
+                                <span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'teams' %}{{ career_user.clubteamid }}">{% trans 'CT' %}</a></span>
+                            </span> 
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div>
+                            <span style="display:table; margin:0 auto;">
+                                <a href="{% url 'teams' %}112264"><img src="{% get_static_prefix %}img/assets/crest/l112264.png" title="Youth Squad (ID: 112264)" class="crest"></a>
+                            </span>
+                        </div>
+                        <div>
+                            <span style="display:table; margin:0 auto;">
+                                <span class="hidden-xs hidden-sm"><a href="{% url 'teams' %}112264">{% trans 'Youth Academy' %}</a></span>
+                                <span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'teams' %}112264">{% trans 'YA' %}</a></span>
+                            </span> 
+                        </div>
+                    </div>
+                    {% if career_user.nationalteamid != -1 %}
+                        <div class="col-xs-3">
+                            <div>
+                                <span style="display:table; margin:0 auto;">
+                                    <a href="{% url 'teams' %}{{ career_user.nationalteamid }}"><img src="{% get_static_prefix %}img/assets/crest/l{{ career_user.nationalteamid }}.png" title="{{ career_user.nationalteamname }} (ID: {{ career_user.nationalteamid }})" class="crest"></a>
+                                </span>
+                            </div>
+                            <div>
+                                <span style="display:table; margin:0 auto;">
+                                    <span class="hidden-xs hidden-sm"><a href="{% url 'teams' %}{{ career_user.nationalteamid }}">{{ career_user.nationalteamname }}</a></span>
+                                    <span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'teams' %}{{ career_user.nationalteamid }}">{% trans 'NT' %}</a></span>
+                                </span> 
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 </nav>
 {% endblock %}
 
@@ -59,10 +104,10 @@
                             </div>
                             <label for="select-teamtype">{% trans 'Team Type' %}</label>
                             <select id="select-teamtype" name="teamtype" placeholder="Both">
-								<option value="-1" selected>{% trans 'Both' %}</option>
-								<option value="0">{% trans 'Club Team' %}</option>
-								<option value="1">{% trans 'National Team' %}</option>
-							</select>
+                                <option value="-1" selected>{% trans 'Both' %}</option>
+                                <option value="0">{% trans 'Club Team' %}</option>
+                                <option value="1">{% trans 'National Team' %}</option>
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <label for="transferbudget__gte">{% trans 'Transfer Budget' %}</label>
@@ -143,7 +188,7 @@
                         <option value="50" selected>50</option>
                         <option value="75">75</option>
                         <option value="100">100</option>
-                    </select>	
+                    </select>
                 </div>
             </div>
         </div>

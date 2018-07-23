@@ -1219,9 +1219,13 @@ class ParseCareerSave():
         # Export data from FIFA database to csv files.
         self._update_savefile_model(
             0, _("Exporting data from FIFA database to csv files."))
+
         db_to_csv = DatabaseToCSV(dbs_path=self.data_path, user=self.user,
                                   num_of_db=self.unpacked_dbs, xml_file=self.xml_file)
-        self.xml_pkeys = db_to_csv.convert_to_csv()
+        try:
+            self.xml_pkeys = db_to_csv.convert_to_csv()
+        except Exception as e:
+            raise Exception(e)
 
         # Convert rest of the data to csv file format.
         RestToCSV(rest_path=self.data_path, user=self.user).convert_to_csv()
@@ -1243,7 +1247,9 @@ class ParseCareerSave():
         self.protectprivacy()
 
         # Delete Files
-        shutil.rmtree(self.data_path)
+        if os.path.exists(self.data_path):
+            shutil.rmtree(self.data_path)
+
         if os.path.isfile(self.career_file_fullpath):
             os.remove(self.career_file_fullpath)
 

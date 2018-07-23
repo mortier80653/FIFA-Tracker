@@ -4,7 +4,7 @@
 {% load i18n %}
 
 {% block stylesheet %}
-  <link rel="stylesheet" href="{% static 'css/team.css' %}">
+  <link rel="stylesheet" href="{% static 'css/team.css' %}?v={% file_timestamp 'css/team.css' %}">
 {% endblock %}
 
 {% block content %}

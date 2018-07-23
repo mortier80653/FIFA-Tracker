@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load common_templatetags %}
 {% load i18n %}
 
 {% block stylesheet %}
-  <link rel="stylesheet" href="{% static 'css/player.css' %}">
+  <link rel="stylesheet" href="{% static 'css/player.css' %}?v={% file_timestamp 'css/player.css' %}">
 {% endblock %}
 
 {% block content %}

@@ -4,7 +4,7 @@
 {% load i18n %}
 
 {% block stylesheet %}
-  <link rel="stylesheet" href="{% static 'css/players.css' %}">
+  <link rel="stylesheet" href="{% static 'css/players.css' %}?v={% file_timestamp 'css/players.css' %}">
 {% endblock %}
 
 {% block secondnav %}

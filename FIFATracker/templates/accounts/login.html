@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load common_templatetags %}
 {% load i18n %}
 
 {% block stylesheet %}
-  <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/accounts.css' %}?v={% file_timestamp 'css/accounts.css' %}">
 {% endblock %}
 
 {% block content %}

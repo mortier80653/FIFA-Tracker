@@ -9,726 +9,726 @@
 
 {% block secondnav %}
 <nav class="navbar navbar-default">
-	<div class="container" style="margin-top: 55px;">
-		<div class="row">
-			<div class="col-md-4 col-xs-12" style="padding-top:5px;">
-				<div class="form-group">
-					<input id='player-search-input' name="playersearch" placeholder="{% trans 'Search for player...' %}">
-				</div>
-			</div>
-			<div class="col-md-8 col-xs-12" style="padding-top:5px;">
-				<div class="row">
-					<div class="col-xs-3">
-						<div>
-							<span style="display:table; margin:0 auto;">
-								<a href="{% url 'players' %}?teamid=111592"><img src="{% get_static_prefix %}img/assets/crest/l111592.png" title="{% trans 'Free Agents' %} (ID: 111592)" class="crest"></a>
-							</span>
-						</div>
-						<div>
-							<span style="display:table; margin:0 auto;">
-								<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?teamid=111592">{% trans 'Free Agents' %}</a></span>
-								<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?teamid=111592">{% trans 'FA' %}</a></span>
-							</span> 
-						</div>
-					</div>
-					<div class="col-xs-3">
-						<div>
-							<span style="display:table; margin:0 auto;">
-								<a href="{% url 'players' %}?isreal=0"><img src="{% get_static_prefix %}img/assets/youthheads/p150406.png" title="{% trans 'Generic Players' %}" class="crest"></a>
-							</span>
-						</div>
-						<div>
-							<span style="display:table; margin:0 auto;">
-								<span class="hidden-md hidden-sm hidden-xs"><a href="{% url 'players' %}?isreal=0">{% trans 'Generic Players' %}</a></span>
-								<span class="hidden-xl hidden-lg"><a href="{% url 'players' %}?isreal=0">{% trans 'Generic' %}</a></span>
-							</span> 
-						</div>
-					</div>
-					<div class="col-xs-3">
-						<div>
-							<span style="display:table; margin:0 auto;">
-								{% if request.session.currency == '0' %}
-									<a href="{% url 'players' %}?value_usd__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_0.png" title="{% trans 'Players for' %} 0$" class="crest"></a>
-								{% elif request.session.currency == '1' %}
-									<a href="{% url 'players' %}?value_eur__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_1.png" title="{% trans 'Players for' %} 0€" class="crest"></a>
-								{% else %}
-									<a href="{% url 'players' %}?value_gbp__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_2.png" title="{% trans 'Players for' %} 0£" class="crest"></a>
-								{% endif %}
-							</span>
-						</div>
-						<div>
-							<span style="display:table; margin:0 auto;">
-								{% if request.session.currency == '0' %}
-									<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?value_usd__lte=0">{% trans 'Free Players' %}</a></span>
-									<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?value_usd__lte=0">{% trans 'Free' %}</a></span>
-								{% elif request.session.currency == '1' %}
-									<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?value_eur__lte=0">{% trans 'Free Players' %}</a></span>
-									<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?value_eur__lte=0">{% trans 'Free' %}</a></span>
-								{% else %}
-									<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?value_gbp__lte=0">{% trans 'Free Players' %}</a></span>
-									<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?value_gbp__lte=0">{% trans 'Free' %}</a></span>
-								{% endif %}
-							</span> 
-						</div>
-					</div>
-					<div class="col-xs-3">
-						<div>
-							<span style="display:table; margin:0 auto;">
-								{% with player=players|first %}
-									<a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}"><img src="{% get_static_prefix %}img/assets/other/warning.png" title="{% trans 'Expiring Contract' %}" class="crest"></a>
-								{% endwith %}
-							</span>
-						</div>
-						<div>
-							<span style="display:table; margin:0 auto;">
-								{% with player=players|first %}
-									<span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Exp. Con.' %}</a></span>
-									<span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Expiring' %}</a></span>
-								{% endwith %}
-							</span> 
-						</div>
-					</div>
-				</div>
-	</div>
-		</div>
-	</div>
+    <div class="container qckfilter-container">
+        <div class="row">
+            <div class="col-md-4 col-xs-12 padding-top12">
+                <div class="form-group">
+                    <input id='player-search-input' name="playersearch" placeholder="{% trans 'Search for player...' %}">
+                </div>
+            </div>
+            <div class="col-md-8 col-xs-12 padding-top5">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="center-elements">
+                            <span>
+                                <a href="{% url 'players' %}?teamid=111592"><img src="{% get_static_prefix %}img/assets/crest/l111592.png" title="{% trans 'Free Agents' %} (ID: 111592)" class="crest"></a>
+                            </span>
+                        </div>
+                        <div class="center-elements">
+                            <span>
+                                <span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?teamid=111592">{% trans 'Free Agents' %}</a></span>
+                                <span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?teamid=111592">{% trans 'FA' %}</a></span>
+                            </span> 
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="center-elements">
+                            <span>
+                                <a href="{% url 'players' %}?isreal=0"><img src="{% get_static_prefix %}img/assets/youthheads/p150406.png" title="{% trans 'Generic Players' %}" class="crest"></a>
+                            </span>
+                        </div>
+                        <div class="center-elements">
+                            <span>
+                                <span class="hidden-md hidden-sm hidden-xs"><a href="{% url 'players' %}?isreal=0">{% trans 'Generic Players' %}</a></span>
+                                <span class="hidden-xl hidden-lg"><a href="{% url 'players' %}?isreal=0">{% trans 'Generic' %}</a></span>
+                            </span> 
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="center-elements">
+                            <span>
+                                {% if request.session.currency == '0' %}
+                                    <a href="{% url 'players' %}?value_usd__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_0.png" title="{% trans 'Players for' %} 0$" class="crest"></a>
+                                {% elif request.session.currency == '1' %}
+                                    <a href="{% url 'players' %}?value_eur__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_1.png" title="{% trans 'Players for' %} 0€" class="crest"></a>
+                                {% else %}
+                                    <a href="{% url 'players' %}?value_gbp__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_2.png" title="{% trans 'Players for' %} 0£" class="crest"></a>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="center-elements">
+                            <span>
+                                {% if request.session.currency == '0' %}
+                                    <span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?value_usd__lte=0">{% trans 'Free Players' %}</a></span>
+                                    <span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?value_usd__lte=0">{% trans 'Free' %}</a></span>
+                                {% elif request.session.currency == '1' %}
+                                    <span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?value_eur__lte=0">{% trans 'Free Players' %}</a></span>
+                                    <span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?value_eur__lte=0">{% trans 'Free' %}</a></span>
+                                {% else %}
+                                    <span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?value_gbp__lte=0">{% trans 'Free Players' %}</a></span>
+                                    <span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?value_gbp__lte=0">{% trans 'Free' %}</a></span>
+                                {% endif %}
+                            </span> 
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="center-elements">
+                            <span>
+                                {% with player=players|first %}
+                                    <a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}"><img src="{% get_static_prefix %}img/assets/other/warning.png" title="{% trans 'Expiring Contract' %}" class="crest"></a>
+                                {% endwith %}
+                            </span>
+                        </div>
+                        <div class="center-elements">
+                            <span>
+                                {% with player=players|first %}
+                                    <span class="hidden-xs hidden-sm"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Exp. Con.' %}</a></span>
+                                    <span class="hidden-xl hidden-lg hidden-md"><a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}">{% trans 'Expiring' %}</a></span>
+                                {% endwith %}
+                            </span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </nav>
 
 {% endblock %}
 
 {% block content %}
-	<div class="container-fluid">
-		<form id="playerfilter" method="get">
-			<div class="well">
-				<h4 style="margin-top: 0">{% trans 'Filter Players' %}</h4>
-				<div id="tabs">
-					<ul>
-						<li>
-							<a href="#tabs-1">{% trans 'Player Info' %}</a>
-						</li>
-						<li>
-							<a href="#tabs-2">{% trans 'Player Attributes' %}</a>
-						</li>
-						<li>
-							<a href="#tabs-3">{% trans 'Player Statistics' %}</a>
-						</li>
-						<li>
-							<a href="#tabs-4">{% trans 'Other' %}</a>
-						</li>
-					</ul>
-					<div id="tabs-1">
-						<div class="form-group row">
-							<div class="col-md-4">
-								<label for="overallrating__gte">{% trans 'Overall' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="overallrating__gte" value="{{ request_query_dict.overallrating__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="overallrating__lte" value="{{ request_query_dict.overallrating__lte }}" placeholder="Max">
-								</div>
-								<label for="potential__gte">{% trans 'Potential' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="potential__gte" value="{{ request_query_dict.potential__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="potential__lte" value="{{ request_query_dict.potential__lte }}" placeholder="Max">
-								</div>
-								<label for="age_min">{% trans 'Age' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="age_min" value="{{ request_query_dict.age_min }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="age_max" value="{{ request_query_dict.age_max }}" placeholder="Max">
-								</div>
-									{% if request.session.currency == '0' %}
-									<label for="value_usd__gte">{% trans 'Value' %}</label>
-									<div class="input-group justified">
-										<input class="form-control" type="number" min="0" max="500000000" name="value_usd__gte" value="{{ request_query_dict.value_usd__gte }}" placeholder="Min">
-										<input class="form-control" type="number" min="0" max="500000000" name="value_usd__lte" value="{{ request_query_dict.value_usd__lte }}" placeholder="Max">
-									</div>
-									{% elif request.session.currency == '1' %}
-									<label for="value_eur__gte">{% trans 'Value' %}</label>
-									<div class="input-group justified">
-										<input class="form-control" type="number" min="0" max="500000000" name="value_eur__gte" value="{{ request_query_dict.value_eur__gte }}" placeholder="Min">
-										<input class="form-control" type="number" min="0" max="500000000" name="value_eur__lte" value="{{ request_query_dict.value_eur__lte }}" placeholder="Max">
-									</div>
-									{% else %}
-									<label for="value_gbp__gte">{% trans 'Value' %}</label>
-									<div class="input-group justified">
-										<input class="form-control" type="number" min="0" max="500000000" name="value_gbp__gte" value="{{ request_query_dict.value_gbp__gte }}" placeholder="Min">
-										<input class="form-control" type="number" min="0" max="500000000" name="value_gbp__lte" value="{{ request_query_dict.value_gbp__lte }}" placeholder="Max">
-									</div>
-									{% endif %}
-								<label for="select-realface">{% trans 'Has Real Face?' %}</label>
-								<select id="select-realface" name="hashighqualityhead" placeholder="{% trans 'Any...' %}">
-									<option value="-1" selected>{% trans 'Any...' %}</option>
-									<option value="0">{% trans 'No' %}</option>
-									<option value="1">{% trans 'Yes' %}</option>
-								</select>
+    <div class="container-fluid">
+        <form id="playerfilter" method="get">
+            <div class="well">
+                <h4 style="margin-top: 0">{% trans 'Filter Players' %}</h4>
+                <div id="tabs">
+                    <ul>
+                        <li>
+                            <a href="#tabs-1">{% trans 'Player Info' %}</a>
+                        </li>
+                        <li>
+                            <a href="#tabs-2">{% trans 'Player Attributes' %}</a>
+                        </li>
+                        <li>
+                            <a href="#tabs-3">{% trans 'Player Statistics' %}</a>
+                        </li>
+                        <li>
+                            <a href="#tabs-4">{% trans 'Other' %}</a>
+                        </li>
+                    </ul>
+                    <div id="tabs-1">
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label for="overallrating__gte">{% trans 'Overall' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="overallrating__gte" value="{{ request_query_dict.overallrating__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="overallrating__lte" value="{{ request_query_dict.overallrating__lte }}" placeholder="Max">
+                                </div>
+                                <label for="potential__gte">{% trans 'Potential' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="potential__gte" value="{{ request_query_dict.potential__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="potential__lte" value="{{ request_query_dict.potential__lte }}" placeholder="Max">
+                                </div>
+                                <label for="age_min">{% trans 'Age' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="age_min" value="{{ request_query_dict.age_min }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="age_max" value="{{ request_query_dict.age_max }}" placeholder="Max">
+                                </div>
+                                    {% if request.session.currency == '0' %}
+                                    <label for="value_usd__gte">{% trans 'Value' %}</label>
+                                    <div class="input-group justified">
+                                        <input class="form-control" type="number" min="0" max="500000000" name="value_usd__gte" value="{{ request_query_dict.value_usd__gte }}" placeholder="Min">
+                                        <input class="form-control" type="number" min="0" max="500000000" name="value_usd__lte" value="{{ request_query_dict.value_usd__lte }}" placeholder="Max">
+                                    </div>
+                                    {% elif request.session.currency == '1' %}
+                                    <label for="value_eur__gte">{% trans 'Value' %}</label>
+                                    <div class="input-group justified">
+                                        <input class="form-control" type="number" min="0" max="500000000" name="value_eur__gte" value="{{ request_query_dict.value_eur__gte }}" placeholder="Min">
+                                        <input class="form-control" type="number" min="0" max="500000000" name="value_eur__lte" value="{{ request_query_dict.value_eur__lte }}" placeholder="Max">
+                                    </div>
+                                    {% else %}
+                                    <label for="value_gbp__gte">{% trans 'Value' %}</label>
+                                    <div class="input-group justified">
+                                        <input class="form-control" type="number" min="0" max="500000000" name="value_gbp__gte" value="{{ request_query_dict.value_gbp__gte }}" placeholder="Min">
+                                        <input class="form-control" type="number" min="0" max="500000000" name="value_gbp__lte" value="{{ request_query_dict.value_gbp__lte }}" placeholder="Max">
+                                    </div>
+                                    {% endif %}
+                                <label for="select-realface">{% trans 'Has Real Face?' %}</label>
+                                <select id="select-realface" name="hashighqualityhead" placeholder="{% trans 'Any...' %}">
+                                    <option value="-1" selected>{% trans 'Any...' %}</option>
+                                    <option value="0">{% trans 'No' %}</option>
+                                    <option value="1">{% trans 'Yes' %}</option>
+                                </select>
 
-								<label for="select-isreal">{% trans 'Is Real?' %}</label>
-								<select id="select-isreal" name="isreal" placeholder="{% trans 'Any...' %}">
-									<option value="-1" selected>{% trans 'Any...' %}</option>
-									<option value="0">{% trans 'No' %}</option>
-									<option value="1">{% trans 'Yes' %}</option>
-								</select>
+                                <label for="select-isreal">{% trans 'Is Real?' %}</label>
+                                <select id="select-isreal" name="isreal" placeholder="{% trans 'Any...' %}">
+                                    <option value="-1" selected>{% trans 'Any...' %}</option>
+                                    <option value="0">{% trans 'No' %}</option>
+                                    <option value="1">{% trans 'Yes' %}</option>
+                                </select>
 
-								<label for="select-isonloan">{% trans 'On Loan?' %}</label>
-								<select id="select-isonloan" name="isonloan" placeholder="{% trans 'Any...' %}">
-									<option value="-1" selected>{% trans 'Any...' %}</option>
-									<option value="0">{% trans 'No' %}</option>
-									<option value="1">{% trans 'Yes' %}</option>
-								</select>
+                                <label for="select-isonloan">{% trans 'On Loan?' %}</label>
+                                <select id="select-isonloan" name="isonloan" placeholder="{% trans 'Any...' %}">
+                                    <option value="-1" selected>{% trans 'Any...' %}</option>
+                                    <option value="0">{% trans 'No' %}</option>
+                                    <option value="1">{% trans 'Yes' %}</option>
+                                </select>
 
-								<label for="select-hasreleaseclause">{% trans 'Release Clause?' %}</label>
-								<select id="select-hasreleaseclause" name="hasreleaseclause" placeholder="{% trans 'Any...' %}">
-									<option value="-1" selected>{% trans 'Any...' %}</option>
-									<option value="0">{% trans 'No' %}</option>
-									<option value="1">{% trans 'Yes' %}</option>
-								</select>
-							</div>
-							<div class="col-md-4">
-								<label>{% trans 'Position(s)' %}</label>
-								<input id='positions-input' name="preferredpositions" placeholder="{% trans 'Search for position(s)...' %}">
-								<label>{% trans 'Nationality' %}</label>
-								<input id='nationality-input' name="nationalityid" placeholder="{% trans 'Search for nation...' %}">
-								<label>{% trans 'League' %}</label>
-								<input id='leagues-input' name="leagueid" placeholder="{% trans 'Search for league...' %}">
-								<label>{% trans 'Team' %}</label>
-								<input class='teams-filter-input' id='teams-input' name="teamid" placeholder="{% trans 'Search for team...' %}">  
-								<label>{% trans 'Attacking Work Rate' %}</label>
-								<input id='awr-input' name="attackingworkrate" placeholder="{% trans 'Any...' %}">
-								<label>{% trans 'Defensive Work Rate' %}</label>
-								<input id='dwr-input' name="defensiveworkrate" placeholder="{% trans 'Any...' %}">
-							</div>
-							<div class="col-md-4">
-								{% with player=players|first %}
-									<label for="contractvaliduntil__gte">{% trans 'Contract Valid Until' %}</label>
-									<div class="input-group justified">
-										<input class="form-control" type="number" min="{{player.current_date_py.year}}" max="{{player.current_date_py.year|add:"10"}}" name="contractvaliduntil__gte" value="{{ request_query_dict.contractvaliduntil__gte }}" placeholder="Min">
-										<input class="form-control" type="number" min="{{player.current_date_py.year}}" max="{{player.current_date_py.year|add:"10"}}" name="contractvaliduntil__lte" value="{{ request_query_dict.contractvaliduntil__lte }}" placeholder="Max">
-									</div>
-								{% endwith %}
-								<label for="skillmoves__gte">{% trans 'Skill Moves' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="5" name="skillmoves__gte" value="{{ request_query_dict.skillmoves__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="5" name="skillmoves__lte" value="{{ request_query_dict.skillmoves__lte }}" placeholder="Max">
-								</div>
-								<label for="weakfootabilitytypecode__gte">{% trans 'Weak Foot' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="5" name="weakfootabilitytypecode__gte" value="{{ request_query_dict.weakfootabilitytypecode__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="5" name="weakfootabilitytypecode__lte" value="{{ request_query_dict.weakfootabilitytypecode__lte }}" placeholder="Max">
-								</div>
-								<label for="internationalrep__gte">{% trans 'International Reputation' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="5" name="internationalrep__gte" value="{{ request_query_dict.internationalrep__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="5" name="internationalrep__lte" value="{{ request_query_dict.internationalrep__lte }}" placeholder="Max">
-								</div>
-								<label for="height__gte">{% trans 'Height (cm)' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="130" max="215" name="height__gte" value="{{ request_query_dict.height__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="130" max="215" name="height__lte" value="{{ request_query_dict.height__lte }}" placeholder="Max">
-								</div>
-								<label for="weight__gte">{% trans 'Weight (kg)' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="30" max="115" name="weight__gte" value="{{ request_query_dict.weight__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="30" max="115" name="weight__lte" value="{{ request_query_dict.weight__lte }}" placeholder="Max">
-								</div>
-								<label for="release_clause__gte">{% trans 'Release Clause' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="999999999" name="release_clause__gte" value="{{ request_query_dict.release_clause__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="999999999" name="release_clause__lte" value="{{ request_query_dict.release_clause__lte }}" placeholder="Max">
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="tabs-2">
-						<div class="row">
-							<div class="col-md-4">
-								<h3>{% trans 'Attack' %}</h3>
-								<label for="crossing__gte">{% trans 'Crossing' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="crossing__gte" value="{{ request_query_dict.crossing__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="crossing__lte" value="{{ request_query_dict.crossing__lte }}" placeholder="Max">
-								</div>
-								<label for="finishing__gte">{% trans 'Finishing' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="finishing__gte" value="{{ request_query_dict.finishing__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="finishing__lte" value="{{ request_query_dict.finishing__lte }}" placeholder="Max">
-								</div>
-								<label for="headingaccuracy__gte">{% trans 'Heading Accuracy' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="headingaccuracy__gte" value="{{ request_query_dict.headingaccuracy__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="headingaccuracy__lte" value="{{ request_query_dict.headingaccuracy__lte }}" placeholder="Max">
-								</div>
-								<label for="shortpassing__gte">{% trans 'Short Passing' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="shortpassing__gte" value="{{ request_query_dict.shortpassing__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="shortpassing__lte" value="{{ request_query_dict.shortpassing__lte }}" placeholder="Max">
-								</div>
-								<label for="volleys__gte">{% trans 'Volleys' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="volleys__gte" value="{{ request_query_dict.volleys__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="volleys__lte" value="{{ request_query_dict.volleys__lte }}" placeholder="Max">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<h3>{% trans 'Defending' %}</h3>
-								<label for="marking__gte">{% trans 'Marking' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="marking__gte" value="{{ request_query_dict.marking__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="marking__lte" value="{{ request_query_dict.marking__lte }}" placeholder="Max">
-								</div>
-								<label for="standingtackle__gte">{% trans 'Standing Tackle' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="standingtackle__gte" value="{{ request_query_dict.standingtackle__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="standingtackle__lte" value="{{ request_query_dict.standingtackle__lte }}" placeholder="Max">
-								</div>
-								<label for="slidingtackle__gte">{% trans 'Sliding Tackle' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="slidingtackle__gte" value="{{ request_query_dict.slidingtackle__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="slidingtackle__lte" value="{{ request_query_dict.slidingtackle__lte }}" placeholder="Max">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<h3>{% trans 'Skill' %}</h3>
-								<label for="dribbling__gte">{% trans 'Dribbling' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="dribbling__gte" value="{{ request_query_dict.dribbling__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="dribbling__lte" value="{{ request_query_dict.dribbling__lte }}" placeholder="Max">
-								</div>
-								<label for="curve__gte">{% trans 'Curve' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="curve__gte" value="{{ request_query_dict.curve__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="curve__lte" value="{{ request_query_dict.curve__lte }}" placeholder="Max">
-								</div>
-								<label for="freekickaccuracy__gte">{% trans 'Free Kick Accuracy' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="freekickaccuracy__gte" value="{{ request_query_dict.freekickaccuracy__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="freekickaccuracy__lte" value="{{ request_query_dict.freekickaccuracy__lte }}" placeholder="Max">
-								</div>
-								<label for="longpassing__gte">{% trans 'Long Passing' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="longpassing__gte" value="{{ request_query_dict.longpassing__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="longpassing__lte" value="{{ request_query_dict.longpassing__lte }}" placeholder="Max">
-								</div>
-								<label for="ballcontrol__gte">{% trans 'Ball Control' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="ballcontrol__gte" value="{{ request_query_dict.ballcontrol__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="ballcontrol__lte" value="{{ request_query_dict.ballcontrol__lte }}" placeholder="Max">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<h3>{% trans 'Power' %}</h3>
-								<label for="shotpower__gte">{% trans 'Shot Power' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="shotpower__gte" value="{{ request_query_dict.shotpower__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="shotpower__lte" value="{{ request_query_dict.shotpower__lte }}" placeholder="Max">
-								</div>
-								<label for="jumping__gte">{% trans 'Jumping' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="jumping__gte" value="{{ request_query_dict.jumping__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="jumping__lte" value="{{ request_query_dict.jumping__lte }}" placeholder="Max">
-								</div>
-								<label for="stamina__gte">{% trans 'Stamina' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="stamina__gte" value="{{ request_query_dict.stamina__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="stamina__lte" value="{{ request_query_dict.stamina__lte }}" placeholder="Max">
-								</div>
-								<label for="strength__gte">{% trans 'Strength' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="strength__gte" value="{{ request_query_dict.strength__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="strength__lte" value="{{ request_query_dict.strength__lte }}" placeholder="Max">
-								</div>
-								<label for="longshots__gte">{% trans 'Long Shots' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="longshots__gte" value="{{ request_query_dict.longshots__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="longshots__lte" value="{{ request_query_dict.longshots__lte }}" placeholder="Max">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<h3>{% trans 'Movement' %}</h3>
-								<label for="acceleration__gte">{% trans 'Acceleration' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="acceleration__gte" value="{{ request_query_dict.acceleration__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="acceleration__lte" value="{{ request_query_dict.acceleration__lte }}" placeholder="Max">
-								</div>
-								<label for="sprintspeed__gte">{% trans 'Sprint Speed' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="sprintspeed__gte" value="{{ request_query_dict.sprintspeed__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="sprintspeed__lte" value="{{ request_query_dict.sprintspeed__lte }}" placeholder="Max">
-								</div>
-								<label for="agility__gte">{% trans 'Agility' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="agility__gte" value="{{ request_query_dict.agility__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="agility__lte" value="{{ request_query_dict.agility__lte }}" placeholder="Max">
-								</div>
-								<label for="reactions__gte">{% trans 'Reactions' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="reactions__gte" value="{{ request_query_dict.reactions__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="reactions__lte" value="{{ request_query_dict.reactions__lte }}" placeholder="Max">
-								</div>
-								<label for="balance__gte">{% trans 'Balance' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="balance__gte" value="{{ request_query_dict.balance__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="balance__lte" value="{{ request_query_dict.balance__lte }}" placeholder="Max">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<h3>{% trans 'Mentalilty' %}</h3>
-								<label for="aggression__gte">{% trans 'Aggression' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="aggression__gte" value="{{ request_query_dict.aggression__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="aggression__lte" value="{{ request_query_dict.aggression__lte }}" placeholder="Max">
-								</div>
-								<label for="composure__gte">{% trans 'Composure' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="composure__gte" value="{{ request_query_dict.composure__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="composure__lte" value="{{ request_query_dict.composure__lte }}" placeholder="Max">
-								</div>
-								<label for="interceptions__gte">{% trans 'Interceptions' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="interceptions__gte" value="{{ request_query_dict.interceptions__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="interceptions__lte" value="{{ request_query_dict.interceptions__lte }}" placeholder="Max">
-								</div>
-								<label for="positioning__gte">{% trans 'Attack Positioning' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="positioning__gte" value="{{ request_query_dict.positioning__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="positioning__lte" value="{{ request_query_dict.positioning__lte }}" placeholder="Max">
-								</div>
-								<label for="vision__gte">{% trans 'Vision' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="vision__gte" value="{{ request_query_dict.vision__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="vision__lte" value="{{ request_query_dict.vision__lte }}" placeholder="Max">
-								</div>
-								<label for="penalties__gte">{% trans 'Penalties' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="penalties__gte" value="{{ request_query_dict.penalties__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="penalties__lte" value="{{ request_query_dict.penalties__lte }}" placeholder="Max">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<h3>{% trans 'Goalkeeper' %}</h3>
-								<label for="gkdiving__gte">{% trans 'GK Diving' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="gkdiving__gte" value="{{ request_query_dict.gkdiving__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="gkdiving__lte" value="{{ request_query_dict.gkdiving__lte }}" placeholder="Max">
-								</div>
-								<label for="gkhandling__gte">{% trans 'GK Handling' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="gkhandling__gte" value="{{ request_query_dict.gkhandling__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="gkhandling__lte" value="{{ request_query_dict.gkhandling__lte }}" placeholder="Max">
-								</div>
-								<label for="gkkicking__gte">{% trans 'GK Kicking' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="gkkicking__gte" value="{{ request_query_dict.gkkicking__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="gkkicking__lte" value="{{ request_query_dict.gkkicking__lte }}" placeholder="Max">
-								</div>
-								<label for="gkpositioning__gte">{% trans 'GK Positioning' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="gkpositioning__gte" value="{{ request_query_dict.gkpositioning__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="gkpositioning__lte" value="{{ request_query_dict.gkpositioning__lte }}" placeholder="Max">
-								</div>
-								<label for="gkreflexes__gte">{% trans 'GK Reflexes' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="1" max="99" name="gkreflexes__gte" value="{{ request_query_dict.gkreflexes__gte }}" placeholder="Min">
-									<input class="form-control" type="number" min="1" max="99" name="gkreflexes__lte" value="{{ request_query_dict.gkreflexes__lte }}" placeholder="Max">
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="tabs-3">
-						<div class="row">
-							<div class="col-md-4">
-								<label for="select-hasstats">{% trans 'Player have statistics?' %}</label>
-								<select id="select-hasstats" name="hasstats" placeholder="{% trans 'Any...' %}">
-									<option value="-1" selected>{% trans 'Any...' %}</option>
-									<option value="0">{% trans 'No' %}</option>
-									<option value="1">{% trans 'Yes' %}</option>
-								</select>
-					
-								<label for="stats_app_min">{% trans 'Appearances' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="0" max="255" name="stats_app_min" value="{{ request_query_dict.stats_app_min }}"
-									placeholder="Min">
-									<input class="form-control" type="number" min="0" max="255" name="stats_app_max" value="{{ request_query_dict.stats_app_max }}"
-									placeholder="Max">
-								</div>
-								<label for="stats_avg_min">{% trans 'Avg. Rating' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="0" max="100" name="stats_avg_min" value="{{ request_query_dict.stats_avg_min }}"
-									placeholder="Min">
-									<input class="form-control" type="number" min="0" max="100" name="stats_avg_max" value="{{ request_query_dict.stats_avg_max }}"
-									placeholder="Max">
-								</div>
-								<label for="stats_goals_min">{% trans 'Goals Scored' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="0" max="255" name="stats_goals_min" value="{{ request_query_dict.stats_goals_min }}"
-									placeholder="Min">
-									<input class="form-control" type="number" min="0" max="255" name="stats_goals_max" value="{{ request_query_dict.stats_goals_max }}"
-									placeholder="Max">
-								</div>
-								<label for="stats_assists_min">{% trans 'Assists' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="0" max="255" name="stats_assists_min" value="{{ request_query_dict.stats_assists_min }}"
-									placeholder="Min">
-									<input class="form-control" type="number" min="0" max="255" name="stats_assists_max" value="{{ request_query_dict.stats_assists_max }}"
-									placeholder="Max">
-								</div>
-								<label for="stats_cleansheets_min">{% trans 'Clean Sheets' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="0" max="255" name="stats_cleansheets_min" value="{{ request_query_dict.stats_cleansheets_min }}"
-									placeholder="Min">
-									<input class="form-control" type="number" min="0" max="255" name="stats_cleansheets_max" value="{{ request_query_dict.stats_cleansheets_max }}"
-									placeholder="Max">
-								</div>
-								<label for="stats_yc_min">{% trans 'Yellow Cards' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="0" max="255" name="stats_yc_min" value="{{ request_query_dict.stats_yc_min }}"
-									placeholder="Min">
-									<input class="form-control" type="number" min="0" max="255" name="stats_yc_max" value="{{ request_query_dict.stats_yc_max }}"
-									placeholder="Max">
-								</div>
-								<label for="stats_rc_min">{% trans 'Red Cards' %}</label>
-								<div class="input-group justified">
-									<input class="form-control" type="number" min="0" max="255" name="stats_rc_min" value="{{ request_query_dict.stats_rc_min }}"
-									placeholder="Min">
-									<input class="form-control" type="number" min="0" max="255" name="stats_rc_max" value="{{ request_query_dict.stats_rc_max }}"
-									placeholder="Max">
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="tabs-4">
-						<div class="row">
-							<div class="col-md-4">
-								<label for="select-isretiring">{% trans 'Is Retiring?' %}</label>
-								<select id="select-isretiring" name="isretiring" placeholder="{% trans 'Any...' %}">
-									<option value="-1" selected>{% trans 'Any...' %}</option>
-									<option value="0">{% trans 'No' %}</option>
-									<option value="1">{% trans 'Yes' %}</option>
-								</select>
-								<label>{% trans 'Head Model' %}</label>
-								<input id='headmodel-input' name="headtype" placeholder="{% trans 'Search for head model(s)...' %}">
-								<label>{% trans 'Hair Color' %}</label>
-								<input id='haircolor-input' name="haircolorcode" placeholder="{% trans 'Search for hair color(s)...' %}">
-							</div>
-							<div class="col-md-4">
-								<label>{% trans 'Skin Color' %}</label>
-								<input id='skincolor-input' name="skintonecode" placeholder="{% trans 'Seearch for skin color(s)...' %}">
-								<label>{% trans 'Body Type' %}</label>
-								<input id='bodytype-input' name="bodytypecode" placeholder="{% trans 'Search for body type(s)...' %}">
-							</div>
-							<div class="col-md-4">
-								<label>{% trans 'Boots' %}</label>
-								<input id='boots-input' name="shoetypecode" placeholder="{% trans 'Search for boots..' %}">
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<button type="submit" class="btn btn-primary" id="btn-filter" style="margin-top: 10px; margin-right: 5px;">
-							<span class="glyphicon glyphicon-search"></span> {% trans 'Search' %}
-						</button>
-						<button type="button" class="btn btn-primary" id="btn-reset" style="margin-top: 10px; margin-right: 5px;">{% trans 'Reset' %}</button>
-					</div>
-					<div class="col-md-4 col-md-offset-4 maxresults">
-						<label for="select-max_per_page">{% trans 'Results per page' %}:</label>
-						<select id="select-max_per_page" name="max_per_page" placeholder="50">
-							<option value="25">25</option>
-							<option value="50" selected>50</option>
-							<option value="75">75</option>
-							<option value="100">100</option>
-						</select>	
-					</div>
-				</div>
-			</div>
-		</form>
-	</div> 
-	<div class="container-fluid">
-		{% with player=players|first %}
-			<p>{% trans 'Displaying Players for user' %}: <span class="current_user">{{player.username}}</span></p>
-			<p>{% trans 'Current Date' %}: <span class="current_date">{{player.current_date_py}}</span></p>
-		{% endwith %}
-	</div>
-	<div class="container-fluid">
-		<nav aria-label="Search results pages">
-			<p>{% trans 'Total Players' %}: {{ paginator.num_of_objects }}</p>
-			<ul class="pagination">
-			  {% if paginator.has_previous %}
-				<li class="page-item">
-				  <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">{% trans 'First' %}</a>
-				</li>
-				<li class="page-item">
-				  <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
-				</li>
-			  {% endif %}
-			  <li class="page-item active">
-				<a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
-			  </li>
-			  {% if paginator.has_next %}
-				  <li class="page-item">
-					<a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
-				  </li>
-				  <li class="page-item">
-					<a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">{% trans 'Last' %}</a>
-				  </li>
-			  {% endif %}
-			</ul>
-		</nav>
-	</div>
+                                <label for="select-hasreleaseclause">{% trans 'Release Clause?' %}</label>
+                                <select id="select-hasreleaseclause" name="hasreleaseclause" placeholder="{% trans 'Any...' %}">
+                                    <option value="-1" selected>{% trans 'Any...' %}</option>
+                                    <option value="0">{% trans 'No' %}</option>
+                                    <option value="1">{% trans 'Yes' %}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>{% trans 'Position(s)' %}</label>
+                                <input id='positions-input' name="preferredpositions" placeholder="{% trans 'Search for position(s)...' %}">
+                                <label>{% trans 'Nationality' %}</label>
+                                <input id='nationality-input' name="nationalityid" placeholder="{% trans 'Search for nation...' %}">
+                                <label>{% trans 'League' %}</label>
+                                <input id='leagues-input' name="leagueid" placeholder="{% trans 'Search for league...' %}">
+                                <label>{% trans 'Team' %}</label>
+                                <input class='teams-filter-input' id='teams-input' name="teamid" placeholder="{% trans 'Search for team...' %}">  
+                                <label>{% trans 'Attacking Work Rate' %}</label>
+                                <input id='awr-input' name="attackingworkrate" placeholder="{% trans 'Any...' %}">
+                                <label>{% trans 'Defensive Work Rate' %}</label>
+                                <input id='dwr-input' name="defensiveworkrate" placeholder="{% trans 'Any...' %}">
+                            </div>
+                            <div class="col-md-4">
+                                {% with player=players|first %}
+                                    <label for="contractvaliduntil__gte">{% trans 'Contract Valid Until' %}</label>
+                                    <div class="input-group justified">
+                                        <input class="form-control" type="number" min="{{player.current_date_py.year}}" max="{{player.current_date_py.year|add:"10"}}" name="contractvaliduntil__gte" value="{{ request_query_dict.contractvaliduntil__gte }}" placeholder="Min">
+                                        <input class="form-control" type="number" min="{{player.current_date_py.year}}" max="{{player.current_date_py.year|add:"10"}}" name="contractvaliduntil__lte" value="{{ request_query_dict.contractvaliduntil__lte }}" placeholder="Max">
+                                    </div>
+                                {% endwith %}
+                                <label for="skillmoves__gte">{% trans 'Skill Moves' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="5" name="skillmoves__gte" value="{{ request_query_dict.skillmoves__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="5" name="skillmoves__lte" value="{{ request_query_dict.skillmoves__lte }}" placeholder="Max">
+                                </div>
+                                <label for="weakfootabilitytypecode__gte">{% trans 'Weak Foot' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="5" name="weakfootabilitytypecode__gte" value="{{ request_query_dict.weakfootabilitytypecode__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="5" name="weakfootabilitytypecode__lte" value="{{ request_query_dict.weakfootabilitytypecode__lte }}" placeholder="Max">
+                                </div>
+                                <label for="internationalrep__gte">{% trans 'International Reputation' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="5" name="internationalrep__gte" value="{{ request_query_dict.internationalrep__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="5" name="internationalrep__lte" value="{{ request_query_dict.internationalrep__lte }}" placeholder="Max">
+                                </div>
+                                <label for="height__gte">{% trans 'Height (cm)' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="130" max="215" name="height__gte" value="{{ request_query_dict.height__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="130" max="215" name="height__lte" value="{{ request_query_dict.height__lte }}" placeholder="Max">
+                                </div>
+                                <label for="weight__gte">{% trans 'Weight (kg)' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="30" max="115" name="weight__gte" value="{{ request_query_dict.weight__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="30" max="115" name="weight__lte" value="{{ request_query_dict.weight__lte }}" placeholder="Max">
+                                </div>
+                                <label for="release_clause__gte">{% trans 'Release Clause' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="999999999" name="release_clause__gte" value="{{ request_query_dict.release_clause__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="999999999" name="release_clause__lte" value="{{ request_query_dict.release_clause__lte }}" placeholder="Max">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tabs-2">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3>{% trans 'Attack' %}</h3>
+                                <label for="crossing__gte">{% trans 'Crossing' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="crossing__gte" value="{{ request_query_dict.crossing__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="crossing__lte" value="{{ request_query_dict.crossing__lte }}" placeholder="Max">
+                                </div>
+                                <label for="finishing__gte">{% trans 'Finishing' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="finishing__gte" value="{{ request_query_dict.finishing__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="finishing__lte" value="{{ request_query_dict.finishing__lte }}" placeholder="Max">
+                                </div>
+                                <label for="headingaccuracy__gte">{% trans 'Heading Accuracy' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="headingaccuracy__gte" value="{{ request_query_dict.headingaccuracy__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="headingaccuracy__lte" value="{{ request_query_dict.headingaccuracy__lte }}" placeholder="Max">
+                                </div>
+                                <label for="shortpassing__gte">{% trans 'Short Passing' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="shortpassing__gte" value="{{ request_query_dict.shortpassing__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="shortpassing__lte" value="{{ request_query_dict.shortpassing__lte }}" placeholder="Max">
+                                </div>
+                                <label for="volleys__gte">{% trans 'Volleys' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="volleys__gte" value="{{ request_query_dict.volleys__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="volleys__lte" value="{{ request_query_dict.volleys__lte }}" placeholder="Max">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h3>{% trans 'Defending' %}</h3>
+                                <label for="marking__gte">{% trans 'Marking' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="marking__gte" value="{{ request_query_dict.marking__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="marking__lte" value="{{ request_query_dict.marking__lte }}" placeholder="Max">
+                                </div>
+                                <label for="standingtackle__gte">{% trans 'Standing Tackle' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="standingtackle__gte" value="{{ request_query_dict.standingtackle__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="standingtackle__lte" value="{{ request_query_dict.standingtackle__lte }}" placeholder="Max">
+                                </div>
+                                <label for="slidingtackle__gte">{% trans 'Sliding Tackle' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="slidingtackle__gte" value="{{ request_query_dict.slidingtackle__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="slidingtackle__lte" value="{{ request_query_dict.slidingtackle__lte }}" placeholder="Max">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h3>{% trans 'Skill' %}</h3>
+                                <label for="dribbling__gte">{% trans 'Dribbling' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="dribbling__gte" value="{{ request_query_dict.dribbling__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="dribbling__lte" value="{{ request_query_dict.dribbling__lte }}" placeholder="Max">
+                                </div>
+                                <label for="curve__gte">{% trans 'Curve' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="curve__gte" value="{{ request_query_dict.curve__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="curve__lte" value="{{ request_query_dict.curve__lte }}" placeholder="Max">
+                                </div>
+                                <label for="freekickaccuracy__gte">{% trans 'Free Kick Accuracy' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="freekickaccuracy__gte" value="{{ request_query_dict.freekickaccuracy__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="freekickaccuracy__lte" value="{{ request_query_dict.freekickaccuracy__lte }}" placeholder="Max">
+                                </div>
+                                <label for="longpassing__gte">{% trans 'Long Passing' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="longpassing__gte" value="{{ request_query_dict.longpassing__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="longpassing__lte" value="{{ request_query_dict.longpassing__lte }}" placeholder="Max">
+                                </div>
+                                <label for="ballcontrol__gte">{% trans 'Ball Control' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="ballcontrol__gte" value="{{ request_query_dict.ballcontrol__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="ballcontrol__lte" value="{{ request_query_dict.ballcontrol__lte }}" placeholder="Max">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h3>{% trans 'Power' %}</h3>
+                                <label for="shotpower__gte">{% trans 'Shot Power' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="shotpower__gte" value="{{ request_query_dict.shotpower__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="shotpower__lte" value="{{ request_query_dict.shotpower__lte }}" placeholder="Max">
+                                </div>
+                                <label for="jumping__gte">{% trans 'Jumping' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="jumping__gte" value="{{ request_query_dict.jumping__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="jumping__lte" value="{{ request_query_dict.jumping__lte }}" placeholder="Max">
+                                </div>
+                                <label for="stamina__gte">{% trans 'Stamina' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="stamina__gte" value="{{ request_query_dict.stamina__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="stamina__lte" value="{{ request_query_dict.stamina__lte }}" placeholder="Max">
+                                </div>
+                                <label for="strength__gte">{% trans 'Strength' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="strength__gte" value="{{ request_query_dict.strength__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="strength__lte" value="{{ request_query_dict.strength__lte }}" placeholder="Max">
+                                </div>
+                                <label for="longshots__gte">{% trans 'Long Shots' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="longshots__gte" value="{{ request_query_dict.longshots__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="longshots__lte" value="{{ request_query_dict.longshots__lte }}" placeholder="Max">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h3>{% trans 'Movement' %}</h3>
+                                <label for="acceleration__gte">{% trans 'Acceleration' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="acceleration__gte" value="{{ request_query_dict.acceleration__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="acceleration__lte" value="{{ request_query_dict.acceleration__lte }}" placeholder="Max">
+                                </div>
+                                <label for="sprintspeed__gte">{% trans 'Sprint Speed' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="sprintspeed__gte" value="{{ request_query_dict.sprintspeed__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="sprintspeed__lte" value="{{ request_query_dict.sprintspeed__lte }}" placeholder="Max">
+                                </div>
+                                <label for="agility__gte">{% trans 'Agility' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="agility__gte" value="{{ request_query_dict.agility__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="agility__lte" value="{{ request_query_dict.agility__lte }}" placeholder="Max">
+                                </div>
+                                <label for="reactions__gte">{% trans 'Reactions' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="reactions__gte" value="{{ request_query_dict.reactions__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="reactions__lte" value="{{ request_query_dict.reactions__lte }}" placeholder="Max">
+                                </div>
+                                <label for="balance__gte">{% trans 'Balance' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="balance__gte" value="{{ request_query_dict.balance__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="balance__lte" value="{{ request_query_dict.balance__lte }}" placeholder="Max">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h3>{% trans 'Mentalilty' %}</h3>
+                                <label for="aggression__gte">{% trans 'Aggression' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="aggression__gte" value="{{ request_query_dict.aggression__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="aggression__lte" value="{{ request_query_dict.aggression__lte }}" placeholder="Max">
+                                </div>
+                                <label for="composure__gte">{% trans 'Composure' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="composure__gte" value="{{ request_query_dict.composure__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="composure__lte" value="{{ request_query_dict.composure__lte }}" placeholder="Max">
+                                </div>
+                                <label for="interceptions__gte">{% trans 'Interceptions' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="interceptions__gte" value="{{ request_query_dict.interceptions__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="interceptions__lte" value="{{ request_query_dict.interceptions__lte }}" placeholder="Max">
+                                </div>
+                                <label for="positioning__gte">{% trans 'Attack Positioning' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="positioning__gte" value="{{ request_query_dict.positioning__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="positioning__lte" value="{{ request_query_dict.positioning__lte }}" placeholder="Max">
+                                </div>
+                                <label for="vision__gte">{% trans 'Vision' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="vision__gte" value="{{ request_query_dict.vision__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="vision__lte" value="{{ request_query_dict.vision__lte }}" placeholder="Max">
+                                </div>
+                                <label for="penalties__gte">{% trans 'Penalties' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="penalties__gte" value="{{ request_query_dict.penalties__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="penalties__lte" value="{{ request_query_dict.penalties__lte }}" placeholder="Max">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h3>{% trans 'Goalkeeper' %}</h3>
+                                <label for="gkdiving__gte">{% trans 'GK Diving' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkdiving__gte" value="{{ request_query_dict.gkdiving__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkdiving__lte" value="{{ request_query_dict.gkdiving__lte }}" placeholder="Max">
+                                </div>
+                                <label for="gkhandling__gte">{% trans 'GK Handling' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkhandling__gte" value="{{ request_query_dict.gkhandling__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkhandling__lte" value="{{ request_query_dict.gkhandling__lte }}" placeholder="Max">
+                                </div>
+                                <label for="gkkicking__gte">{% trans 'GK Kicking' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkkicking__gte" value="{{ request_query_dict.gkkicking__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkkicking__lte" value="{{ request_query_dict.gkkicking__lte }}" placeholder="Max">
+                                </div>
+                                <label for="gkpositioning__gte">{% trans 'GK Positioning' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkpositioning__gte" value="{{ request_query_dict.gkpositioning__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkpositioning__lte" value="{{ request_query_dict.gkpositioning__lte }}" placeholder="Max">
+                                </div>
+                                <label for="gkreflexes__gte">{% trans 'GK Reflexes' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkreflexes__gte" value="{{ request_query_dict.gkreflexes__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="1" max="99" name="gkreflexes__lte" value="{{ request_query_dict.gkreflexes__lte }}" placeholder="Max">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tabs-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="select-hasstats">{% trans 'Player have statistics?' %}</label>
+                                <select id="select-hasstats" name="hasstats" placeholder="{% trans 'Any...' %}">
+                                    <option value="-1" selected>{% trans 'Any...' %}</option>
+                                    <option value="0">{% trans 'No' %}</option>
+                                    <option value="1">{% trans 'Yes' %}</option>
+                                </select>
+                    
+                                <label for="stats_app_min">{% trans 'Appearances' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_app_min" value="{{ request_query_dict.stats_app_min }}"
+                                    placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_app_max" value="{{ request_query_dict.stats_app_max }}"
+                                    placeholder="Max">
+                                </div>
+                                <label for="stats_avg_min">{% trans 'Avg. Rating' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="0" max="100" name="stats_avg_min" value="{{ request_query_dict.stats_avg_min }}"
+                                    placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="100" name="stats_avg_max" value="{{ request_query_dict.stats_avg_max }}"
+                                    placeholder="Max">
+                                </div>
+                                <label for="stats_goals_min">{% trans 'Goals Scored' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_goals_min" value="{{ request_query_dict.stats_goals_min }}"
+                                    placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_goals_max" value="{{ request_query_dict.stats_goals_max }}"
+                                    placeholder="Max">
+                                </div>
+                                <label for="stats_assists_min">{% trans 'Assists' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_assists_min" value="{{ request_query_dict.stats_assists_min }}"
+                                    placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_assists_max" value="{{ request_query_dict.stats_assists_max }}"
+                                    placeholder="Max">
+                                </div>
+                                <label for="stats_cleansheets_min">{% trans 'Clean Sheets' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_cleansheets_min" value="{{ request_query_dict.stats_cleansheets_min }}"
+                                    placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_cleansheets_max" value="{{ request_query_dict.stats_cleansheets_max }}"
+                                    placeholder="Max">
+                                </div>
+                                <label for="stats_yc_min">{% trans 'Yellow Cards' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_yc_min" value="{{ request_query_dict.stats_yc_min }}"
+                                    placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_yc_max" value="{{ request_query_dict.stats_yc_max }}"
+                                    placeholder="Max">
+                                </div>
+                                <label for="stats_rc_min">{% trans 'Red Cards' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_rc_min" value="{{ request_query_dict.stats_rc_min }}"
+                                    placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="255" name="stats_rc_max" value="{{ request_query_dict.stats_rc_max }}"
+                                    placeholder="Max">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tabs-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="select-isretiring">{% trans 'Is Retiring?' %}</label>
+                                <select id="select-isretiring" name="isretiring" placeholder="{% trans 'Any...' %}">
+                                    <option value="-1" selected>{% trans 'Any...' %}</option>
+                                    <option value="0">{% trans 'No' %}</option>
+                                    <option value="1">{% trans 'Yes' %}</option>
+                                </select>
+                                <label>{% trans 'Head Model' %}</label>
+                                <input id='headmodel-input' name="headtype" placeholder="{% trans 'Search for head model(s)...' %}">
+                                <label>{% trans 'Hair Color' %}</label>
+                                <input id='haircolor-input' name="haircolorcode" placeholder="{% trans 'Search for hair color(s)...' %}">
+                            </div>
+                            <div class="col-md-4">
+                                <label>{% trans 'Skin Color' %}</label>
+                                <input id='skincolor-input' name="skintonecode" placeholder="{% trans 'Seearch for skin color(s)...' %}">
+                                <label>{% trans 'Body Type' %}</label>
+                                <input id='bodytype-input' name="bodytypecode" placeholder="{% trans 'Search for body type(s)...' %}">
+                            </div>
+                            <div class="col-md-4">
+                                <label>{% trans 'Boots' %}</label>
+                                <input id='boots-input' name="shoetypecode" placeholder="{% trans 'Search for boots..' %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary" id="btn-filter" style="margin-top: 10px; margin-right: 5px;">
+                            <span class="glyphicon glyphicon-search"></span> {% trans 'Search' %}
+                        </button>
+                        <button type="button" class="btn btn-primary" id="btn-reset" style="margin-top: 10px; margin-right: 5px;">{% trans 'Reset' %}</button>
+                    </div>
+                    <div class="col-md-4 col-md-offset-4 maxresults">
+                        <label for="select-max_per_page">{% trans 'Results per page' %}:</label>
+                        <select id="select-max_per_page" name="max_per_page" placeholder="50">
+                            <option value="25">25</option>
+                            <option value="50" selected>50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                        </select>    
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div> 
+    <div class="container-fluid">
+        {% with player=players|first %}
+            <p>{% trans 'Displaying Players for user' %}: <span class="current_user">{{player.username}}</span></p>
+            <p>{% trans 'Current Date' %}: <span class="current_date">{{player.current_date_py}}</span></p>
+        {% endwith %}
+    </div>
+    <div class="container-fluid">
+        <nav aria-label="Search results pages">
+            <p>{% trans 'Total Players' %}: {{ paginator.num_of_objects }}</p>
+            <ul class="pagination">
+              {% if paginator.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">{% trans 'First' %}</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
+                </li>
+              {% endif %}
+              <li class="page-item active">
+                <a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
+              </li>
+              {% if paginator.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">{% trans 'Last' %}</a>
+                  </li>
+              {% endif %}
+            </ul>
+        </nav>
+    </div>
 
-	<div id="table-container" class="container-fluid">
-		<table>
-			<thead>
-				<tr>
-					<th class="text-center" style="width: 75px;">{% trans 'IMG' %}</th>
-					<th class="text-center hidden-xs" style="width: 65px;">{% trans 'POS' %}</th>
-					<th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
-					<th class="text-center" style="width: 65px;">
-						{% if request_query_dict.order_by == "-overallrating" %}
-							<a href="{% url_params request '?order_by=' 'overallrating' %}">
-								{% trans 'RAT' %}  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
-							</a>
-						{% elif request_query_dict.order_by == "overallrating" %}
-							<a href="{% url_params request '?order_by=' '-overallrating' %}">
-								{% trans 'RAT' %}  <span class="glyphicon glyphicon-sort-by-order"></span>
-							</a>
-						{% else %}
-							<a href="{% url_params request '?order_by=' '-overallrating' %}">
-								{% trans 'RAT' %}  <span class="glyphicon glyphicon-sort"></span>
-							</a>
-						{% endif %}
-					</th>
-					<th class="text-center" style="width: 65px;">
-						{% if request_query_dict.order_by == "-potential" %}
-							<a href="{% url_params request '?order_by=' 'potential' %}">
-								{% trans 'POT' %}  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
-							</a>
-						{% elif request_query_dict.order_by == "potential" %}
-							<a href="{% url_params request '?order_by=' '-potential' %}">
-								{% trans 'POT' %}  <span class="glyphicon glyphicon-sort-by-order"></span>
-							</a>
-						{% else %}
-							<a href="{% url_params request '?order_by=' '-potential' %}">
-								{% trans 'POT' %}  <span class="glyphicon glyphicon-sort"></span>
-							</a>
-						{% endif %}
-					</th>
-					<th class="text-center" style="width: 65px;">					
-						{% if request_query_dict.order_by == "-birthdate" %}
-							<a href="{% url_params request '?order_by=' 'birthdate' %}">
-								{% trans 'AGE' %}  <span class="glyphicon glyphicon-sort-by-order"></span>
-							</a>
-						{% elif request_query_dict.order_by == "birthdate" %}
-							<a href="{% url_params request '?order_by=' '-birthdate' %}">
-								{% trans 'AGE' %}  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
-							</a>
-						{% else %}
-							<a href="{% url_params request '?order_by=' '-birthdate' %}">
-								{% trans 'AGE' %}  <span class="glyphicon glyphicon-sort"></span>
-							</a>
-						{% endif %}
-					</th>
-					<th class="text-center hidden-xs hidden-sm">
-						{% if request_query_dict.order_by == "-contractvaliduntil" %}
-							<a href="{% url_params request '?order_by=' 'contractvaliduntil' %}">
-								{% trans 'CONTRACT' %} <span class="glyphicon glyphicon-sort-by-order-alt"></span>
-							</a>
-						{% elif request_query_dict.order_by == "contractvaliduntil" %}
-							<a href="{% url_params request '?order_by=' '-contractvaliduntil' %}">
-								{% trans 'CONTRACT' %} <span class="glyphicon glyphicon-sort-by-order"></span>
-							</a>
-						{% else %}
-							<a href="{% url_params request '?order_by=' 'contractvaliduntil' %}">
-								{% trans 'CONTRACT' %} <span class="glyphicon glyphicon-sort"></span>
-							</a>
-						{% endif %}
-					</th>
-					<th class="text-center hidden-xs hidden-sm">
-						{% if request_query_dict.order_by == "-value_usd" %}
-							<a href="{% url_params request '?order_by=' 'value_usd' %}">
-								{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort-by-order-alt"></span>
-							</a>
-						{% elif request_query_dict.order_by == "value_usd" %}
-							<a href="{% url_params request '?order_by=' '-value_usd' %}">
-								{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort-by-order"></span>
-							</a>
-						{% else %}
-							<a href="{% url_params request '?order_by=' '-value_usd' %}">
-								{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span>
-							</a>
-						{% endif %}
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for p in players %}
-					<tr>
-						<td width="75">
-							<a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a>
-						</td>
-						<td class="player-position text-center hidden-xs" width="65">{{ p.player.preferredposition1 }}</td>
-						<td style="padding-left: 5px!important;" width="250">
-							<div>
-								<img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
-								<a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
-							</div>
-							<div class="player-position">
-								<a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
-								{{ p.player.preferredposition1 }}
-								{% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
-								{% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
-								{% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
-							</div>
-						</td>
-						<td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
-						<td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
-						<td class="text-center">{{ p.player_age.age }}</td>
-						<td class="text-center hidden-xs hidden-sm">
-							<div>
-								{% if p.player_contract.isloanedout %}
-								<a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
-								{% else %}
-								<a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-								{% endif %}
-								{{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
-								{% if p.player_contract.isloanedout %}
-								<span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">{% trans 'This player is currently on loan.' %}</span></span>
-								{% endif %}
-							</div>
-						</td>
-						<td class="text-center hidden-xs hidden-sm">
-							<div>
-								{{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
-							</div>
-							<div>
-								{{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}
-							</div>
-						</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
-	<div class="container-fluid">
-		<nav aria-label="Search results pages">
-			<ul class="pagination">
-			  {% if paginator.has_previous %}
-				<li class="page-item">
-				  <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">{% trans 'First' %}</a>
-				</li>
-				<li class="page-item">
-				  <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
-				</li>
-			  {% endif %}
-			  <li class="page-item active">
-				<a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
-			  </li>
-			  {% if paginator.has_next %}
-				  <li class="page-item">
-					<a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
-				  </li>
-				  <li class="page-item">
-					<a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">{% trans 'Last' %}</a>
-				  </li>
-			  {% endif %}
-			</ul>
-		</nav>
-	</div>
+    <div id="table-container" class="container-fluid">
+        <table>
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 75px;">{% trans 'IMG' %}</th>
+                    <th class="text-center hidden-xs" style="width: 65px;">{% trans 'POS' %}</th>
+                    <th class="text-center" style="width: 250px;">{% trans 'PLAYER' %}</th>
+                    <th class="text-center" style="width: 65px;">
+                        {% if request_query_dict.order_by == "-overallrating" %}
+                            <a href="{% url_params request '?order_by=' 'overallrating' %}">
+                                {% trans 'RAT' %}  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                        {% elif request_query_dict.order_by == "overallrating" %}
+                            <a href="{% url_params request '?order_by=' '-overallrating' %}">
+                                {% trans 'RAT' %}  <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                        {% else %}
+                            <a href="{% url_params request '?order_by=' '-overallrating' %}">
+                                {% trans 'RAT' %}  <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                        {% endif %}
+                    </th>
+                    <th class="text-center" style="width: 65px;">
+                        {% if request_query_dict.order_by == "-potential" %}
+                            <a href="{% url_params request '?order_by=' 'potential' %}">
+                                {% trans 'POT' %}  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                        {% elif request_query_dict.order_by == "potential" %}
+                            <a href="{% url_params request '?order_by=' '-potential' %}">
+                                {% trans 'POT' %}  <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                        {% else %}
+                            <a href="{% url_params request '?order_by=' '-potential' %}">
+                                {% trans 'POT' %}  <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                        {% endif %}
+                    </th>
+                    <th class="text-center" style="width: 65px;">                    
+                        {% if request_query_dict.order_by == "-birthdate" %}
+                            <a href="{% url_params request '?order_by=' 'birthdate' %}">
+                                {% trans 'AGE' %}  <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                        {% elif request_query_dict.order_by == "birthdate" %}
+                            <a href="{% url_params request '?order_by=' '-birthdate' %}">
+                                {% trans 'AGE' %}  <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                        {% else %}
+                            <a href="{% url_params request '?order_by=' '-birthdate' %}">
+                                {% trans 'AGE' %}  <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                        {% endif %}
+                    </th>
+                    <th class="text-center hidden-xs hidden-sm">
+                        {% if request_query_dict.order_by == "-contractvaliduntil" %}
+                            <a href="{% url_params request '?order_by=' 'contractvaliduntil' %}">
+                                {% trans 'CONTRACT' %} <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                        {% elif request_query_dict.order_by == "contractvaliduntil" %}
+                            <a href="{% url_params request '?order_by=' '-contractvaliduntil' %}">
+                                {% trans 'CONTRACT' %} <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                        {% else %}
+                            <a href="{% url_params request '?order_by=' 'contractvaliduntil' %}">
+                                {% trans 'CONTRACT' %} <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                        {% endif %}
+                    </th>
+                    <th class="text-center hidden-xs hidden-sm">
+                        {% if request_query_dict.order_by == "-value_usd" %}
+                            <a href="{% url_params request '?order_by=' 'value_usd' %}">
+                                {% trans 'VALUE' %} <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                            </a>
+                        {% elif request_query_dict.order_by == "value_usd" %}
+                            <a href="{% url_params request '?order_by=' '-value_usd' %}">
+                                {% trans 'VALUE' %} <span class="glyphicon glyphicon-sort-by-order"></span>
+                            </a>
+                        {% else %}
+                            <a href="{% url_params request '?order_by=' '-value_usd' %}">
+                                {% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                        {% endif %}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in players %}
+                    <tr>
+                        <td width="75">
+                            <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a>
+                        </td>
+                        <td class="player-position text-center hidden-xs" width="65">{{ p.player.preferredposition1 }}</td>
+                        <td style="padding-left: 5px!important;" width="250">
+                            <div>
+                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
+                            </div>
+                            <div class="player-position">
+                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
+                                {{ p.player.preferredposition1 }}
+                                {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
+                                {% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
+                                {% if p.player.preferredposition4 != -1 %} | {{ p.player.preferredposition4 }}{% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
+                        <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
+                        <td class="text-center">{{ p.player_age.age }}</td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {% if p.player_contract.isloanedout %}
+                                <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                {% else %}
+                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% endif %}
+                                {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                {% if p.player_contract.isloanedout %}
+                                <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">{% trans 'This player is currently on loan.' %}</span></span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="text-center hidden-xs hidden-sm">
+                            <div>
+                                {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
+                            </div>
+                            <div>
+                                {{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container-fluid">
+        <nav aria-label="Search results pages">
+            <ul class="pagination">
+              {% if paginator.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="{% url_params request '?page=' '1' %}" tabindex="-1">{% trans 'First' %}</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="{% url_params request '?page=' paginator.previous_page_number %}">{{paginator.previous_page_number}}</a>
+                </li>
+              {% endif %}
+              <li class="page-item active">
+                <a class="page-link">{{ paginator.page }} <span class="sr-only">(current)</span></a>
+              </li>
+              {% if paginator.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="{% url_params request '?page=' paginator.next_page_number %}">{{paginator.next_page_number}}</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="{% url_params request '?page=' paginator.last_page_number %}" tabindex="-1">{% trans 'Last' %}</a>
+                  </li>
+              {% endif %}
+            </ul>
+        </nav>
+    </div>
 {% endblock %}

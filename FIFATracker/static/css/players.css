@@ -1,3 +1,7 @@
+.top-container {
+    padding-top: 15px;
+}
+
 .current_user, .current_date{
 	border-bottom: 3px solid rgb(0, 0, 0);
 }

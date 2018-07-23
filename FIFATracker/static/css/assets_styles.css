@@ -1,0 +1,40 @@
+/* Player Faces */
+.miniface {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+}
+
+.largeface {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: lightblue;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Club & National team crests */
+.crest {
+    width: 27px;
+    height: 27px;
+}
+
+.crest-medium {
+    width: 64px;
+    height: 64px;
+}
+
+.crest-big {
+    width: 128px;
+    height: 128px;
+}
+
+/* Nationality Flags */
+.flag {
+    width: 27px;
+    height: 27px;
+}

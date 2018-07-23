@@ -106,3 +106,4 @@ FIFATracker/media/
 FIFATracker/players/migrations/
 FIFATracker/core/migrations/
 FIFATracker/accounts/migrations/
+staticfiles/

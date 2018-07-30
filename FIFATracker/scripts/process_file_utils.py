@@ -277,25 +277,27 @@ class CalculateValues():
                     continue
 
                 try:
-                    playerslist = teamplayers[int(row['teamid'])]
+                    playerslist = teamplayers[int(row['playerid'])]
                 except KeyError:
-                    teamplayers[int(row['teamid'])] = dict()
-                    playerslist = teamplayers[int(row['teamid'])]
+                    teamplayers[int(row['playerid'])] = dict()
+                    playerslist = teamplayers[int(row['playerid'])]
 
-                playerslist[row['position']] = int(row['playerid'])
+                playerslist[row['teamid']] = int(row['position'])
 
         return teamplayers
 
-    def _get_team_and_pos(self, pid, d):
-        # key == teamid
-        # k = posid
+    def _get_team_and_pos(self, pid, links):
         teamids = list()
         posids = list()
-        for key in d:
-            for k in d[key]:
-                if d[key][k] == pid:
-                    teamids.append(key)
-                    posids.append(k)
+
+        try:
+            player = links[int(pid)]
+        except KeyError:
+            return None, None
+
+        for k, v in player.items():
+            teamids.append(k)
+            posids.append(v)
 
         return teamids, posids
 

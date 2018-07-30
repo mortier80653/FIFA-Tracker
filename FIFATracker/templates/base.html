@@ -135,7 +135,7 @@
 	</nav>
 	{% block secondnav %}
 	{% endblock %}
-	<div id="main" class="container top-container bg-1">
+	<main role="main" class="container top-container bg-1">
 		{% if messages %}
 		<div class="container">
 			<div class="row">
@@ -149,9 +149,9 @@
 		{% endif %}
 		{% block content %}
 		{% endblock %}
-	</div>
-	<footer class="container-fluid footer text-center">
-		<p>&copy; FIFA Tracker 2018 | All FIFA assets are property of EA Sports | <a href="https://github.com/xAranaktu/FIFA-Tracker">GitHub</a> | <a href="{% url 'privacypolicy' %}">privacy policy</a> | <a href="{% url 'about' %}">about</a> | <a href="{% url 'contact' %}">contact</a> | <a href="{% url 'donate' %}">donate</a></p> 
+	</main>
+	<footer class="footer text-center">
+		<span>&copy; FIFA Tracker 2018 | All FIFA assets are property of EA Sports | <a href="https://github.com/xAranaktu/FIFA-Tracker">GitHub</a> | <a href="{% url 'privacypolicy' %}">privacy policy</a> | <a href="{% url 'about' %}">about</a> | <a href="{% url 'contact' %}">contact</a> | <a href="{% url 'donate' %}">donate</a></span> 
 	</footer>	
 </body>
 </html>

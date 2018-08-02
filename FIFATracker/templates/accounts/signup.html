@@ -9,9 +9,11 @@
 {% endblock %}
 
 {% block content %}
-  <div id="SignUp" class="container">
-		<div class="main_row">
-			<h2>{% trans 'Sign up' %}</h2>
+  <div id="SignUp" class="container form-container">
+		<div>
+			<div class="col-12">
+				<h2>{% trans 'Sign up' %}</h2>
+			</div>
 			<form method="post" novalidate>
 				{% csrf_token %}
 				{% include "includes/form.html" %}

@@ -10,17 +10,19 @@
 	<meta name="description" content="Track your progress in FIFA Career Mode">
 	<meta name="keywords" content="FIFA 18, Career Mode, youth, players, database">
 	<link rel="shortcut icon" href="{%  static 'favicon/favicon.ico' %}">
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/solid.css" integrity="sha384-wnAC7ln+XN0UKdcPvJvtqIH3jOjs9pnKnq9qX68ImXvOGz2JuFoEiCjT8jyZQX2z" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/brands.css" integrity="sha384-nT8r1Kzllf71iZl81CdFzObMsaLOhqBU1JD2+XoAALbdtWaXDOlWOZTR4v1ktjPE" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css" integrity="sha384-HbmWTHay9psM8qyzEKPc8odH4DsOuzdejtnr+OFtDmOcIVnhgReQ4GZBH7uwcjf6" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="{% static 'css/selectize.default.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}?v={% file_timestamp 'css/base.css' %}">
 	{% block stylesheet %}{% endblock %}
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-	<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>	
+	<script src="{% static 'js\jquery.responsivetabs.js' %}"></script>
 	<script src="{% static 'js\colResizable-1.6.min.js' %}"></script>
 	<script src="{% static 'js\selectize.min.js' %}"></script>
 	<script src="{% static 'js\FIFA_TRACKER.js' %}?v={% file_timestamp 'js/FIFA_TRACKER.js' %}"></script>
@@ -35,111 +37,113 @@
 	</script>
 	{% block script %}{% endblock %}
 </head>	
-<body data-spy="scroll" data-target=".navbar" data-offset="50">
-	<nav class="navbar navbar-default navbar-fixed-top">
-	  <div class="container">
-			<div class="navbar-header hidden-sm">
-				<a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'img\logo\logo.png' %}" title="FIFA Tracker" alt="logo"></a>
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#siteNavbar">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-			</div>
-			<div class="collapse navbar-collapse" id="siteNavbar">
-				<ul class="nav navbar-nav navbar-left">
-					<li><a href="{% url 'players' %}">{% trans 'Players' %}</a></li>
-					<li><a href="{% url 'teams' %}">{% trans 'Teams' %}</a></li>
-					<li><a href="{% url 'transfers' %}">{% trans 'Transfers' %}</a></li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="toolsdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>{% trans 'Tools' %}</span></a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="{% url 'calculator' %}">{% trans 'Calculator' %}</a>
+<body class="ft-dark" data-spy="scroll" data-target=".navbar" data-offset="50">
+	<nav class="navbar ft-navbar sticky-top navbar-expand-lg navbar-dark ft-navbar-dark-bg">
+		<a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'img\logo\logo.png' %}" title="FIFA Tracker" alt="logo"></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#siteNavbar" aria-controls="siteNavbar" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="siteNavbar">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item ft-nav-item-dark">
+					<a class="nav-link ft-nav-link-dark" href="{% url 'players' %}">{% trans 'Players' %}</a>
+				</li>
+				<li class="nav-item ft-nav-item-dark">
+					<a class="nav-link ft-nav-link-dark" href="{% url 'teams' %}">{% trans 'Teams' %}</a>
+				</li>
+				<li class="nav-item ft-nav-item-dark">
+					<a class="nav-link ft-nav-link-dark" href="{% url 'transfers' %}">{% trans 'Transfers' %}</a>
+				</li>
+				<li class="nav-item ft-nav-item-dark dropdown">
+					<a class="nav-link ft-nav-link-dark dropdown-toggle" href="#" id="toolsdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Tools' %}</a>
+					<div class="dropdown-menu ft-dropdown-menu-dark" aria-labelledby="toolsdropdown">
+						<a class="dropdown-item" href="{% url 'calculator' %}"><span class="fas fa-calculator"></span>{% trans 'Calculator' %}</a>
+					</div>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item ft-nav-item-dark dropdown">
+					<a class="nav-link ft-nav-link-dark" href="#" id="userprefdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-cog"></span>{% trans 'Preferences' %}</a>
+					<div class="dropdown-menu dropdown-menu-right ft-dropdown-menu-dark" aria-labelledby="userprefdropdown">
+						<h6 class="dropdown-header">{% trans 'Currency' %}</h6>
+						<div class="dropdown-divider"></div>
+						{% if request.session.currency == '0' %}
+							<a class="dropdown-item active" id="id_cur_usd">{% trans 'USDOLLAR' %}</a>
+						{% else %}
+							<a class="dropdown-item" id="id_cur_usd">{% trans 'USDOLLAR' %}</a>
+						{% endif %}
+						{% if request.session.currency == '1' %}
+							<a class="dropdown-item active" id="id_cur_eur">{% trans 'EURO' %}</a>
+						{% else %}
+							<a class="dropdown-item" id="id_cur_eur">{% trans 'EURO' %}</a>
+						{% endif %}
+						{% if request.session.currency == '2' %}
+							<a class="dropdown-item active" id="id_cur_gbp">{% trans 'POUND' %}</a>
+						{% else %}
+							<a class="dropdown-item" id="id_cur_gbp">{% trans 'POUND' %}</a>
+						{% endif %}
+						<div class="dropdown-divider"></div>
+						<h6 class="dropdown-header"><span>{% trans 'Units' %}</span></h6>
+						<div class="dropdown-divider"></div>
+						{% if request.session.units == '0' %}
+							<a class="dropdown-item active" id="id_unit_metric">{% trans 'METRIC' %}</a>
+						{% else %}
+							<a class="dropdown-item" id="id_unit_metric">{% trans 'METRIC' %}</a>
+						{% endif %}
+						{% if request.session.units == '1' %}
+							<a class="dropdown-item active" id="id_unit_imperial">{% trans 'IMPERIAL' %}</a>
+						{% else %}
+							<a class="dropdown-item" id="id_unit_imperial">{% trans 'IMPERIAL' %}</a>
+						{% endif %}
+						<div class="dropdown-divider"></div>
+					</div>
+				</li>
+				<li class="nav-item ft-nav-item-dark dropdown">
+					<form name="setlang" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+						<input name="next" type="hidden" value="{{ redirect_to }}" />
+						<input name="language" type="hidden"/>
+						{% get_current_language as LANGUAGE_CODE %}
+						{% get_available_languages as LANGUAGES %}
+						{% get_language_info_list for LANGUAGES as languages %}
+						{% for language in languages %}
+							{% if language.code == LANGUAGE_CODE %}
+								<a class="nav-link ft-nav-link-dark" href="#" id="langSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-language"></span>{% trans 'Language' %}</a>
+							{% endif %}
+						{% endfor %}
+						<div class="dropdown-menu dropdown-menu-right ft-dropdown-menu-dark" aria-labelledby="langSelect">
+						{% for language in languages %}
+							<a class="dropdown-item" href="#" onclick="document.setlang.language.value='{{ language.code}}'; document.setlang.submit();"><img src="/static/img/lang/{{ language.code }}.png" title="{{ language.name_local }}" class="flag-lang">{{ language.name_local }}</a>
+							<div class="dropdown-divider"></div>
+						{% endfor %}
 						</div>
-					</li>
-				</ul>
-
-				<ul class="nav navbar-nav navbar-right">
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" id="userSettings" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span></a>
-						<div class="dropdown-menu">
-							<h6 class="dropdown-header"><span>{% trans 'Currency' %}</span></h6>
-							{% if request.session.currency == '0' %}
-								<a class="dropdown-item-active" id="id_cur_usd">{% trans 'USDOLLAR' %}</a>
-							{% else %}
-								<a class="dropdown-item" id="id_cur_usd">{% trans 'USDOLLAR' %}</a>
-							{% endif %}
-							<div class="dropdown-divider"></div>
-							{% if request.session.currency == '1' %}
-								<a class="dropdown-item-active" id="id_cur_eur">{% trans 'EURO' %}</a>
-							{% else %}
-								<a class="dropdown-item" id="id_cur_eur">{% trans 'EURO' %}</a>
-							{% endif %}
-							<div class="dropdown-divider"></div>
-							{% if request.session.currency == '2' %}
-								<a class="dropdown-item-active" id="id_cur_gbp">{% trans 'POUND' %}</a>
-							{% else %}
-								<a class="dropdown-item" id="id_cur_gbp">{% trans 'POUND' %}</a>
-							{% endif %}
-							<h6 class="dropdown-header"><span>{% trans 'Units' %}</span></h6>
-							{% if request.session.units == '0' %}
-								<a class="dropdown-item-active" id="id_unit_metric">{% trans 'METRIC' %}</a>
-							{% else %}
-								<a class="dropdown-item" id="id_unit_metric">{% trans 'METRIC' %}</a>
-							{% endif %}
-							<div class="dropdown-divider"></div>
-							{% if request.session.units == '1' %}
-								<a class="dropdown-item-active" id="id_unit_imperial">{% trans 'IMPERIAL' %}</a>
-							{% else %}
-								<a class="dropdown-item" id="id_unit_imperial">{% trans 'IMPERIAL' %}</a>
-							{% endif %}
-						</div>
-					</li>
+					</form>
+				</li>
 				{% if user.is_authenticated %}
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>{{ user.username }}</a>
-						<div class="dropdown-menu" aria-labelledby="userMenu">
-							<a class="dropdown-item" href="{% url 'settings' %}">{% trans 'Control Panel' %}</a>
+					<li class="nav-item ft-nav-item-dark dropdown">
+						<a class="nav-link ft-nav-link-dark" href="#" id="usermenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-user"></span>{{ user.username }}</a>
+						<div class="dropdown-menu dropdown-menu-right ft-dropdown-menu-dark" aria-labelledby="usermenu">
+							<a class="dropdown-item" href="{% url 'settings' %}"><span class="fas fa-wrench"></span>{% trans 'Control Panel' %}</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="{% url 'upload_career_save_file' %}">{% trans 'Upload' %}</a>
+							<a class="dropdown-item" href="{% url 'upload_career_save_file' %}"><span class="fas fa-file-upload"></span>{% trans 'Upload' %}</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+							<a class="dropdown-item" href="{% url 'logout' %}"><span class="fas fa-sign-out-alt"></span>{% trans 'Log out' %}</a>	
 						</div>
 					</li>
 				{% else %}
-					<li><a class="btn btn-success" href="{% url 'login_view' %}">{% trans 'LOG-IN' %}</a></li>
-				{% endif %}
-					<li class="nav-item dropdown">
-						<form name="setlang" action="{% url 'set_language' %}" method="post">{% csrf_token %}
-							<input name="next" type="hidden" value="{{ redirect_to }}" />
-							<input name="language" type="hidden"/>
-							{% get_current_language as LANGUAGE_CODE %}
-							{% get_available_languages as LANGUAGES %}
-							{% get_language_info_list for LANGUAGES as languages %}
-							{% for language in languages %}
-								{% if language.code == LANGUAGE_CODE %}
-									<a class="nav-link dropdown-toggle" href="#" id="langSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/static/img/lang/{{ language.code }}.png" title="{{ language.name_local }}" class="flag-lang"></a>
-								{% endif %}
-							{% endfor %}
-							<div class="dropdown-menu" aria-labelledby="langSelect">
-							{% for language in languages %}
-								<a class="dropdown-item" href="#" onclick="document.setlang.language.value='{{ language.code}}'; document.setlang.submit();">{{ language.name_local }}  <img src="/static/img/lang/{{ language.code }}.png" title="{{ language.name_local }}" class="flag-lang"></a>
-								<div class="dropdown-divider"></div>
-							{% endfor %}
-							</div>
-						</form>
+					<li class="nav-item ft-nav-item-dark">
+						<a class="btn btn-success" href="{% url 'login_view' %}"><span class="fas fa-sign-in-alt"></span>{% trans 'LOG-IN' %}</a>
 					</li>
-				</ul>
-			</div>
-	  </div>
+				{% endif %}
+			</ul>
+		</div>
 	</nav>
 	{% block secondnav %}
 	{% endblock %}
-	<main role="main" class="container top-container bg-1">
+	<main role="main" class="container main-container ft-dark">
 		{% if messages %}
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-6 col-sm-offset-3">
+				<div class="col-md-6 offset-md-3">
 				{% for message in messages %}
 					<p{% if message.tags == "success" %} class="alert alert-success"{% elif message.tags == "error" %} class="alert alert-danger"{% endif %}>{{ message }}</p>
 				{% endfor %}
@@ -150,8 +154,47 @@
 		{% block content %}
 		{% endblock %}
 	</main>
-	<footer class="footer text-center">
-		<span>&copy; FIFA Tracker 2018 | All FIFA assets are property of EA Sports | <a href="https://github.com/xAranaktu/FIFA-Tracker">GitHub</a> | <a href="{% url 'privacypolicy' %}">privacy policy</a> | <a href="{% url 'about' %}">about</a> | <a href="{% url 'contact' %}">contact</a> | <a href="{% url 'donate' %}">donate</a></span> 
+	<footer id="footer">
+		<div class="container">
+			<div class="row text-center text-xs-center text-sm-left text-md-left">
+				<div class="col-12 col-sm-4">
+					<h5>Quick links</h5>
+					<ul class="list-unstyled">
+						<li><a href="{% url 'players' %}"><span class="fas fa-users"></span>{% trans 'Players' %}</a></li>
+						<li><a href="{% url 'teams' %}"><span class="fas fa-tshirt"></span>{% trans 'Teams' %}</a></li>
+						<li><a href="{% url 'transfers' %}"><span class="fas fa-exchange-alt"></span>{% trans 'Transfers' %}</a></li>
+						<li><a href="{% url 'upload_career_save_file' %}"><span class="fas fa-file-upload"></span>{% trans 'Upload' %}</a></li>
+					</ul>
+				</div>
+				<div class="col-12 col-sm-4">
+					<h5>Tools</h5>
+					<ul class="list-unstyled">
+						<li><a href="{% url 'calculator' %}"><span class="fas fa-calculator"></span>{% trans 'Calculator' %}</a></li>
+					</ul>
+				</div>
+				<div class="col-12 col-sm-4">
+					<h5>Other links</h5>
+					<ul class="list-unstyled">
+						<li><a href="https://github.com/xAranaktu/FIFA-Tracker"><span class="fab fa-github"></span>GitHub</a></li>
+						<li><a href="https://discord.gg/Nb3HX2W"><span class="fab fa-discord"></span>Discord</a></li>
+						<li><a href="{% url 'privacypolicy' %}"><span class="fas fa-info-circle"></span>Privacy Policy</a></li>
+						<li><a href="{% url 'about' %}"><span class="fas fa-info-circle"></span>About</a></li>
+						<li><a href="{% url 'contact' %}"><span class="fas fa-envelope"></span>Contact</a></li>
+						<li><a href="{% url 'donate' %}"><span class="fas fa-piggy-bank"></span>Donate</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 text-center">
+					<p>All FIFA assets are property of EA Sports</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 text-center">
+					<p>&copy; FIFA Tracker 2018</p>
+				</div>
+			</div>
+		</div>
 	</footer>	
 </body>
 </html>

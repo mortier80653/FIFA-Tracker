@@ -1,13 +1,9 @@
-.top-container {
-    padding-top: 15px;
-}
-
 .current_user, .current_date{
-	border-bottom: 3px solid rgb(0, 0, 0);
+    border-bottom: 3px solid rgb(0, 0, 0);
 }
 
 .miniface {
     width: 65px;
     height: 65px;
-	border-radius: 50%;
+    border-radius: 50%;
 }

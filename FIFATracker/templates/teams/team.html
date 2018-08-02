@@ -10,55 +10,55 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 text-center">
+            <div class="col-12 text-center">
                 <h3>{{team.teamname}} (ID:{{ team.teamid}})</h3>
             </div>
         </div>
         <div class="row" style="margin-bottom: 10px;">
-            <div class="col-xs-12 text-center">
+            <div class="col-12 text-center">
                 <img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }}" class="crest-big">
             </div>
         </div>
         <div class="row" style="color:white; margin-bottom: 10px;">
-            <div class="col-xs-6 col-xs-offset-3" style="border: 2px solid rgb({{team.teamcolor3r}}, {{team.teamcolor3g}}, {{team.teamcolor3b}}); border-radius: 5px;">
+            <div class="col-6 offset-3" style="border: 2px solid rgb({{team.teamcolor3r}}, {{team.teamcolor3g}}, {{team.teamcolor3b}}); border-radius: 5px;">
                 <div class="row">
-                    <div class="col-xs-12 text-center rat{{team.overallrating}}">
+                    <div class="col-12 text-center rat{{team.overallrating}}">
                         {{team.overallrating}}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-4 rat{{team.attackrating}}">
+                    <div class="col-4 rat{{team.attackrating}}">
                         <div class="row">
-                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                            <div class="col-12 text-center" style="border: 1px solid black;">
                                 {% trans 'ATT' %}
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                            <div class="col-12 text-center" style="border: 1px solid black;">
                                 {{team.attackrating}}
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-4 rat{{team.midfieldrating}}">
+                    <div class="col-4 rat{{team.midfieldrating}}">
                         <div class="row">
-                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                            <div class="col-12 text-center" style="border: 1px solid black;">
                                 {% trans 'MID' %}
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                            <div class="col-12 text-center" style="border: 1px solid black;">
                                 {{team.midfieldrating}}
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-4 rat{{team.defenserating}}">
+                    <div class="col-4 rat{{team.defenserating}}">
                         <div class="row">
-                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                            <div class="col-12 text-center" style="border: 1px solid black;">
                                 {% trans 'DEF' %}
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12 text-center" style="border: 1px solid black;">
+                            <div class="col-12 text-center" style="border: 1px solid black;">
                                 {{team.defenserating}}
                             </div>
                         </div>
@@ -69,144 +69,148 @@
         <div class="container-fluid">
         <h2 align="center">{% trans 'Team Info' %}</h2>
             <div class="row team-info">
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <table width="100%" class="info-table">
                         <tbody>
                             <tr>
-                                <td>{% trans 'Team' %}</td>
-                                <td align="right">
-                                    {{team.teamname}} <a href="{% url 'teams' %}{{team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID: {{team.teamid}})" class="crest"></a>
+                                <td class="text-truncate" style="width: 147px;">{% trans 'Team' %}</td>
+                                <td class="text-truncate" align="right">
+                                    <a href="{% url 'teams' %}{{team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID: {{team.teamid}})" class="crest"></a> {{team.teamname}}
                                 </td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Careers' %}</td>
-                                <td align="right">
-                                    {{total_careers}} <span style="margin-left: 5px;" class="mytooltip glyphicon glyphicon-question-sign"><span class="tooltiptext">{{total_careers}} FIFA Tracker users are managing this team.</span></span>
+                                <td class="text-truncate">{% trans 'Careers' %}</td>
+                                <td class="text-truncate" align="right">
+                                    {{total_careers}} <span class="tooltip-span fas fa-question-circle" data-toggle="tooltip" data-placement="left" title="{{total_careers}} {% trans 'FIFA Tracker users are managing this team.' %}"></span>
                                 </td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Manager' %}</td>
-                                <td align="right">{{manager.firstname}} {{manager.surname}}</td>
+                                <td class="text-truncate">{% trans 'Manager' %}</td>
+                                <td class="text-truncate" align="right">
+                                    {{manager.firstname}} {{manager.surname}}
+                                </td>
                             </tr>
                             <tr>
-                                <td>{% trans 'League' %}</td>
-                                <td align="right">{{league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ league.leagueid }}.png" title="{{league.leaguename}} (ID: {{league.leagueid}})" class="crest"></td>
+                                <td class="text-truncate">{% trans 'League' %}</td>
+                                <td class="text-truncate" align="right">
+                                    <img src="{% get_static_prefix %}img/assets/leagues/l{{ league.leagueid }}.png" title="{{league.leaguename}} (ID: {{league.leagueid}})" class="crest"> {{league.leaguename}}
+                                </td>
                             </tr>
                             <tr>
-                                <td>{% trans 'League Position' %}</td>
-                                <td align="right">{{leagueteamlink.currenttableposition}}</td>
+                                <td class="text-truncate">{% trans 'League Position' %}</td>
+                                <td class="text-truncate" align="right">{{leagueteamlink.currenttableposition}}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'League Titles' %}</td>
-                                <td align="right">{{team.leaguetitles}}</td>
+                                <td class="text-truncate">{% trans 'League Titles' %}</td>
+                                <td class="text-truncate" align="right">{{team.leaguetitles}}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Domestic Cups' %}</td>
-                                <td align="right">{{team.domesticcups}}</td>
+                                <td class="text-truncate">{% trans 'Domestic Cups' %}</td>
+                                <td class="text-truncate" align="right">{{team.domesticcups}}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Rival Team' %}</td>
-                                <td align="right"><a href="{% url 'teams' %}{{team.rivalteam}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.rivalteam }}.png" title="ID: {{team.rivalteam}}" class="crest"></a></td>
+                                <td class="text-truncate">{% trans 'Rival Team' %}</td>
+                                <td class="text-truncate" align="right"><a href="{% url 'teams' %}{{team.rivalteam}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.rivalteam }}.png" title="ID: {{team.rivalteam}}" class="crest"></a></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <table width="100%" class="info-table">
                         <tbody>
                             <tr>
-                                <td>{% trans 'Foundation Year' %}</td>
-                                <td align="right">
+                                <td class="text-truncate" style="width: 147px;">{% trans 'Foundation Year' %}</td>
+                                <td class="text-truncate" align="right">
                                     {{team.foundationyear}}
                                 </td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Budget' %}</td>
-                                <td align="right"><span class="transferbudget">{{team.transferbudget}}</span> {{ request.session.currency_symbol }}</td>
+                                <td class="text-truncate">{% trans 'Budget' %}</td>
+                                <td class="text-truncate" align="right"><span class="transferbudget">{{team.transferbudget}}</span> {{ request.session.currency_symbol }}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Club worth' %}</td>
-                                <td align="right"><span class="clubworth">{{team.clubworth}}</span> {{ request.session.currency_symbol }}</td>
+                                <td class="text-truncate">{% trans 'Club worth' %}</td>
+                                <td class="text-truncate" align="right"><span class="clubworth">{{team.clubworth}}</span> {{ request.session.currency_symbol }}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Popularity' %}</td>
-                                <td align="right"> {{team.popularity}}</td>
+                                <td class="text-truncate">{% trans 'Popularity' %}</td>
+                                <td class="text-truncate" align="right"> {{team.popularity}}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Domestic prestige' %}</td>
-                                <td align="right"> {{team.domesticprestige}}</td>
+                                <td class="text-truncate">{% trans 'Domestic prestige' %}</td>
+                                <td class="text-truncate" align="right"> {{team.domesticprestige}}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Int. prestige' %}</td>
-                                <td align="right"> {{team.internationalprestige}}</td>
+                                <td class="text-truncate">{% trans 'Int. prestige' %}</td>
+                                <td class="text-truncate" align="right"> {{team.internationalprestige}}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Profitability' %}</td>
-                                <td align="right"> {{team.profitability}}</td>
+                                <td class="text-truncate">{% trans 'Profitability' %}</td>
+                                <td class="text-truncate" align="right"> {{team.profitability}}</td>
                             </tr>
                             <tr>
-                                <td>{% trans 'Youth Development' %}</td>
-                                <td align="right"> {{team.youthdevelopment}}</td>
+                                <td class="text-truncate">{% trans 'Youth Development' %}</td>
+                                <td class="text-truncate" align="right"> {{team.youthdevelopment}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <table width="100%" class="info-table">
                         <tbody>
                             {% for p in players %}
                                 {% if p.player.playerid == team.captainid %}
                                     <tr>
-                                        <td>{% trans 'Captain' %}</td>
-                                        <td align="right">
+                                        <td class="text-truncate">{% trans 'Captain' %}</td>
+                                        <td class="text-truncate" align="right">
                                             <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
                                         </td>
                                     </tr>
                                 {% endif %}
                                 {% if p.player.playerid == team.penaltytakerid %}
                                     <tr>
-                                        <td>{% trans 'Penalties' %}</td>
-                                        <td align="right">
+                                        <td class="text-truncate">{% trans 'Penalties' %}</td>
+                                        <td class="text-truncate" align="right">
                                             <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
                                         </td>
                                     </tr>
                                 {% endif %}
                                 {% if p.player.playerid == team.leftfreekicktakerid %}
                                     <tr>
-                                        <td>{% trans 'Left Short Free Kick' %}</td>
-                                        <td align="right">
+                                        <td class="text-truncate">{% trans 'Left Short Free Kick' %}</td>
+                                        <td class="text-truncate" align="right">
                                             <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
                                         </td>
                                     </tr>
                                 {% endif %}
                                 {% if p.player.playerid == team.rightfreekicktakerid %}
                                     <tr>
-                                        <td>{% trans 'Right Short Free Kick' %}</td>
-                                        <td align="right">
+                                        <td class="text-truncate">{% trans 'Right Short Free Kick' %}</td>
+                                        <td class="text-truncate" align="right">
                                             <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
                                         </td>
                                     </tr>
                                 {% endif %}
                                 {% if p.player.playerid == team.longkicktakerid %}
                                     <tr>
-                                        <td>{% trans 'Long Free Kick' %}</td>
-                                        <td align="right">
+                                        <td class="text-truncate">{% trans 'Long Free Kick' %}</td>
+                                        <td class="text-truncate" align="right">
                                             <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
                                         </td>
                                     </tr>
                                 {% endif %}
                                 {% if p.player.playerid == team.leftcornerkicktakerid %}
                                     <tr>
-                                        <td>{% trans 'Left Corner' %}</td>
-                                        <td align="right">
+                                        <td class="text-truncate">{% trans 'Left Corner' %}</td>
+                                        <td class="text-truncate" align="right">
                                             <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
                                         </td>
                                     </tr>
                                 {% endif %}
                                 {% if p.player.playerid == team.rightcornerkicktakerid %}
                                     <tr>
-                                        <td>{% trans 'Right Corner' %}</td>
-                                        <td align="right">
+                                        <td class="text-truncate">{% trans 'Right Corner' %}</td>
+                                        <td class="text-truncate" align="right">
                                             <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas }}</a>
                                         </td>
                                     </tr>
@@ -220,7 +224,7 @@
         {% if players %}
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-8 hidden-xs hidden-sm" id="footballpitch">
+                <div class="col-12 col-lg-8 d-none d-md-block" id="footballpitch">
                     <div class="container-fluid">
                         {% if is_club_team %}
                             {% for p in players %}
@@ -259,9 +263,6 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-md-4">
-                    
-                </div>
             </div>
         </div>
         <div id="table-container" class="container-fluid" style="margin-top: 10px;">
@@ -269,21 +270,21 @@
             <table class ="teamplayerstable" id="tpgktable">
                 <thead>
                     <tr>
-                        <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                        <th onclick="sortTable('tpgktable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpgktable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpgktable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpgktable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpgktable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                        <th onclick="sortTable('tpgktable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th class="text-center d-none d-md-table-cell" style="width: 75px;">{% trans 'IMG' %}</th>
+                        <th onclick="sortTable('tpgktable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpgktable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpgktable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpgktable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpgktable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="fas fa-sort"></span></th>
+                        <th class="text-center d-none d-md-table-cell">{% trans 'CONTRACT' %}</th>
+                        <th onclick="sortTable('tpgktable', 7)" class="text-center d-none d-md-table-cell">{% trans 'VALUE' %} <span class="fas fa-sort"></span></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for p in grouped_players.GK %}
                     <tr>
-                        <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
-                        <td class="player-position text-center" width="65">
+                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="player-position text-center text-truncate" width="65">
                             {% if is_club_team %}
                                 {{p.player_teams.club_team.team_links.position}}
                             {% elif is_national_team %}
@@ -293,11 +294,11 @@
                             {% endif %}
                         </td>
                         <td style="padding-left: 5px!important;" width="250">
-                            <div>
+                            <div class="text-truncate">
                                 <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                             </div>
-                            <div class="player-position">
+                            <div class="text-truncate player-position">
                                 {% if is_club_team %}
                                     #{{p.player_teams.club_team.team_links.jerseynumber }}
                                 {% elif is_national_team %}
@@ -314,19 +315,18 @@
                         <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
                         <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
                         <td class="text-center">{{ p.player_age.age }}</td>
-                        <td class="text-center hidden-xs hidden-sm">
+                        <td class="text-center d-none d-md-table-cell">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                    {% trans 'Loaned from' %} {{p.player_teams.club_team.team.teamname}}
+                                    {% trans 'Loaned from' %}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                    <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                     {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
                                 {% endif %}
                             </div>
                         </td>
-                        <td class="text-center hidden-xs hidden-sm">
+                        <td class="text-center d-none d-md-table-cell">
                             <div>
                                 {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
                             </div>
@@ -344,21 +344,21 @@
             <table class ="teamplayerstable" id="tpdeftable">
                 <thead>
                     <tr>
-                        <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                        <th onclick="sortTable('tpdeftable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpdeftable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpdeftable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpdeftable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpdeftable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                        <th onclick="sortTable('tpdeftable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th class="text-center d-none d-md-table-cell" style="width: 75px;">{% trans 'IMG' %}</th>
+                        <th onclick="sortTable('tpdeftable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpdeftable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpdeftable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpdeftable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpdeftable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="fas fa-sort"></span></th>
+                        <th class="text-center d-none d-md-table-cell">{% trans 'CONTRACT' %}</th>
+                        <th onclick="sortTable('tpdeftable', 7)" class="text-center d-none d-md-table-cell">{% trans 'VALUE' %} <span class="fas fa-sort"></span></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for p in grouped_players.DEF %}
                     <tr>
-                        <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
-                        <td class="player-position text-center" width="65">
+                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="player-position text-center text-truncate" width="65">
                             {% if is_club_team %}
                                 {{p.player_teams.club_team.team_links.position}}
                             {% elif is_national_team %}
@@ -368,11 +368,11 @@
                             {% endif %}
                         </td>
                         <td style="padding-left: 5px!important;" width="250">
-                            <div>
+                            <div class="text-truncate">
                                 <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                             </div>
-                            <div class="player-position">
+                            <div class="text-truncate player-position">
                                 {% if is_club_team %}
                                     #{{p.player_teams.club_team.team_links.jerseynumber }}
                                 {% elif is_national_team %}
@@ -389,19 +389,18 @@
                         <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
                         <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
                         <td class="text-center">{{ p.player_age.age }}</td>
-                        <td class="text-center hidden-xs hidden-sm">
+                        <td class="text-center d-none d-md-table-cell">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                {% trans 'Loaned from' %} {{p.player_teams.club_team.team.teamname}}
+                                    {% trans 'Loaned from' %}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                    <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                     {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
                                 {% endif %}
                             </div>
                         </td>
-                        <td class="text-center hidden-xs hidden-sm">
+                        <td class="text-center d-none d-md-table-cell">
                             <div>
                                 {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
                             </div>
@@ -419,21 +418,21 @@
             <table class ="teamplayerstable" id="tpmidtable">
                 <thead>
                     <tr>
-                        <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                        <th onclick="sortTable('tpmidtable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpmidtable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpmidtable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpmidtable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpmidtable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                        <th onclick="sortTable('tpmidtable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th class="text-center d-none d-md-table-cell" style="width: 75px;">{% trans 'IMG' %}</th>
+                        <th onclick="sortTable('tpmidtable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpmidtable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpmidtable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpmidtable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpmidtable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="fas fa-sort"></span></th>
+                        <th class="text-center d-none d-md-table-cell">{% trans 'CONTRACT' %}</th>
+                        <th onclick="sortTable('tpmidtable', 7)" class="text-center d-none d-md-table-cell">{% trans 'VALUE' %} <span class="fas fa-sort"></span></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for p in grouped_players.MID %}
                     <tr>
-                        <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
-                        <td class="player-position text-center" width="65">
+                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="player-position text-center text-truncate" width="65">
                             {% if is_club_team %}
                                 {{p.player_teams.club_team.team_links.position}}
                             {% elif is_national_team %}
@@ -443,11 +442,11 @@
                             {% endif %}
                         </td>
                         <td style="padding-left: 5px!important;" width="250">
-                            <div>
+                            <div class="text-truncate">
                                 <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                             </div>
-                            <div class="player-position">
+                            <div class="text-truncate player-position">
                                 {% if is_club_team %}
                                     #{{p.player_teams.club_team.team_links.jerseynumber }}
                                 {% elif is_national_team %}
@@ -464,19 +463,18 @@
                         <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
                         <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
                         <td class="text-center">{{ p.player_age.age }}</td>
-                        <td class="text-center hidden-xs hidden-sm">
+                        <td class="text-center d-none d-md-table-cell">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                {% trans 'Loaned from' %} {{p.player_teams.club_team.team.teamname}}
+                                    {% trans 'Loaned from' %}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                    <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                     {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
                                 {% endif %}
                             </div>
                         </td>
-                        <td class="text-center hidden-xs hidden-sm">
+                        <td class="text-center d-none d-md-table-cell">
                             <div>
                                 {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
                             </div>
@@ -494,21 +492,21 @@
             <table class ="teamplayerstable" id="tpatttable">
                 <thead>
                     <tr>
-                        <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                        <th onclick="sortTable('tpatttable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpatttable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpatttable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpatttable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th onclick="sortTable('tpatttable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
-                        <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                        <th onclick="sortTable('tpatttable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
+                        <th class="text-center d-none d-md-table-cell" style="width: 75px;">{% trans 'IMG' %}</th>
+                        <th onclick="sortTable('tpatttable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpatttable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpatttable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpatttable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="fas fa-sort"></span></th>
+                        <th onclick="sortTable('tpatttable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="fas fa-sort"></span></th>
+                        <th class="text-center d-none d-md-table-cell">{% trans 'CONTRACT' %}</th>
+                        <th onclick="sortTable('tpatttable', 7)" class="text-center d-none d-md-table-cell">{% trans 'VALUE' %} <span class="fas fa-sort"></span></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for p in grouped_players.ATT %}
                     <tr>
-                        <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
-                        <td class="player-position text-center" width="65">
+                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="player-position text-center text-truncate" width="65">
                             {% if is_club_team %}
                                 {{p.player_teams.club_team.team_links.position}}
                             {% elif is_national_team %}
@@ -518,11 +516,11 @@
                             {% endif %}
                         </td>
                         <td style="padding-left: 5px!important;" width="250">
-                            <div>
+                            <div class="text-truncate">
                                 <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                             </div>
-                            <div class="player-position">
+                            <div class="text-truncate player-position">
                                 {% if is_club_team %}
                                     #{{p.player_teams.club_team.team_links.jerseynumber }}
                                 {% elif is_national_team %}
@@ -539,19 +537,18 @@
                         <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
                         <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
                         <td class="text-center">{{ p.player_age.age }}</td>
-                        <td class="text-center hidden-xs hidden-sm">
+                        <td class="text-center d-none d-md-table-cell">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                    {% trans 'Loaned from' %} {{p.player_teams.club_team.team.teamname}}
+                                    {% trans 'Loaned from' %}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                    <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">Loaned from {{p.player_teams.club_team.team.teamname}}.</span></span>
                                 {% else %}
                                     <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                     {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
                                 {% endif %}
                             </div>
                         </td>
-                        <td class="text-center hidden-xs hidden-sm">
+                        <td class="text-center d-none d-md-table-cell">
                             <div>
                                 {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
                             </div>
@@ -570,29 +567,29 @@
                     <table class ="teamplayerstable" id="tploanedouttable">
                         <thead>
                             <tr>
-                                <th class="text-center" style="width: 65px;">{% trans 'IMG' %}</th>
-                                <th onclick="sortTable('tploanedouttable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="glyphicon glyphicon-sort"></span></th>
-                                <th onclick="sortTable('tploanedouttable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="glyphicon glyphicon-sort"></span></th>
-                                <th onclick="sortTable('tploanedouttable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                                <th onclick="sortTable('tploanedouttable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="glyphicon glyphicon-sort"></span></th>
-                                <th onclick="sortTable('tploanedouttable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="glyphicon glyphicon-sort"></span></th>
-                                <th class="text-center hidden-xs hidden-sm">{% trans 'CONTRACT' %}</th>
-                                <th onclick="sortTable('tploanedouttable', 7)" class="text-center hidden-xs hidden-sm">{% trans 'VALUE' %} <span class="glyphicon glyphicon-sort"></span></th>
+                                <th class="text-center d-none d-md-table-cell" style="width: 75px;">{% trans 'IMG' %}</th>
+                                <th onclick="sortTable('tploanedouttable', 1)" class="text-center" style="width: 65px;">{% trans 'POS' %} <span class="fas fa-sort"></span></th>
+                                <th onclick="sortTable('tploanedouttable', 2)" class="text-center" style="width: 250px;">{% trans 'PLAYER' %} <span class="fas fa-sort"></span></th>
+                                <th onclick="sortTable('tploanedouttable', 3)" class="text-center" style="width: 65px;">{% trans 'RAT' %} <span class="fas fa-sort"></span></th>
+                                <th onclick="sortTable('tploanedouttable', 4)" class="text-center" style="width: 65px;">{% trans 'POT' %} <span class="fas fa-sort"></span></th>
+                                <th onclick="sortTable('tploanedouttable', 5)" class="text-center" style="width: 65px;">{% trans 'AGE' %} <span class="fas fa-sort"></span></th>
+                                <th class="text-center d-none d-md-table-cell">{% trans 'CONTRACT' %}</th>
+                                <th onclick="sortTable('tploanedouttable', 7)" class="text-center d-none d-md-table-cell">{% trans 'VALUE' %} <span class="fas fa-sort"></span></th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for p in grouped_players.LOANED_OUT %}
                             <tr>
-                                <td width="65"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
-                                <td class="player-position text-center" width="65">
+                                <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                                <td class="player-position text-center text-truncate" width="65">
                                     {{p.player.preferredposition1}}
                                 </td>
                                 <td style="padding-left: 5px!important;" width="250">
-                                    <div>
+                                    <div class="text-truncate">
                                         <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                         <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                                     </div>
-                                    <div class="player-position">
+                                    <div class="text-truncate player-position">
                                         <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                         {{ p.player.preferredposition1 }}
                                         {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
@@ -603,13 +600,13 @@
                                 <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
                                 <td class="text-center"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span></td>
                                 <td class="text-center">{{ p.player_age.age }}</td>
-                                <td class="text-center hidden-xs hidden-sm">
+                                <td class="text-center d-none d-md-table-cell">
                                     <div>
-                                        {% trans 'Loaned to' %} {{p.player_contract.loanedto_clubname}}
+                                        {% trans 'Loaned to' %}
                                         <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="{{ p.player_contract.loanedto_clubname }} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
                                     </div>
                                 </td>
-                                <td class="text-center hidden-xs hidden-sm">
+                                <td class="text-center d-none d-md-table-cell">
                                     <div>
                                         {{ p.player_value.formated_value }} {{ request.session.currency_symbol }}
                                     </div>
@@ -626,7 +623,7 @@
         {% else %}
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 text-center">
+                <div class="col-12 text-center">
                     <h3>{% trans 'This team dont have any players' %}</h3>
                 </div>
             </div>

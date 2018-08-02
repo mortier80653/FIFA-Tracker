@@ -179,6 +179,7 @@ if RUN_MODE == 'test':
 
 # Django Debug Toolbar
 # https://django-debug-toolbar.readthedocs.io/en/stable/index.html#
+'''
 if DEBUG:
     INTERNAL_IPS = ('127.0.0.1', )
     INSTALLED_APPS += [
@@ -187,6 +188,8 @@ if DEBUG:
     MIDDLEWARE += [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ]
+'''
+
 
 # LastUserActivityMiddleware
 LAST_ACTIVITY_INTERVAL_SECS = 30

@@ -1,5 +1,7 @@
 $(document).ready(function(){
     selectizejs();
+    enableTooltips();
+    bootstrapResponsiveTabs();
     resizeableTables();
     updatePositions();
     updateInGameRatings();
@@ -14,6 +16,10 @@ $(document).ready(function(){
     numberWithCommas();
     ToolsCalculator();
 });
+
+function enableTooltips() {
+    $('[data-toggle="tooltip"]').tooltip();
+}
 
 function numberWithCommas() {
     // Club Worth
@@ -629,7 +635,13 @@ function careerFileUpload() {
         dataType: 'json',
         singleFileUploads: true,
         start: function (e) {
+            /* Hide 'upload button' */
             $('.js-upload-career-save').css('display', 'none')
+
+            /* Hide 'fifa_edition' select */
+            $('.selectize-control').css('display', 'none')
+
+            /* Show upload progress */
             $('.progress').css('display', '')
             $( "p:first" ).text("Uploading your FIFA career save: 0%");
         },
@@ -659,6 +671,10 @@ function careerFileUpload() {
         return;
     };
 };
+
+function bootstrapResponsiveTabs(){
+    $('.nav-tabs').responsiveTabs();
+}
 
 function selectizejs() {
     /* Calculator */
@@ -1289,7 +1305,7 @@ function selectizejs() {
         }
     });
 
-    $('#playerfilter').submit(function () {
+    $('#playerfilterform').submit(function () {
         $(this)
             .find('input[name]')
             .filter(function () {
@@ -1298,7 +1314,7 @@ function selectizejs() {
             .prop('name', '');
     });
 
-    $('#teamfilter').submit(function () {
+    $('#teamfilterform').submit(function () {
         $(this)
             .find('input[name]')
             .filter(function () {
@@ -1307,7 +1323,7 @@ function selectizejs() {
             .prop('name', '');
     });
 
-    $('#transfersfilter').submit(function () {
+    $('#transfersfilterform').submit(function () {
         $(this)
             .find('input[name]')
             .filter(function () {
@@ -1826,8 +1842,6 @@ function selectizejs() {
                 this.setValue(value);
         }
     });
-
-    $( "#tabs" ).tabs();
 };
 
 function convertUnits() {
@@ -1889,6 +1903,7 @@ function changeUnits() {
 
 function changeCurrency() {
     $('#id_cur_usd').on("click", function() {
+        console.log("GLGGL")
         $.ajax({
             url: '/settings/ajax/change-currency/',
             data: {

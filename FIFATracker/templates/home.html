@@ -27,64 +27,66 @@
 	</ul>
 </div>
 <div class="container">
-	<div class="col-md-6 col-xs-12">
-		<h2 align="center">{% trans 'Most Popular Clubs' %}</h2>
-		<div id="table-container" class="container-fluid">
-			<table>
-				<thead>
-					<tr>
-						<th class="text-center">{% trans 'CLUB' %}</th>
-						<th class="text-center">{% trans 'MANAGERS' %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for club in users_clubs %}
-					<tr>
-						<td>
-							<div style="padding: 5px;">
-								<img src="{% get_static_prefix %}img/assets/crest/l{{ club.id }}.png" title="{{ club.teamname }}" class="crest">
-								<span style="margin-left: 10px;">{{club.teamname}}</span>
-							</div>
-						</td>
-						<td class="text-center">
-							{{club.managers}}
-						</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+	<div class="row">
+		<div class="col-md-6 col-xs-12">
+			<h3 align="center">{% trans 'Most Popular Clubs' %}</h3>
+			<div id="table-container" class="container-fluid">
+				<table>
+					<thead>
+						<tr>
+							<th class="text-center">{% trans 'CLUB' %}</th>
+							<th class="text-center">{% trans 'MANAGERS' %}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for club in users_clubs %}
+						<tr>
+							<td>
+								<div class="text-truncate" style="padding: 5px;">
+									<img src="{% get_static_prefix %}img/assets/crest/l{{ club.id }}.png" title="{{ club.teamname }}" class="crest">
+									<span style="margin-left: 10px;">{{club.teamname}}</span>
+								</div>
+							</td>
+							<td class="text-center">
+								{{club.managers}}
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		</div>
-	</div>
-	<div class="col-md-6 col-xs-12">
-		<h2 align="center">{% trans 'Most Popular National Teams' %}</h2>
-		<div id="table-container" class="container-fluid">
-			<table>
-				<thead>
-					<tr>
-						<th class="text-center">{% trans 'NATIONAL TEAM' %}</th>
-						<th class="text-center">{% trans 'MANAGERS' %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for team in users_nationalteams %}
-					<tr>
-						<td>
-							<div style="padding: 5px;">
-								<img src="{% get_static_prefix %}img/assets/crest/l{{ team.id }}.png" title="{{ team.teamname }}" class="crest">
-								<span style="margin-left: 10px;">{{team.teamname}}</span>
-							</div>
-						</td>
-						<td class="text-center">
-							{{team.managers}}
-						</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+		<div class="col-md-6 col-xs-12">
+			<h3 align="center">{% trans 'Most Popular National Teams' %}</h3>
+			<div id="table-container" class="container-fluid">
+				<table>
+					<thead>
+						<tr>
+							<th class="text-center">{% trans 'NATIONAL TEAM' %}</th>
+							<th class="text-center">{% trans 'MANAGERS' %}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for team in users_nationalteams %}
+						<tr>
+							<td>
+								<div class="text-truncate" style="padding: 5px;">
+									<img src="{% get_static_prefix %}img/assets/crest/l{{ team.id }}.png" title="{{ team.teamname }}" class="crest">
+									<span style="margin-left: 10px;">{{team.teamname}}</span>
+								</div>
+							</td>
+							<td class="text-center">
+								{{team.managers}}
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
-<div id="discord" class="container-fluid">
+<div class="container-fluid" id="discord">
 	<h3 class="text-center">{% trans 'Join Our Discord' %}</h3>
 	<p class="text-center"><iframe src="https://discordapp.com/widget?id=362620892963930113&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe></p>
 </div>

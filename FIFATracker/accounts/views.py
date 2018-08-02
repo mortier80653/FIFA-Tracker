@@ -22,9 +22,6 @@ def signup(request):
             "Hey {}, you are already logged in!").format(request.user))
         return redirect('home')
 
-    icons = {"username": "glyphicon-user", "email": "glyphicon-envelope",
-             "password1": "glyphicon-lock", "password2": "glyphicon-lock"}
-
     form = SignUpForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         user = form.save(commit=False)
@@ -51,7 +48,7 @@ def signup(request):
     return render(
         request,
         'accounts/signup.html',
-        {'form': form, 'icons': icons}
+        {'form': form}
     )
 
 
@@ -63,8 +60,6 @@ def login_view(request):
         )
 
         return redirect('home')
-
-    icons = {"username": "glyphicon-user", "password": "glyphicon-lock"}
 
     form = LoginForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
@@ -84,7 +79,7 @@ def login_view(request):
     return render(
         request,
         'accounts/login.html',
-        {'form': form, 'icons': icons}
+        {'form': form}
     )
 
 

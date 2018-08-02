@@ -10,21 +10,21 @@
 {% block content %}
 	<div class="container">
     <div class="row">
-      <div class="col-sm-4 text-right hidden-xs">
+      <div class="col-md-4 text-right d-none d-md-block">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <dl>
               <dt>{% trans 'Nationality' %}</dt>
               <dd>{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag"></dd>
             </dl>
           </div>
-          <div class="col-xs-12">
+          <div class="col-12">
               <dl>
                 <dt>{% trans 'League' %}</dt>
                 <dd>{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" title="{{p.player_teams.club_team.league.leaguename}} (ID: {{p.player_teams.club_team.league.leagueid}})" class="crest"></dd>
               </dl>
           </div>
-          <div class="col-xs-12">
+          <div class="col-12">
               <dl>
                 <dt>{% trans 'Club' %}</dt>
                 <dd>
@@ -38,24 +38,24 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-4 text-center">
+      <div class="col-md-4 text-center">
         <div><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" title="PlayerID: {{ p.player.playerid }}" class="largeface" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';"></div>
       </div>
-      <div class="col-sm-4 text-left hidden-xs">
+      <div class="col-md-4 text-left d-none d-md-block">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <dl>
               <dt>{% trans 'Rating & Potential' %}</dt>
               <dd>{{ p.player.overallrating }} / {{ p.player.potential }}</dd>
             </dl>
           </div>
-          <div class="col-xs-12">
+          <div class="col-12">
             <dl>
               <dt>{% trans 'Birthdate' %}</dt>
               <dd>{{p.player_age.birth_date}} ({{p.player_age.age}} yo.)</td></dd>
             </dl>
           </div>
-          <div class="col-xs-12">
+          <div class="col-12">
             <dl>
               <dt>{% trans 'Position(s)' %}</dt>
               <dd class="player-position">{{ p.player.preferredposition1 }}{% if p.player.preferredposition2 != -1 %} / {{ p.player.preferredposition2 }}{% endif %}{% if p.player.preferredposition3 != -1 %} / {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} / {{ p.player.preferredposition4 }}{% endif %}</dd>
@@ -72,16 +72,15 @@
   <div class="container">
     <h2 align="center">{% trans 'Share This Player' %}</h2>
     <div class="row justify-content-center">
-      <div class="col-xs-3 hidden-xs"></div>
-      <div class="col-sm-4 col-xs-12">
+      <div class="col-md-4 col-12">
           {% if user.is_authenticated %}
             <input type="text" readonly="readonly" value="{{ request.build_absolute_uri }}?owner={{request.user}}" title="{% trans 'Share this player with your friends.' %}" id="shareinput">
           {% else %}
             <input type="text" readonly="readonly" value="{{ request.build_absolute_uri }}?owner=guest" title="{% trans 'Share this player with your friends.' %}" id="shareinput">
           {% endif %}
       </div>
-      <div class="col-sm-2 col-xs-12">
-        <button class="btn btn-primary" onclick="copyShareLink()"><span class="glyphicon glyphicon-copy"></span> {% trans 'COPY' %}</button>
+      <div class="col-md-2 col-12">
+        <button class="btn btn-primary" onclick="copyShareLink()"><span class="fas fa-copy"></span> {% trans 'COPY' %}</button>
       </div>
     </div>
   </div>
@@ -92,61 +91,61 @@
           <table width="100%" class="info-table">
             <tbody>
               <tr>
-                <td style="width: 180px;">{% trans 'Name' %}</td>
-                <td align="right">{{p.player_name.firstname}} {{p.player_name.lastname}}</td>
+                <td class="text-truncate" style="width: 147px;">{% trans 'Name' %}</td>
+                <td class="text-truncate" align="right">{{p.player_name.firstname}} {{p.player_name.lastname}}</td>
               </tr>
               {% if p.player_name.commonname %}
               <tr>
-                <td>{% trans 'Common name' %}</td>
-                <td align="right">{{p.player_name.commonname}}</td>
+                <td class="text-truncate">{% trans 'Common name' %}</td>
+                <td class="text-truncate" align="right">{{p.player_name.commonname}}</td>
               </tr>
               {% endif %}
               {% if p.player_name.playerjerseyname %}
               <tr>
-                <td>{% trans 'Jersey name' %}</td>
-                <td align="right">{{p.player_name.playerjerseyname}}</td>
+                <td class="text-truncate">{% trans 'Jersey name' %}</td>
+                <td class="text-truncate" align="right">{{p.player_name.playerjerseyname}}</td>
               </tr>
               {% endif %}
               <tr>
-                <td>{% trans 'Birthdate' %}</td>
-                <td align="right">{{p.player_age.birth_date}} ({{p.player_age.age}} yo.)</td>
+                <td class="text-truncate">{% trans 'Birthdate' %}</td>
+                <td class="text-truncate" align="right">{{p.player_age.birth_date}} ({{p.player_age.age}} yo.)</td>
               </tr>
               <tr>
-                <td>{% trans 'Height & Weight' %}</td>
-                <td align="right"><span id="p_height">{{ p.player.height }}</span> / <span id="p_weight">{{ p.player.weight }}</span></td>
+                <td class="text-truncate">{% trans 'Height & Weight' %}</td>
+                <td class="text-truncate" align="right"><span id="p_height">{{ p.player.height }}</span> / <span id="p_weight">{{ p.player.weight }}</span></td>
               </tr>
               <tr>
-                <td>{% trans 'Body Type' %}</td>
-                <td align="right">{{ p.bodytype }} </td>
+                <td class="text-truncate">{% trans 'Body Type' %}</td>
+                <td class="text-truncate" align="right">{{ p.bodytype }} </td>
               </tr>
               <tr>
-                <td>{% trans 'Hair Color' %}</td>
-                <td align="right">{{ p.haircolor }} </td>
+                <td class="text-truncate">{% trans 'Hair Color' %}</td>
+                <td class="text-truncate" align="right">{{ p.haircolor }} </td>
               </tr>
               <tr>
-                <td>{% trans 'Position' %}</td>
-                <td class="player-position" align="right">{{p.player.preferredposition1}}</td>
+                <td class="text-truncate">{% trans 'Position' %}</td>
+                <td class="text-truncate player-position" align="right">{{p.player.preferredposition1}}</td>
               </tr>
               {% if p.player.preferredposition2 != -1 %}
               <tr>
-                <td>{% trans 'Other Positions' %}</td>
-                <td class="player-position" align="right">{{ p.player.preferredposition2 }}{% if p.player.preferredposition3 != -1 %} / {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} / {{ p.player.preferredposition4 }}{% endif %}</td>
+                <td class="text-truncate">{% trans 'Other Positions' %}</td>
+                <td class="text-truncate player-position" align="right">{{ p.player.preferredposition2 }}{% if p.player.preferredposition3 != -1 %} / {{ p.player.preferredposition3 }}{% endif %}{% if p.player.preferredposition4 != -1 %} / {{ p.player.preferredposition4 }}{% endif %}</td>
               </tr>
               {% endif %}
               <tr>
-                <td>{% trans 'Nationality' %}</td>
-                <td align="right">{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag"></td>
+                <td class="text-truncate">{% trans 'Nationality' %}</td>
+                <td class="text-truncate" align="right">{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag"></td>
               </tr>
               <tr>
-                <td>{% trans 'League' %}</td>
-                <td align="right">{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" title="{{p.player_teams.club_team.league.leaguename}} (ID: {{p.player_teams.club_team.league.leagueid}})" class="crest"></td>
+                <td class="text-truncate">{% trans 'League' %}</td>
+                <td class="text-truncate" align="right">{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" title="{{p.player_teams.club_team.league.leaguename}} (ID: {{p.player_teams.club_team.league.leagueid}})" class="crest"></td>
               </tr>
               <tr>
-                <td>{% trans 'Club' %}</td>
-                <td align="right">
+                <td class="text-truncate">{% trans 'Club' %}</td>
+                <td class="text-truncate" align="right">
                   {% if p.player_contract.isloanedout %}
                   {{p.player_contract.loanedto_clubname}} 
-                  <span style="margin-left: 5px;" class="mytooltip onloanlabel">L<span class="tooltiptext">{% trans 'This player is loaned from:' %} {{p.player_teams.club_team.team.teamname}}.</span></span>
+                  <span style="margin-left: 5px;" class="onloanlabel" data-toggle="tooltip" data-placement="left" title="{% trans 'This player is loaned from:' %} {{p.player_teams.club_team.team.teamname}}">L</span>
                   <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="{% trans 'Loaned from:' %} {{p.player_teams.club_team.team.teamname}}" class="crest"></a>
                   {% else %}
                   {{p.player_teams.club_team.team.teamname}} 
@@ -155,12 +154,12 @@
                 </td>
               </tr>
               <tr>
-                <td>{% trans 'Contract' %}</td>
-                <td align="right">{{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}</td>
+                <td class="text-truncate">{% trans 'Contract' %}</td>
+                <td class="text-truncate" align="right">{{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}</td>
               </tr>
               <tr>
-                <td>{% trans 'Boots' %}</td>
-                <td align="right">{{ p.boots }}</td>
+                <td class="text-truncate">{% trans 'Boots' %}</td>
+                <td class="text-truncate" align="right">{{ p.boots }}</td>
               </tr>
             </tbody>
           </table>
@@ -219,9 +218,9 @@
     <h2 align="center">{% trans 'Player Attributes' %}</h2>
     <div class="row player-attributes">
       {% if p.player.preferredposition1 > 0 %}
-      <div class="col-md-4 col-sm-6" style="display: none;">
+      <div class="col-lg-4 col-md-6" style="display: none;">
       {% else %}
-      <div class="col-md-4 col-sm-6">
+      <div class="col-lg-4 col-md-6">
       {% endif %}
         <h3 class="attrib-title">{% trans 'GOALKEEPER' %}</h3>
         <table width="100%" class="attrib-table">
@@ -250,9 +249,9 @@
         </table>
       </div>
       {% if p.player.preferredposition1 == 0 %}
-      <div class="col-md-4 col-sm-6" style="display: none;">
+      <div class="col-lg-4 col-md-6" style="display: none;">
       {% else %}
-      <div class="col-md-4 col-sm-6">
+      <div class="col-lg-4 col-md-6">
       {% endif %}
         <h3 class="attrib-title">{% trans 'ATTACK' %}</h3>
         <table width="100%" class="attrib-table">
@@ -280,7 +279,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-4 col-sm-6">
+      <div class="col-lg-4 col-md-6">
         <h3 class="attrib-title">{% trans 'DEFENDING' %}</h3>
 		    <table width="100%" class="attrib-table">
           <tbody>
@@ -299,7 +298,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-4 col-sm-6">
+      <div class="col-lg-4 col-md-6">
         <h3 class="attrib-title">{% trans 'SKILL' %}</h3>
 		    <table width="100%" class="attrib-table">
           <tbody>
@@ -326,9 +325,9 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-4 col-sm-6">
+      <div class="col-lg-4 col-md-6">
         <h3 class="attrib-title">{% trans 'POWER' %}</h3>
-		    <table width="100%" class="attrib-table">
+        <table width="100%" class="attrib-table">
           <tbody>
             <tr>
               <td>{% trans 'Shot Power' %}</td>
@@ -353,7 +352,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-4 col-sm-6">
+      <div class="col-lg-4 col-md-6">
         <h3 class="attrib-title">{% trans 'MOVEMENT' %}</h3>
 		    <table width="100%" class="attrib-table">
           <tbody>
@@ -380,7 +379,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-4 col-sm-6">
+      <div class="col-lg-4 col-md-6">
         <h3 class="attrib-title">{% trans 'MENTALITY' %}</h3>
 		    <table width="100%" class="attrib-table">
           <tbody>
@@ -404,7 +403,7 @@
               <td>{% trans 'Vision' %}</td>
               <td align="right"><span class="ratinglabel rat{{p.player.vision}}">{{ p.player.vision }}</span></td>
             </tr>
-			      <tr>
+            <tr>
               <td>{% trans 'Penalties' %}</td>
               <td align="right"><span class="ratinglabel rat{{p.player.penalties}}">{{ p.player.penalties }}</span></td>
             </tr>
@@ -429,19 +428,19 @@
       </div>
   </div>
   {% endif %}
-  <div class="container hidden-md hidden-lg">
+  <div class="container d-md-none">
     <h2 align="center">{% trans 'In-Game Ratings' %}</h2>
-    <div class="col-xs-12">
+    <div class="col-12">
         <table width="100%" class="ingameratings-table">
           <tbody>
           </tbody>
         </table>
     </div>
   </div>
-  <div class="container hidden-xs hidden-sm">
+  <div class="container d-none d-md-block">
       <h2 align="center">{% trans 'In-Game Ratings' %}</h2>
       <div class="row">
-        <div class="col-md-8" id="footballpitch">
+        <div class="col-12 col-lg-8" id="footballpitch">
             <div id="pitch-igr-0" class="ratinglabel" style="border-style: solid; border-width: 2px; border-color: black; border-radius: 50%;">
               <div class="pitch-igr-pos">
                 <span></span>

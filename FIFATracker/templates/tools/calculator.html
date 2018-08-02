@@ -3,124 +3,127 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="well">
-        <h4 style="margin-top: 0">{% trans 'Calculator' %}</h4>
-        <div id="tabs">
-            <ul>
-                <li>
-                    <a href="#tabs-1">{% trans 'Potential' %}</a>
+    <div class="card card-container bg-dark">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="calculatortabs-header" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="calcpot-tab" data-toggle="tab" href="#calcpot" role="tab" aria-controls="calcpot" aria-selected="true">{% trans 'Potential' %}</a>
                 </li>
-                <li>
-                    <a href="#tabs-2">{% trans 'Wage' %}</a>
+                <li class="nav-item">
+                    <a class="nav-link" id="calcwage-tab" data-toggle="tab" href="#calcwage" role="tab" aria-controls="calcwage" aria-selected="false">{% trans 'Wage' %}</a>
                 </li>
             </ul>
-            <div id="tabs-1">
-                <p>{% trans 'Calculate player potential.' %}</p>
-                <div class="row">
-                    <div class="col-md-4 col-xs-12">
-                        <label>{% trans 'Currency' %}</label>
-                        <select class="just-selectize" id="calcpot-currency" placeholder="{% trans 'EURO' %} (€)">
-                            <option value="0">{% trans 'USDOLLAR' %} ($)</option>
-                            <option value="1" selected>{% trans 'EURO' %} (€)</option>
-                            <option value="2">{% trans 'POUND' %} (£)</option>
-                        </select>
-                        <label>{% trans 'Player Value' %}</label>	
-                        <input class="form-control" type="text" id="calcpot-val" placeholder="{% trans 'Player Value' %}">
-                        <label>{% trans 'Position' %}</label>
-                        <select class="just-selectize" id="calcpot-position" placeholder="{% trans 'ST' %}">
-                            <option value="0">{% trans 'GK' %}</option>
-                            <option value="1">{% trans 'SW' %}</option>
-                            <option value="2">{% trans 'RWB' %}</option>
-                            <option value="3">{% trans 'RB' %}</option>
-                            <option value="4">{% trans 'RCB' %}</option>
-                            <option value="5">{% trans 'CB' %}</option>
-                            <option value="6">{% trans 'LCB' %}</option>
-                            <option value="7">{% trans 'LB' %}</option>
-                            <option value="8">{% trans 'LWB' %}</option>
-                            <option value="9">{% trans 'RDM' %}</option>
-                            <option value="10">{% trans 'CDM' %}</option>
-                            <option value="11">{% trans 'LDM' %}</option>
-                            <option value="12">{% trans 'RM' %}</option>
-                            <option value="13">{% trans 'RCM' %}</option>
-                            <option value="14">{% trans 'CM' %}</option>
-                            <option value="15">{% trans 'LCM' %}</option>
-                            <option value="16">{% trans 'LM' %}</option>
-                            <option value="17">{% trans 'RAM' %}</option>
-                            <option value="18">{% trans 'CAM' %}</option>
-                            <option value="19">{% trans 'LAM' %}</option>
-                            <option value="20">{% trans 'RF' %}</option>
-                            <option value="21">{% trans 'CF' %}</option>
-                            <option value="22">{% trans 'LF' %}</option>
-                            <option value="23">{% trans 'RW' %}</option>
-                            <option value="24">{% trans 'RS' %}</option>
-                            <option value="25" selected>{% trans 'ST' %}</option>
-                            <option value="26">{% trans 'LS' %}</option>
-                            <option value="27">{% trans 'LW' %}</option>
-                        </select>	
-                        <label>{% trans 'Age' %}</label>
-                        <input class="form-control" type="number" min="1" max="99" id="calcpot-age" placeholder="{% trans 'Age' %}">
-                        <label>{% trans 'Overall Rating' %}</label>
-                        <input class="form-control" type="number" min="1" max="99" id="calcpot-ovr" placeholder="{% trans 'Overall Rating' %}">
-                    </div>
-                    <div class="col-xs-12">
-                        <p id="calcpot-result"></p>
-                        <button type="button" class="btn btn-primary" id="btn-calc-pot" style="margin-top: 10px; margin-right: 5px;">{% trans 'Calculate' %}</button>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="calculatortabs-content">
+                <div class="tab-pane fade active show" id="calcpot" role="tabpanel" aria-labelledby="calcpot-tab">
+                    <p>{% trans 'Calculate player potential.' %}</p>
+                    <div class="row">
+                        <div class="col-lg-4 col-12">
+                            <label>{% trans 'Currency' %}</label>
+                            <select class="just-selectize" id="calcpot-currency" placeholder="{% trans 'EURO' %} (€)">
+                                <option value="0">{% trans 'USDOLLAR' %} ($)</option>
+                                <option value="1" selected>{% trans 'EURO' %} (€)</option>
+                                <option value="2">{% trans 'POUND' %} (£)</option>
+                            </select>
+                            <label>{% trans 'Player Value' %}</label>	
+                            <input class="form-control" type="text" id="calcpot-val" placeholder="{% trans 'Player Value' %}">
+                            <label>{% trans 'Position' %}</label>
+                            <select class="just-selectize" id="calcpot-position" placeholder="{% trans 'ST' %}">
+                                <option value="0">{% trans 'GK' %}</option>
+                                <option value="1">{% trans 'SW' %}</option>
+                                <option value="2">{% trans 'RWB' %}</option>
+                                <option value="3">{% trans 'RB' %}</option>
+                                <option value="4">{% trans 'RCB' %}</option>
+                                <option value="5">{% trans 'CB' %}</option>
+                                <option value="6">{% trans 'LCB' %}</option>
+                                <option value="7">{% trans 'LB' %}</option>
+                                <option value="8">{% trans 'LWB' %}</option>
+                                <option value="9">{% trans 'RDM' %}</option>
+                                <option value="10">{% trans 'CDM' %}</option>
+                                <option value="11">{% trans 'LDM' %}</option>
+                                <option value="12">{% trans 'RM' %}</option>
+                                <option value="13">{% trans 'RCM' %}</option>
+                                <option value="14">{% trans 'CM' %}</option>
+                                <option value="15">{% trans 'LCM' %}</option>
+                                <option value="16">{% trans 'LM' %}</option>
+                                <option value="17">{% trans 'RAM' %}</option>
+                                <option value="18">{% trans 'CAM' %}</option>
+                                <option value="19">{% trans 'LAM' %}</option>
+                                <option value="20">{% trans 'RF' %}</option>
+                                <option value="21">{% trans 'CF' %}</option>
+                                <option value="22">{% trans 'LF' %}</option>
+                                <option value="23">{% trans 'RW' %}</option>
+                                <option value="24">{% trans 'RS' %}</option>
+                                <option value="25" selected>{% trans 'ST' %}</option>
+                                <option value="26">{% trans 'LS' %}</option>
+                                <option value="27">{% trans 'LW' %}</option>
+                            </select>	
+                            <label>{% trans 'Age' %}</label>
+                            <input class="form-control" type="number" min="1" max="99" id="calcpot-age" placeholder="{% trans 'Age' %}">
+                            <label>{% trans 'Overall Rating' %}</label>
+                            <input class="form-control" type="number" min="1" max="99" id="calcpot-ovr" placeholder="{% trans 'Overall Rating' %}">
+                        </div>
+                        <div class="col-12">
+                            <p id="calcpot-result"></p>
+                            <button type="button" class="btn btn-primary" id="btn-calc-pot" style="margin-top: 10px; margin-right: 5px;">{% trans 'Calculate' %}</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="tabs-2">
-                <p>{% trans 'Calculate player weekly wage.' %}</p>
-                <div class="row">
-                    <div class="col-md-4 col-xs-12">
-                        <label>{% trans 'Currency' %}</label>
-                        <select class="just-selectize" id="calcwage-currency" placeholder="{% trans 'EURO' %} (€)">
-                            <option value="0">{% trans 'USDOLLAR' %} ($)</option>
-                            <option value="1" selected>{% trans 'EURO' %} (€)</option>
-                            <option value="2">{% trans 'POUND' %} (£)</option>
-                        </select>	
-                        <label>{% trans 'League' %}</label>
-                        <input id='leagues-input' name="leagueid" placeholder="{% trans 'Search for league...' %}">
-                        <label>{% trans 'Team' %}</label>
-                        <input class='teams-filter-input' id='teams-input' name="teamid" placeholder="{% trans 'Search for team...' %}">
-                        <label>{% trans 'Position' %}</label>
-                        <select class="just-selectize" id="calcwage-position" placeholder="{% trans 'ST' %}">
-                            <option value="0">{% trans 'GK' %}</option>
-                            <option value="1">{% trans 'SW' %}</option>
-                            <option value="2">{% trans 'RWB' %}</option>
-                            <option value="3">{% trans 'RB' %}</option>
-                            <option value="4">{% trans 'RCB' %}</option>
-                            <option value="5">{% trans 'CB' %}</option>
-                            <option value="6">{% trans 'LCB' %}</option>
-                            <option value="7">{% trans 'LB' %}</option>
-                            <option value="8">{% trans 'LWB' %}</option>
-                            <option value="9">{% trans 'RDM' %}</option>
-                            <option value="10">{% trans 'CDM' %}</option>
-                            <option value="11">{% trans 'LDM' %}</option>
-                            <option value="12">{% trans 'RM' %}</option>
-                            <option value="13">{% trans 'RCM' %}</option>
-                            <option value="14">{% trans 'CM' %}</option>
-                            <option value="15">{% trans 'LCM' %}</option>
-                            <option value="16">{% trans 'LM' %}</option>
-                            <option value="17">{% trans 'RAM' %}</option>
-                            <option value="18">{% trans 'CAM' %}</option>
-                            <option value="19">{% trans 'LAM' %}</option>
-                            <option value="20">{% trans 'RF' %}</option>
-                            <option value="21">{% trans 'CF' %}</option>
-                            <option value="22">{% trans 'LF' %}</option>
-                            <option value="23">{% trans 'RW' %}</option>
-                            <option value="24">{% trans 'RS' %}</option>
-                            <option value="25" selected>{% trans 'ST' %}</option>
-                            <option value="26">{% trans 'LS' %}</option>
-                            <option value="27">{% trans 'LW' %}</option>
-                        </select>	  
-                        <label>{% trans 'Age' %}</label>
-                        <input class="form-control" type="number" min="1" max="99" id="calcwage-age" placeholder="{% trans 'Age' %}">
-                        <label>{% trans 'Overall Rating' %}</label>
-                        <input class="form-control" type="number" min="1" max="99" id="calcwage-ovr" placeholder="{% trans 'Overall Rating' %}">
-                    </div>
-                    <div class="col-xs-12">
-                        <p id="calcwage-result"></p>
-                        <button type="button" class="btn btn-primary" id="btn-calc-wage" style="margin-top: 10px; margin-right: 5px;">{% trans 'Calculate' %}</button>
+                <div class="tab-pane fade" id="calcwage" role="tabpanel" aria-labelledby="calcwage-tab">
+                    <p>{% trans 'Calculate player weekly wage.' %}</p>
+                    <div class="row">
+                        <div class="col-lg-4 col-12">
+                            <label>{% trans 'Currency' %}</label>
+                            <select class="just-selectize" id="calcwage-currency" placeholder="{% trans 'EURO' %} (€)">
+                                <option value="0">{% trans 'USDOLLAR' %} ($)</option>
+                                <option value="1" selected>{% trans 'EURO' %} (€)</option>
+                                <option value="2">{% trans 'POUND' %} (£)</option>
+                            </select>	
+                            <label>{% trans 'League' %}</label>
+                            <input id='leagues-input' name="leagueid" placeholder="{% trans 'Search for league...' %}">
+                            <label>{% trans 'Team' %}</label>
+                            <input class='teams-filter-input' id='teams-input' name="teamid" placeholder="{% trans 'Search for team...' %}">
+                            <label>{% trans 'Position' %}</label>
+                            <select class="just-selectize" id="calcwage-position" placeholder="{% trans 'ST' %}">
+                                <option value="0">{% trans 'GK' %}</option>
+                                <option value="1">{% trans 'SW' %}</option>
+                                <option value="2">{% trans 'RWB' %}</option>
+                                <option value="3">{% trans 'RB' %}</option>
+                                <option value="4">{% trans 'RCB' %}</option>
+                                <option value="5">{% trans 'CB' %}</option>
+                                <option value="6">{% trans 'LCB' %}</option>
+                                <option value="7">{% trans 'LB' %}</option>
+                                <option value="8">{% trans 'LWB' %}</option>
+                                <option value="9">{% trans 'RDM' %}</option>
+                                <option value="10">{% trans 'CDM' %}</option>
+                                <option value="11">{% trans 'LDM' %}</option>
+                                <option value="12">{% trans 'RM' %}</option>
+                                <option value="13">{% trans 'RCM' %}</option>
+                                <option value="14">{% trans 'CM' %}</option>
+                                <option value="15">{% trans 'LCM' %}</option>
+                                <option value="16">{% trans 'LM' %}</option>
+                                <option value="17">{% trans 'RAM' %}</option>
+                                <option value="18">{% trans 'CAM' %}</option>
+                                <option value="19">{% trans 'LAM' %}</option>
+                                <option value="20">{% trans 'RF' %}</option>
+                                <option value="21">{% trans 'CF' %}</option>
+                                <option value="22">{% trans 'LF' %}</option>
+                                <option value="23">{% trans 'RW' %}</option>
+                                <option value="24">{% trans 'RS' %}</option>
+                                <option value="25" selected>{% trans 'ST' %}</option>
+                                <option value="26">{% trans 'LS' %}</option>
+                                <option value="27">{% trans 'LW' %}</option>
+                            </select>	  
+                            <label>{% trans 'Age' %}</label>
+                            <input class="form-control" type="number" min="1" max="99" id="calcwage-age" placeholder="{% trans 'Age' %}">
+                            <label>{% trans 'Overall Rating' %}</label>
+                            <input class="form-control" type="number" min="1" max="99" id="calcwage-ovr" placeholder="{% trans 'Overall Rating' %}">
+                        </div>
+                        <div class="col-12">
+                            <p id="calcwage-result"></p>
+                            <button type="button" class="btn btn-primary" id="btn-calc-wage" style="margin-top: 10px; margin-right: 5px;">{% trans 'Calculate' %}</button>
+                        </div>
                     </div>
                 </div>
             </div>

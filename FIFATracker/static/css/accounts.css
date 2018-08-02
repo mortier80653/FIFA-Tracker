@@ -1,9 +1,4 @@
-h2 {
-    text-align: center;
-    padding: 15px;
-}
-
-.main_row {
+.form-container {
     color: #fff;
     background-color: #6f7890;
     border-radius: 10px;
@@ -11,17 +6,21 @@ h2 {
     max-width: 600px;
 }
 
-.main_row  a {
+.form-container h2 {
+    text-align: center;
+    padding: 15px;
+}
+
+.form-container  a {
     color: #ddd;
     text-decoration: underline;
 }
 
-
-.fieldWrapper {
+.form-container .fieldWrapper {
     padding: 0px 30px 10px 30px;
 }
 
-.btn-primary {
+.form-container .btn-primary {
     margin: 30px;
     font-size: 16px;
     width: calc(100% - 60px);

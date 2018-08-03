@@ -10,6 +10,17 @@ h2, .h2 {
     border-bottom: 2px solid rgba(255,255,255,0.2);
 }
 
+.attrib-avg-row {
+    padding-top: 10px;
+    padding-bottom: 5px; 
+}
+
+/* avg rating progress bar */
+.avg-progressbar {
+    margin-bottom: 15px;
+    height: 10px;
+}
+
 input {
     width: 100%;
     color: black;
@@ -241,4 +252,31 @@ input {
     bottom: 33px;
     width: 85px;
     text-align: center;
+}
+
+/* Avg Rating labels */
+.avg0, .avg1, .avg2, .avg3, .avg4, .avg5, .avg6, .avg7, .avg8, .avg9, .avg10,
+.avg11, .avg12, .avg13, .avg14, .avg15, .avg16, .avg17, .avg18, .avg19, .avg20,
+.avg21, .avg22, .avg23, .avg24, .avg25, .avg26, .avg27, .avg28, .avg29, .avg30, 
+.avg31, .avg32, .avg33, .avg34, .avg35, .avg36, .avg37, .avg38, .avg39, .avg40, 
+.avg41, .avg42, .avg43, .avg44, .avg45, .avg46, .avg47, .avg48, .avg49 {
+    color: red;
+}
+
+.avg50, .avg51, .avg52, .avg53, .avg54, .avg55, .avg56, .avg57, .avg58, .avg59, .avg60,
+.avg61, .avg62, .avg63, .avg64 {
+    color: orange;
+}
+
+.avg65, .avg66, .avg67, .avg68, .avg69, .avg70, .avg71, .avg72, .avg73, .avg74, .avg75, 
+.avg76, .avg77, .avg78, .avg79 {
+    color: yellowgreen;
+}
+
+.avg80, .avg81, .avg82, .avg83, .avg84, .avg85, .avg86, .avg87, .avg88, .avg89 {
+    color: green;
+}
+
+.avg90, .avg91, .avg92, .avg93, .avg94, .avg95, .avg96, .avg97, .avg98, .avg99 {
+    color: darkgreen;
 }

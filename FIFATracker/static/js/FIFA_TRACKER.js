@@ -5,6 +5,7 @@ $(document).ready(function(){
     resizeableTables();
     updatePositions();
     updateInGameRatings();
+    updateAvgAttr();
     updateStrongFoot();
     updateWorkrates();
     changeCurrency();
@@ -18,10 +19,13 @@ $(document).ready(function(){
 });
 
 function enableTooltips() {
+    // Enable Bootstrap 4 tooltips
     $('[data-toggle="tooltip"]').tooltip();
 }
 
 function numberWithCommas() {
+    // Comma separate 'clubworth' and 'transferbudget'
+
     // Club Worth
     let cwspan = $(".clubworth");
     cwspan.each(function() {
@@ -134,8 +138,59 @@ function resizeableTables() {
     $("table").colResizable();
 };
 
+function updateAvgAttr() {
+    let attr_tbl = $('.attrib-table');
+
+    // Return if table not found
+    if (attr_tbl.length == 0) { return;}
+
+    // Names
+    let section_names = [
+        'goalkeeper',
+        'attack',
+        'defending',
+        'skill',
+        'power',
+        'movement',
+        'mentality'
+    ]
+
+    let sum = 0;
+    let avg = 0;
+    let attributes = undefined;
+    let span = undefined;
+    let progressbar = undefined;
+
+    for (let i = 0; i < attr_tbl.length; i++) {
+        // reset sum & avg
+        sum = 0;
+        avg = 0;
+
+        // table cells containing attribute values
+        attributes = $(attr_tbl[i]).find('tr td:nth-child(even) span');
+
+        // Sum attributes of section
+        attributes.each(function() {
+            sum += parseInt($(this).text());
+        });
+        
+        // Calculate average
+        avg = Math.ceil(sum/attributes.length);
+
+        // Update span
+        span = $('#avg-' + section_names[i] + '-span');
+        span.addClass("avg" + avg);
+        span.text(avg);
+
+        // Update progressbar
+        progressbar = $('#avg-' + section_names[i] +'-progressbar .progress-bar');
+        progressbar.addClass('rat' + avg);
+        progressbar.css('width', avg + '%');
+    }
+}
+
 function updateInGameRatings() {
-    let attr_tbl = $('.attrib-table tr'); 
+    let attr_tbl = $('.attrib-table tr');
 
     // Return if table not found
     if (attr_tbl.length == 0) { return;}

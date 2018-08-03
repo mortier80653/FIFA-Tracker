@@ -48,7 +48,7 @@ body {
     background-color: rgba(22,24,29,0.75);
 }
 
-.ft-dark .ft-nav-item-dark, .ft-nav-link-dark {
+.ft-dark .ft-nav-item-dark, .ft-dark .ft-nav-link-dark {
     color: #cfd2da !important;
 }
 
@@ -158,7 +158,7 @@ body {
     padding-left: 10px;
 }
 
-.card-container label,h3 {
+.card-container label, .card-container h3 {
     padding-top: 10px;
 }
 

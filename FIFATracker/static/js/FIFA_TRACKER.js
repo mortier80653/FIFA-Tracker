@@ -572,7 +572,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
             break;
         case 22:
-           // LF (id = 22)
+            // LF (id = 22)
             ovr.push(parseFloat(attr_val[23] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 5%
             ovr.push(parseFloat(attr_val[24] * 0.05).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 5%
             ovr.push(parseFloat(attr_val[26] * 0.09).toFixed(2));			// PLAYER_ATTRIBUTE_REACTIONS * 9%
@@ -587,7 +587,7 @@ function calculateInGameRating(posid, attr_val) {
             ovr.push(parseFloat(attr_val[22] * 0.04).toFixed(2));			// PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
             break;
         case 23:
-           // RW (id = 23)
+            // RW (id = 23)
             ovr.push(parseFloat(attr_val[23] * 0.07).toFixed(2));			// PLAYER_ATTRIBUTE_ACCELERATION * 7%
             ovr.push(parseFloat(attr_val[24] * 0.06).toFixed(2));			// PLAYER_ATTRIBUTE_SPRINT_SPEED * 6%
             ovr.push(parseFloat(attr_val[25] * 0.03).toFixed(2));			// PLAYER_ATTRIBUTE_AGILITY * 3%

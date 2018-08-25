@@ -695,22 +695,47 @@ class RestToCSV():
         """Players Release Clauses"""
         sign = b"\x72\x6C\x63\x74\x72\x6B\x00"  # rlctrk - release clause sign (?)
         mm.seek(0)
-        offset = mm.rfind(sign)
+        offset = mm.find(sign)
 
         if offset < 0:
             # release clause sign not found
             return
 
-        with open(os.path.join(self.dest_path, "career_rest_releaseclauses.csv"), 'w+', encoding='utf-8') as f_csv:
-            # create columns
-            headers = "username,ft_user_id,playerid,teamid,release_clause\n"
-            f_csv.write(headers)
-
+        # Validate signature
+        valid_offset = -1
+        while offset >= 0:
             cur_pos = offset + len(sign)
             mm.seek(cur_pos, 0)
 
             # Number of players with release clause
             num_of_players = self.ReadInt32(mm.read(4))
+
+            if num_of_players > 25000 or num_of_players < 0:
+                # invalid number of players
+                offset = mm.find(sign, offset + len(sign))
+                continue
+
+            playerid = self.ReadInt32(mm.read(4))
+            if playerid > 300000 or playerid < 0:
+                # invalid playerid
+                offset = mm.find(sign, offset + len(sign))
+                continue
+
+            # save valid offset
+            valid_offset = cur_pos
+            break
+
+        if valid_offset == -1:
+            # valid offset not found
+            return
+
+        mm.seek(valid_offset, 0)
+        num_of_players = self.ReadInt32(mm.read(4))
+        with open(os.path.join(self.dest_path, "career_rest_releaseclauses.csv"), 'w+', encoding='utf-8') as f_csv:
+            # create columns
+            headers = "username,ft_user_id,playerid,teamid,release_clause\n"
+            f_csv.write(headers)
+
             for p in range(num_of_players):
                 playerid = self.ReadInt32(mm.read(4))
                 teamid = self.ReadInt32(mm.read(4))

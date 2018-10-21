@@ -20,9 +20,7 @@ from players.models import (
     DataUsersLeagueteamlinks,
     DataUsersCareerCalendar,
     DataUsersLeagues,
-    DataNations,
     DataUsersDcplayernames,
-    DataPlayernames,
     DataUsersManager,
     DataUsersCareerUsers,
     DataUsersCareerRestReleaseClauses,
@@ -73,6 +71,7 @@ def transfer_info(playerid, data):
 def get_transfers(request, additional_filters=None, paginate=False):
     request_query_dict = request.GET.copy()
 
+    set_currency(request)
     current_user = get_current_user(request)
     fifa_edition = get_fifa_edition(request)
 
@@ -227,12 +226,13 @@ def get_team(request, teamid=0, additional_filters=None):
 
         for p in players:
             grouped_players['total_team_value'] += p.player_value.value
-            if int(p.player_contract['isloanedout']) == 1 and int(p.player_contract['loanedto_clubid']) != int(teamid):
-                grouped_players['value_LOANED_OUT'] += p.player_value.value
-                grouped_players['LOANED_OUT'].append(p)
-                p_index = context_data['players'].index(p)
-                del context_data['players'][p_index]
-                continue
+            if is_club_team:
+                if int(p.player_contract['isloanedout']) == 1 and int(p.player_contract['loanedto_clubid']) != int(teamid):
+                    grouped_players['value_LOANED_OUT'] += p.player_value.value
+                    grouped_players['LOANED_OUT'].append(p)
+                    p_index = context_data['players'].index(p)
+                    del context_data['players'][p_index]
+                    continue
 
             if p.player.preferredposition1 == 0:
                 grouped_players['value_GK'] += p.player_value.value
@@ -268,6 +268,7 @@ def get_team(request, teamid=0, additional_filters=None):
         'is_club_team': is_club_team,
         'is_national_team': is_national_team,
         'total_careers': total_careers,
+        'fifa_edition': fifa_edition,
     }
 
     return context
@@ -318,6 +319,7 @@ def get_teams(request, additional_filters=None, paginate=False):
         'request_query_dict': request_query_dict,
         'dict_cached_queries': dict_cached_queries,
         'career_user': career_user,
+        'fifa_edition': fifa_edition,
     }
 
     return context
@@ -407,10 +409,14 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
     players_list = list()
     currency = int(request.session['currency'])
     for player in data:
-        fp = FifaPlayer(player, current_user, current_date,
-                        dict_cached_queries, currency, fifa_edition)
+        fp = FifaPlayer(player, current_user, current_date, dict_cached_queries, currency, fifa_edition)
         players_list.append(fp)
 
-    context = {'players': players_list, 'paginator': paginator,
-               'request_query_dict': request_query_dict, 'dict_cached_queries': dict_cached_queries, }
+    context = {
+        'players': players_list,
+        'paginator': paginator,
+        'request_query_dict': request_query_dict,
+        'dict_cached_queries': dict_cached_queries,
+        'fifa_edition': fifa_edition,
+    }
     return context

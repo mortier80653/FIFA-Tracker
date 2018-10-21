@@ -6,31 +6,38 @@ from django.db import connection
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 
-from core.exceptions import NoResultsError, PrivateProfileError, UnknownError
+from core.exceptions import NoResultsError, PrivateProfileError, UnknownError, UserNotExists
 from core.generate_view_helper import get_fifaplayers
 from core.fifa_utils import PlayerName
+from core.session_utils import set_currency, get_current_user, get_fifa_edition, get_career_user
+from core.consts import DEFAULT_FIFA_EDITION
 
 from players.models import (
     DataUsersPlayers,
     DataUsersPlayers17,
+    DataUsersPlayers19,
     DataUsersEditedplayernames,
     DataUsersTeams,
     DataUsersLeagues,
     DataNations,
+    DataNations17,
+    DataNations19,
     DataUsersDcplayernames,
     DataPlayernames,
     DataPlayernames17,
+    DataPlayernames19,
 )
 
 
 def ajax_players_by_name(request):
     if request.user.is_authenticated:
-        current_user = request.user
-        fifa_edition = request.user.profile.fifa_edition
+        current_user = get_current_user(request)
+        fifa_edition = get_fifa_edition(request)
     else:
         current_user = "guest"
-        fifa_edition = 18
+        fifa_edition = DEFAULT_FIFA_EDITION
 
     players_found = list()
 
@@ -45,8 +52,11 @@ def ajax_players_by_name(request):
             table_playernames = list(
                 DataPlayernames.objects.all().filter(query).iterator())
         else:
+            playernames_model = ContentType.objects.get(
+                model='dataplayernames{}'.format(fifa_edition)
+            ).model_class()
             table_playernames = list(
-                DataPlayernames17.objects.all().filter(query).iterator())
+                playernames_model.objects.all().filter(query).iterator())
 
         for player in table_playernames:
             if player.nameid in valid_nameids:
@@ -92,7 +102,8 @@ def ajax_players_by_name(request):
                     commonname_id__in=valid_nameids)
             ).all().order_by('-overallrating')[:12].iterator())
         else:
-            players = list(DataUsersPlayers17.objects.for_user(current_user).select_related(
+            players_model = ContentType.objects.get(model='datausersplayers{}'.format(fifa_edition)).model_class()
+            players = list(players_model.objects.for_user(current_user).select_related(
                 'firstname', 'lastname', 'playerjerseyname', 'commonname',
             ).filter(
                 Q(playerid__in=valid_playerids) | Q(firstname_id__in=valid_nameids) |
@@ -121,7 +132,7 @@ def ajax_players_by_name(request):
 
 def ajax_teams(request):
     if request.user.is_authenticated:
-        current_user = request.user
+        current_user = get_current_user(request)
     else:
         current_user = "guest"
 
@@ -144,7 +155,7 @@ def ajax_teams(request):
 
 def ajax_leagues(request):
     if request.user.is_authenticated:
-        current_user = request.user
+        current_user = get_current_user(request)
     else:
         current_user = "guest"
 
@@ -167,17 +178,22 @@ def ajax_leagues(request):
 
 def ajax_nationality(request):
     if request.user.is_authenticated:
-        current_user = request.user
+        fifa_edition = get_fifa_edition(request)
     else:
-        current_user = "guest"
+        fifa_edition = DEFAULT_FIFA_EDITION
+
+    if fifa_edition == 18:
+        nations_model = ContentType.objects.get(model='datanations').model_class()
+    else:
+        nations_model = ContentType.objects.get(model='datanations{}'.format(fifa_edition)).model_class()
 
     selected = request.GET.get('selected', None)
     if selected:
         selected = list(selected.split(","))
-        nations = list(DataNations.objects.all().filter(
+        nations = list(nations_model.objects.all().filter(
             Q(nationid__in=selected)).values())
     else:
-        nations = list(DataNations.objects.all().values())
+        nations = list(nations_model.objects.all().values())
 
     data = {
         'nations': nations,
@@ -188,20 +204,24 @@ def ajax_nationality(request):
 
 def players(request):
     try:
-        context = get_fifaplayers(request, paginate=True)
+        additional_filters = {'gender': 0}
+        context = get_fifaplayers(request, additional_filters=additional_filters, paginate=True)
         return render(request, 'players/players.html', context)
-    except (NoResultsError, PrivateProfileError, UnknownError) as e:
+    except (NoResultsError, PrivateProfileError, UnknownError, UserNotExists) as e:
         messages.error(request, e)
         return redirect('home')
 
 
 def player(request, playerid):
     try:
-        additional_filters = {'playerid': playerid}
+        additional_filters = {'playerid': playerid, 'gender': 0}
         context = get_fifaplayers(
             request, additional_filters=additional_filters, paginate=False)
 
-        return render(request, 'players/player.html', {'p': context['players'][0]})
-    except (NoResultsError, PrivateProfileError, UnknownError) as e:
+        return render(
+            request, 'players/player.html',
+            {'p': context['players'][0], 'fifa_edition': context['fifa_edition']}
+        )
+    except (NoResultsError, PrivateProfileError, UnknownError, UserNotExists) as e:
         messages.error(request, e)
         return redirect('home')

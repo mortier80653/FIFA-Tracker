@@ -23,6 +23,7 @@ from core import views as core_views
 from account_settings import views as account_settings_views
 from accounts import views as accounts_views
 from tools import views as tools_views
+from editor import views as editor_views
 
 urlpatterns = [
     url(r'^$', core_views.home, name='home'),
@@ -47,6 +48,7 @@ urlpatterns = [
     url(r'^transfers/', include('transfer_history.urls')),
     url(r'^teams/', include('teams.urls')),
     url(r'^tools/', include('tools.urls')),
+    url(r'^editor/', include('editor.urls')),
     url(r'^settings/', include('account_settings.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n'), name='set_language'),
     url(r'^admin/', admin.site.urls),

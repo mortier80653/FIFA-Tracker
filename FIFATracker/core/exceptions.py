@@ -8,3 +8,7 @@ class PrivateProfileError(Exception):
 
 class UnknownError(Exception):
     pass
+
+
+class UserNotExists(Exception):
+    pass

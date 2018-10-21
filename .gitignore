@@ -97,13 +97,19 @@ ENV/
 # mkdocs documentation
 /site
 
+# PyCharm
+.idea
+
+# Visual Studio Code
+.vscode
+
 # mypy
 .mypy_cache/
 secret_settings.py
 FIFATracker/static/img/assets/
-.vscode/settings.json
 FIFATracker/media/
 FIFATracker/players/migrations/
 FIFATracker/core/migrations/
 FIFATracker/accounts/migrations/
 staticfiles/
+FIFATracker/static/img.zip

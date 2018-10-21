@@ -16,7 +16,7 @@
         </div>
         <div class="row" style="margin-bottom: 10px;">
             <div class="col-12 text-center">
-                <img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }}" class="crest-big">
+                <img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ team.teamname }} (ID: {{ team.teamid }})" class="crest-big">
             </div>
         </div>
         <div class="row" style="color:white; margin-bottom: 10px;">
@@ -75,7 +75,7 @@
                             <tr>
                                 <td class="text-truncate" style="width: 147px;">{% trans 'Team' %}</td>
                                 <td class="text-truncate" align="right">
-                                    <a href="{% url 'teams' %}{{team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID: {{team.teamid}})" class="crest"></a> {{team.teamname}}
+                                    <a href="{% url 'teams' %}{{team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ team.teamname }} (ID: {{team.teamid}})" class="crest"></a> {{team.teamname}}
                                 </td>
                             </tr>
                             <tr>
@@ -93,7 +93,7 @@
                             <tr>
                                 <td class="text-truncate">{% trans 'League' %}</td>
                                 <td class="text-truncate" align="right">
-                                    <img src="{% get_static_prefix %}img/assets/leagues/l{{ league.leagueid }}.png" title="{{league.leaguename}} (ID: {{league.leagueid}})" class="crest"> {{league.leaguename}}
+                                    <img src="{% get_static_prefix %}img/assets/common/leagues/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/leagues/l{{league.leagueid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/leagues/notfound.png';" title="{{league.leaguename}} (ID: {{league.leagueid}})" class="crest"> {{league.leaguename}}
                                 </td>
                             </tr>
                             <tr>
@@ -110,7 +110,7 @@
                             </tr>
                             <tr>
                                 <td class="text-truncate">{% trans 'Rival Team' %}</td>
-                                <td class="text-truncate" align="right"><a href="{% url 'teams' %}{{team.rivalteam}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ team.rivalteam }}.png" title="ID: {{team.rivalteam}}" class="crest"></a></td>
+                                <td class="text-truncate" align="right"><a href="{% url 'teams' %}{{team.rivalteam}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{team.rivalteam}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="(ID: {{team.rivalteam}})" class="crest"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -230,7 +230,7 @@
                             {% for p in players %}
                                 {% if p.player_teams.club_team.team_links.position <= 27 %}
                                     <div id="pitch-player-{{p.player_teams.club_team.team_links.position}}"> 
-                                        <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="{{ p.player_name.knownas }}" class="miniface"></a>
+                                        <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="{{ p.player_name.knownas }}" class="miniface"></a>
                                         <div class="pitch-ovr rat{{p.player.overallrating}}" title="OVR: {{p.player.overallrating}} / POT: {{p.player.potential}}"> 
                                             {{p.player.overallrating}}
                                         </div>
@@ -247,7 +247,7 @@
                             {% for p in players %}
                                 {% if p.player_teams.national_team.team_links.position <= 27 %}
                                     <div id="pitch-player-{{p.player_teams.national_team.team_links.position}}"> 
-                                        <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="{{ p.player_name.knownas }}" class="miniface"></a>
+                                        <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="{{ p.player_name.knownas }}" class="miniface"></a>
                                         <div class="pitch-ovr rat{{p.player.overallrating}}" title="OVR: {{p.player.overallrating}} / POT: {{p.player.potential}}"> 
                                             {{p.player.overallrating}}
                                         </div>
@@ -283,7 +283,7 @@
                 <tbody>
                     {% for p in grouped_players.GK %}
                     <tr>
-                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
                         <td class="player-position text-center text-truncate" width="65">
                             {% if is_club_team %}
                                 {{p.player_teams.club_team.team_links.position}}
@@ -295,7 +295,7 @@
                         </td>
                         <td style="padding-left: 5px!important;" width="250">
                             <div class="text-truncate">
-                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <img src="{% get_static_prefix %}img/assets/common/flags/notfound.png" data-src="{% get_static_prefix %}img/assets/common/flags/f_{{p.player.nationality.nationid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/flags/notfound.png';" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                             </div>
                             <div class="text-truncate player-position">
@@ -304,7 +304,7 @@
                                 {% elif is_national_team %}
                                     #{{p.player_teams.national_team.team_links.jerseynumber }}
                                 {% else %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                 {% endif %}
                                 {{ p.player.preferredposition1 }}
                                 {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
@@ -317,12 +317,22 @@
                         <td class="text-center">{{ p.player_age.age }}</td>
                         <td class="text-center d-none d-md-table-cell">
                             <div>
-                                {% if p.player_contract.isloanedout %}
-                                    {% trans 'Loaned from' %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% if is_club_team %}
+                                    {% if p.player_contract.isloanedout %}
+                                        {% trans 'Loaned from' %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    {% else %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% endif %}
                                 {% else %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                    {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% if p.player_contract.isloanedout %}
+                                        {% trans 'On Loan At' %}
+                                        <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_contract.loanedto_clubid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_contract.loanedto_clubname }} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                    {% else %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </td>
@@ -357,7 +367,7 @@
                 <tbody>
                     {% for p in grouped_players.DEF %}
                     <tr>
-                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
                         <td class="player-position text-center text-truncate" width="65">
                             {% if is_club_team %}
                                 {{p.player_teams.club_team.team_links.position}}
@@ -369,7 +379,7 @@
                         </td>
                         <td style="padding-left: 5px!important;" width="250">
                             <div class="text-truncate">
-                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <img src="{% get_static_prefix %}img/assets/common/flags/notfound.png" data-src="{% get_static_prefix %}img/assets/common/flags/f_{{p.player.nationality.nationid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/flags/notfound.png';" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                             </div>
                             <div class="text-truncate player-position">
@@ -378,7 +388,7 @@
                                 {% elif is_national_team %}
                                     #{{p.player_teams.national_team.team_links.jerseynumber }}
                                 {% else %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                 {% endif %}
                                 {{ p.player.preferredposition1 }}
                                 {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
@@ -391,12 +401,22 @@
                         <td class="text-center">{{ p.player_age.age }}</td>
                         <td class="text-center d-none d-md-table-cell">
                             <div>
-                                {% if p.player_contract.isloanedout %}
-                                    {% trans 'Loaned from' %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% if is_club_team %}
+                                    {% if p.player_contract.isloanedout %}
+                                        {% trans 'Loaned from' %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    {% else %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% endif %}
                                 {% else %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                    {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% if p.player_contract.isloanedout %}
+                                        {% trans 'On Loan At' %}
+                                        <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_contract.loanedto_clubid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_contract.loanedto_clubname }} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                    {% else %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </td>
@@ -431,7 +451,7 @@
                 <tbody>
                     {% for p in grouped_players.MID %}
                     <tr>
-                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
                         <td class="player-position text-center text-truncate" width="65">
                             {% if is_club_team %}
                                 {{p.player_teams.club_team.team_links.position}}
@@ -443,7 +463,7 @@
                         </td>
                         <td style="padding-left: 5px!important;" width="250">
                             <div class="text-truncate">
-                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <img src="{% get_static_prefix %}img/assets/common/flags/notfound.png" data-src="{% get_static_prefix %}img/assets/common/flags/f_{{p.player.nationality.nationid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/flags/notfound.png';" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                             </div>
                             <div class="text-truncate player-position">
@@ -452,7 +472,7 @@
                                 {% elif is_national_team %}
                                     #{{p.player_teams.national_team.team_links.jerseynumber }}
                                 {% else %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                 {% endif %}
                                 {{ p.player.preferredposition1 }}
                                 {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
@@ -465,12 +485,22 @@
                         <td class="text-center">{{ p.player_age.age }}</td>
                         <td class="text-center d-none d-md-table-cell">
                             <div>
-                                {% if p.player_contract.isloanedout %}
-                                    {% trans 'Loaned from' %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% if is_club_team %}
+                                    {% if p.player_contract.isloanedout %}
+                                        {% trans 'Loaned from' %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    {% else %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% endif %}
                                 {% else %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                    {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% if p.player_contract.isloanedout %}
+                                        {% trans 'On Loan At' %}
+                                        <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_contract.loanedto_clubid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_contract.loanedto_clubname }} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                    {% else %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </td>
@@ -505,7 +535,7 @@
                 <tbody>
                     {% for p in grouped_players.ATT %}
                     <tr>
-                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                        <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
                         <td class="player-position text-center text-truncate" width="65">
                             {% if is_club_team %}
                                 {{p.player_teams.club_team.team_links.position}}
@@ -517,7 +547,7 @@
                         </td>
                         <td style="padding-left: 5px!important;" width="250">
                             <div class="text-truncate">
-                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <img src="{% get_static_prefix %}img/assets/common/flags/notfound.png" data-src="{% get_static_prefix %}img/assets/common/flags/f_{{p.player.nationality.nationid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/flags/notfound.png';" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                             </div>
                             <div class="text-truncate player-position">
@@ -526,7 +556,7 @@
                                 {% elif is_national_team %}
                                     #{{p.player_teams.national_team.team_links.jerseynumber }}
                                 {% else %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                 {% endif %}
                                 {{ p.player.preferredposition1 }}
                                 {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
@@ -539,12 +569,22 @@
                         <td class="text-center">{{ p.player_age.age }}</td>
                         <td class="text-center d-none d-md-table-cell">
                             <div>
-                                {% if p.player_contract.isloanedout %}
-                                    {% trans 'Loaned from' %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                {% if is_club_team %}
+                                    {% if p.player_contract.isloanedout %}
+                                        {% trans 'Loaned from' %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                    {% else %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% endif %}
                                 {% else %}
-                                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
-                                    {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% if p.player_contract.isloanedout %}
+                                        {% trans 'On Loan At' %}
+                                        <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_contract.loanedto_clubid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_contract.loanedto_clubname }} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                    {% else %}
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </td>
@@ -580,17 +620,17 @@
                         <tbody>
                             {% for p in grouped_players.LOANED_OUT %}
                             <tr>
-                                <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
+                                <td class="d-none d-md-table-cell" width="75"><a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a></td>
                                 <td class="player-position text-center text-truncate" width="65">
                                     {{p.player.preferredposition1}}
                                 </td>
                                 <td style="padding-left: 5px!important;" width="250">
                                     <div class="text-truncate">
-                                        <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                        <img src="{% get_static_prefix %}img/assets/common/flags/notfound.png" data-src="{% get_static_prefix %}img/assets/common/flags/f_{{p.player.nationality.nationid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/flags/notfound.png';" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                         <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                                     </div>
                                     <div class="text-truncate player-position">
-                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                        <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                         {{ p.player.preferredposition1 }}
                                         {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
                                         {% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
@@ -603,7 +643,7 @@
                                 <td class="text-center d-none d-md-table-cell">
                                     <div>
                                         {% trans 'Loaned to' %}
-                                        <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="{{ p.player_contract.loanedto_clubname }} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                        <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_contract.loanedto_clubid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_contract.loanedto_clubname }} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
                                     </div>
                                 </td>
                                 <td class="text-center d-none d-md-table-cell">

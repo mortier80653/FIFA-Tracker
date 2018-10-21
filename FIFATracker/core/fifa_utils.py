@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-
+from core.consts import UNUSED_TEAMS
 
 def get_team_name(all_teams, teamid):
     for t in all_teams:
@@ -629,7 +629,7 @@ class PlayerValue:
 
 
 class PlayerName():
-    def __init__(self, player, dict_cached_queries, fifa_edition=18):
+    def __init__(self, player, dict_cached_queries, fifa_edition=19):
         self.fifa_edition = int(fifa_edition)
         self.player = player
         try:
@@ -645,10 +645,10 @@ class PlayerName():
         self.playername = self.set_player_name()
 
     def set_player_name(self):
-        if self.fifa_edition == 18:
-            dcplayernames_start_index = 34000
-        else:
+        if self.fifa_edition == 17:
             dcplayernames_start_index = 30000
+        else:
+            dcplayernames_start_index = 34000
 
         name = {
             'firstname': int(self.player.firstname_id or 0),
@@ -656,6 +656,7 @@ class PlayerName():
             'commonname': int(self.player.commonname_id or 0),
             'playerjerseyname': int(self.player.playerjerseyname_id or 0),
         }
+
 
         if name['firstname'] == 0 and name['lastname'] == 0 and self.edited_player_names is not None:
             for i in range(len(self.edited_player_names)):
@@ -716,7 +717,6 @@ class FifaPlayer():
         self.release_clauses = dict_cached_queries['q_release_clauses']
         self.players_stats = dict_cached_queries['q_players_stats']
 
-        # FIFA 18/FIFA 17
         self.fifa_edition = fifa_edition
 
         # Current Date
@@ -1367,7 +1367,6 @@ class FifaPlayer():
     def set_teams(self):
         teams = {}
         max_teams = 2
-        league = None
 
         for i in range(len(self.team_player_links)):
             if int(self.team_player_links[i].playerid) == int(self.player.playerid):
@@ -1375,7 +1374,10 @@ class FifaPlayer():
                     if int(self.q_teams[j].teamid) == int(self.team_player_links[i].teamid):
                         league = self.get_league(self.q_teams[j].teamid)
                         if league:
-                            if league[1].leagueid == 78 or league[1].leagueid == 2136:
+                            if league[1].leagueid == 76 and self.q_teams[j].teamid in UNUSED_TEAMS:
+                                # Ignore MLS ALL STARS and ADIDAS (if not managed by user)
+                                pass
+                            elif league[1].leagueid == 78 or league[1].leagueid == 2136:
                                 # Men's National or Women's National
                                 teams['national_team'] = {
                                     'team': vars(self.q_teams[j]),
@@ -1384,6 +1386,7 @@ class FifaPlayer():
                                     'league_links': vars(league[1]),
                                 }
                             else:
+                                # Club
                                 teams['club_team'] = {
                                     'team': vars(self.q_teams[j]),
                                     'team_links': vars(self.team_player_links[i]),

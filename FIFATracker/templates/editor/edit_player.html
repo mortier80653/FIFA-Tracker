@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load common_templatetags %}
+{% load i18n %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/editor.css' %}?v={% file_timestamp 'css/editor.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-12">
+            <div>
+                <img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" title="PlayerID: {{ p.player.playerid }}" class="largeface" onclick="headshotPicker()">
+            </div>
+            <div class="testborder">
+                <h2 class="text-center">{% trans 'Player Info' %}</h2>
+                <table width="100%" class="info-table">
+                    <tbody>
+                        <tr>
+                            <td class="text-truncate text-center" style="width: 147px;">{% trans 'First Name' %}</td>
+                            <td class="text-truncate text-center">{{p.player_name.firstname}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-8 col-12">
+            <div class="card card-container bg-dark">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="playereditortab-header" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="playerattributes-tab" data-toggle="tab" href="#playerattributes" role="tab" aria-controls="playerattributes" aria-selected="true">{% trans 'Player Attributes' %}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="playereditortab-content">
+                        <div class="tab-pane fade active show" id="playerattributes" role="tabpanel" aria-labelledby="playerattributes-tab">
+                            <div class="row player-attributes">
+                                <div class="col-md-6 col-12">
+                                    <div class="row attrib-avg-row">
+                                        <div class="col-8">
+                                            <h3 class="attrib-title">{% trans 'GOALKEEPER' %}</h3>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <h3 class="attrib-avgattr"><span id="avg-goalkeeper-span">0</span></h3>
+                                        </div>
+                                    </div>
+                                    <div id="avg-goalkeeper-progressbar" class="progress avg-progressbar">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <table width="100%" class="attrib-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>{% trans 'GK Diving' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.gkdiving}}">{{ p.player.gkdiving }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'GK Handling' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.gkhandling}}">{{ p.player.gkhandling }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'GK Kicking' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.gkkicking}}">{{ p.player.gkkicking }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'GK Positioning' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.gkpositioning}}">{{ p.player.gkpositioning }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'GK Reflex' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.gkreflexes}}">{{ p.player.gkreflexes }}</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="row attrib-avg-row">
+                                        <div class="col-8">
+                                            <h3 class="attrib-title">{% trans 'ATTACK' %}</h3>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <h3 class="attrib-avgattr"><span id="avg-attack-span">0</span></h3>
+                                        </div>
+                                    </div>
+                                    <div id="avg-attack-progressbar" class="progress avg-progressbar">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <table width="100%" class="attrib-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>{% trans 'Crossing' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.crossing}}">{{ p.player.crossing }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'Finishing' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.finishing}}">{{ p.player.finishing }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'Heading Accuracy' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.headingaccuracy}}">{{ p.player.headingaccuracy }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'Short Passing' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.shortpassing}}">{{ p.player.shortpassing }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'Volleys' %}</td>
+                                                <td class="text-right"><span class="text-center ratinglabel rat{{p.player.volleys}}">{{ p.player.volleys }}</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="row attrib-avg-row">
+                                        <div class="col-8">
+                                            <h3 class="attrib-title">{% trans 'DEFENDING' %}</h3>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <h3 class="attrib-avgattr"><span id="avg-defending-span">0</span></h3>
+                                        </div>
+                                    </div>
+                                    <div id="avg-defending-progressbar" class="progress avg-progressbar">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <table width="100%" class="attrib-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>{% trans 'Marking' %}</td>
+                                                <td class="text-right"><span class="ratinglabel rat{{p.player.marking}}">{{ p.player.marking }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'Standing Tackle' %}</td>
+                                                <td class="text-right"><span class="ratinglabel rat{{p.player.standingtackle}}">{{ p.player.standingtackle }}</span> </td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans 'Sliding Tackle' %}</td>
+                                                <td class="text-right"><span class="ratinglabel rat{{p.player.slidingtackle}}">{{ p.player.slidingtackle }}</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -26,15 +26,15 @@ class CareerSaveFileModel(models.Model):
         min_size = 6500000
         max_size = 15000000
         if filesize < min_size:
-            raise ValidationError("Your file is not a FIFA 18 Career File.")
+            raise ValidationError("Your file is not a valid FIFA Career File.")
         elif filesize > max_size:
-            raise ValidationError("Your file is not a FIFA 18 Career File.")
+            raise ValidationError("Your file is not a valid FIFA Career File.")
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploadedfile = models.FileField(
-        verbose_name='FIFA 18 Career File', upload_to=user_dir_path, validators=[validate_size])
-    fifa_edition = models.IntegerField(blank=True, null=True, default=18)
+        verbose_name='FIFA 19 Career File', upload_to=user_dir_path, validators=[validate_size])
+    fifa_edition = models.IntegerField(blank=True, null=True, default=19)
     file_process_status_code = models.IntegerField(
         blank=True, null=True, default=0)
     file_process_status_msg = models.CharField(
@@ -194,6 +194,9 @@ class DataUsersCareerPresignedContract(models.Model):
     completedate = models.IntegerField(blank=True, null=True)
     performancebonusvalue = models.IntegerField(blank=True, null=True)
     exchangeplayerwage = models.IntegerField(blank=True, null=True)
+
+    # FIFA 19
+    isdirectapproach = models.IntegerField(blank=True, null=True)
 
     objects = UserDataManager()
 
@@ -659,6 +662,12 @@ class DataUsersTeamkits(models.Model):
     jerseybacknamefontcase = models.IntegerField(blank=True, null=True)
     jerseynamecolorb = models.IntegerField(blank=True, null=True)
 
+    # FIFA 19
+    chestbadge = models.IntegerField(blank=True, null=True)
+    captainarmband = models.IntegerField(blank=True, null=True)
+    jerseyleftsleevebadge = models.IntegerField(blank=True, null=True)
+    jerseyrightsleevebadge = models.IntegerField(blank=True, null=True)
+
     objects = UserDataManager()
 
     class Meta:
@@ -902,6 +911,16 @@ class DataUsersDefaultTeamsheets(models.Model):
     defmentalityvequal = models.IntegerField(blank=True, null=True)
     defmentalityvsweak = models.IntegerField(blank=True, null=True)
 
+    # FIFA 19
+    offensivewidth = models.IntegerField(blank=True, null=True)
+    defensivestyle = models.IntegerField(blank=True, null=True)
+    playersinboxfk = models.IntegerField(blank=True, null=True)
+    playersinboxcross = models.IntegerField(blank=True, null=True)
+    offensivestyle = models.IntegerField(blank=True, null=True)
+    defensivedepth = models.IntegerField(blank=True, null=True)
+    playersinboxcorner = models.IntegerField(blank=True, null=True)
+    defensivewidth = models.IntegerField(blank=True, null=True)
+
     objects = UserDataManager()
 
     class Meta:
@@ -975,6 +994,31 @@ class DataUsersCompetition(models.Model):
     isstadiumdressingenabled = models.IntegerField(blank=True, null=True)
     authenticpodiumskin = models.IntegerField(blank=True, null=True)
     isuniquehandshakeboardenabled = models.IntegerField(blank=True, null=True)
+
+    # FIFA 19
+    badge_rs_champions = models.IntegerField(blank=True, null=True)
+    country_lock = models.IntegerField(blank=True, null=True)
+    celebrationmediapen = models.IntegerField(blank=True, null=True)
+    winterballid = models.IntegerField(blank=True, null=True)
+    badge_rs = models.IntegerField(blank=True, null=True)
+    celebrationarchedboard = models.IntegerField(blank=True, null=True)
+    custombibs = models.IntegerField(blank=True, null=True)
+    hasvikingclap = models.IntegerField(blank=True, null=True)
+    hasmediarope = models.IntegerField(blank=True, null=True)
+    pitchbranding = models.IntegerField(blank=True, null=True)
+    celebrationbackboard = models.IntegerField(blank=True, null=True)
+    badge_chest = models.IntegerField(blank=True, null=True)
+    competitionchampionid = models.IntegerField(blank=True, null=True)
+    badge_ls = models.IntegerField(blank=True, null=True)
+    introteamportrait = models.IntegerField(blank=True, null=True)
+    introanthemidle = models.IntegerField(blank=True, null=True)
+    celebrationsponsorboard = models.IntegerField(blank=True, null=True)
+    armband_type_0 = models.IntegerField(blank=True, null=True)
+    armband_type_1 = models.IntegerField(blank=True, null=True)
+    badge_ls_champions = models.IntegerField(blank=True, null=True)
+    celebrationstage = models.IntegerField(blank=True, null=True)
+    badge_chest_champions = models.IntegerField(blank=True, null=True)
+    finalballid = models.IntegerField(blank=True, null=True)
 
     objects = UserDataManager()
 

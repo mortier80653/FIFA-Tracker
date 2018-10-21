@@ -16,6 +16,7 @@ $(document).ready(function(){
     careerFileUpload();
     numberWithCommas();
     ToolsCalculator();
+    LazyImagesLoad();
 });
 
 function enableTooltips() {
@@ -24,12 +25,18 @@ function enableTooltips() {
 }
 
 function numberWithCommas() {
-    // Comma separate 'clubworth' and 'transferbudget'
+    // Player Statistics - Avg. Rating with dot
+    let avg = $(".statsavg").text();
+    let avglen = avg.length;
+    $(".statsavg").text(avg.substr(0,avglen-1) + "." + avg.substr(avglen-1))
 
+    // Comma separate 'clubworth' and 'transferbudget'
     // Club Worth
     let cwspan = $(".clubworth");
     cwspan.each(function() {
-        $(this).text($(this).text().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + ",000");
+        if (parseInt($(this).text()) > 0) {
+            $(this).text($(this).text().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + ",000");
+        }
     });
 
     // Transfer Budget
@@ -251,7 +258,7 @@ function updateInGameRatings() {
         pos_ovr.text(igr);
         
         // Fill Table for sm and xs screen
-        $('.ingameratings-table').append('<tr><td>' + positions[i].position + '</td><td align="right"><span class="ratinglabel rat' + igr + '">' + igr +'</span></td></tr>');
+        $('.ingameratings-table').append('<tr><td>' + positions[i].position + '</td><td><span class="text-center ratinglabel rat' + igr + '">' + igr +'</span></td></tr>');
     };
 };
 
@@ -2260,4 +2267,18 @@ function posToID(position) {
             return positions[i]['posid'];
         }
     };
+}
+
+function headshotPicker() {
+    alert("TODO headshotPicker");
+}
+
+function LazyImagesLoad() {
+    // Lazy images load.
+    $('img').each(function() {
+        let datasrc = $(this).attr("data-src");
+        if (datasrc) {
+            $(this).attr("src", datasrc);
+        }
+    })
 }

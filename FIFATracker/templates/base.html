@@ -8,7 +8,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Track your progress in FIFA Career Mode">
-	<meta name="keywords" content="FIFA 18, Career Mode, youth, players, database">
+	<meta name="keywords" content="FIFA 17, FIFA 18, FIFA 19, Career Mode, youth, players, database, FIFA Tracker,">
 	<link rel="shortcut icon" href="{%  static 'favicon/favicon.ico' %}">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/solid.css" integrity="sha384-wnAC7ln+XN0UKdcPvJvtqIH3jOjs9pnKnq9qX68ImXvOGz2JuFoEiCjT8jyZQX2z" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/brands.css" integrity="sha384-nT8r1Kzllf71iZl81CdFzObMsaLOhqBU1JD2+XoAALbdtWaXDOlWOZTR4v1ktjPE" crossorigin="anonymous">
@@ -58,6 +58,7 @@
 					<a class="nav-link ft-nav-link-dark dropdown-toggle" href="#" id="toolsdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Tools' %}</a>
 					<div class="dropdown-menu ft-dropdown-menu-dark" aria-labelledby="toolsdropdown">
 						<a class="dropdown-item" href="{% url 'calculator' %}"><span class="fas fa-calculator"></span>{% trans 'Calculator' %}</a>
+						<!-- <a class="dropdown-item" href="{% url 'edit_player' %}"><span class="fas fa-edit"></span>{% trans 'Player Editor' %}</a> -->
 					</div>
 				</li>
 			</ul>
@@ -170,6 +171,7 @@
 					<h5>Tools</h5>
 					<ul class="list-unstyled">
 						<li><a href="{% url 'calculator' %}"><span class="fas fa-calculator"></span>{% trans 'Calculator' %}</a></li>
+						<!-- <li><a href="{% url 'edit_player' %}"><span class="fas fa-edit"></span>{% trans 'Player Editor' %}</a></li> -->
 					</ul>
 				</div>
 				<div class="col-12 col-sm-4">

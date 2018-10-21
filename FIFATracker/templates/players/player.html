@@ -15,13 +15,13 @@
           <div class="col-12">
             <dl>
               <dt>{% trans 'Nationality' %}</dt>
-              <dd>{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag"></dd>
+              <dd>{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/common/flags/notfound.png" data-src="{% get_static_prefix %}img/assets/common/flags/f_{{p.player.nationality.nationid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/flags/notfound.png';" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag"></dd>
             </dl>
           </div>
           <div class="col-12">
               <dl>
                 <dt>{% trans 'League' %}</dt>
-                <dd>{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" title="{{p.player_teams.club_team.league.leaguename}} (ID: {{p.player_teams.club_team.league.leagueid}})" class="crest"></dd>
+                <dd>{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/common/leagues/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/leagues/l{{p.player_teams.club_team.league.leagueid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/leagues/notfound.png';" title="{{p.player_teams.club_team.league.leaguename}} (ID: {{p.player_teams.club_team.league.leagueid}})" class="crest"></dd>
               </dl>
           </div>
           <div class="col-12">
@@ -29,9 +29,9 @@
                 <dt>{% trans 'Club' %}</dt>
                 <dd>
                   {% if p.player_contract.isloanedout %}
-                    {{p.player_contract.loanedto_clubname}} <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="Loaned from: {{p.player_teams.club_team.team.teamname}}" class="crest"></a>
+                    {{p.player_contract.loanedto_clubname}} <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_contract.loanedto_clubid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="Loaned from: {{p.player_teams.club_team.team.teamname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
                   {% else %}
-                    {{p.player_teams.club_team.team.teamname}} <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
+                    {{p.player_teams.club_team.team.teamname}} <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
                   {% endif %}
                 </dd>
               </dl>
@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="col-md-4 text-center">
-        <div><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" title="PlayerID: {{ p.player.playerid }}" class="largeface" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';"></div>
+        <div><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="PlayerID: {{ p.player.playerid }}" class="largeface"></div>
       </div>
       <div class="col-md-4 text-left d-none d-md-block">
         <div class="row">
@@ -134,22 +134,22 @@
               {% endif %}
               <tr>
                 <td class="text-truncate">{% trans 'Nationality' %}</td>
-                <td class="text-truncate" align="right">{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag"></td>
+                <td class="text-truncate" align="right">{{ p.player.nationality.nationname }} <img src="{% get_static_prefix %}img/assets/common/flags/notfound.png" data-src="{% get_static_prefix %}img/assets/common/flags/f_{{p.player.nationality.nationid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/flags/notfound.png';" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag"></td>
               </tr>
               <tr>
                 <td class="text-truncate">{% trans 'League' %}</td>
-                <td class="text-truncate" align="right">{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/leagues/l{{ p.player_teams.club_team.league.leagueid }}.png" title="{{p.player_teams.club_team.league.leaguename}} (ID: {{p.player_teams.club_team.league.leagueid}})" class="crest"></td>
+                <td class="text-truncate" align="right">{{p.player_teams.club_team.league.leaguename}} <img src="{% get_static_prefix %}img/assets/common/leagues/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/leagues/l{{p.player_teams.club_team.league.leagueid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/leagues/notfound.png';" title="{{p.player_teams.club_team.league.leaguename}} (ID: {{p.player_teams.club_team.league.leagueid}})" class="crest"></td>
               </tr>
               <tr>
                 <td class="text-truncate">{% trans 'Club' %}</td>
                 <td class="text-truncate" align="right">
                   {% if p.player_contract.isloanedout %}
-                  {{p.player_contract.loanedto_clubname}} 
-                  <span style="margin-left: 5px;" class="onloanlabel" data-toggle="tooltip" data-placement="left" title="{% trans 'This player is loaned from:' %} {{p.player_teams.club_team.team.teamname}}">L</span>
-                  <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="{% trans 'Loaned from:' %} {{p.player_teams.club_team.team.teamname}}" class="crest"></a>
+                    {{p.player_contract.loanedto_clubname}}
+                    <span style="margin-left: 5px;" class="onloanlabel" data-toggle="tooltip" data-placement="left" title="{% trans 'This player is loaned from:' %} {{p.player_teams.club_team.team.teamname}}">L</span>
+                    <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_contract.loanedto_clubid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{% trans 'Loaned from:' %} {{p.player_teams.club_team.team.teamname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
                   {% else %}
-                  {{p.player_teams.club_team.team.teamname}} 
-                  <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
+                    {{p.player_teams.club_team.team.teamname}}
+                    <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
                   {% endif %}
                 </td>
               </tr>
@@ -169,11 +169,11 @@
             <tbody>
               <tr>
                 <td>{% trans 'Overall' %} </td>
-                <td align="right"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
+                <td class="text-right"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
               </tr>
               <tr>
                 <td>{% trans 'Potential' %} </td>
-                <td align="right"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span> </td>
+                <td class="text-right"><span class="ratinglabel rat{{p.player.potential}}">{{ p.player.potential }}</span> </td>
               </tr>
               <tr>
                 <td>{% trans 'Strong Foot' %}</td>
@@ -181,33 +181,33 @@
               </tr>
               <tr>
                 <td>{% trans 'Workrates' %}</td>
-                <td align="right"> <span class="workrate">{{ p.player.attackingworkrate }}</span> / <span class="workrate">{{ p.player.defensiveworkrate }}</span></td>
+                <td class="text-right"> <span class="workrate">{{ p.player.attackingworkrate }}</span> / <span class="workrate">{{ p.player.defensiveworkrate }}</span></td>
               </tr>
               <tr>
                 <td>{% trans 'Skill moves' %}</td>
-                <td align="right"> {{ p.player.skillmoves|add:1 }} <span style="color:yellow">&starf;</span></td>
+                <td class="text-right"> {{ p.player.skillmoves|add:1 }} <span style="color:yellow">&starf;</span></td>
               </tr>
               <tr>
                 <td>{% trans 'Weak foot' %}</td>
-                <td align="right"> {{ p.player.weakfootabilitytypecode }} <span style="color:yellow">&starf;</span></td>
+                <td class="text-right"> {{ p.player.weakfootabilitytypecode }} <span style="color:yellow">&starf;</span></td>
               </tr>
               <tr>
                 <td>{% trans 'Int. Reputation' %}</td>
-                <td align="right"> {{ p.player.internationalrep }} <span style="color:yellow">&starf;</span></td>
+                <td class="text-right"> {{ p.player.internationalrep }} <span style="color:yellow">&starf;</span></td>
               </tr>
               {% if p.release_clause > 0 %}
               <tr>
                 <td>{% trans 'Release Clause' %}</td>
-                <td align="right">{{ p.formated_release_clause }} {{ request.session.currency_symbol }}</td>
+                <td class="text-right">{{ p.formated_release_clause }} {{ request.session.currency_symbol }}</td>
               </tr>
               {% endif %}
               <tr>
                 <td>{% trans 'Value' %}</td>
-                <td align="right">{{ p.player_value.formated_value }} {{ request.session.currency_symbol }}</td>
+                <td class="text-right">{{ p.player_value.formated_value }} {{ request.session.currency_symbol }}</td>
               </tr>
               <tr>
                 <td>{% trans 'Wage' %}</td>
-                <td align="right">{{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}</td>
+                <td class="text-right">{{ p.player_wage.formated_wage }} {{ request.session.currency_symbol }}</td>
               </tr>
             </tbody>
           </table>
@@ -237,23 +237,23 @@
           <tbody>
             <tr>
               <td>{% trans 'GK Diving' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.gkdiving}}">{{ p.player.gkdiving }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.gkdiving}}">{{ p.player.gkdiving }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'GK Handling' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.gkhandling}}">{{ p.player.gkhandling }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.gkhandling}}">{{ p.player.gkhandling }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'GK Kicking' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.gkkicking}}">{{ p.player.gkkicking }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.gkkicking}}">{{ p.player.gkkicking }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'GK Positioning' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.gkpositioning}}">{{ p.player.gkpositioning }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.gkpositioning}}">{{ p.player.gkpositioning }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'GK Reflex' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.gkreflexes}}">{{ p.player.gkreflexes }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.gkreflexes}}">{{ p.player.gkreflexes }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -278,23 +278,23 @@
           <tbody>
             <tr>
               <td>{% trans 'Crossing' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.crossing}}">{{ p.player.crossing }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.crossing}}">{{ p.player.crossing }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Finishing' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.finishing}}">{{ p.player.finishing }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.finishing}}">{{ p.player.finishing }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Heading Accuracy' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.headingaccuracy}}">{{ p.player.headingaccuracy }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.headingaccuracy}}">{{ p.player.headingaccuracy }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Short Passing' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.shortpassing}}">{{ p.player.shortpassing }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.shortpassing}}">{{ p.player.shortpassing }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Volleys' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.volleys}}">{{ p.player.volleys }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.volleys}}">{{ p.player.volleys }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -315,15 +315,15 @@
           <tbody>
             <tr>
               <td>{% trans 'Marking' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.marking}}">{{ p.player.marking }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.marking}}">{{ p.player.marking }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Standing Tackle' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.standingtackle}}">{{ p.player.standingtackle }}</span> </td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.standingtackle}}">{{ p.player.standingtackle }}</span> </td>
             </tr>
             <tr>
               <td>{% trans 'Sliding Tackle' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.slidingtackle}}">{{ p.player.slidingtackle }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.slidingtackle}}">{{ p.player.slidingtackle }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -344,23 +344,23 @@
           <tbody>
             <tr>
               <td>{% trans 'Dribbling' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.dribbling}}">{{ p.player.dribbling }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.dribbling}}">{{ p.player.dribbling }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Curve' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.curve}}">{{ p.player.curve }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.curve}}">{{ p.player.curve }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Free Kick Accuracy' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.freekickaccuracy}}">{{ p.player.freekickaccuracy }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.freekickaccuracy}}">{{ p.player.freekickaccuracy }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Long Passing' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.longpassing}}">{{ p.player.longpassing }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.longpassing}}">{{ p.player.longpassing }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Ball Control' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.ballcontrol}}">{{ p.player.ballcontrol }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.ballcontrol}}">{{ p.player.ballcontrol }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -381,23 +381,23 @@
           <tbody>
             <tr>
               <td>{% trans 'Shot Power' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.shotpower}}">{{ p.player.shotpower }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.shotpower}}">{{ p.player.shotpower }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Jumping' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.jumping}}">{{ p.player.jumping }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.jumping}}">{{ p.player.jumping }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Stamina' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.stamina}}">{{ p.player.stamina }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.stamina}}">{{ p.player.stamina }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Strength' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.strength}}">{{ p.player.strength }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.strength}}">{{ p.player.strength }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Long Shots' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.longshots}}">{{ p.player.longshots }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.longshots}}">{{ p.player.longshots }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -418,23 +418,23 @@
           <tbody>
             <tr>
               <td>{% trans 'Acceleration' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.acceleration}}">{{ p.player.acceleration }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.acceleration}}">{{ p.player.acceleration }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Sprint Speed' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.sprintspeed}}">{{ p.player.sprintspeed }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.sprintspeed}}">{{ p.player.sprintspeed }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Agility' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.agility}}">{{ p.player.agility }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.agility}}">{{ p.player.agility }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Reactions' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.reactions}}">{{ p.player.reactions }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.reactions}}">{{ p.player.reactions }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Balance' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.balance}}">{{ p.player.balance }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.balance}}">{{ p.player.balance }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -455,27 +455,27 @@
           <tbody>
             <tr>
               <td>{% trans 'Aggression' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.aggression}}">{{ p.player.aggression }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.aggression}}">{{ p.player.aggression }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Composure' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.composure}}">{{ p.player.composure }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.composure}}">{{ p.player.composure }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Interceptions' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.interceptions}}">{{ p.player.interceptions }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.interceptions}}">{{ p.player.interceptions }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Attack Positioning' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.positioning}}">{{ p.player.positioning }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.positioning}}">{{ p.player.positioning }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Vision' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.vision}}">{{ p.player.vision }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.vision}}">{{ p.player.vision }}</span></td>
             </tr>
             <tr>
               <td>{% trans 'Penalties' %}</td>
-              <td align="right"><span class="ratinglabel rat{{p.player.penalties}}">{{ p.player.penalties }}</span></td>
+              <td class="text-right"><span class="ratinglabel rat{{p.player.penalties}}">{{ p.player.penalties }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -739,31 +739,31 @@
               <tbody>
                 <tr>
                   <td>{% trans 'Total' %} - {% trans 'Avg. Rating' %}</td>
-                  <td align="right"> {{ p.player_stats.total.avg }} </td>
+                  <td class="text-right"><span class='statsavg'>{{ p.player_stats.total.avg }}</span></td>
                 </tr>
                 <tr>
                   <td>{% trans 'Total' %} - {% trans 'Appearances' %}</td>
-                  <td align="right"> {{ p.player_stats.total.app }} </td>
+                  <td class="text-right"> {{ p.player_stats.total.app }} </td>
                 </tr>
                 <tr>
                   <td>{% trans 'Total' %} - {% trans 'Goals' %}</td>
-                  <td align="right"> {{ p.player_stats.total.goals }} </td>
+                  <td class="text-right"> {{ p.player_stats.total.goals }} </td>
                 </tr>
                 <tr>
                   <td>{% trans 'Total' %} - {% trans 'Assists' %}</td>
-                  <td align="right"> {{ p.player_stats.total.assists }} </td>
+                  <td class="text-right"> {{ p.player_stats.total.assists }} </td>
                 </tr>
                 <tr>
                   <td>{% trans 'Total' %} - {% trans 'Clean Sheets' %}</td>
-                  <td align="right"> {{ p.player_stats.total.cleansheets }} </td>
+                  <td class="text-right"> {{ p.player_stats.total.cleansheets }} </td>
                 </tr>
                 <tr>
                   <td>{% trans 'Total' %} - {% trans 'Yellow Cards' %}</td>
-                  <td align="right"> {{ p.player_stats.total.yellowcards }} </td>
+                  <td class="text-right"> {{ p.player_stats.total.yellowcards }} </td>
                 </tr>
                 <tr>
                   <td>{% trans 'Total' %} - {% trans 'Red Cards' %}</td>
-                  <td align="right"> {{ p.player_stats.total.redcards }} </td>
+                  <td class="text-right"> {{ p.player_stats.total.redcards }} </td>
                 </tr>
               </tbody>
             </table>

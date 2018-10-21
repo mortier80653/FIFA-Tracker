@@ -282,6 +282,22 @@ class DataUsersTeams(models.Model):
     stafftracksuitcolorcode = models.IntegerField(blank=True, null=True)
     fancrowdhairskintexturecode = models.IntegerField(blank=True, null=True)
 
+    # FIFA 19
+    defensivestyle = models.IntegerField(blank=True, null=True)
+    offensivestyle = models.IntegerField(blank=True, null=True)
+    hasvikingclap = models.IntegerField(blank=True, null=True)
+    prev_el_champ = models.IntegerField(blank=True, null=True)
+    flamethrowercannon = models.IntegerField(blank=True, null=True)
+    playersinboxfk = models.IntegerField(blank=True, null=True)
+    playersinboxcross = models.IntegerField(blank=True, null=True)
+    defensivedepth = models.IntegerField(blank=True, null=True)
+    uefa_el_wins = models.IntegerField(blank=True, null=True)
+    uefa_cl_wins = models.IntegerField(blank=True, null=True)
+    hastifo = models.IntegerField(blank=True, null=True)
+    playersinboxcorner = models.IntegerField(blank=True, null=True)
+    defensivewidth = models.IntegerField(blank=True, null=True)
+    offensivewidth = models.IntegerField(blank=True, null=True)
+
     objects = UserDataManager()
 
     class Meta:
@@ -369,8 +385,19 @@ class DataUsersTeamplayerlinks(models.Model):
     class Meta:
         db_table = 'datausersteamplayerlinks'
 
-# FIFA 18 Nations
+# Nations
 
+class DataNations19(models.Model):
+    isocountrycode = models.CharField(max_length=3, blank=True, null=True)
+    nationname = models.CharField(max_length=50, blank=True, null=True)
+    confederation = models.IntegerField(blank=True, null=True)
+    top_tier = models.IntegerField(blank=True, null=True)
+    nationstartingfirstletter = models.IntegerField(blank=True, null=True)
+    groupid = models.IntegerField(blank=True, null=True)
+    nationid = models.IntegerField(primary_key=True)
+
+    class Meta:
+        db_table = 'datanations19'
 
 class DataNations(models.Model):
     isocountrycode = models.CharField(max_length=3, blank=True, null=True)
@@ -382,10 +409,7 @@ class DataNations(models.Model):
     nationid = models.IntegerField(primary_key=True)
 
     class Meta:
-        db_table = 'datanations'
-
-# FIFA 17 Nations
-
+        db_table = 'datanations'  # FIFA 18
 
 class DataNations17(models.Model):
     isocountrycode = models.CharField(max_length=3, blank=True, null=True)
@@ -399,7 +423,16 @@ class DataNations17(models.Model):
     class Meta:
         db_table = 'datanations17'
 
-# FIFA 18 Player Names
+
+# Player Names
+
+class DataPlayernames19(models.Model):
+    name = models.CharField(max_length=77, blank=True, null=True)
+    nameid = models.IntegerField(primary_key=True)
+    commentaryid = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'dataplayernames19'
 
 
 class DataPlayernames(models.Model):
@@ -408,9 +441,7 @@ class DataPlayernames(models.Model):
     commentaryid = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        db_table = 'dataplayernames'
-
-# FIFA 17 Player Names
+        db_table = 'dataplayernames'  # FIFA 18
 
 
 class DataPlayernames17(models.Model):
@@ -472,6 +503,9 @@ class DataUsersLeagues(models.Model):
     leaguetimeslice = models.IntegerField(blank=True, null=True)
     iswithintransferwindow = models.IntegerField(blank=True, null=True)
 
+    # FIFA 19
+    leaguetype = models.IntegerField(blank=True, null=True)
+
     objects = UserDataManager()
 
     class Meta:
@@ -500,11 +534,171 @@ class DataUsersManager(models.Model):
     skintonecode = models.IntegerField(blank=True, null=True)
     bodytypecode = models.IntegerField(blank=True, null=True)
 
+    # FIFA 19
+    faceposerpreset = models.IntegerField(blank=True, null=True)
+
     objects = UserDataManager()
 
     class Meta:
         db_table = 'datausersmanager'
 
+
+# Players
+class DataUsersPlayers19(models.Model):
+    # Custom fields
+    primary_key = models.BigAutoField(primary_key=True)
+    username = models.CharField(
+        db_index=True, max_length=150, blank=True, null=True)
+    ft_user = models.ForeignKey(
+        User, related_name='players19', on_delete=models.CASCADE, null=True,)
+    value_usd = models.IntegerField(blank=True, null=True)
+    value_eur = models.IntegerField(blank=True, null=True)
+    value_gbp = models.IntegerField(blank=True, null=True)
+    wage = models.IntegerField(blank=True, null=True)
+
+    # For Release
+    firstname = models.ForeignKey(
+        DataPlayernames19, related_name='firstname', db_column='firstnameid', null=True, on_delete=models.CASCADE
+    )
+    lastname = models.ForeignKey(
+        DataPlayernames19, related_name='lastname', db_column='lastnameid', null=True, on_delete=models.CASCADE
+    )
+    playerjerseyname = models.ForeignKey(
+        DataPlayernames19, related_name='playerjerseyname',
+        db_column='playerjerseynameid', null=True, on_delete=models.CASCADE
+    )
+    commonname = models.ForeignKey(
+        DataPlayernames19, related_name='commonname', db_column='commonnameid', null=True, on_delete=models.CASCADE
+    )
+
+    # Uncomment for migration to fix problem with foreignkeys
+    # firstnameid = models.IntegerField(blank=True, null=True)
+    # lastnameid = models.IntegerField(blank=True, null=True)
+    # playerjerseynameid = models.IntegerField(blank=True, null=True)
+    # commonnameid = models.IntegerField(blank=True, null=True)
+
+    # Original fields
+    trait2 = models.IntegerField(blank=True, null=True)
+    haircolorcode = models.IntegerField(blank=True, null=True)
+    facialhairtypecode = models.IntegerField(blank=True, null=True)
+    curve = models.IntegerField(blank=True, null=True)
+    jerseystylecode = models.IntegerField(blank=True, null=True)
+    agility = models.IntegerField(blank=True, null=True)
+    accessorycode4 = models.IntegerField(blank=True, null=True)
+    gksavetype = models.IntegerField(blank=True, null=True)
+    positioning = models.IntegerField(blank=True, null=True)
+    tattooleftarm = models.IntegerField(blank=True, null=True)
+    hairtypecode = models.IntegerField(blank=True, null=True)
+    standingtackle = models.IntegerField(blank=True, null=True)
+    tattoobackneck = models.IntegerField(blank=True, null=True)
+    preferredposition3 = models.IntegerField(blank=True, null=True)
+    longpassing = models.IntegerField(blank=True, null=True)
+    penalties = models.IntegerField(blank=True, null=True)
+    animfreekickstartposcode = models.IntegerField(blank=True, null=True)
+    animpenaltieskickstylecode = models.IntegerField(blank=True, null=True)
+    isretiring = models.IntegerField(blank=True, null=True)
+    longshots = models.IntegerField(blank=True, null=True)
+    gkdiving = models.IntegerField(blank=True, null=True)
+    interceptions = models.IntegerField(blank=True, null=True)
+    shoecolorcode2 = models.IntegerField(blank=True, null=True)
+    crossing = models.IntegerField(blank=True, null=True)
+    potential = models.IntegerField(blank=True, null=True)
+    gkreflexes = models.IntegerField(blank=True, null=True)
+    finishingcode1 = models.IntegerField(blank=True, null=True)
+    reactions = models.IntegerField(blank=True, null=True)
+    composure = models.IntegerField(blank=True, null=True)
+    vision = models.IntegerField(blank=True, null=True)
+    contractvaliduntil = models.IntegerField(blank=True, null=True)
+    animpenaltiesapproachcode = models.IntegerField(blank=True, null=True)
+    finishing = models.IntegerField(blank=True, null=True)
+    dribbling = models.IntegerField(blank=True, null=True)
+    slidingtackle = models.IntegerField(blank=True, null=True)
+    accessorycode3 = models.IntegerField(blank=True, null=True)
+    accessorycolourcode1 = models.IntegerField(blank=True, null=True)
+    headtypecode = models.IntegerField(blank=True, null=True)
+    sprintspeed = models.IntegerField(blank=True, null=True)
+    height = models.IntegerField(blank=True, null=True)
+    hasseasonaljersey = models.IntegerField(blank=True, null=True)
+    preferredposition2 = models.IntegerField(blank=True, null=True)
+    strength = models.IntegerField(blank=True, null=True)
+    shoetypecode = models.IntegerField(blank=True, null=True)
+    birthdate = models.IntegerField(blank=True, null=True)
+    preferredposition1 = models.IntegerField(blank=True, null=True)
+    ballcontrol = models.IntegerField(blank=True, null=True)
+    shotpower = models.IntegerField(blank=True, null=True)
+    trait1 = models.IntegerField(blank=True, null=True)
+    socklengthcode = models.IntegerField(blank=True, null=True)
+    weight = models.IntegerField(blank=True, null=True)
+    hashighqualityhead = models.IntegerField(blank=True, null=True)
+    gkglovetypecode = models.IntegerField(blank=True, null=True)
+    tattoorightarm = models.IntegerField(blank=True, null=True)
+    balance = models.IntegerField(blank=True, null=True)
+    gender = models.IntegerField(blank=True, null=True)
+    gkkicking = models.IntegerField(blank=True, null=True)
+    internationalrep = models.IntegerField(blank=True, null=True)
+    animpenaltiesmotionstylecode = models.IntegerField(blank=True, null=True)
+    shortpassing = models.IntegerField(blank=True, null=True)
+    freekickaccuracy = models.IntegerField(blank=True, null=True)
+    skillmoves = models.IntegerField(blank=True, null=True)
+    usercaneditname = models.IntegerField(blank=True, null=True)
+    attackingworkrate = models.IntegerField(blank=True, null=True)
+    finishingcode2 = models.IntegerField(blank=True, null=True)
+    aggression = models.IntegerField(blank=True, null=True)
+    acceleration = models.IntegerField(blank=True, null=True)
+    headingaccuracy = models.IntegerField(blank=True, null=True)
+    iscustomized = models.IntegerField(blank=True, null=True)
+    eyebrowcode = models.IntegerField(blank=True, null=True)
+    runningcode2 = models.IntegerField(blank=True, null=True)
+    modifier = models.IntegerField(blank=True, null=True)
+    gkhandling = models.IntegerField(blank=True, null=True)
+    eyecolorcode = models.IntegerField(blank=True, null=True)
+    jerseysleevelengthcode = models.IntegerField(blank=True, null=True)
+    accessorycolourcode3 = models.IntegerField(blank=True, null=True)
+    accessorycode1 = models.IntegerField(blank=True, null=True)
+    playerjointeamdate = models.IntegerField(blank=True, null=True)
+    headclasscode = models.IntegerField(blank=True, null=True)
+    defensiveworkrate = models.IntegerField(blank=True, null=True)
+    nationality = models.ForeignKey(
+        DataNations19, db_column='nationality', null=True, on_delete=models.CASCADE)
+    preferredfoot = models.IntegerField(blank=True, null=True)
+    sideburnscode = models.IntegerField(blank=True, null=True)
+    weakfootabilitytypecode = models.IntegerField(blank=True, null=True)
+    jumping = models.IntegerField(blank=True, null=True)
+    skintypecode = models.IntegerField(blank=True, null=True)
+    tattoorightneck = models.IntegerField(blank=True, null=True)
+    gkkickstyle = models.IntegerField(blank=True, null=True)
+    stamina = models.IntegerField(blank=True, null=True)
+    playerid = models.IntegerField(blank=True, null=True)
+    marking = models.IntegerField(blank=True, null=True)
+    accessorycolourcode4 = models.IntegerField(blank=True, null=True)
+    gkpositioning = models.IntegerField(blank=True, null=True)
+    headvariation = models.IntegerField(blank=True, null=True)
+    skintonecode = models.IntegerField(blank=True, null=True)
+    shortstyle = models.IntegerField(blank=True, null=True)
+    overallrating = models.IntegerField(db_index=True, blank=True, null=True)
+    tattooleftneck = models.IntegerField(blank=True, null=True)
+    emotion = models.IntegerField(blank=True, null=True)
+    jerseyfit = models.IntegerField(blank=True, null=True)
+    accessorycode2 = models.IntegerField(blank=True, null=True)
+    shoedesigncode = models.IntegerField(blank=True, null=True)
+    shoecolorcode1 = models.IntegerField(blank=True, null=True)
+    hairstylecode = models.IntegerField(blank=True, null=True)
+    bodytypecode = models.IntegerField(blank=True, null=True)
+    animpenaltiesstartposcode = models.IntegerField(blank=True, null=True)
+    runningcode1 = models.IntegerField(blank=True, null=True)
+    preferredposition4 = models.IntegerField(blank=True, null=True)
+    volleys = models.IntegerField(blank=True, null=True)
+    accessorycolourcode2 = models.IntegerField(blank=True, null=True)
+    facialhaircolorcode = models.IntegerField(blank=True, null=True)
+    faceposerpreset = models.IntegerField(blank=True, null=True)
+    skillmoveslikelihood = models.IntegerField(blank=True, null=True)
+    headassetid = models.IntegerField(blank=True, null=True)
+
+
+    objects = UserDataManager()
+
+    class Meta:
+        db_table = 'datausersplayers19'
 
 class DataUsersPlayers(models.Model):
     # Custom fields
@@ -518,7 +712,7 @@ class DataUsersPlayers(models.Model):
     value_gbp = models.IntegerField(blank=True, null=True)
     wage = models.IntegerField(blank=True, null=True)
 
-    # Original fields
+    # For Release
     firstname = models.ForeignKey(DataPlayernames, related_name='firstname',
                                   db_column='firstnameid', null=True, on_delete=models.CASCADE)
     lastname = models.ForeignKey(DataPlayernames, related_name='lastname',
@@ -527,6 +721,14 @@ class DataUsersPlayers(models.Model):
                                          db_column='playerjerseynameid', null=True, on_delete=models.CASCADE)
     commonname = models.ForeignKey(DataPlayernames, related_name='commonname',
                                    db_column='commonnameid', null=True, on_delete=models.CASCADE)
+
+    # Uncomment for migration to fix problem with foreignkeys
+    # firstnameid = models.IntegerField(blank=True, null=True)
+    # lastnameid = models.IntegerField(blank=True, null=True)
+    # playerjerseynameid = models.IntegerField(blank=True, null=True)
+    # commonnameid = models.IntegerField(blank=True, null=True)
+
+    # Original fields
     trait2 = models.IntegerField(blank=True, null=True)
     haircolorcode = models.IntegerField(blank=True, null=True)
     facialhairtypecode = models.IntegerField(blank=True, null=True)
@@ -658,7 +860,7 @@ class DataUsersPlayers17(models.Model):
     value_gbp = models.IntegerField(blank=True, null=True)
     wage = models.IntegerField(blank=True, null=True)
 
-    # Original fields
+    # For Release
     firstname = models.ForeignKey(DataPlayernames17, related_name='firstname',
                                   db_column='firstnameid', null=True, on_delete=models.CASCADE)
     lastname = models.ForeignKey(DataPlayernames17, related_name='lastname',
@@ -667,6 +869,14 @@ class DataUsersPlayers17(models.Model):
                                          db_column='playerjerseynameid', null=True, on_delete=models.CASCADE)
     commonname = models.ForeignKey(DataPlayernames17, related_name='commonname',
                                    db_column='commonnameid', null=True, on_delete=models.CASCADE)
+
+    # Uncomment for migration to fix problem with foreignkeys
+    # firstnameid = models.IntegerField(blank=True, null=True)
+    # lastnameid = models.IntegerField(blank=True, null=True)
+    # playerjerseynameid = models.IntegerField(blank=True, null=True)
+    # commonnameid = models.IntegerField(blank=True, null=True)
+
+    # Original fields
     trait2 = models.IntegerField(blank=True, null=True)
     haircolorcode = models.IntegerField(blank=True, null=True)
     facialhairtypecode = models.IntegerField(blank=True, null=True)

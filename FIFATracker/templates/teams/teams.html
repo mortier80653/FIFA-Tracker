@@ -21,7 +21,7 @@
                         <div class="col-3">
                             <div class="center-elements">
                                 <span>
-                                    <a href="{% url 'teams' %}{{ career_user.clubteamid }}"><img src="{% get_static_prefix %}img/assets/crest/l{{ career_user.clubteamid }}.png" title="{{ career_user.clubteamname }} (ID: {{ career_user.clubteamid }})" class="crest"></a>
+                                    <a href="{% url 'teams' %}{{ career_user.clubteamid }}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{career_user.clubteamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ career_user.clubteamname }} (ID: {{ career_user.clubteamid }})" class="crest"></a>
                                 </span>
                             </div>
                             <div class="center-elements">
@@ -34,7 +34,7 @@
                         <div class="col-3">
                             <div class="center-elements">
                                 <span>
-                                    <a href="{% url 'teams' %}112264"><img src="{% get_static_prefix %}img/assets/crest/l112264.png" title="Youth Squad (ID: 112264)" class="crest"></a>
+                                    <a href="{% url 'teams' %}112264"><img src="{% get_static_prefix %}img/assets/common/crest/l112264.png" title="Youth Squad (ID: 112264)" class="crest"></a>
                                 </span>
                             </div>
                             <div class="center-elements">
@@ -48,7 +48,7 @@
                             <div class="col-3">
                                 <div class="center-elements">
                                     <span>
-                                        <a href="{% url 'teams' %}{{ career_user.nationalteamid }}"><img src="{% get_static_prefix %}img/assets/crest/l{{ career_user.nationalteamid }}.png" title="{{ career_user.nationalteamname }} (ID: {{ career_user.nationalteamid }})" class="crest"></a>
+                                        <a href="{% url 'teams' %}{{ career_user.nationalteamid }}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{career_user.nationalteamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ career_user.nationalteamname }} (ID: {{ career_user.nationalteamid }})" class="crest"></a>
                                     </span>
                                 </div>
                                 <div class="center-elements">
@@ -361,7 +361,7 @@
                 <td>
                     <div class="text-truncate" style="padding: 5px;">
                         <a href="{% url 'teams' %}{{team.teamid}}">
-                            <img src="{% get_static_prefix %}img/assets/crest/l{{ team.teamid }}.png" title="{{ team.teamname }} (ID:{{ team.teamid}})"
+                            <img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ team.teamname }} (ID:{{ team.teamid}})"
                                 class="crest">
                         </a>
                         <span style="margin-left: 10px;">

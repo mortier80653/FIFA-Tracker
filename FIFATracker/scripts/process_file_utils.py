@@ -33,6 +33,7 @@ from players.models import (
     DataUsersManager,
     DataUsersPlayers,
     DataUsersPlayers17,
+    DataUsersPlayers19,
     DataUsersPlayerloans,
 )
 
@@ -68,7 +69,6 @@ from core.models import (
     DataUsersReferee,
     DataUsersLeaguerefereelinks,
     DataUsersFixtures,
-    DataUsersSmrivals,
     DataUsersPlayersuspensions,
     DataUsersBannerplayers,
     DataUsersPlayerformdiff,
@@ -1046,7 +1046,6 @@ class DatabaseToCSV():
             # replace unallowed characters
             unallowed_characters = (
                 '"',
-                "'",
                 ',',
                 '\a',
                 '\b',
@@ -1362,17 +1361,16 @@ class ParseCareerSave():
             "teams",
             "competition",
             "rivals",
-            "smrivals",
             "rowteamnationlinks",
             "teamnationlinks",
             # "referee",
             # "leaguerefereelinks",
-            "fixtures",
-            "playersuspensions",
-            "bannerplayers",
-            "playerformdiff",
-            "teamformdiff",
-            "version",
+            # "fixtures",
+            # "playersuspensions",
+            # "bannerplayers",
+            # "playerformdiff",
+            # "teamformdiff",
+            # "version",
             "formations",
             "default_teamsheets",
             "previousteam",
@@ -1396,7 +1394,7 @@ class ParseCareerSave():
                     if self.fifa_edition == 18:
                         csv = "players"
                     else:
-                        csv = "players17"
+                        csv = "players{}".format(self.fifa_edition)
 
                 model_name = "datausers{}".format(csv.replace("_", ""))
                 # career_calendar --> public.datauserscareercalendar

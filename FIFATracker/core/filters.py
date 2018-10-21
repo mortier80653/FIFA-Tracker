@@ -1,8 +1,10 @@
 from django.db.models import Q
+from django.contrib.contenttypes.models import ContentType
 from .fifa_utils import FifaDate
 from players.models import (
     DataUsersPlayers,
     DataUsersPlayers17,
+    DataUsersPlayers19,
     DataUsersLeagues,
     DataUsersTeams,
     DataUsersTeamplayerlinks,
@@ -12,6 +14,7 @@ from players.models import (
     DataUsersCareerCompdataPlayerStats,
 )
 
+from core.consts import HIGHEST_REAL_PLAYERID
 from core.models import (
     DataUsersCareerTransferOffer,
 )
@@ -588,9 +591,10 @@ class DataUsersPlayersFilter:
             self,
             request,
             for_user,
-            current_date=20170701,
+            current_date=20180701,
             sort=True,
-            fifa_edition=18):
+            fifa_edition=19
+    ):
         self.request_dict = request
         self.for_user = for_user
         self.current_date = current_date
@@ -601,7 +605,8 @@ class DataUsersPlayersFilter:
             queryset = DataUsersPlayers.objects.for_user(self.for_user).select_related(
                 'firstname', 'lastname', 'playerjerseyname', 'commonname', 'nationality',)
         else:
-            queryset = DataUsersPlayers17.objects.for_user(self.for_user).select_related(
+            players_model = ContentType.objects.get(model='datausersplayers{}'.format(self.fifa_edition)).model_class()
+            queryset = players_model.objects.for_user(self.for_user).select_related(
                 'firstname', 'lastname', 'playerjerseyname', 'commonname', 'nationality',)
 
         queryset = self.filter(queryset)
@@ -761,25 +766,28 @@ class DataUsersPlayersFilter:
             pass
 
         try:
-            if 'isretiring' in self.request_dict and int(
-                    self.request_dict['isretiring']) in range(0, 2):
-                queryset = queryset.filter(
-                    Q(isretiring=self.request_dict['isretiring']))
+            if 'isretiring' in self.request_dict and int(self.request_dict['isretiring']) in range(0, 2):
+                queryset = queryset.filter(Q(isretiring=self.request_dict['isretiring']))
+        except ValueError:
+            pass
+
+        try:
+            if 'gender' in self.request_dict and int(self.request_dict['gender']) in range(0, 2):
+                queryset = queryset.filter(Q(gender=self.request_dict['gender']))
         except ValueError:
             pass
 
         try:
             if 'isreal' in self.request_dict and int(
                     self.request_dict['isreal']) in range(0, 2):
-                highest_real_playerid = 280000
                 if int(self.request_dict['isreal']) == 0:
                     # All regens, pregens etc.
                     queryset = queryset.filter(
-                        Q(playerid__gte=highest_real_playerid))
+                        Q(playerid__gte=HIGHEST_REAL_PLAYERID))
                 elif int(self.request_dict['isreal']) == 1:
                     # Real players that exists since beginning of the career
                     queryset = queryset.filter(
-                        Q(playerid__lte=highest_real_playerid))
+                        Q(playerid__lte=HIGHEST_REAL_PLAYERID))
         except ValueError:
             pass
 

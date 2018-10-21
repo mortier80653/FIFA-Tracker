@@ -1,6 +1,13 @@
 from django.db.models import Q
 from django.contrib.auth.models import User
-
+from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
+from core.exceptions import (
+    UnknownError,
+    UserNotExists,
+    PrivateProfileError,
+)
+from core.consts import DEFAULT_FIFA_EDITION
 from players.models import (
     DataUsersTeams,
     DataUsersCareerUsers,
@@ -32,9 +39,12 @@ def get_current_user(request):
         try:
             user = User.objects.get(username=owner)
             is_profile_public = user.profile.is_public
+        except User.DoesNotExist:
+            raise UserNotExists(_("User '{}' does not exist.".format(owner)))
         except Exception as e:
             raise UnknownError(e)
 
+        # Check if owner profile is private
         if not is_profile_public:
             raise PrivateProfileError(
                 _("Sorry, {}'s profile is private. Profile visibility can be changed in Control Panel.").format(owner))
@@ -52,7 +62,7 @@ def get_fifa_edition(request):
     try:
         return int(request.user.profile.fifa_edition)
     except Exception:
-        return 18
+        return DEFAULT_FIFA_EDITION
 
 
 def get_career_user(request, current_user=None):

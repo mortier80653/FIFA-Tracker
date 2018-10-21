@@ -14,7 +14,7 @@ import subprocess
 
 from collections import Counter
 
-from core.session_utils import del_session_key
+from core.session_utils import del_session_key, set_currency, get_current_user, get_fifa_edition, get_career_user
 from .fifa_utils import get_team_name
 from players.models import DataUsersTeams
 from .models import CareerSaveFileModel
@@ -55,8 +55,8 @@ def upload_career_save_file(request):
 
             fifa_edition = int(request.POST.get('fifa_edition'))
 
-            # FIFA 17 and FIFA 18 is supported.
-            valid_fifa_editions = (17, 18)
+            # Supported FIFA Editions.
+            valid_fifa_editions = (17, 18, 19)
             if fifa_edition not in valid_fifa_editions:
                 data = {'is_valid': False}
                 return JsonResponse(data)
@@ -182,7 +182,10 @@ def donate(request):
 
 def home(request):
     data = User.objects.prefetch_related('careerusers').values(
-        'careerusers__clubteamid', 'careerusers__nationalteamid')
+        'careerusers__clubteamid', 'careerusers__nationalteamid'
+    )
+
+    fifa_edition = get_fifa_edition(request)
 
     clubs = list()
     nationalteams = list()
@@ -217,6 +220,9 @@ def home(request):
             users_nationalteams.append(
                 {'id': team[0], 'managers': team[1], 'teamname': teamname, })
 
-    context = {'users_clubs': users_clubs,
-               'users_nationalteams': users_nationalteams, }
+    context = {
+        'users_clubs': users_clubs,
+        'users_nationalteams': users_nationalteams,
+        'fifa_edition': fifa_edition,
+    }
     return render(request, 'home.html', context=context)

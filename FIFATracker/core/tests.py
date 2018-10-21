@@ -228,7 +228,7 @@ class FifaPlayerTests(TestCase):
             DataUsersCareerCompdataPlayerStats.objects.for_user("testuser1").iterator())
 
         testplayer1 = FifaPlayer(player, username="testuser1", current_date="20260419",
-                                 dict_cached_queries=qdata_dict, currency=1, fifa_edition=18)
+                                 dict_cached_queries=qdata_dict, currency=1, fifa_edition=19)
         testteam = testplayer1.player_teams['club_team']['team']
         self.assertEquals(testteam['teamname'], "Chelsea")
         self.assertEquals(testteam['teamid'], 5)
@@ -255,7 +255,7 @@ class FifaPlayerTests(TestCase):
             DataUsersCareerCompdataPlayerStats.objects.for_user("testuser1").iterator())
 
         testplayer_age = FifaPlayer(player, username="testuser1", current_date="20260419",
-                                    dict_cached_queries=qdata_dict, currency=1, fifa_edition=18).player_age.age
+                                    dict_cached_queries=qdata_dict, currency=1, fifa_edition=19).player_age.age
         self.assertEquals(testplayer_age, 29)
 
     def test_player_value(self):
@@ -279,15 +279,15 @@ class FifaPlayerTests(TestCase):
             DataUsersCareerCompdataPlayerStats.objects.for_user("testuser1").iterator())
 
         testplayer_value_usd = FifaPlayer(player, username="testuser1", current_date="20260419",
-                                          dict_cached_queries=qdata_dict, currency=0, fifa_edition=18).player_value.value
+                                          dict_cached_queries=qdata_dict, currency=0, fifa_edition=19).player_value.value
         self.assertEquals(testplayer_value_usd, 65000000)
 
         testplayer_value_euro = FifaPlayer(player, username="testuser1", current_date="20260419",
-                                           dict_cached_queries=qdata_dict, currency=1, fifa_edition=18).player_value.value
+                                           dict_cached_queries=qdata_dict, currency=1, fifa_edition=19).player_value.value
         self.assertEquals(testplayer_value_euro, 58000000)
 
         testplayer_value_gbp = FifaPlayer(player, username="testuser1", current_date="20260419",
-                                          dict_cached_queries=qdata_dict, currency=2, fifa_edition=18).player_value.value
+                                          dict_cached_queries=qdata_dict, currency=2, fifa_edition=19).player_value.value
         self.assertEquals(testplayer_value_gbp, 51000000)
 
 # Views tests.

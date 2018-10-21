@@ -165,15 +165,15 @@
             {% for p in players %}
                 <tr>
                     <td class="d-none d-sm-table-cell" width="75">
-                        <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a>
+                        <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a>
                     </td>
                     <td style="padding-left: 5px!important;" width="250">
                         <div class="text-truncate">
-                            <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                            <img src="{% get_static_prefix %}img/assets/common/flags/notfound.png" data-src="{% get_static_prefix %}img/assets/common/flags/f_{{p.player.nationality.nationid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/flags/notfound.png';" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                             <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                         </div>
                         <div class="text-truncate player-position">
-                            <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
+                            <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
                             {{ p.player.preferredposition1 }}
                             {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
                             {% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
@@ -182,10 +182,10 @@
                     </td>
                     <td class="text-center"><span class="ratinglabel rat{{p.player.overallrating}}">{{ p.player.overallrating }}</span></td>
                     <td class="text-center">
-                        <a href="{% url 'teams' %}{{p.transfer_info.from_team}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.transfer_info.from_team }}.png" title="{{ p.transfer_info.from_team}} (ID: {{ p.transfer_info.from_team }})" class="crest"></a>
+                        <a href="{% url 'teams' %}{{p.transfer_info.from_team}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.transfer_info.from_team}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.transfer_info.from_team}} (ID: {{ p.transfer_info.from_team }})" class="crest"></a>
                     </td>
                     <td class="text-center">
-                        <a href="{% url 'teams' %}{{p.transfer_info.to_team}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.transfer_info.to_team }}.png" title="{{ p.transfer_info.to_team}} (ID: {{ p.transfer_info.to_team }})" class="crest"></a>
+                        <a href="{% url 'teams' %}{{p.transfer_info.to_team}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.transfer_info.to_team}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.transfer_info.to_team}} (ID: {{ p.transfer_info.to_team }})" class="crest"></a>
                     </td>
                     <td class="text-center d-none d-md-table-cell">
                         <div>

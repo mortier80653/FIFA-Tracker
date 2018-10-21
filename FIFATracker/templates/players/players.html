@@ -21,7 +21,7 @@
                         <div class="col-3">
                             <div class="center-elements">
                                 <span>
-                                    <a href="{% url 'players' %}?teamid=111592"><img src="{% get_static_prefix %}img/assets/crest/l111592.png" title="{% trans 'Free Agents' %} (ID: 111592)" class="crest"></a>
+                                    <a href="{% url 'players' %}?teamid=111592"><img src="{% get_static_prefix %}img/assets/common/crest/l111592.png" title="{% trans 'Free Agents' %} (ID: 111592)" class="crest"></a>
                                 </span>
                             </div>
                             <div class="center-elements">
@@ -34,7 +34,7 @@
                         <div class="col-3">
                             <div class="center-elements">
                                 <span>
-                                    <a href="{% url 'players' %}?isreal=0"><img src="{% get_static_prefix %}img/assets/youthheads/p150406.png" title="{% trans 'Generic Players' %}" class="crest"></a>
+                                    <a href="{% url 'players' %}?isreal=0"><img src="{% get_static_prefix %}img/assets/common/heads/p150406.png" title="{% trans 'Generic Players' %}" class="crest"></a>
                                 </span>
                             </div>
                             <div class="center-elements">
@@ -48,11 +48,11 @@
                             <div class="center-elements">
                                 <span>
                                     {% if request.session.currency == '0' %}
-                                        <a href="{% url 'players' %}?value_usd__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_0.png" title="{% trans 'Players for' %} 0$" class="crest"></a>
+                                        <a href="{% url 'players' %}?value_usd__lte=0"><img src="{% get_static_prefix %}img/assets/common/other/currency_0.png" title="{% trans 'Players for' %} 0$" class="crest"></a>
                                     {% elif request.session.currency == '1' %}
-                                        <a href="{% url 'players' %}?value_eur__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_1.png" title="{% trans 'Players for' %} 0€" class="crest"></a>
+                                        <a href="{% url 'players' %}?value_eur__lte=0"><img src="{% get_static_prefix %}img/assets/common/other/currency_1.png" title="{% trans 'Players for' %} 0€" class="crest"></a>
                                     {% else %}
-                                        <a href="{% url 'players' %}?value_gbp__lte=0"><img src="{% get_static_prefix %}img/assets/other/currency_2.png" title="{% trans 'Players for' %} 0£" class="crest"></a>
+                                        <a href="{% url 'players' %}?value_gbp__lte=0"><img src="{% get_static_prefix %}img/assets/common/other/currency_2.png" title="{% trans 'Players for' %} 0£" class="crest"></a>
                                     {% endif %}
                                 </span>
                             </div>
@@ -75,7 +75,7 @@
                             <div class="center-elements">
                                 <span>
                                     {% with player=players|first %}
-                                        <a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}"><img src="{% get_static_prefix %}img/assets/other/warning.png" title="{% trans 'Expiring Contract' %}" class="crest"></a>
+                                        <a href="{% url 'players' %}?contractvaliduntil__gte={{player.current_date_py.year}}&contractvaliduntil__lte={{player.current_date_py.year|add:"1"}}"><img src="{% get_static_prefix %}img/assets/common/other/warning.png" title="{% trans 'Expiring Contract' %}" class="crest"></a>
                                     {% endwith %}
                                 </span>
                             </div>
@@ -669,15 +669,15 @@
                 {% for p in players %}
                     <tr>
                         <td class="d-none d-sm-table-cell" width="75">
-                            <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/{{ p.headshot }}" onError="this.onerror=null;this.src='/static/img/assets/heads/not_found_0.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a>
+                            <a href="{% url 'players' %}{{p.player.playerid}}"><img src="{% get_static_prefix %}img/assets/common/heads/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/{{ p.headshot }}" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/heads/notfound.png';" title="PlayerID: {{ p.player.playerid }}" class="miniface"></a>
                         </td>
                         <td style="padding-left: 5px!important;" width="250">
                             <div class="text-truncate">
-                                <img src="{% get_static_prefix %}img/assets/flags/f_{{ p.player.nationality.nationid }}.png" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
+                                <img src="{% get_static_prefix %}img/assets/common/flags/notfound.png" data-src="{% get_static_prefix %}img/assets/common/flags/f_{{p.player.nationality.nationid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/flags/notfound.png';" title="{{ p.player.nationality.nationname}} (ID: {{ p.player.nationality.nationid }})" class="flag">
                                 <a href="{% url 'players' %}{{p.player.playerid}}">{{ p.player_name.knownas}}</a>
                             </div>
                             <div class="text-truncate player-position">
-                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
+                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid}})" class="crest"></a>
                                 {{ p.player.preferredposition1 }}
                                 {% if p.player.preferredposition2 != -1 %} | {{ p.player.preferredposition2 }}{% endif %}
                                 {% if p.player.preferredposition3 != -1 %} | {{ p.player.preferredposition3 }}{% endif %}
@@ -690,9 +690,9 @@
                         <td class="text-center d-none d-md-table-cell">
                             <div>
                                 {% if p.player_contract.isloanedout %}
-                                <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_contract.loanedto_clubid }}.png" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
+                                  <a href="{% url 'teams' %}{{p.player_contract.loanedto_clubid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_contract.loanedto_clubid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="On Loan at: {{p.player_contract.loanedto_clubname}} (ID: {{ p.player_contract.loanedto_clubid }})" class="crest"></a>
                                 {% else %}
-                                <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/crest/l{{ p.player_teams.club_team.team.teamid }}.png" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
+                                  <a href="{% url 'teams' %}{{p.player_teams.club_team.team.teamid}}"><img src="{% get_static_prefix %}img/assets/common/crest/notfound.png" data-src="{% get_static_prefix %}img/assets/{{ fifa_edition }}/crest/l{{p.player_teams.club_team.team.teamid}}.png" onError="this.onerror=null;this.src='{% get_static_prefix %}img/assets/common/crest/notfound.png';" title="{{ p.player_teams.club_team.team.teamname }} (ID: {{p.player_teams.club_team.team.teamid }})" class="crest"></a>
                                 {% endif %}
                                 {{ p.player_contract.jointeamdate }} - {{p.player_contract.enddate}}
                                 {% if p.player_contract.isloanedout %}

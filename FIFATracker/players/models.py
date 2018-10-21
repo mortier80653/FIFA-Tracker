@@ -557,25 +557,25 @@ class DataUsersPlayers19(models.Model):
     wage = models.IntegerField(blank=True, null=True)
 
     # For Release
-    firstname = models.ForeignKey(
-        DataPlayernames19, related_name='firstname', db_column='firstnameid', null=True, on_delete=models.CASCADE
-    )
-    lastname = models.ForeignKey(
-        DataPlayernames19, related_name='lastname', db_column='lastnameid', null=True, on_delete=models.CASCADE
-    )
-    playerjerseyname = models.ForeignKey(
-        DataPlayernames19, related_name='playerjerseyname',
-        db_column='playerjerseynameid', null=True, on_delete=models.CASCADE
-    )
-    commonname = models.ForeignKey(
-        DataPlayernames19, related_name='commonname', db_column='commonnameid', null=True, on_delete=models.CASCADE
-    )
+    # firstname = models.ForeignKey(
+    #     DataPlayernames19, related_name='firstname', db_column='firstnameid', null=True, on_delete=models.CASCADE
+    # )
+    # lastname = models.ForeignKey(
+    #     DataPlayernames19, related_name='lastname', db_column='lastnameid', null=True, on_delete=models.CASCADE
+    # )
+    # playerjerseyname = models.ForeignKey(
+    #     DataPlayernames19, related_name='playerjerseyname',
+    #     db_column='playerjerseynameid', null=True, on_delete=models.CASCADE
+    # )
+    # commonname = models.ForeignKey(
+    #     DataPlayernames19, related_name='commonname', db_column='commonnameid', null=True, on_delete=models.CASCADE
+    # )
 
     # Uncomment for migration to fix problem with foreignkeys
-    # firstnameid = models.IntegerField(blank=True, null=True)
-    # lastnameid = models.IntegerField(blank=True, null=True)
-    # playerjerseynameid = models.IntegerField(blank=True, null=True)
-    # commonnameid = models.IntegerField(blank=True, null=True)
+    firstnameid = models.IntegerField(blank=True, null=True)
+    lastnameid = models.IntegerField(blank=True, null=True)
+    playerjerseynameid = models.IntegerField(blank=True, null=True)
+    commonnameid = models.IntegerField(blank=True, null=True)
 
     # Original fields
     trait2 = models.IntegerField(blank=True, null=True)

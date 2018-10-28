@@ -14,7 +14,7 @@ from players.models import (
     DataUsersCareerCompdataPlayerStats,
 )
 
-from core.consts import HIGHEST_REAL_PLAYERID
+from core.consts import DEFAULT_DATE, DEFAULT_FIFA_EDITION, HIGHEST_REAL_PLAYERID
 from core.models import (
     DataUsersCareerTransferOffer,
 )
@@ -345,7 +345,7 @@ class DataUsersCareerTransferOfferFilter:
 
 
 class DataUsersPlayerloansFilter:
-    def __init__(self, request, for_user, current_date=18):
+    def __init__(self, request, for_user, current_date=DEFAULT_DATE[str(DEFAULT_FIFA_EDITION)]):
         self.request_dict = request
         self.for_user = for_user
         self.current_date = current_date
@@ -591,15 +591,18 @@ class DataUsersPlayersFilter:
             self,
             request,
             for_user,
-            current_date=20180701,
+            current_date=None,
             sort=True,
-            fifa_edition=19
+            fifa_edition=DEFAULT_FIFA_EDITION
     ):
         self.request_dict = request
         self.for_user = for_user
-        self.current_date = current_date
-        self.current_date_py = FifaDate().convert_to_py_date(fifa_date=self.current_date)
         self.fifa_edition = fifa_edition
+        if current_date:
+            self.current_date = current_date
+        else:
+            self.current_date = DEFAULT_DATE[str(self.fifa_edition)]
+        self.current_date_py = FifaDate().convert_to_py_date(fifa_date=self.current_date)
 
         if self.fifa_edition == 18:
             queryset = DataUsersPlayers.objects.for_user(self.for_user).select_related(
@@ -623,133 +626,277 @@ class DataUsersPlayersFilter:
         except ValueError:
             pass
 
+        # Fields with min and max values
         range_fields = [
-            'overallrating',
-            'potential',
-            'weakfootabilitytypecode',
-            'internationalrep',
-            'height',
-            'weight',
-            'crossing',
-            'finishing',
-            'headingaccuracy',
-            'shortpassing',
-            'volleys',
-            'marking',
-            'standingtackle',
-            'slidingtackle',
-            'dribbling',
-            'curve',
-            'freekickaccuracy',
-            'longpassing',
-            'ballcontrol',
-            'shotpower',
-            'jumping',
-            'stamina',
-            'strength',
-            'longshots',
-            'acceleration',
-            'sprintspeed',
-            'agility',
-            'reactions',
-            'balance',
-            'aggression',
-            'composure',
-            'interceptions',
-            'positioning',
-            'vision',
-            'penalties',
-            'gkdiving',
-            'gkhandling',
-            'gkkicking',
-            'gkpositioning',
-            'gkreflexes',
+            # Player Attributes
+            {
+                'field': 'overallrating',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'potential',
+                'min': 1,
+                'max': 99,
+            },
+
+            {
+                'field': 'crossing',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'finishing',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'headingaccuracy',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'shortpassing',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'volleys',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'headingaccuracy',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'shortpassing',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'volleys',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'marking',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'standingtackle',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'slidingtackle',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'dribbling',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'curve',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'freekickaccuracy',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'longpassing',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'ballcontrol',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'shotpower',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'jumping',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'stamina',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'strength',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'longshots',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'acceleration',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'sprintspeed',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'agility',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'reactions',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'balance',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'aggression',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'composure',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'interceptions',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'positioning',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'vision',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'penalties',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'gkdiving',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'gkhandling',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'gkkicking',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'gkpositioning',
+                'min': 1,
+                'max': 99,
+            },
+            {
+                'field': 'gkreflexes',
+                'min': 1,
+                'max': 99,
+            },
+            # Other
+            {
+                'field': 'weakfootabilitytypecode',
+                'min': 1,
+                'max': 5,
+            },
+            {
+                'field': 'skillmoves',
+                'min': 1,
+                'max': 5,
+                'modifier': -1,
+            },
+            {
+                'field': 'internationalrep',
+                'min': 1,
+                'max': 5,
+            },
+            {
+                'field': 'height',
+                'min': 130,
+                'max': 215,
+            },
+            {
+                'field': 'weight',
+                'min': 30,
+                'max': 115,
+            },
+            # Player Value
+            {
+                'field': 'value_usd',
+                'min': 0,
+                'max': 500000000,
+            },
+            {
+                'field': 'value_eur',
+                'min': 0,
+                'max': 500000000,
+            },
+            {
+                'field': 'value_gbp',
+                'min': 0,
+                'max': 500000000,
+            },
         ]
 
-        for field in range(len(range_fields)):
-            range_bottom = range_fields[field] + "__gte"
-            range_top = range_fields[field] + "__lte"
+        for field in range_fields:
+            field_name_gte = field['field'] + "__gte"       # Min filter name
+            field_name_lte = field['field'] + "__lte"       # Max filter name
 
             try:
-                if range_bottom in self.request_dict or range_top in self.request_dict:
-                    val_bottom = (
-                        self._check_key(
-                            self.request_dict,
-                            range_bottom) or 1)
-                    val_top = (
-                        self._check_key(
-                            self.request_dict,
-                            range_top) or 99)
+                # check if we need to apply filter
+                if field_name_gte in self.request_dict or field_name_lte in self.request_dict:
+                    val_bottom = int(self._check_key(self.request_dict, field_name_gte) or field['min'])
+                    val_top = int(self._check_key(self.request_dict, field_name_lte) or field['max'])
+
+                    # Validate
+                    if val_bottom < field['min']:
+                        val_bottom = field['min']
+                    if val_top > field['max']:
+                        val_top = field['max']
+
+                    # Apply modifier
+                    if 'modifier' in field:
+                        val_bottom += field['modifier']
+                        val_top += field['modifier']
+
                     queryset = queryset.filter(
-                        Q((range_bottom, val_bottom)),
-                        Q((range_top, val_top)),
+                        Q((field_name_gte, val_bottom)),
+                        Q((field_name_lte, val_top)),
                     )
             except ValueError:
                 pass
-
-        try:
-            if 'skillmoves__gte' in self.request_dict or 'skillmoves__lte' in self.request_dict:
-                sm_min = int(
-                    self._check_key(
-                        self.request_dict,
-                        'skillmoves__gte') or 1) - 1
-                sm_max = int(
-                    self._check_key(
-                        self.request_dict,
-                        'skillmoves__lte') or 5) - 1
-
-                queryset = queryset.filter(
-                    Q(skillmoves__gte=sm_min), Q(skillmoves__lte=sm_max))
-        except ValueError:
-            pass
-
-        try:
-            if 'value_usd__gte' in self.request_dict or 'value_usd__lte' in self.request_dict:
-                player_value_usd_min = int(
-                    self._check_key(
-                        self.request_dict,
-                        'value_usd__gte') or 0)
-                player_value_usd_max = int(
-                    self._check_key(
-                        self.request_dict,
-                        'value_usd__lte') or 500000000)
-
-                queryset = queryset.filter(Q(value_usd__gte=player_value_usd_min), Q(
-                    value_usd__lte=player_value_usd_max))
-        except ValueError:
-            pass
-
-        try:
-            if 'value_eur__gte' in self.request_dict or 'value_eur__lte' in self.request_dict:
-                player_value_eur_min = int(
-                    self._check_key(
-                        self.request_dict,
-                        'value_eur__gte') or 0)
-                player_value_eur_max = int(
-                    self._check_key(
-                        self.request_dict,
-                        'value_eur__lte') or 500000000)
-
-                queryset = queryset.filter(Q(value_eur__gte=player_value_eur_min), Q(
-                    value_eur__lte=player_value_eur_max))
-        except ValueError:
-            pass
-
-        try:
-            if 'value_gbp__gte' in self.request_dict or 'value_gbp__lte' in self.request_dict:
-                player_value_gbp_min = int(
-                    self._check_key(
-                        self.request_dict,
-                        'value_gbp__gte') or 0)
-                player_value_gbp_max = int(
-                    self._check_key(
-                        self.request_dict,
-                        'value_gbp__lte') or 500000000)
-
-                queryset = queryset.filter(Q(value_gbp__gte=player_value_gbp_min), Q(
-                    value_gbp__lte=player_value_gbp_max))
-        except ValueError:
-            pass
 
         try:
             if 'attackingworkrate' in self.request_dict:
@@ -880,13 +1027,14 @@ class DataUsersPlayersFilter:
         try:
             if 'preferredpositions' in self.request_dict:
                 value = list(
-                    self.request_dict['preferredpositions'].split(','))
+                    self.request_dict['preferredpositions'].split(',')
+                )
                 queryset = queryset.filter(
-                    Q(
-                        preferredposition1__in=value) | Q(
-                        preferredposition2__in=value) | Q(
-                        preferredposition3__in=value) | Q(
-                        preferredposition4__in=value))
+                    Q(preferredposition1__in=value) |
+                    Q(preferredposition2__in=value) |
+                    Q(preferredposition3__in=value) |
+                    Q(preferredposition4__in=value)
+                )
         except ValueError:
             pass
 
@@ -1014,7 +1162,8 @@ class DataUsersPlayersFilter:
                             5502,
                             5503,
                             5504,
-                            5505]
+                            5505
+                        ]
                         headtypecodes.extend(caucasians)
                     elif i == '1':
                         # African
@@ -1094,7 +1243,8 @@ class DataUsersPlayersFilter:
                             10002,
                             10500,
                             10501,
-                            10502]
+                            10502
+                        ]
                         headtypecodes.extend(africans)
                     elif i == '2':
                         # Latin
@@ -1139,7 +1289,8 @@ class DataUsersPlayersFilter:
                             7008,
                             7009,
                             7010,
-                            7011]
+                            7011
+                        ]
                         headtypecodes.extend(latins)
                     elif i == '3':
                         # European
@@ -1193,7 +1344,8 @@ class DataUsersPlayersFilter:
                             9002,
                             9500,
                             9501,
-                            9502]
+                            9502
+                        ]
                         headtypecodes.extend(europeans)
                     elif i == '4':
                         # Arabic
@@ -1219,7 +1371,8 @@ class DataUsersPlayersFilter:
                             2518,
                             8000,
                             8001,
-                            8002]
+                            8002
+                        ]
                         headtypecodes.extend(arabic)
                     elif i == '5':
                         # Asian
@@ -1281,7 +1434,8 @@ class DataUsersPlayersFilter:
                             6006,
                             6007,
                             6008,
-                            6009]
+                            6009
+                        ]
                         headtypecodes.extend(asian)
 
                 queryset = queryset.filter(Q(headtypecode__in=headtypecodes))

@@ -20,6 +20,12 @@
                     <p>{% trans 'Calculate player potential.' %}</p>
                     <div class="row">
                         <div class="col-lg-4 col-12">
+                            <label>FIFA</label>
+                            <select class="just-selectize" id="calcpot-fifa" name="fifa_edition" placeholder="FIFA 19">
+                                <option value="17">FIFA 17</option>
+                                <option value="18">FIFA 18</option>
+                                <option value="19" selected>FIFA 19</option>
+                            </select>
                             <label>{% trans 'Currency' %}</label>
                             <select class="just-selectize" id="calcpot-currency" placeholder="{% trans 'EURO' %} (€)">
                                 <option value="0">{% trans 'USDOLLAR' %} ($)</option>
@@ -74,6 +80,12 @@
                     <p>{% trans 'Calculate player weekly wage.' %}</p>
                     <div class="row">
                         <div class="col-lg-4 col-12">
+                            <label>FIFA</label>
+                            <select class="just-selectize" id="calcwage-fifa" name="fifa_edition" placeholder="FIFA 19">
+                                <option value="17">FIFA 17</option>
+                                <option value="18">FIFA 18</option>
+                                <option value="19" selected>FIFA 19</option>
+                            </select>
                             <label>{% trans 'Currency' %}</label>
                             <select class="just-selectize" id="calcwage-currency" placeholder="{% trans 'EURO' %} (€)">
                                 <option value="0">{% trans 'USDOLLAR' %} ($)</option>

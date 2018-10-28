@@ -14,6 +14,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
 
+from core.consts import DEFAULT_DATE
+
 from core.fifa_utils import (
     PlayerAge,
     PlayerValue,
@@ -85,11 +87,13 @@ class CalculateValues():
             Path containing .csv files.
     """
 
-    def __init__(self, csv_path):
+    def __init__(self, csv_path, fifa_edition=19):
+        self.fifa_edition = str(fifa_edition)
         self.csv_path = csv_path
 
         self.players_real_ovr = dict()
-        self.currdate = self._get_csv_val("career_calendar.csv", "currdate") or 20170701
+
+        self.currdate = self._get_csv_val("career_calendar.csv", "currdate") or DEFAULT_DATE[self.fifa_edition]
         self.currency = self._get_csv_val("career_managerpref.csv", "currency") or 1
 
         self._calc()
@@ -154,9 +158,9 @@ class CalculateValues():
                 pot = row['potential']
                 age = PlayerAge(row['birthdate'], self.currdate).age
                 posid = row['preferredposition1']
-                pvalue_usd = PlayerValue(ovr, pot, age, posid, 0).value
-                pvalue_eur = PlayerValue(ovr, pot, age, posid, 1).value
-                pvalue_gbp = PlayerValue(ovr, pot, age, posid, 2).value
+                pvalue_usd = PlayerValue(ovr, pot, age, posid, 0, fifa_edition=self.fifa_edition).value
+                pvalue_eur = PlayerValue(ovr, pot, age, posid, 1, fifa_edition=self.fifa_edition).value
+                pvalue_gbp = PlayerValue(ovr, pot, age, posid, 2, fifa_edition=self.fifa_edition).value
                 pwage = 0
                 data[i] = data[i][:-1] + \
                     ",{},{},{},{}\n".format(
@@ -1261,7 +1265,7 @@ class ParseCareerSave():
         # Calculate Values of all players and save it in "players.csv"
         self._update_savefile_model(
             0, _("Calculating Players Values and Teams Ratings"))
-        currency = CalculateValues(csv_path=csv_path).currency
+        currency = CalculateValues(csv_path=csv_path, fifa_edition=self.fifa_edition).currency
 
         # Set Default Currency
         self._set_currency(currency=currency)

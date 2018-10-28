@@ -3,6 +3,7 @@ import logging
 from django.shortcuts import render
 from django.http import JsonResponse
 
+from core.consts import DEFAULT_FIFA_EDITION
 from core.fifa_utils import PlayerWage, PlayerValue
 from players.models import (
     DataUsersTeams,
@@ -13,6 +14,7 @@ from players.models import (
 
 def ajax_calcpot(request):
     try:
+        fifa_edition = int(request.GET.get('fifa_edition') or DEFAULT_FIFA_EDITION)
         currency = int(request.GET.get('currency') or 1)
         player_value = int(request.GET.get('player_value') or 0)
         positionid = int(request.GET.get('positionid') or 25)
@@ -22,7 +24,8 @@ def ajax_calcpot(request):
         possible_potential = list()
         for pot in range(ovr, 100):
             calc_player_value = PlayerValue(
-                ovr=ovr, pot=pot, age=age, posid=positionid, currency=currency).value
+                ovr=ovr, pot=pot, age=age, posid=positionid, currency=currency, fifa_edition=fifa_edition
+            ).value
             if calc_player_value == player_value:
                 possible_potential.append(pot)
 
@@ -52,6 +55,7 @@ def ajax_calcwage(request):
         else:
             current_user = "guest"
 
+        fifa_edition = int(request.GET.get('fifa_edition') or DEFAULT_FIFA_EDITION)
         currency = int(request.GET.get('currency') or 1)
 
         teamid = (request.GET.get('teamid') or "5")  # 5 == Chelsea
@@ -86,8 +90,10 @@ def ajax_calcwage(request):
             "team": {"domesticprestige": team.domesticprestige, "profitability": team.profitability},
         }
 
-        wage = PlayerWage(ovr=ovr, age=age, posid=positionid,
-                          player_team=player_team, currency=currency).formated_wage
+        wage = PlayerWage(
+            ovr=ovr, age=age, posid=positionid, player_team=player_team, currency=currency,
+            fifa_edition=fifa_edition
+        ).formated_wage
 
         currency_symbols = ('$', '€', '£')
         result = "Weekly wage of a {} yo, {} rated player playing for {} in {} league is {} {}".format(

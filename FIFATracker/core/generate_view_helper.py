@@ -160,10 +160,13 @@ def get_team(request, teamid=0, additional_filters=None):
         raise NoResultsError(_('No results found. Try to change your filters'))
 
     # get valid team
+    valid_team = None
     for team in context_data['dict_cached_queries']['q_teams']:
         if int(team.teamid) == int(teamid):
             valid_team = team
             break
+    if not valid_team:
+        raise NoResultsError(_('No results found. Try to change your filters'))
 
     # get valid leagueteamlink
     valid_ltlink = None

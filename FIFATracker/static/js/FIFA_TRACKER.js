@@ -51,6 +51,8 @@ function ToolsCalculator() {
 
     // Calculate Player Potential
     $('#btn-calc-pot').on("click", function() {
+        let fifa_edition = $("#calcpot-fifa").val();
+
         let currency = $("#calcpot-currency").val();
 
         let playerValue = $("#calcpot-val").val().replace(/\D/g,'');
@@ -78,6 +80,7 @@ function ToolsCalculator() {
         $.ajax({
             url: '/tools/calculator/ajax/calc-pot/',
             data: {
+                "fifa_edition": fifa_edition,
                 "currency": currency,
                 "player_value": playerValue,
                 "positionid": positionid,
@@ -95,6 +98,8 @@ function ToolsCalculator() {
 
     // Calculate Player Wage
     $('#btn-calc-wage').on("click", function() {
+        let fifa_edition = $("#calcwage-fifa").val();
+
         let currency = $("#calcwage-currency").val();
 
         let leagueid = $("#leagues-input").val();
@@ -124,6 +129,7 @@ function ToolsCalculator() {
         $.ajax({
             url: '/tools/calculator/ajax/calc-wage/',
             data: {
+                "fifa_edition": fifa_edition,
                 "currency": currency,
                 "leagueid": leagueid,
                 "teamid": teamid,

@@ -312,6 +312,7 @@ class CalculateValues():
 
         ovr = list()
 
+        # Defined in Database table called 'attributeprefpositionformula'
         if posid == 0:
             # GK
             # PLAYER_ATTRIBUTE_REACTIONS * 11%

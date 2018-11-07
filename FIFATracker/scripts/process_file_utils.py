@@ -111,17 +111,24 @@ class CalculateValues():
         if not os.path.isfile(players_file):
             return None
 
+        calulcated_data = []
         with open(players_file, 'r', encoding='utf-8') as csvfile:
             data = csvfile.readlines()
 
             # Add custom columns
-            data[0] = data[0][:-1] + ",value_usd,value_eur,value_gbp,wage\n"
+            calulcated_data.append(data[0][:-1] + ",value_usd,value_eur,value_gbp,wage\n")
 
             csvfile.seek(0)
             reader = csv.DictReader(csvfile)
 
             i = 1
             for row in reader:
+                # Validate
+                nationality = int(row['nationality'])
+                if nationality == 0:
+                    i += 1
+                    continue
+
                 # Calc Real Player OVR for actuall position
 
                 playerid = int(row['playerid'])
@@ -162,9 +169,10 @@ class CalculateValues():
                 pvalue_eur = PlayerValue(ovr, pot, age, posid, 1, fifa_edition=self.fifa_edition).value
                 pvalue_gbp = PlayerValue(ovr, pot, age, posid, 2, fifa_edition=self.fifa_edition).value
                 pwage = 0
-                data[i] = data[i][:-1] + \
-                    ",{},{},{},{}\n".format(
-                        pvalue_usd, pvalue_eur, pvalue_gbp, pwage)
+                calulcated_data.append(data[i][:-1] + ",{},{},{},{}\n".format(
+                    pvalue_usd, pvalue_eur, pvalue_gbp, pwage
+                ))
+
                 i += 1
 
         # Write data
@@ -172,7 +180,7 @@ class CalculateValues():
             return None
 
         with open(players_file, 'w', encoding='utf-8') as csvfile:
-            csvfile.writelines(data)
+            csvfile.writelines(calulcated_data)
 
     def _calc_teams_rating(self):
         """ Calculate Teams ovr, att, mid, def ratings. And Save Data in teams.csv """

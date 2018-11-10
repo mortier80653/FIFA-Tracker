@@ -1438,6 +1438,8 @@ class ParseCareerSave():
         user_id = self.user.id
         for csv in csv_list:
             # example: media\<user>\data\csv\career_calendar.csv
+            full_csv_path = os.path.join(csv_path, csv) + ".csv"
+
             if csv == "players":
                 if self.fifa_edition == 18:
                     csv = "players"
@@ -1453,7 +1455,6 @@ class ParseCareerSave():
             model = ct.model_class()
             self._delete_data(model=model, user_id=user_id)
 
-            full_csv_path = os.path.join(csv_path, csv) + ".csv"
             if os.path.exists(full_csv_path):
                 self._copy_from_csv(table=csv, full_csv_path=full_csv_path)
 

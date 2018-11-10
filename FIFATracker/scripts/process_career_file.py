@@ -42,10 +42,6 @@ def run(*args):
         update_savefile_model(user_id, _("Save file model not found."))
         return
 
-    # Path to meta XML file for a FIFA database.
-    FIFA_XML_PATH = os.path.join(
-        settings.BASE_DIR, "scripts", "Data", fifa_edition, "XML", "fifa_ng_db-meta.xml")
-
     fpath = os.path.join(settings.MEDIA_ROOT, str(
         save_file_model.uploadedfile))
     if not os.path.exists(fpath):
@@ -57,10 +53,12 @@ def run(*args):
 
     # Parse Career Save
     try:
-        ParseCareerSave(career_file_fullpath=fpath, careersave_data_path=careersave_data_path,
-                        user=user, xml_file=FIFA_XML_PATH, fifa_edition=fifa_edition)
+        parse_save = ParseCareerSave(
+            career_file_fullpath=fpath, careersave_data_path=careersave_data_path,
+            user=user, xml_file=None, fifa_edition=fifa_edition
+        )
         user.profile.is_save_processed = True
-        user.profile.fifa_edition = fifa_edition
+        user.profile.fifa_edition = str(parse_save.fifa_edition)
         user.save()
     except FileNotFoundError as e:
         user.profile.is_save_processed = False

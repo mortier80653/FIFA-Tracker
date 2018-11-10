@@ -8,13 +8,14 @@ import xml.etree.ElementTree as ET
 import time
 import logging
 
+from django.conf import settings
 from django.db import connection
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
 
-from core.consts import DEFAULT_DATE
+from core.consts import DEFAULT_DATE, DEFAULT_FIFA_EDITION
 
 from core.fifa_utils import (
     PlayerAge,
@@ -1146,6 +1147,7 @@ class UnpackDatabase():
     def __init__(self, career_file_fullpath, dest_path):
         self.career_file_fullpath = career_file_fullpath
         self.dest_path = dest_path
+        self.fifa_edition = None
 
         # Create dest_path path dir
         if not os.path.exists(self.dest_path):
@@ -1160,6 +1162,12 @@ class UnpackDatabase():
             Number of unpacked .db files from FIFA Career Save.
         """
 
+        # Recognize FIFA Edition basing on file size
+        fifa_signatures = {
+            b'\x6E\x40\x72\x00': '17',
+            b'\x63\x7D\xA9\x00': '18',
+            b'\x17\x5E\xC6\x00': '19',
+        }
         # Open Career Save
         with open(self.career_file_fullpath, 'rb') as f:
             # FIFA Database file signature
@@ -1171,6 +1179,16 @@ class UnpackDatabase():
             if offset < 0:
                 return 0
 
+            cur_pos = mm.tell()         # Save cursor position
+            mm.seek(14)                 # 0xE - FILE SIZE
+            fifa_sign = mm.read(4)      # Read sign (0x4 bytes)
+
+            try:
+                self.fifa_edition = fifa_signatures[fifa_sign]
+            except KeyError:
+                pass
+
+            mm.seek(cur_pos)            # Restore cursor position
             # Data before databases section
             with open(os.path.join(self.dest_path, "data_before_db"), "wb") as data_before_db:
                 data_before_db.write(mm[:offset])
@@ -1218,8 +1236,14 @@ class ParseCareerSave():
         xml_file : str
             Full path to "fifa_ng_db-meta.xml" file
     """
-
-    def __init__(self, career_file_fullpath, careersave_data_path, user, xml_file, fifa_edition):
+    def __init__(
+        self,
+        career_file_fullpath,
+        careersave_data_path,
+        user,
+        xml_file=None,
+        fifa_edition=DEFAULT_FIFA_EDITION,
+    ):
         start = time.time()
         self.cs_model = CareerSaveFileModel.objects.filter(
             user_id=user.id).first()
@@ -1244,8 +1268,20 @@ class ParseCareerSave():
         # Unpack databases from career file.
         self._update_savefile_model(
             0, _("Unpacking database from career file."))
-        self.unpacked_dbs = UnpackDatabase(
-            career_file_fullpath=self.career_file_fullpath, dest_path=self.data_path).unpack()
+
+        unpack_db = UnpackDatabase(
+            career_file_fullpath=self.career_file_fullpath, dest_path=self.data_path
+        )
+        self.unpacked_dbs = unpack_db.unpack()
+
+        if unpack_db.fifa_edition:
+            self.fifa_edition = int(unpack_db.fifa_edition)
+
+        if not self.xml_file:
+            # Path to meta XML file for a FIFA database.
+            self.xml_file = os.path.join(
+                settings.BASE_DIR, "scripts", "Data", str(self.fifa_edition), "XML", "fifa_ng_db-meta.xml"
+            )
 
         if self.unpacked_dbs == 0:
             self._remove_savefile()
@@ -1253,7 +1289,8 @@ class ParseCareerSave():
         elif self.unpacked_dbs > 3:
             self._remove_savefile()
             raise ValueError(
-                "Too many .db files - found {}".format(current_db))
+                "Too many .db files"
+            )
 
         # Export data from FIFA database to csv files.
         self._update_savefile_model(

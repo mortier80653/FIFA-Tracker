@@ -1438,22 +1438,23 @@ class ParseCareerSave():
         user_id = self.user.id
         for csv in csv_list:
             # example: media\<user>\data\csv\career_calendar.csv
+            if csv == "players":
+                if self.fifa_edition == 18:
+                    csv = "players"
+                else:
+                    csv = "players{}".format(self.fifa_edition)
+
+            model_name = "datausers{}".format(csv.replace("_", ""))
+            # career_calendar --> public.datauserscareercalendar
+            postgresql_table_name = "public.datausers{}".format(
+                csv.replace("_", ""))
+
+            ct = ContentType.objects.get(model=model_name)
+            model = ct.model_class()
+            self._delete_data(model=model, user_id=user_id)
+
             full_csv_path = os.path.join(csv_path, csv) + ".csv"
             if os.path.exists(full_csv_path):
-                if csv == "players":
-                    if self.fifa_edition == 18:
-                        csv = "players"
-                    else:
-                        csv = "players{}".format(self.fifa_edition)
-
-                model_name = "datausers{}".format(csv.replace("_", ""))
-                # career_calendar --> public.datauserscareercalendar
-                postgresql_table_name = "public.datausers{}".format(
-                    csv.replace("_", ""))
-
-                ct = ContentType.objects.get(model=model_name)
-                model = ct.model_class()
-                self._delete_data(model=model, user_id=user_id)
                 self._copy_from_csv(table=csv, full_csv_path=full_csv_path)
 
     def _update_table_from_csv(self, model, model_filter, table, full_csv_path, user_id):
@@ -1552,8 +1553,8 @@ class ParseCareerSave():
         """ delete data before update """
         try:
             model.objects.filter(ft_user_id=user_id).delete()
-        except Exception as e:
-            logging.exception("_delete_data")
+        except Exception:
+            pass
 
     def _create_lookup(self, user_id, table, row):
         lookup = {"ft_user_id": user_id,

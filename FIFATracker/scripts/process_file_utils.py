@@ -1322,12 +1322,13 @@ class ParseCareerSave():
         self.importCareerData(csv_path=csv_path)
         self.protectprivacy()
 
-        # Delete Files
-        if os.path.exists(self.data_path):
-            shutil.rmtree(self.data_path)
+        # Delete Files on production
+        if not settings.DEBUG:
+            if os.path.exists(self.data_path):
+                shutil.rmtree(self.data_path)
 
-        if os.path.isfile(self.career_file_fullpath):
-            os.remove(self.career_file_fullpath)
+            if os.path.isfile(self.career_file_fullpath):
+                os.remove(self.career_file_fullpath)
 
         end = time.time()
 

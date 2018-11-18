@@ -77,6 +77,7 @@ from core.models import (
     DataUsersPlayerformdiff,
     DataUsersTeamformdiff,
     DataUsersVersion,
+    DataUsersCareerCompdataClubNegotiations,
 )
 
 
@@ -637,6 +638,251 @@ class RestToCSV():
             mm = mmap.mmap(rf.fileno(), length=0, access=mmap.ACCESS_READ)
             self._release_clauses(mm)
             self._players_stats(mm)
+            self._club_neg(mm)
+
+    def _club_neg(self, mm):
+        sign_clbneg = b"\x63\x6C\x62\x6E\x65\x67\x00"    # clbneg
+        mm.seek(0)
+
+        offsets = []
+
+        offset = mm.find(sign_clbneg)
+        while offset >= 0:
+            cur_pos = offset + len(sign_clbneg)
+            mm.seek(cur_pos, 0)
+            offsets.append(cur_pos)
+            offset = mm.find(sign_clbneg)
+
+        if len(offsets) != 4:
+            return
+
+        # clbneg_1 all teams transfers?
+        # clbneg_2 all teams loans?
+        # clbneg_3 my team transfers?
+        # clbneg_4 my team loans?
+        clbneg_structs = {
+            'clbneg_1': {
+                'playerid': 4,
+                'offerteamid': 4,
+                'teamid': 4,
+                'unk1': 1,
+                'isusertransfer': 1,
+                'unk3': 8,
+                'unk4': 8,
+                'transfer_sum1': 4,
+                'transfer_sum2': 4,
+                'stage': 4,
+                'unk6': 60,
+                'unk7': 1,
+                'unk8': 1,
+                'isofferrejected': 1,
+                'unk10': 1,
+                'offer_history': {
+                    'num': 4,
+                    'size_of': 12,
+                },
+                'counter_offer_history': {
+                    'num': 4,
+                    'size_of': 16,
+                },
+            },
+            'clbneg_2': {
+                'playerid': 4,
+                'offerteamid': 4,
+                'teamid': 4,
+                'unk1': 1,
+                'isusertransfer': 1,
+                'unk3': 4,
+                'unk4': 4,
+                'unk5': 4,
+                'unk6': 60,
+                'unk7': 1,
+                'unk8': 1,
+                'unk9': 1,
+                'unk10': 1,
+                'unk11': {
+                    'num': 4,
+                    'size_of': 12,
+                },
+                'unk12': {
+                    'num': 4,
+                    'size_of': 12,
+                },
+            },
+            'clbneg_3': {
+                'playerid': 4,
+                'offerteamid': 4,
+                'teamid': 4,
+                'offer_history': {
+                    'num': 4,
+                    'size_of': 84,
+                },
+                'counter_offer_history': {
+                    'num': 4,
+                    'size_of': 88,
+                },
+                'status': {
+                    'num': 4,
+                    'size_of': 12,
+                },
+            },
+            'clbneg_4': {
+                'playerid': 4,
+                'offerteamid': 4,
+                'teamid': 4,
+                'unk1': {
+                    'num': 4,
+                    'size_of': 28,
+                },
+                'unk2': {
+                    'num': 4,
+                    'size_of': 28,
+                },
+                'unk3': {
+                    'num': 4,
+                    'size_of': 12,
+                },
+            },
+        }
+        clbneg_data = {}
+        try:
+            for i, off in enumerate(offsets):
+                mm.seek(off, 0)
+                length = self.ReadInt32(mm.read(4))
+                key = 'clbneg_{}'.format(i+1)
+                clbneg_struct = clbneg_structs[key]
+                clbneg_data[key] = []
+                for l in range(length):
+                    result = {}
+                    for k, v in clbneg_struct.items():
+                        if isinstance(v, dict):
+                            length_child = self.ReadInt32(mm.read(4))
+                            child_data = {}
+                            loops = int(v['size_of']/4)
+                            for j in range(length_child):
+                                child_data[j] = []
+                                for data in range(loops):
+                                    child_data[j].append(self.ReadInt32(mm.read(4)))
+                            val = child_data
+                        elif v == 1:
+                            val = bool(self.ReadInt8(mm.read(1)))
+                        elif v == 4:
+                            val = self.ReadInt32(mm.read(4))
+                        elif v == 8:
+                            val = self.ReadInt64(mm.read(8))
+                        else:
+                            loops = int(v/4)
+                            child_data = []
+                            for data in range(loops):
+                                child_data.append(self.ReadInt32(mm.read(4)))
+                            val = child_data
+
+                        result[k] = val
+                    clbneg_data[key].append(result)
+        except Exception as e:
+            logging.error("_club_neg error {}".format(str(e)))
+            return
+
+        # Save to file
+        headers = [
+            'username',
+            'ft_user_id',
+            'playerid',
+            'teamid',
+            'offerteamid',
+            'stage',
+            'iscputransfer',
+            'isloanoffer',
+            'isofferrejected',
+            'offeredfee',
+        ]
+        with open(
+            os.path.join(self.dest_path, "career_compdata_clubnegotiations.csv"), 'w+', encoding='utf-8'
+        ) as f_csv:
+            # create columns
+            f_csv.write("{}\n".format(','.join(headers)))
+
+            for i in range(4):
+                for neg in clbneg_data['clbneg_{}'.format(i + 1)]:
+
+                    stage = 2
+                    isofferrejected = False
+                    offeredfee = 0
+
+                    if i == 0:
+                        stage = neg['stage']
+                        isofferrejected = neg['isofferrejected']
+
+                        offers = neg['offer_history']   # dict
+                        counter_offers = neg['counter_offer_history']  # dict
+                        if offers and counter_offers:
+                            merged_offers = []
+                            for k, v in offers.items():
+                                merged_offers.append(v)
+
+                            for k, v in counter_offers.items():
+                                merged_offers.append(v)
+
+                            # sort by offer date
+                            merged_offers.sort(key=lambda d: d[1])
+
+                            # last offer should be our offeredfee
+                            offeredfee = merged_offers[-1][0]
+                        else:
+                            continue
+                    elif i == 2:
+                        offers = neg['offer_history']   # dict
+                        counter_offers = neg['counter_offer_history'] # dict
+                        if offers and counter_offers:
+                            merged_offers = []
+                            for k, v in offers.items():
+                                amount = v[5]
+                                if amount == 4294967295:
+                                    continue
+                                merged_offers.append(amount)
+
+                            for k, v in counter_offers.items():
+                                amount = v[6]
+                                if amount == 4294967295:
+                                    continue
+                                merged_offers.append(amount)
+
+                            # max offer should be our offeredfee
+                            offeredfee = max(merged_offers)
+                        else:
+                            continue
+
+                    # is cpu transfer
+                    try:
+                        if neg['isusertransfer']:
+                            iscputransfer = False
+                        else:
+                            iscputransfer = True
+                    except KeyError:
+                        if i == 2 or i == 3:
+                            iscputransfer = False
+                        else:
+                            iscputransfer = True
+
+                    # isloanoffer
+                    if i == 1 or i == 3:
+                        isloanoffer = True
+                    else:
+                        isloanoffer = False
+
+                    to_write = [
+                        self.username,
+                        str(self.user_id),
+                        str(neg['playerid']),
+                        str(neg['teamid']),
+                        str(neg['offerteamid']),
+                        str(stage),
+                        str(iscputransfer),
+                        str(isloanoffer),
+                        str(isofferrejected),
+                        str(offeredfee),
+                    ]
+                    f_csv.write("{}\n".format(','.join(to_write)))
 
     def _players_stats(self, mm):
         """Current season players statistics"""
@@ -1377,6 +1623,7 @@ class ParseCareerSave():
         # '''
         csv_list = [
             "career_compdata_playerstats",
+            "career_compdata_clubnegotiations",
             "career_rest_releaseclauses",
             "career_calendar",
             "career_playercontract",

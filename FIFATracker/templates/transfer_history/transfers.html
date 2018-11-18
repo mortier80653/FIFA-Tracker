@@ -17,7 +17,55 @@
             <div class="card-body">
                 <div class="tab-content" id="transfersfiltertab-content">
                     <div class="tab-pane fade active show" id="transfers" role="tabpanel" aria-labelledby="transfers-tab">
-                        <div class="form-group row">
+                        {% if user.profile.fifa_edition == 19 %}
+                            <div class="form-group row">
+                            <div class="col-md-4">
+                                <label for="select-iscputransfer">{% trans 'Is CPU Transfer?' %}</label>
+                                <select id="select-iscputransfer" name="iscputransfer" placeholder="All">
+                                    <option value="-1" selected>{% trans 'All' %}</option>
+                                    <option value="0">{% trans 'No' %}</option>
+                                    <option value="1">{% trans 'Yes' %}</option>
+                                </select>
+                                <label for="select-isloanoffer">{% trans 'Is Loan Offer?' %}</label>
+                                <select id="select-isloanoffer" name="isloanoffer" placeholder="All">
+                                    <option value="-1" selected>{% trans 'All' %}</option>
+                                    <option value="0">{% trans 'No' %}</option>
+                                    <option value="1">{% trans 'Yes' %}</option>
+                                </select>
+                                <label for="select-stage">{% trans 'Offer Stage' %}</label>
+                                <select id="select-stage" name="stage" placeholder="{% trans 'All' %}">
+                                    <option value="-1">{% trans 'All' %}</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                                <label for="select-isofferrejected">{% trans 'Offer status' %}</label>
+                                <select id="select-isofferrejected" name="isofferrejected" placeholder="All">
+                                    <option value="-1" selected>{% trans 'All' %}</option>
+                                    <option value="0">{% trans 'Offer Accepted' %}</option>
+                                    <option value="1">{% trans 'Offer Rejected' %}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>{% trans 'Team From' %}</label>
+                                <input class='teams-filter-input' id='fromteamid-input' name="fromteamid" placeholder="{% trans 'Search for team...' %}">
+                                <label>{% trans 'Team To' %}</label>
+                                <input class='teams-filter-input' id='offerteamid-input' name="offerteamid" placeholder="{% trans 'Search for team...' %}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="offeredfee__gte">{% trans 'Offered Fee' %}</label>
+                                <div class="input-group justified">
+                                    <input class="form-control" type="number" min="0" max="500000000" name="offeredfee__gte" value="{{ request_query_dict.offeredfee__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="500000000" name="offeredfee__lte" value="{{ request_query_dict.offeredfee__lte }}" placeholder="Max">
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                            <div class="form-group row">
                             <div class="col-md-4">
                                 <label for="select-iscputransfer">{% trans 'Is CPU Transfer?' %}</label>
                                 <select id="select-iscputransfer" name="iscputransfer" placeholder="All">
@@ -45,11 +93,11 @@
                                 </select>
                                 <label for="select-result">{% trans 'Transfer Result' %}</label>
                                 <select id="select-result" name="result" placeholder="{% trans 'Transfer Completed' %}">
-                                        <option value="-1">{% trans 'All' %}</option>
-                                        <option value="1">{% trans 'Transfer Rejected' %} (?)</option>
-                                        <option value="2">{% trans 'Transfer Stalled' %} (?)</option>
-                                        <option value="32" selected>{% trans 'Transfer Completed' %}</option>
-                                    </select>
+                                    <option value="-1">{% trans 'All' %}</option>
+                                    <option value="1">{% trans 'Transfer Rejected' %} (?)</option>
+                                    <option value="2">{% trans 'Transfer Stalled' %} (?)</option>
+                                    <option value="32" selected>{% trans 'Transfer Completed' %}</option>
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <label>{% trans 'Team From' %}</label>
@@ -60,21 +108,22 @@
                             <div class="col-md-4">
                                 <label for="valuation__gte">{% trans 'Valuation' %}</label>
                                 <div class="input-group justified">
-                                    <input class="form-control" type="number" min="0" max="2147483520" name="valuation__gte" value="{{ request_query_dict.valuation__gte }}" placeholder="Min">
-                                    <input class="form-control" type="number" min="0" max="2147483520" name="valuation__lte" value="{{ request_query_dict.valuation__lte }}" placeholder="Max">
+                                    <input class="form-control" type="number" min="0" max="500000000" name="valuation__gte" value="{{ request_query_dict.valuation__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="500000000" name="valuation__lte" value="{{ request_query_dict.valuation__lte }}" placeholder="Max">
                                 </div>  
                                 <label for="offeredfee__gte">{% trans 'Offered Fee' %}</label>
                                 <div class="input-group justified">
-                                    <input class="form-control" type="number" min="0" max="2147483520" name="offeredfee__gte" value="{{ request_query_dict.offeredfee__gte }}" placeholder="Min">
-                                    <input class="form-control" type="number" min="0" max="2147483520" name="offeredfee__lte" value="{{ request_query_dict.offeredfee__lte }}" placeholder="Max">
+                                    <input class="form-control" type="number" min="0" max="500000000" name="offeredfee__gte" value="{{ request_query_dict.offeredfee__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="500000000" name="offeredfee__lte" value="{{ request_query_dict.offeredfee__lte }}" placeholder="Max">
                                 </div>  
                                 <label for="offeredwage__gte">{% trans 'Offered Wage' %}</label>
                                 <div class="input-group justified">
-                                    <input class="form-control" type="number" min="0" max="2147483520" name="offeredwage__gte" value="{{ request_query_dict.offeredwage__gte }}" placeholder="Min">
-                                    <input class="form-control" type="number" min="0" max="2147483520" name="offeredwage__lte" value="{{ request_query_dict.offeredwage__lte }}" placeholder="Max">
+                                    <input class="form-control" type="number" min="0" max="500000000" name="offeredwage__gte" value="{{ request_query_dict.offeredwage__gte }}" placeholder="Min">
+                                    <input class="form-control" type="number" min="0" max="500000000" name="offeredwage__lte" value="{{ request_query_dict.offeredwage__lte }}" placeholder="Max">
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="filter-btn-container">

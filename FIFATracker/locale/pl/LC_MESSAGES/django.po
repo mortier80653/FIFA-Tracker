@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-21 17:24+0200\n"
+"POT-Creation-Date: 2018-11-18 15:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -142,12 +142,13 @@ msgid "Password has been reset. You can login now using your new credentials."
 msgstr ""
 "Hasło zostało zresetowane. Możesz już się zalogować używając nowych danych."
 
-#: .\core\generate_view_helper.py:100 .\core\generate_view_helper.py:160
-#: .\core\generate_view_helper.py:308 .\core\generate_view_helper.py:373
+#: .\core\generate_view_helper.py:125 .\core\generate_view_helper.py:186
+#: .\core\generate_view_helper.py:195 .\core\generate_view_helper.py:337
+#: .\core\generate_view_helper.py:402
 msgid "No results found. Try to change your filters"
 msgstr "Brak rezultatów wyszukiwania. Spróbuj zmienić filtry"
 
-#: .\core\generate_view_helper.py:342
+#: .\core\generate_view_helper.py:371
 msgid ""
 "Your career file hasn't been processed yet. Displaying default FIFA database "
 "data."
@@ -189,33 +190,33 @@ msgstr "Twój plik jest ciągle przetwarzany"
 
 #: .\editor\views.py:18
 msgid "Invalid PlayerID ({})"
-msgstr ""
+msgstr "Nieprawidłowy PlayerID ({})"
 
 #: .\scripts\process_career_file.py:42
 msgid "Save file model not found."
 msgstr "Model nie znaleziony"
 
-#: .\scripts\process_career_file.py:52
+#: .\scripts\process_career_file.py:48
 msgid "Save file not found on the server."
 msgstr "Plik nie znaleziony na serwerze"
 
-#: .\scripts\process_file_utils.py:1233
+#: .\scripts\process_file_utils.py:1516
 msgid "Unpacking database from career file."
 msgstr "Wypakowywanie bazydanych z pliku kariery"
 
-#: .\scripts\process_file_utils.py:1247
+#: .\scripts\process_file_utils.py:1543
 msgid "Exporting data from FIFA database to csv files."
 msgstr "Exportowanie danych z bazy danych FIFA do pliku csv"
 
-#: .\scripts\process_file_utils.py:1263
+#: .\scripts\process_file_utils.py:1559
 msgid "Calculating Players Values and Teams Ratings"
 msgstr "Obliczanie wartośći zawodników i oceny drużyn"
 
-#: .\scripts\process_file_utils.py:1271
+#: .\scripts\process_file_utils.py:1567
 msgid "Importing data to FIFA Tracker database."
 msgstr "Importowanie danych do bazy danych FIFA Trackera"
 
-#: .\scripts\process_file_utils.py:1285
+#: .\scripts\process_file_utils.py:1582
 msgid "Completed in {}s"
 msgstr "Proces zakończony w {}s"
 
@@ -337,33 +338,31 @@ msgid "Calculator"
 msgstr "Kalkulator"
 
 #: .\templates\base.html:61 .\templates\base.html:174
-#, fuzzy
-#| msgid "Players for"
 msgid "Player Editor"
-msgstr "Zawodnicy za"
+msgstr "Edytor zawodników"
 
 #: .\templates\base.html:67
 msgid "Preferences"
 msgstr "Preferencje"
 
-#: .\templates\base.html:69 .\templates\tools\calculator.html:23
-#: .\templates\tools\calculator.html:77
+#: .\templates\base.html:69 .\templates\tools\calculator.html:29
+#: .\templates\tools\calculator.html:89
 msgid "Currency"
 msgstr "Waluta"
 
 #: .\templates\base.html:72 .\templates\base.html:74
-#: .\templates\tools\calculator.html:25 .\templates\tools\calculator.html:79
+#: .\templates\tools\calculator.html:31 .\templates\tools\calculator.html:91
 msgid "USDOLLAR"
 msgstr "DOLAR"
 
 #: .\templates\base.html:77 .\templates\base.html:79
-#: .\templates\tools\calculator.html:24 .\templates\tools\calculator.html:26
-#: .\templates\tools\calculator.html:78 .\templates\tools\calculator.html:80
+#: .\templates\tools\calculator.html:30 .\templates\tools\calculator.html:32
+#: .\templates\tools\calculator.html:90 .\templates\tools\calculator.html:92
 msgid "EURO"
 msgstr "EURO"
 
 #: .\templates\base.html:82 .\templates\base.html:84
-#: .\templates\tools\calculator.html:27 .\templates\tools\calculator.html:81
+#: .\templates\tools\calculator.html:33 .\templates\tools\calculator.html:93
 msgid "POUND"
 msgstr "FUNT"
 
@@ -387,7 +386,7 @@ msgstr "Język"
 msgid "Control Panel"
 msgstr "Panel Kontrolny"
 
-#: .\templates\base.html:128 .\templates\base.html:167 .\templates\home.html:15
+#: .\templates\base.html:128 .\templates\base.html:167 .\templates\home.html:22
 msgid "Upload"
 msgstr "Prześlij"
 
@@ -405,10 +404,8 @@ msgid "Player Info"
 msgstr "Informacje o Zawodniku"
 
 #: .\templates\editor\edit_player.html:22
-#, fuzzy
-#| msgid "First"
 msgid "First Name"
-msgstr "Pierwsza"
+msgstr "Fierwsze Imie"
 
 #: .\templates\editor\edit_player.html:34 .\templates\players\player.html:218
 #: .\templates\players\players.html:108
@@ -491,11 +488,11 @@ msgstr "Odbiór Tradycyjny"
 msgid "Sliding Tackle"
 msgstr "Wślizg"
 
-#: .\templates\home.html:8
+#: .\templates\home.html:15
 msgid "Track your progress in FIFA Career Mode"
 msgstr "Sledź swoje postępy w trybie kariery w grze FIFA"
 
-#: .\templates\home.html:9
+#: .\templates\home.html:16
 msgid ""
 "If you ever wanted to find best of the best players in your career mode then "
 "this place is ideal for you. Upload your career save and let the magic happen"
@@ -504,65 +501,63 @@ msgstr ""
 "karierze to to miejsce będzie idealne dla Ciebie. Prześlij swój zapisany "
 "stan gry i sprawdź kto to"
 
-#: .\templates\home.html:12
+#: .\templates\home.html:19
 msgid "Get Started"
 msgstr "Zacznij Teraz"
 
-#: .\templates\home.html:14
+#: .\templates\home.html:21
 msgid "Register"
 msgstr "Zarejestruj"
 
-#: .\templates\home.html:14
+#: .\templates\home.html:21
 msgid "an new account or"
 msgstr "nowe konto, lub"
 
-#: .\templates\home.html:14
+#: .\templates\home.html:21
 msgid "login"
 msgstr "zaloguj się"
 
-#: .\templates\home.html:15
+#: .\templates\home.html:22
 msgid "your career save"
 msgstr "Twój zapisany stan gry"
 
-#: .\templates\home.html:16
+#: .\templates\home.html:23
 msgid "Players from your career save will be available"
 msgstr "Zawodnicy z Twojego zapisu gry będa dostępni"
 
-#: .\templates\home.html:16
+#: .\templates\home.html:23
 msgid "here"
 msgstr "tutaj"
 
-#: .\templates\home.html:16
+#: .\templates\home.html:23
 msgid "after our servers will process your career data"
 msgstr "gdy nasze serwery przetworzą Twoje dane"
 
-#: .\templates\home.html:18
-#, fuzzy
-#| msgid "Current Date"
+#: .\templates\home.html:25
 msgid "Currently Supported"
-msgstr "Aktualna data"
+msgstr "Aktualnie wspierane"
 
-#: .\templates\home.html:28
+#: .\templates\home.html:35
 msgid "Most Popular Clubs"
 msgstr "Najpopularniejsze kluby"
 
-#: .\templates\home.html:33
+#: .\templates\home.html:40
 msgid "CLUB"
 msgstr "Klub"
 
-#: .\templates\home.html:34 .\templates\home.html:62
+#: .\templates\home.html:41 .\templates\home.html:69
 msgid "MANAGERS"
 msgstr "Menedżerów"
 
-#: .\templates\home.html:56
+#: .\templates\home.html:63
 msgid "Most Popular National Teams"
 msgstr "Najpopularniejsze Reprezentacje"
 
-#: .\templates\home.html:61
+#: .\templates\home.html:68
 msgid "NATIONAL TEAM"
 msgstr "Reprezentacja"
 
-#: .\templates\home.html:86
+#: .\templates\home.html:93
 msgid "Join Our Discord"
 msgstr "Dołącz do nas na Discordzie"
 
@@ -573,7 +568,7 @@ msgstr "Narodowość"
 
 #: .\templates\players\player.html:23 .\templates\players\player.html:140
 #: .\templates\players\players.html:190 .\templates\teams\team.html:94
-#: .\templates\teams\teams.html:149 .\templates\tools\calculator.html:83
+#: .\templates\teams\teams.html:149 .\templates\tools\calculator.html:95
 msgid "League"
 msgstr "Liga"
 
@@ -629,8 +624,8 @@ msgstr "Typ Ciała"
 msgid "Hair Color"
 msgstr "Kolor Włosów"
 
-#: .\templates\players\player.html:126 .\templates\tools\calculator.html:31
-#: .\templates\tools\calculator.html:87
+#: .\templates\players\player.html:126 .\templates\tools\calculator.html:37
+#: .\templates\tools\calculator.html:99
 msgid "Position"
 msgstr "Pozycja"
 
@@ -904,9 +899,9 @@ msgstr "Wygasa"
 msgid "Other"
 msgstr "Pozostałe"
 
-#: .\templates\players\players.html:133 .\templates\tools\calculator.html:62
-#: .\templates\tools\calculator.html:63 .\templates\tools\calculator.html:118
-#: .\templates\tools\calculator.html:119
+#: .\templates\players\players.html:133 .\templates\tools\calculator.html:68
+#: .\templates\tools\calculator.html:69 .\templates\tools\calculator.html:130
+#: .\templates\tools\calculator.html:131
 msgid "Age"
 msgstr "Wiek"
 
@@ -927,20 +922,24 @@ msgstr "Każda..."
 #: .\templates\players\players.html:160 .\templates\players\players.html:167
 #: .\templates\players\players.html:174 .\templates\players\players.html:181
 #: .\templates\players\players.html:441 .\templates\players\players.html:502
-#: .\templates\transfer_history\transfers.html:25
-#: .\templates\transfer_history\transfers.html:31
-#: .\templates\transfer_history\transfers.html:37
-#: .\templates\transfer_history\transfers.html:43
+#: .\templates\transfer_history\transfers.html:26
+#: .\templates\transfer_history\transfers.html:32
+#: .\templates\transfer_history\transfers.html:73
+#: .\templates\transfer_history\transfers.html:79
+#: .\templates\transfer_history\transfers.html:85
+#: .\templates\transfer_history\transfers.html:91
 msgid "No"
 msgstr "Nie"
 
 #: .\templates\players\players.html:161 .\templates\players\players.html:168
 #: .\templates\players\players.html:175 .\templates\players\players.html:182
 #: .\templates\players\players.html:442 .\templates\players\players.html:503
-#: .\templates\transfer_history\transfers.html:26
-#: .\templates\transfer_history\transfers.html:32
-#: .\templates\transfer_history\transfers.html:38
-#: .\templates\transfer_history\transfers.html:44
+#: .\templates\transfer_history\transfers.html:27
+#: .\templates\transfer_history\transfers.html:33
+#: .\templates\transfer_history\transfers.html:74
+#: .\templates\transfer_history\transfers.html:80
+#: .\templates\transfer_history\transfers.html:86
+#: .\templates\transfer_history\transfers.html:92
 msgid "Yes"
 msgstr "Tak"
 
@@ -965,19 +964,21 @@ msgid "Search for nation..."
 msgstr "Szukaj narodowości..."
 
 #: .\templates\players\players.html:191 .\templates\teams\teams.html:150
-#: .\templates\tools\calculator.html:84
+#: .\templates\tools\calculator.html:96
 msgid "Search for league..."
 msgstr "Szukaj ligi..."
 
 #: .\templates\players\players.html:192 .\templates\teams\team.html:76
-#: .\templates\tools\calculator.html:85
+#: .\templates\tools\calculator.html:97
 msgid "Team"
 msgstr "Drużyna"
 
 #: .\templates\players\players.html:193 .\templates\teams\teams.html:16
-#: .\templates\tools\calculator.html:86
-#: .\templates\transfer_history\transfers.html:56
-#: .\templates\transfer_history\transfers.html:58
+#: .\templates\tools\calculator.html:98
+#: .\templates\transfer_history\transfers.html:55
+#: .\templates\transfer_history\transfers.html:57
+#: .\templates\transfer_history\transfers.html:104
+#: .\templates\transfer_history\transfers.html:106
 msgid "Search for team..."
 msgstr "Szukaj drużyny..."
 
@@ -1086,17 +1087,17 @@ msgid "Search for boots.."
 msgstr "Szukaj korków..."
 
 #: .\templates\players\players.html:527 .\templates\teams\teams.html:189
-#: .\templates\transfer_history\transfers.html:84
+#: .\templates\transfer_history\transfers.html:133
 msgid "Search"
 msgstr "Szukaj"
 
 #: .\templates\players\players.html:529 .\templates\teams\teams.html:191
-#: .\templates\transfer_history\transfers.html:86
+#: .\templates\transfer_history\transfers.html:135
 msgid "Reset"
 msgstr "Resetuj"
 
 #: .\templates\players\players.html:534 .\templates\teams\teams.html:196
-#: .\templates\transfer_history\transfers.html:91
+#: .\templates\transfer_history\transfers.html:140
 msgid "Results per page"
 msgstr "Rezultatów na strone"
 
@@ -1114,29 +1115,29 @@ msgstr "Wszystkich zawodników"
 
 #: .\templates\players\players.html:564 .\templates\players\players.html:721
 #: .\templates\teams\teams.html:221 .\templates\teams\teams.html:401
-#: .\templates\transfer_history\transfers.html:115
-#: .\templates\transfer_history\transfers.html:214
+#: .\templates\transfer_history\transfers.html:164
+#: .\templates\transfer_history\transfers.html:263
 msgid "First"
 msgstr "Pierwsza"
 
 #: .\templates\players\players.html:578 .\templates\players\players.html:735
 #: .\templates\teams\teams.html:237 .\templates\teams\teams.html:417
-#: .\templates\transfer_history\transfers.html:131
-#: .\templates\transfer_history\transfers.html:230
+#: .\templates\transfer_history\transfers.html:180
+#: .\templates\transfer_history\transfers.html:279
 msgid "Last"
 msgstr "Ostatnia"
 
 #: .\templates\players\players.html:589 .\templates\teams\team.html:273
 #: .\templates\teams\team.html:357 .\templates\teams\team.html:441
 #: .\templates\teams\team.html:525 .\templates\teams\team.html:610
-#: .\templates\transfer_history\transfers.html:141
+#: .\templates\transfer_history\transfers.html:190
 msgid "IMG"
 msgstr "ZDJ"
 
 #: .\templates\players\players.html:590 .\templates\teams\team.html:275
 #: .\templates\teams\team.html:359 .\templates\teams\team.html:443
 #: .\templates\teams\team.html:527 .\templates\teams\team.html:612
-#: .\templates\transfer_history\transfers.html:142
+#: .\templates\transfer_history\transfers.html:191
 msgid "PLAYER"
 msgstr "ZAWODNIK"
 
@@ -1144,7 +1145,7 @@ msgstr "ZAWODNIK"
 #: .\templates\players\players.html:602 .\templates\teams\team.html:276
 #: .\templates\teams\team.html:360 .\templates\teams\team.html:444
 #: .\templates\teams\team.html:528 .\templates\teams\team.html:613
-#: .\templates\transfer_history\transfers.html:143
+#: .\templates\transfer_history\transfers.html:192
 msgid "RAT"
 msgstr "OGL"
 
@@ -1297,10 +1298,8 @@ msgstr "Wypożyczony z"
 
 #: .\templates\teams\team.html:330 .\templates\teams\team.html:414
 #: .\templates\teams\team.html:498 .\templates\teams\team.html:582
-#, fuzzy
-#| msgid "On Loan?"
 msgid "On Loan At"
-msgstr "Na Wypożyczeniu?"
+msgstr "Na Wypożyczeniu w"
 
 #: .\templates\teams\team.html:353
 msgid "DEFENDERS"
@@ -1404,214 +1403,243 @@ msgstr "BUDŻET"
 msgid "Calculate player potential."
 msgstr "Oblicz potencjał zawodnika."
 
-#: .\templates\tools\calculator.html:29 .\templates\tools\calculator.html:30
-#: .\templates\transfer_history\transfers.html:146
+#: .\templates\tools\calculator.html:35 .\templates\tools\calculator.html:36
+#: .\templates\transfer_history\transfers.html:195
 msgid "Player Value"
 msgstr "Wartość Zawodnika"
 
-#: .\templates\tools\calculator.html:32 .\templates\tools\calculator.html:58
-#: .\templates\tools\calculator.html:88 .\templates\tools\calculator.html:114
+#: .\templates\tools\calculator.html:38 .\templates\tools\calculator.html:64
+#: .\templates\tools\calculator.html:100 .\templates\tools\calculator.html:126
 msgid "ST"
 msgstr "N"
 
-#: .\templates\tools\calculator.html:33 .\templates\tools\calculator.html:89
+#: .\templates\tools\calculator.html:39 .\templates\tools\calculator.html:101
 msgid "GK"
 msgstr "BR"
 
-#: .\templates\tools\calculator.html:34 .\templates\tools\calculator.html:90
+#: .\templates\tools\calculator.html:40 .\templates\tools\calculator.html:102
 msgid "SW"
 msgstr "LI"
 
-#: .\templates\tools\calculator.html:35 .\templates\tools\calculator.html:91
+#: .\templates\tools\calculator.html:41 .\templates\tools\calculator.html:103
 msgid "RWB"
 msgstr "CPS"
 
-#: .\templates\tools\calculator.html:36 .\templates\tools\calculator.html:92
+#: .\templates\tools\calculator.html:42 .\templates\tools\calculator.html:104
 msgid "RB"
 msgstr "PO"
 
-#: .\templates\tools\calculator.html:37 .\templates\tools\calculator.html:93
+#: .\templates\tools\calculator.html:43 .\templates\tools\calculator.html:105
 msgid "RCB"
 msgstr "PŚO"
 
-#: .\templates\tools\calculator.html:38 .\templates\tools\calculator.html:94
+#: .\templates\tools\calculator.html:44 .\templates\tools\calculator.html:106
 msgid "CB"
 msgstr "ŚO"
 
-#: .\templates\tools\calculator.html:39 .\templates\tools\calculator.html:95
+#: .\templates\tools\calculator.html:45 .\templates\tools\calculator.html:107
 msgid "LCB"
 msgstr "LŚO"
 
-#: .\templates\tools\calculator.html:40 .\templates\tools\calculator.html:96
+#: .\templates\tools\calculator.html:46 .\templates\tools\calculator.html:108
 msgid "LB"
 msgstr "LO"
 
-#: .\templates\tools\calculator.html:41 .\templates\tools\calculator.html:97
+#: .\templates\tools\calculator.html:47 .\templates\tools\calculator.html:109
 msgid "LWB"
 msgstr "CLS"
 
-#: .\templates\tools\calculator.html:42 .\templates\tools\calculator.html:98
+#: .\templates\tools\calculator.html:48 .\templates\tools\calculator.html:110
 msgid "RDM"
 msgstr "PPD"
 
-#: .\templates\tools\calculator.html:43 .\templates\tools\calculator.html:99
+#: .\templates\tools\calculator.html:49 .\templates\tools\calculator.html:111
 msgid "CDM"
 msgstr "ŚPD"
 
-#: .\templates\tools\calculator.html:44 .\templates\tools\calculator.html:100
+#: .\templates\tools\calculator.html:50 .\templates\tools\calculator.html:112
 msgid "LDM"
 msgstr "LPD"
 
-#: .\templates\tools\calculator.html:45 .\templates\tools\calculator.html:101
+#: .\templates\tools\calculator.html:51 .\templates\tools\calculator.html:113
 msgid "RM"
 msgstr "PP"
 
-#: .\templates\tools\calculator.html:46 .\templates\tools\calculator.html:102
+#: .\templates\tools\calculator.html:52 .\templates\tools\calculator.html:114
 msgid "RCM"
 msgstr "PŚP"
 
-#: .\templates\tools\calculator.html:47 .\templates\tools\calculator.html:103
+#: .\templates\tools\calculator.html:53 .\templates\tools\calculator.html:115
 msgid "CM"
 msgstr "ŚP"
 
-#: .\templates\tools\calculator.html:48 .\templates\tools\calculator.html:104
+#: .\templates\tools\calculator.html:54 .\templates\tools\calculator.html:116
 msgid "LCM"
 msgstr "LŚP"
 
-#: .\templates\tools\calculator.html:49 .\templates\tools\calculator.html:105
+#: .\templates\tools\calculator.html:55 .\templates\tools\calculator.html:117
 msgid "LM"
 msgstr "LP"
 
-#: .\templates\tools\calculator.html:50 .\templates\tools\calculator.html:106
+#: .\templates\tools\calculator.html:56 .\templates\tools\calculator.html:118
 msgid "RAM"
 msgstr "PPO"
 
-#: .\templates\tools\calculator.html:51 .\templates\tools\calculator.html:107
+#: .\templates\tools\calculator.html:57 .\templates\tools\calculator.html:119
 msgid "CAM"
 msgstr "ŚPO"
 
-#: .\templates\tools\calculator.html:52 .\templates\tools\calculator.html:108
+#: .\templates\tools\calculator.html:58 .\templates\tools\calculator.html:120
 msgid "LAM"
 msgstr "LPO"
 
-#: .\templates\tools\calculator.html:53 .\templates\tools\calculator.html:109
+#: .\templates\tools\calculator.html:59 .\templates\tools\calculator.html:121
 msgid "RF"
 msgstr "PN"
 
-#: .\templates\tools\calculator.html:54 .\templates\tools\calculator.html:110
+#: .\templates\tools\calculator.html:60 .\templates\tools\calculator.html:122
 msgid "CF"
 msgstr "ŚŃ"
 
-#: .\templates\tools\calculator.html:55 .\templates\tools\calculator.html:111
+#: .\templates\tools\calculator.html:61 .\templates\tools\calculator.html:123
 msgid "LF"
 msgstr "LN"
 
-#: .\templates\tools\calculator.html:56 .\templates\tools\calculator.html:112
+#: .\templates\tools\calculator.html:62 .\templates\tools\calculator.html:124
 msgid "RW"
 msgstr "PS"
 
-#: .\templates\tools\calculator.html:57 .\templates\tools\calculator.html:113
+#: .\templates\tools\calculator.html:63 .\templates\tools\calculator.html:125
 msgid "RS"
 msgstr "PN"
 
-#: .\templates\tools\calculator.html:59 .\templates\tools\calculator.html:115
+#: .\templates\tools\calculator.html:65 .\templates\tools\calculator.html:127
 msgid "LS"
 msgstr "LN"
 
-#: .\templates\tools\calculator.html:60 .\templates\tools\calculator.html:116
+#: .\templates\tools\calculator.html:66 .\templates\tools\calculator.html:128
 msgid "LW"
 msgstr "LS"
 
-#: .\templates\tools\calculator.html:64 .\templates\tools\calculator.html:65
-#: .\templates\tools\calculator.html:120 .\templates\tools\calculator.html:121
+#: .\templates\tools\calculator.html:70 .\templates\tools\calculator.html:71
+#: .\templates\tools\calculator.html:132 .\templates\tools\calculator.html:133
 msgid "Overall Rating"
 msgstr "Ocena Ogólna"
 
-#: .\templates\tools\calculator.html:69 .\templates\tools\calculator.html:125
+#: .\templates\tools\calculator.html:75 .\templates\tools\calculator.html:137
 msgid "Calculate"
 msgstr "Oblicz"
 
-#: .\templates\tools\calculator.html:74
+#: .\templates\tools\calculator.html:80
 msgid "Calculate player weekly wage."
 msgstr "Oblicz cotygodniową pensje gracza."
 
-#: .\templates\transfer_history\transfers.html:22
+#: .\templates\transfer_history\transfers.html:23
+#: .\templates\transfer_history\transfers.html:70
 msgid "Is CPU Transfer?"
 msgstr "Transfer CPU?"
 
-#: .\templates\transfer_history\transfers.html:24
-#: .\templates\transfer_history\transfers.html:30
+#: .\templates\transfer_history\transfers.html:25
+#: .\templates\transfer_history\transfers.html:31
 #: .\templates\transfer_history\transfers.html:36
-#: .\templates\transfer_history\transfers.html:42
+#: .\templates\transfer_history\transfers.html:37
 #: .\templates\transfer_history\transfers.html:48
+#: .\templates\transfer_history\transfers.html:72
+#: .\templates\transfer_history\transfers.html:78
+#: .\templates\transfer_history\transfers.html:84
+#: .\templates\transfer_history\transfers.html:90
+#: .\templates\transfer_history\transfers.html:96
 msgid "All"
 msgstr "Wszystko"
 
-#: .\templates\transfer_history\transfers.html:28
-msgid "Is Loan Listed?"
-msgstr "Jest do wypożyczenia?"
+#: .\templates\transfer_history\transfers.html:29
+msgid "Is Loan Offer?"
+msgstr "Oferta wypożyczenia?"
 
-#: .\templates\transfer_history\transfers.html:34
-msgid "Is Loan Buy?"
-msgstr "Kupno po wypożyczeniu?"
-
-#: .\templates\transfer_history\transfers.html:40
-msgid "Is Snipe?"
-msgstr "Snipe?"
+#: .\templates\transfer_history\transfers.html:35
+msgid "Offer Stage"
+msgstr "Etap"
 
 #: .\templates\transfer_history\transfers.html:46
-msgid "Transfer Result"
-msgstr "Rezultat Negocjacji"
-
-#: .\templates\transfer_history\transfers.html:47
-#: .\templates\transfer_history\transfers.html:51
-msgid "Transfer Completed"
-msgstr "Transfer Zakończony"
+msgid "Offer status"
+msgstr "Status oferty"
 
 #: .\templates\transfer_history\transfers.html:49
-msgid "Transfer Rejected"
-msgstr "Transfer Odrzucony"
+msgid "Offer Accepted"
+msgstr "Oferta zaakceptowana"
 
 #: .\templates\transfer_history\transfers.html:50
-msgid "Transfer Stalled"
-msgstr "Transfer Wstrzymany"
+msgid "Offer Rejected"
+msgstr "Oferta odrzucona"
 
-#: .\templates\transfer_history\transfers.html:55
+#: .\templates\transfer_history\transfers.html:54
+#: .\templates\transfer_history\transfers.html:103
 msgid "Team From"
 msgstr "Z Drużyny"
 
-#: .\templates\transfer_history\transfers.html:57
+#: .\templates\transfer_history\transfers.html:56
+#: .\templates\transfer_history\transfers.html:105
 msgid "Team To"
 msgstr "Do Drużyny"
 
-#: .\templates\transfer_history\transfers.html:61
-msgid "Valuation"
-msgstr "Wycena"
-
-#: .\templates\transfer_history\transfers.html:66
-#: .\templates\transfer_history\transfers.html:150
-#: .\templates\transfer_history\transfers.html:154
-#: .\templates\transfer_history\transfers.html:158
+#: .\templates\transfer_history\transfers.html:60
+#: .\templates\transfer_history\transfers.html:114
+#: .\templates\transfer_history\transfers.html:199
+#: .\templates\transfer_history\transfers.html:203
+#: .\templates\transfer_history\transfers.html:207
 msgid "Offered Fee"
 msgstr "Oferowana Kwota"
 
-#: .\templates\transfer_history\transfers.html:71
+#: .\templates\transfer_history\transfers.html:76
+msgid "Is Loan Listed?"
+msgstr "Jest do wypożyczenia?"
+
+#: .\templates\transfer_history\transfers.html:82
+msgid "Is Loan Buy?"
+msgstr "Kupno po wypożyczeniu?"
+
+#: .\templates\transfer_history\transfers.html:88
+msgid "Is Snipe?"
+msgstr "Snipe?"
+
+#: .\templates\transfer_history\transfers.html:94
+msgid "Transfer Result"
+msgstr "Rezultat Negocjacji"
+
+#: .\templates\transfer_history\transfers.html:95
+#: .\templates\transfer_history\transfers.html:99
+msgid "Transfer Completed"
+msgstr "Transfer Zakończony"
+
+#: .\templates\transfer_history\transfers.html:97
+msgid "Transfer Rejected"
+msgstr "Transfer Odrzucony"
+
+#: .\templates\transfer_history\transfers.html:98
+msgid "Transfer Stalled"
+msgstr "Transfer Wstrzymany"
+
+#: .\templates\transfer_history\transfers.html:109
+msgid "Valuation"
+msgstr "Wycena"
+
+#: .\templates\transfer_history\transfers.html:119
 msgid "Offered Wage"
 msgstr "Oferowana Pensja"
 
-#: .\templates\transfer_history\transfers.html:111
+#: .\templates\transfer_history\transfers.html:160
 msgid "Total Transfers"
 msgstr "Wszystkich Transferów"
 
-#: .\templates\transfer_history\transfers.html:144
+#: .\templates\transfer_history\transfers.html:193
 msgid "FROM"
 msgstr "Z"
 
-#: .\templates\transfer_history\transfers.html:145
+#: .\templates\transfer_history\transfers.html:194
 msgid "TO"
 msgstr "DO"
 
-#: .\templates\transfer_history\transfers.html:198
+#: .\templates\transfer_history\transfers.html:247
 msgid "Loan"
 msgstr "Wypożyczony"
 
@@ -1652,16 +1680,12 @@ msgid "Upload your FIFA Manager Mode Career File"
 msgstr "Prześlij swój zapisany stan gry z trybu kariery"
 
 #: .\templates\upload.html:75
-#, fuzzy
-#| msgid ""
-#| "On PC you can find your save file in \"Documents\" -> \"FIFA 18\" -> "
-#| "\"settings\" -> \"CareerXXX\""
 msgid ""
 "On PC you can find your save file in \"Documents\" -> \"FIFA 19\" -> "
 "\"settings\" -> \"CareerXXX\""
 msgstr ""
 "Na PC Twój plik z zapisanym stanem gry powinien znajdować się w \"Documents"
-"\" -> \"FIFA 18\" -> \"settings\" -> \"CareerXXX\""
+"\" -> \"FIFA 19\" -> \"settings\" -> \"CareerXXX\""
 
 #: .\templates\upload.html:81
 msgid "Upload Career Save"

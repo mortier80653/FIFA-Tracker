@@ -1,4 +1,5 @@
 from functools import reduce
+from copy import deepcopy, copy
 
 from django.contrib import messages
 from django.db.models import Q
@@ -9,7 +10,12 @@ from django.utils.translation import ugettext_lazy as _
 from core.exceptions import NoResultsError, PrivateProfileError, UnknownError
 from core.fifa_utils import FifaPlayer
 from core.paginator import MyPaginator
-from core.filters import DataUsersPlayersFilter, DataUsersTeamsFilter, DataUsersCareerTransferOfferFilter
+from core.filters import (
+    DataUsersPlayersFilter,
+    DataUsersTeamsFilter,
+    DataUsersCareerTransferOfferFilter,
+    DataUsersCareerCompdataClubNegotiationsFilter,
+)
 from core.session_utils import set_currency, get_current_user, get_fifa_edition, get_career_user
 
 from players.models import (
@@ -27,60 +33,79 @@ from players.models import (
     DataUsersCareerCompdataPlayerStats,
 )
 
-from core.models import (
-    DataUsersCareerTransferOffer,
-)
-
 
 # Transfers
-def transfer_info(playerid, data):
+def transfer_info(playerid, data, fifa_edition):
+    result = None
     for transfer in data:
         if int(transfer.playerid) == int(playerid):
-            return {
-                "playerid": transfer.playerid,
-                "offerid": transfer.offerid,
-                "snipedteamid": transfer.snipedteamid,
-                "offeredcontracttype": transfer.offeredcontracttype,
-                "precontract": transfer.precontract,
-                "desiredfee": transfer.desiredfee,
-                "offeredbonus": transfer.offeredbonus,
-                "startdate": transfer.startdate,
-                "squadrole": transfer.squadrole,
-                "transferwindow": transfer.transferwindow,
-                "currentcontractlength": transfer.currentcontractlength,
-                "counteroffers": transfer.counteroffers,
-                "date": transfer.date,
-                "from_team": transfer.teamid,
-                "to_team": transfer.offerteamid,
-                "valuation": "{:,}".format(transfer.valuation),
-                "offeredfee": "{:,}".format(transfer.offeredfee),
-                "offeredwage": "{:,}".format(transfer.offeredwage),
-                "exchangeplayerid": transfer.exchangeplayerid,
-                "iscputransfer": transfer.iscputransfer,
-                "isloan": transfer.isloan,
-                "isloanbuy": transfer.isloanbuy,
-                "issnipe": transfer.issnipe,
-                "stage": transfer.stage,
-                "result": transfer.result,
-                "approachreason": transfer.approachreason,
-            }
+            if fifa_edition == 19:
+                result = {
+                    "playerid": transfer.playerid,
+                    "from_team": transfer.teamid,
+                    "to_team": transfer.offerteamid,
+                    "offeredfee": "{:,}".format(transfer.offeredfee),
+                    "stage": transfer.stage,
+                    "iscputransfer": transfer.iscputransfer,
+                    "isloanoffer": transfer.isloanoffer,
+                    "isofferrejected": transfer.isofferrejected,
+                }
+                data.remove(transfer)
+                break
+            else:
+                result = {
+                    "playerid": transfer.playerid,
+                    "offerid": transfer.offerid,
+                    "snipedteamid": transfer.snipedteamid,
+                    "offeredcontracttype": transfer.offeredcontracttype,
+                    "precontract": transfer.precontract,
+                    "desiredfee": transfer.desiredfee,
+                    "offeredbonus": transfer.offeredbonus,
+                    "startdate": transfer.startdate,
+                    "squadrole": transfer.squadrole,
+                    "transferwindow": transfer.transferwindow,
+                    "currentcontractlength": transfer.currentcontractlength,
+                    "counteroffers": transfer.counteroffers,
+                    "date": transfer.date,
+                    "from_team": transfer.teamid,
+                    "to_team": transfer.offerteamid,
+                    "valuation": "{:,}".format(transfer.valuation),
+                    "offeredfee": "{:,}".format(transfer.offeredfee),
+                    "offeredwage": "{:,}".format(transfer.offeredwage),
+                    "exchangeplayerid": transfer.exchangeplayerid,
+                    "iscputransfer": transfer.iscputransfer,
+                    "isloan": transfer.isloan,
+                    "isloanbuy": transfer.isloanbuy,
+                    "issnipe": transfer.issnipe,
+                    "stage": transfer.stage,
+                    "result": transfer.result,
+                    "approachreason": transfer.approachreason,
+                }
+                data.remove(transfer)
+                break
 
-    return None
+    return result
 
 
-def get_transfers(request, additional_filters=None, paginate=False):
+def get_transfers(request, additional_filters=None, paginate=False, fifa_edition=None):
     request_query_dict = request.GET.copy()
 
     set_currency(request)
     current_user = get_current_user(request)
-    fifa_edition = get_fifa_edition(request)
+    if not fifa_edition:
+        fifa_edition = get_fifa_edition(request)
 
     if additional_filters:
         for k, v in additional_filters.items():
             request_query_dict[k] = str(v)
 
-    transfer_offer_filter = DataUsersCareerTransferOfferFilter(
-        request_query_dict, for_user=current_user)
+    if fifa_edition == 19:
+        transfer_offer_filter = DataUsersCareerCompdataClubNegotiationsFilter(
+            request_query_dict, for_user=current_user
+        )
+    else:
+        transfer_offer_filter = DataUsersCareerTransferOfferFilter(
+            request_query_dict, for_user=current_user)
 
     # Paginate results if needed
     if paginate:
@@ -113,11 +138,12 @@ def get_transfers(request, additional_filters=None, paginate=False):
         # keep order from 'transfer_offer_filter'
         players_original_order = list()
 
-        copy_context_data_players = context_data['players'][:]
+        copy_context_data_players = deepcopy(context_data['players'])
         for playerid in playerids.split(','):
-            for p in copy_context_data_players:
+            for cp in copy_context_data_players:
+                p = copy(cp)
                 if int(playerid) == int(p.player.playerid):
-                    t_info = transfer_info(playerid, data)
+                    t_info = transfer_info(playerid, data, fifa_edition)
                     if t_info:
                         setattr(p, 'transfer_info', t_info)
                     players_original_order.append(p)

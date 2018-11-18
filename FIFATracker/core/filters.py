@@ -17,10 +17,17 @@ from players.models import (
 from core.consts import DEFAULT_DATE, DEFAULT_FIFA_EDITION, HIGHEST_REAL_PLAYERID
 from core.models import (
     DataUsersCareerTransferOffer,
+    DataUsersCareerCompdataClubNegotiations,
 )
 
+class BaseFilter:
+    def _check_key(self, d, key):
+        if key in d:
+            return d[key]
+        else:
+            return None
 
-class DataUsersCareerCompdataPlayerStatsFilter:
+class DataUsersCareerCompdataPlayerStatsFilter(BaseFilter):
     def __init__(self, request, for_user):
         self.request_dict = request
         self.for_user = for_user
@@ -154,14 +161,8 @@ class DataUsersCareerCompdataPlayerStatsFilter:
 
         return list_filtered_players
 
-    def _check_key(self, d, key):
-        if key in d:
-            return d[key]
-        else:
-            return None
 
-
-class DataUsersCareerRestReleaseClausesFilter:
+class DataUsersCareerRestReleaseClausesFilter(BaseFilter):
     def __init__(self, request, for_user):
         self.request_dict = request
         self.for_user = for_user
@@ -212,14 +213,122 @@ class DataUsersCareerRestReleaseClausesFilter:
 
         return list_filtered_players
 
-    def _check_key(self, d, key):
-        if key in d:
-            return d[key]
-        else:
-            return None
+
+class DataUsersCareerCompdataClubNegotiationsFilter(BaseFilter):
+    def __init__(self, request, for_user):
+        self.request_dict = request
+        self.for_user = for_user
+
+        queryset = DataUsersCareerCompdataClubNegotiations.objects.for_user(
+            self.for_user).all()
+        queryset = self.filter(queryset)
+        queryset = self.order(queryset)
+        self.qs = queryset
+
+    def filter(self, queryset):
+        try:
+            if 'playerid' in self.request_dict:
+                value = list(self.request_dict['playerid'].split(','))
+                queryset = queryset.filter(Q(playerid__in=value))
+        except ValueError:
+            pass
+
+        try:
+            if 'fromteamid' in self.request_dict:
+                teams_list = self.request_dict['fromteamid']
+                queryset = queryset.filter(
+                    Q(teamid__in=list(teams_list.split(','))))
+        except ValueError:
+            pass
+
+        try:
+            if 'offerteamid' in self.request_dict:
+                teams_list = self.request_dict['offerteamid']
+                queryset = queryset.filter(
+                    Q(offerteamid__in=list(teams_list.split(','))))
+        except ValueError:
+            pass
+
+        try:
+            if 'stage' in self.request_dict and int(
+                    self.request_dict['stage']) in range(0, 7):
+                value = int(self.request_dict['stage'])
+                queryset = queryset.filter(Q(stage=value))
+        except ValueError:
+            pass
+
+        # bool
+        try:
+            if 'iscputransfer' in self.request_dict and int(
+                    self.request_dict['iscputransfer']) in range(0, 2):
+                queryset = queryset.filter(
+                    Q(iscputransfer=bool(int(self.request_dict['iscputransfer'])))
+                )
+        except ValueError:
+            pass
+
+        try:
+            if 'isloanoffer' in self.request_dict and int(
+                    self.request_dict['isloanoffer']) in range(0, 2):
+                queryset = queryset.filter(
+                    Q(isloanoffer=bool(int(self.request_dict['isloanoffer'])))
+                )
+        except ValueError:
+            pass
+
+        try:
+            if (
+                    'isofferrejected' in self.request_dict and
+                    int(self.request_dict['isofferrejected']) in range(0, 2)
+            ):
+
+                queryset = queryset.filter(
+                    Q(isofferrejected=bool(int(self.request_dict['isofferrejected'])))
+                )
+        except ValueError:
+            pass
+
+        # Range
+        range_fields = [
+            'offeredfee',
+        ]
+
+        for field in range(len(range_fields)):
+            range_bottom = range_fields[field] + "__gte"
+            range_top = range_fields[field] + "__lte"
+
+            try:
+                if range_bottom in self.request_dict or range_top in self.request_dict:
+                    val_bottom = (
+                        self._check_key(
+                            self.request_dict,
+                            range_bottom) or 1)
+                    val_top = (
+                        self._check_key(
+                            self.request_dict,
+                            range_top) or 500000000)
+                    queryset = queryset.filter(
+                        Q((range_bottom, val_bottom)),
+                        Q((range_top, val_top)),
+                    )
+            except ValueError:
+                pass
+
+        return queryset
+
+    def order(self, queryset):
+        if 'order_by' in self.request_dict:
+            valid_fields = [
+                f.name for f in DataUsersCareerCompdataClubNegotiations._meta.get_fields()]
+            orderby = self.request_dict['order_by'].replace('-', "")
+            if orderby in valid_fields:
+                return queryset.order_by(
+                    self.request_dict['order_by'], '-offeredfee')
+
+        return queryset.order_by('-offeredfee', 'playerid')
 
 
-class DataUsersCareerTransferOfferFilter:
+class DataUsersCareerTransferOfferFilter(BaseFilter):
     def __init__(self, request, for_user):
         self.request_dict = request
         self.for_user = for_user
@@ -337,14 +446,8 @@ class DataUsersCareerTransferOfferFilter:
 
         return queryset.order_by('-offeredfee', 'offerid')
 
-    def _check_key(self, d, key):
-        if key in d:
-            return d[key]
-        else:
-            return None
 
-
-class DataUsersPlayerloansFilter:
+class DataUsersPlayerloansFilter(BaseFilter):
     def __init__(self, request, for_user, current_date=DEFAULT_DATE[str(DEFAULT_FIFA_EDITION)]):
         self.request_dict = request
         self.for_user = for_user
@@ -391,7 +494,7 @@ class DataUsersPlayerloansFilter:
         return list_filtered_players
 
 
-class DataUsersLeagueteamlinksFilter:
+class DataUsersLeagueteamlinksFilter(BaseFilter):
     def __init__(self, request, for_user):
         self.request_dict = request
         self.for_user = for_user
@@ -428,7 +531,7 @@ class DataUsersLeagueteamlinksFilter:
         return queryset
 
 
-class DataUsersLeaguesFilter:
+class DataUsersLeaguesFilter(BaseFilter):
     def __init__(self, for_user, list_leagues):
         self.list_leagues = list_leagues
         self.for_user = for_user
@@ -461,7 +564,7 @@ class DataUsersLeaguesFilter:
                                     "teamid": teams[:-1]}).get_player_ids()
 
 
-class DataUsersTeamsFilter:
+class DataUsersTeamsFilter(BaseFilter):
     def __init__(self, request, for_user):
         self.request_dict = request
         self.for_user = for_user
@@ -579,14 +682,8 @@ class DataUsersTeamsFilter:
 
         return list_players
 
-    def _check_key(self, d, key):
-        if key in d:
-            return d[key]
-        else:
-            return None
 
-
-class DataUsersPlayersFilter:
+class DataUsersPlayersFilter(BaseFilter):
     def __init__(
             self,
             request,
@@ -1454,9 +1551,3 @@ class DataUsersPlayersFilter:
                     self.request_dict['order_by'], 'playerid')
 
         return queryset.order_by('-overallrating', 'playerid')
-
-    def _check_key(self, d, key):
-        if key in d:
-            return d[key]
-        else:
-            return None

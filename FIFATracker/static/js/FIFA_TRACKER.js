@@ -789,6 +789,30 @@ function selectizejs() {
                 this.setValue(value);
         }
     });
+    $('#select-isloanoffer').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("isloanoffer")
+            if (value)
+                this.setValue(value);
+        }
+    });
+    $('#select-isofferrejected').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("isofferrejected")
+            if (value)
+                this.setValue(value);
+        }
+    });
+    $('#select-stage').selectize({
+        allowEmptyOption: true,
+        onInitialize: function() {
+            var value = getUrlParameter("stage")
+            if (value)
+                this.setValue(value);
+        }
+    });
     $('#select-isloanbuy').selectize({
         allowEmptyOption: true,
         onInitialize: function() {
@@ -2452,7 +2476,23 @@ function changeProfilePublicStatus() {
 }
 
 function cleanUrl() {
-    var params = ["isretiring", "isreal", "isonloan", "hasreleaseclause", "hasstats", "teamtype", "iscputransfer", "isloan", "isloanbuy", "issnipe", "result", "hashighqualityhead"];
+    var params = [
+        "isretiring",
+        "isreal",
+        "isonloan",
+        "hasreleaseclause",
+        "hasstats",
+        "teamtype",
+        "iscputransfer",
+        "isloan",
+        "isloanoffer",
+        "isloanbuy",
+        "issnipe",
+        "result",
+        "hashighqualityhead",
+        "stage",
+        "isofferrejected",
+    ];
     for (i = 0; i < params.length; i++) {
         if (getUrlParameter(params[i]) == "-1")
             removeParam(params[i])

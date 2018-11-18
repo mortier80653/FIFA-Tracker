@@ -58,9 +58,14 @@ def get_current_user(request):
     return current_user
 
 
-def get_fifa_edition(request):
+def get_fifa_edition(request, user=None):
     try:
-        return int(request.user.profile.fifa_edition)
+        if not user:
+            user = get_current_user(request)
+        if isinstance(user, str):
+            user = User.objects.get(username=user)
+
+        return int(user.profile.fifa_edition)
     except Exception:
         return DEFAULT_FIFA_EDITION
 

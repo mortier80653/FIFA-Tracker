@@ -243,6 +243,29 @@ class DataUsersCareerTransferOffer(models.Model):
         db_table = "datauserscareertransferoffer"
 
 
+class DataUsersCareerCompdataClubNegotiations(models.Model):
+    primary_key = models.BigAutoField(primary_key=True)
+    username = models.CharField(
+        db_index=True, max_length=150, blank=True, null=True)
+    ft_user = models.ForeignKey(
+        User, related_name='compdataclubnegotiations', on_delete=models.CASCADE, null=True,
+    )
+
+    playerid = models.IntegerField(blank=True, null=True)
+    teamid = models.IntegerField(blank=True, null=True)
+    offerteamid = models.IntegerField(blank=True, null=True)
+    stage = models.IntegerField(blank=True, null=True)
+    iscputransfer = models.BooleanField(default=False)
+    isloanoffer = models.BooleanField(default=False)
+    isofferrejected = models.BooleanField(default=False)
+    offeredfee = models.IntegerField(blank=True, null=True)
+
+    objects = UserDataManager()
+
+    class Meta:
+        db_table = 'datauserscareercompdataclubnegotiations'
+
+
 class DataUsersCareerSquadRanking(models.Model):
     primary_key = models.BigAutoField(primary_key=True)
     username = models.CharField(

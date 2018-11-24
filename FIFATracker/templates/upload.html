@@ -73,7 +73,7 @@
       {% if request.user.is_authenticated %}
       <div class="container">
         <p>{% trans 'On PC you can find your save file in "Documents" -> "FIFA 19" -> "settings" -> "CareerXXX"' %}</p>
-        <p>Join <a href="https://discord.gg/Nb3HX2W"><span class="fab fa-discord"></span>Discord</a> in case of any problems</p>
+        <p>Join <a href="https://discord.gg/3gdjKsY"><span class="fab fa-discord"></span>Discord</a> in case of any problems</p>
         <form method="post" action="{% url 'upload_career_save_file' %}" enctype="multipart/form-data">
           {% csrf_token %}
           <input id="fileupload" type="file" name="uploadedfile" style="display: none;">

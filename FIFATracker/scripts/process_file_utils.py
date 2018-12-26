@@ -638,7 +638,7 @@ class RestToCSV():
             mm = mmap.mmap(rf.fileno(), length=0, access=mmap.ACCESS_READ)
             self._release_clauses(mm)
             self._players_stats(mm)
-            self._club_neg(mm)
+            # self._club_neg(mm) TODO UNCOMMENT WHEN FIXED
 
     def _club_neg(self, mm):
         sign_clbneg = b"\x63\x6C\x62\x6E\x65\x67\x00"    # clbneg

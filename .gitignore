@@ -105,7 +105,7 @@ ENV/
 
 # mypy
 .mypy_cache/
-secret_settings.py
+# FIFATracker/Fifa_Tracker/settings/pro.py
 FIFATracker/static/img/assets/
 FIFATracker/media/
 FIFATracker/players/migrations/
@@ -113,3 +113,6 @@ FIFATracker/core/migrations/
 FIFATracker/accounts/migrations/
 staticfiles/
 FIFATracker/static/img.zip
+
+
+.env

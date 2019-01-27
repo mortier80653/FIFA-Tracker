@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 # reading .env file
 env = environ.Env()
-env.read_env("{}/.env".format(BASE_DIR))
+env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Application definition

@@ -10,7 +10,8 @@ import environ
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # reading .env file
-environ.Env.read_env("{}/.env".format(BASE_DIR))
+env = environ.Env()
+env.read_env("{}/.env".format(BASE_DIR))
 
 
 # Application definition

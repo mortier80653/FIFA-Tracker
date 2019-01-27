@@ -490,7 +490,7 @@ class CalculateValues():
             # PLAYER_ATTRIBUTE_SHORT_PASSING * 17%
             ovr.append(round(float(row['shortpassing']) * 0.17, 2))
             # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
-            ovr.append(round(float(row['shotpower']) * 0.04, 2))
+            ovr.append(round(float(row['longshots']) * 0.04, 2))
             # PLAYER_ATTRIBUTE_STANDING_TACKLE * 5%
             ovr.append(round(float(row['standingtackle']) * 0.05, 2))
         elif posid == 17 or posid == 18 or posid == 19:
@@ -518,7 +518,7 @@ class CalculateValues():
             # PLAYER_ATTRIBUTE_SHORT_PASSING * 16%
             ovr.append(round(float(row['shortpassing']) * 0.16, 2))
             # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 5%
-            ovr.append(round(float(row['shotpower']) * 0.05, 2))
+            ovr.append(round(float(row['longshots']) * 0.05, 2))
         elif posid == 20 or posid == 21 or posid == 22:
             # RF or CF or LF
             # PLAYER_ATTRIBUTE_ACCELERATION * 5%
@@ -544,7 +544,7 @@ class CalculateValues():
             # PLAYER_ATTRIBUTE_SHOT_POWER * 5%
             ovr.append(round(float(row['shotpower']) * 0.05, 2))
             # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
-            ovr.append(round(float(row['shotpower']) * 0.04, 2))
+            ovr.append(round(float(row['longshots']) * 0.04, 2))
         elif posid == 23 or posid == 27:
             # RW or LW
             # PLAYER_ATTRIBUTE_ACCELERATION * 7%
@@ -570,7 +570,7 @@ class CalculateValues():
             # PLAYER_ATTRIBUTE_SHORT_PASSING * 9%
             ovr.append(round(float(row['shortpassing']) * 0.09, 2))
             # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 4%
-            ovr.append(round(float(row['shotpower']) * 0.04, 2))
+            ovr.append(round(float(row['longshots']) * 0.04, 2))
         elif posid == 24 or posid == 25 or posid == 26:
             # RS or ST or LS
             # PLAYER_ATTRIBUTE_ACCELERATION * 4%
@@ -596,7 +596,7 @@ class CalculateValues():
             # PLAYER_ATTRIBUTE_SHOT_POWER * 10%
             ovr.append(round(float(row['shotpower']) * 0.10, 2))
             # PLAYER_ATTRIBUTE_POWER_SHOT_ACCURACY * 3%
-            ovr.append(round(float(row['shotpower']) * 0.03, 2))
+            ovr.append(round(float(row['longshots']) * 0.03, 2))
             # PLAYER_ATTRIBUTE_VOLLEYS * 2%
             ovr.append(round(float(row['volleys']) * 0.02, 2))
 
@@ -1000,6 +1000,10 @@ class RestToCSV():
                 playerid = self.ReadInt32(mm.read(4))
                 teamid = self.ReadInt32(mm.read(4))
                 clause = self.ReadInt32(mm.read(4))
+                # fix problem with invalid release clause
+                if not (1 <= clause <= 2147483646):
+                    continue
+
                 f_csv.write("{},{},{},{},{}\n".format(
                     self.username, self.user_id, playerid, teamid, clause))
 

@@ -2266,27 +2266,30 @@ class PlayerName():
             'playerjerseyname': int(self.player.playerjerseyname_id or 0),
         }
 
-
-        if name['firstname'] == 0 and name['lastname'] == 0 and self.edited_player_names is not None:
+        playername_set = False
+        if self.edited_player_names is not None:
             for i in range(len(self.edited_player_names)):
                 if self.edited_player_names[i].playerid == self.player.playerid:
                     name['firstname'] = self.edited_player_names[i].firstname
                     name['lastname'] = self.edited_player_names[i].surname
                     name['commonname'] = self.edited_player_names[i].commonname
                     name['playerjerseyname'] = self.edited_player_names[i].playerjerseyname
+                    playername_set = True
                     break
-        elif self.dc_player_names is not None:
-            for key in name:
-                if name[key] >= dcplayernames_start_index:
-                    # Get playername from dcplayernames
-                    name[key] = self.get_dcplayername(name[key])
-                else:
-                    # Get playername from playernames
-                    get_attr = getattr(self.player, key, None)
-                    if get_attr is not None and get_attr.name is not None:
-                        name[key] = get_attr.name
+        
+        if not playername_set:
+            if self.dc_player_names is not None:
+                for key in name:
+                    if name[key] >= dcplayernames_start_index:
+                        # Get playername from dcplayernames
+                        name[key] = self.get_dcplayername(name[key])
                     else:
-                        name[key] = ""
+                        # Get playername from playernames
+                        get_attr = getattr(self.player, key, None)
+                        if get_attr is not None and get_attr.name is not None:
+                            name[key] = get_attr.name
+                        else:
+                            name[key] = ""
 
         # This name will be displayed on website
         if name['commonname']:

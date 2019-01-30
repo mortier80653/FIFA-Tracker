@@ -29,6 +29,14 @@ body {
     }
 }
 
+a {
+    color: #BAF73C;
+}
+
+a:hover {
+    color: #9acd32;
+}
+
 /* Main */
 .main-container {
     padding-top: 10px;

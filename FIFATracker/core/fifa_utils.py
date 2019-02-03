@@ -2270,7 +2270,15 @@ class PlayerName():
         if self.edited_player_names is not None:
             for i in range(len(self.edited_player_names)):
                 if self.edited_player_names[i].playerid == self.player.playerid:
-                    name['firstname'] = self.edited_player_names[i].firstname
+                    validated_firstname = self.edited_player_names[i].firstname
+                    # Ugly validation
+                    if (
+                        len(validated_firstname) <= 1 or
+                        not validated_firstname[0].isalnum() or
+                        not validated_firstname[0].isupper()
+                    ):
+                        break
+                    name['firstname'] = validated_firstname
                     name['lastname'] = self.edited_player_names[i].surname
                     name['commonname'] = self.edited_player_names[i].commonname
                     name['playerjerseyname'] = self.edited_player_names[i].playerjerseyname

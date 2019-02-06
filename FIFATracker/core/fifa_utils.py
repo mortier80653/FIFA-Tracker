@@ -2273,6 +2273,7 @@ class PlayerName():
                     validated_firstname = self.edited_player_names[i].firstname
                     # Ugly validation
                     if (
+                        validated_firstname is None,
                         len(validated_firstname) <= 1 or
                         not validated_firstname[0].isalnum() or
                         not validated_firstname[0].isupper()

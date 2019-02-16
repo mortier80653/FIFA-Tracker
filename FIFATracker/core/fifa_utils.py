@@ -2549,7 +2549,14 @@ class FifaPlayer():
         if self.player.playerid < 280000:
             return "heads/p{playerid}.png".format(playerid=self.player.playerid)
         else:
-            return "youthheads/p{headtypecode}{haircolorcode:02d}.png".format(headtypecode=self.player.headtypecode, haircolorcode=self.player.haircolorcode)
+            if self.player.headtypecode == 0:
+                return "youthheads/p{haircolorcode}.png".format(
+                    haircolorcode=self.player.haircolorcode
+                )
+            else:
+                return "youthheads/p{headtypecode}{haircolorcode:02d}.png".format(
+                    headtypecode=self.player.headtypecode, haircolorcode=self.player.haircolorcode
+                )
 
     def update_positions(self):
         available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM',

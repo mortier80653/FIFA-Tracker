@@ -116,3 +116,4 @@ FIFATracker/static/img.zip
 
 
 .env
+FIFATracker/Fifa_Tracker/secret_settings.py

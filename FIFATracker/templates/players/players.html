@@ -450,9 +450,9 @@
                                     </div>
                                     <label for="stats_avg_min">{% trans 'Avg. Rating' %}</label>
                                     <div class="input-group justified">
-                                        <input class="form-control" type="number" min="0" max="100" name="stats_avg_min" value="{{ request_query_dict.stats_avg_min }}"
+                                        <input class="form-control" name="stats_avg_min" value="{{ request_query_dict.stats_avg_min }}"
                                         placeholder="Min">
-                                        <input class="form-control" type="number" min="0" max="100" name="stats_avg_max" value="{{ request_query_dict.stats_avg_max }}"
+                                        <input class="form-control" name="stats_avg_max" value="{{ request_query_dict.stats_avg_max }}"
                                         placeholder="Max">
                                     </div>
                                     <label for="stats_goals_min">{% trans 'Goals Scored' %}</label>

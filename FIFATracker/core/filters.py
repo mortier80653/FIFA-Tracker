@@ -1,3 +1,5 @@
+import re
+
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 from .fifa_utils import FifaDate
@@ -20,6 +22,7 @@ from core.models import (
     DataUsersCareerCompdataClubNegotiations,
 )
 
+
 class BaseFilter:
     def _check_key(self, d, key):
         if key in d:
@@ -27,10 +30,13 @@ class BaseFilter:
         else:
             return None
 
+
 class DataUsersCareerCompdataPlayerStatsFilter(BaseFilter):
     def __init__(self, request, for_user):
         self.request_dict = request
         self.for_user = for_user
+
+        self.has_stats = False
 
         queryset = DataUsersCareerCompdataPlayerStats.objects.for_user(
             self.for_user).all()
@@ -56,6 +62,7 @@ class DataUsersCareerCompdataPlayerStatsFilter(BaseFilter):
 
         try:
             if 'stats_app_min' in self.request_dict or 'stats_app_max' in self.request_dict:
+                self.has_stats = True
                 app_min = (self._check_key(
                     self.request_dict, 'stats_app_min') or 1)
                 app_max = (self._check_key(
@@ -68,18 +75,28 @@ class DataUsersCareerCompdataPlayerStatsFilter(BaseFilter):
 
         try:
             if 'stats_avg_min' in self.request_dict or 'stats_avg_max' in self.request_dict:
-                avg_min = (self._check_key(
-                    self.request_dict, 'stats_avg_min') or 1)
-                avg_max = (self._check_key(
-                    self.request_dict, 'stats_avg_max') or 100)
+                self.has_stats = True
+                avg_min = int(re.sub('[^0-9]', '', (self._check_key(self.request_dict, 'stats_avg_min') or '10')))
+                if avg_min < 10:
+                    avg_min = 10
+                elif avg_min > 100:
+                    avg_min = 100
+
+                avg_max = int(re.sub('[^0-9]', '', (self._check_key(self.request_dict, 'stats_avg_max') or '100')))
+                if avg_max < 10:
+                    avg_max = 10
+                elif avg_max > 100:
+                    avg_max = 100
 
                 queryset = queryset.filter(
-                    Q(avg__gte=avg_min), Q(avg__lte=avg_max))
+                    Q(avg__gte=avg_min), Q(avg__lte=avg_max)
+                )
         except ValueError:
             pass
 
         try:
             if 'stats_goals_min' in self.request_dict or 'stats_goals_max' in self.request_dict:
+                self.has_stats = True
                 goals_min = (self._check_key(
                     self.request_dict, 'stats_goals_min') or 1)
                 goals_max = (self._check_key(
@@ -92,6 +109,7 @@ class DataUsersCareerCompdataPlayerStatsFilter(BaseFilter):
 
         try:
             if 'stats_assists_min' in self.request_dict or 'stats_assists_max' in self.request_dict:
+                self.has_stats = True
                 assists_min = (self._check_key(
                     self.request_dict, 'stats_assists_min') or 1)
                 assists_max = (self._check_key(
@@ -104,6 +122,7 @@ class DataUsersCareerCompdataPlayerStatsFilter(BaseFilter):
 
         try:
             if 'stats_cleansheets_min' in self.request_dict or 'stats_cleansheets_max' in self.request_dict:
+                self.has_stats = True
                 cleansheets_min = (self._check_key(
                     self.request_dict, 'stats_cleansheets_min') or 1)
                 cleansheets_max = (self._check_key(
@@ -116,6 +135,7 @@ class DataUsersCareerCompdataPlayerStatsFilter(BaseFilter):
 
         try:
             if 'stats_yc_min' in self.request_dict or 'stats_yc_max' in self.request_dict:
+                self.has_stats = True
                 yellowcards_min = (self._check_key(
                     self.request_dict, 'stats_yellowcards_min') or 1)
                 yellowcards_max = (self._check_key(
@@ -128,6 +148,7 @@ class DataUsersCareerCompdataPlayerStatsFilter(BaseFilter):
 
         try:
             if 'stats_rc_min' in self.request_dict or 'stats_rc_max' in self.request_dict:
+                self.has_stats = True
                 redcards_min = (self._check_key(
                     self.request_dict, 'stats_redcards_min') or 1)
                 redcards_max = (self._check_key(
@@ -1175,18 +1196,23 @@ class DataUsersPlayersFilter(BaseFilter):
 
         # DataUsersCareerCompdataPlayerStatsFilter
         player_stats_filter = DataUsersCareerCompdataPlayerStatsFilter(
-            for_user=self.for_user, request=self.request_dict,)
+            for_user=self.for_user, request=self.request_dict,
+        )
 
         player_stats_filtered_ids = None
 
         try:
-            if 'hasstats' in self.request_dict and int(self.request_dict['hasstats']) in range(0, 2):
+            if (
+                ('hasstats' in self.request_dict and int(self.request_dict['hasstats']) in range(0, 2)) or
+                player_stats_filter.has_stats
+            ):
                 if player_stats_filtered_ids is None:
                     player_stats_filtered_ids = player_stats_filter.get_player_ids()
-                if int(self.request_dict['hasstats']) == 0:
-                    queryset = queryset.filter(~Q(playerid__in=player_stats_filtered_ids))
-                elif int(self.request_dict['hasstats']) == 1:
+
+                if player_stats_filter.has_stats or int(self.request_dict['hasstats']):
                     queryset = queryset.filter(Q(playerid__in=player_stats_filtered_ids))
+                else:
+                    queryset = queryset.filter(~Q(playerid__in=player_stats_filtered_ids))
         except ValueError:
             pass
 

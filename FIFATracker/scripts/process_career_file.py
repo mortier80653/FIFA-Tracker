@@ -10,8 +10,7 @@ from scripts.process_file_utils import ParseCareerSave
 from scripts.delete_user_data import delete_data
 
 
-def update_savefile_model(user_id, error, fpath=None):
-    cs_model = CareerSaveFileModel.objects.filter(user_id=user_id).first()
+def update_savefile_model(cs_model, error, fpath=None):
     if cs_model:
         cs_model.file_process_status_code = 1   # Error Code
         cs_model.file_process_status_msg = error
@@ -33,29 +32,32 @@ def run(*args):
     user = User.objects.get(id=user_id)
     if not user:
         logging.warning(
-            "process_career_file script - User not found, ID:{}".format(user_id))
+            "process_career_file script - User not found, ID:{}".format(user_id)
+        )
         return
 
     save_file_model = CareerSaveFileModel.objects.filter(
-        user_id=user.id).first()
+        user_id=user.id
+    ).first()
     if not save_file_model:
-        update_savefile_model(user_id, _("Save file model not found."))
         return
 
-    fpath = os.path.join(settings.MEDIA_ROOT, str(
-        save_file_model.uploadedfile))
+    fpath = os.path.join(settings.MEDIA_ROOT, str(save_file_model.uploadedfile))
+
     if not os.path.exists(fpath):
-        update_savefile_model(user_id, _("Save file not found on the server."))
+        update_savefile_model(save_file_model, _("Save file not found on the server."))
         return
 
-    careersave_data_path = os.path.join(
-        settings.MEDIA_ROOT, user.username, "data")
+    careersave_data_path = os.path.join(settings.MEDIA_ROOT, user.username, "data")
 
     # Parse Career Save
     try:
         parse_save = ParseCareerSave(
-            career_file_fullpath=fpath, careersave_data_path=careersave_data_path,
-            user=user, xml_file=None, fifa_edition=fifa_edition
+            career_file_fullpath=fpath,
+            careersave_data_path=careersave_data_path,
+            user=user,
+            xml_file=None,
+            fifa_edition=fifa_edition
         )
         user.profile.is_save_processed = True
         user.profile.fifa_edition = str(parse_save.fifa_edition)
@@ -71,4 +73,4 @@ def run(*args):
         logging.exception(
             "process_career_file script - ParseCareerSave - user: {}".format(user))
         # delete_data(user_id)
-        update_savefile_model(user_id, e, fpath=fpath)
+        update_savefile_model(save_file_model, e, fpath=fpath)

@@ -18,6 +18,63 @@ UNUSED_TEAMS = [
     112190,     # ADIDAS
 ]
 
+# List of csv files that we want to import to our PostgreSQL database
+SUPPORTED_TABLES = [
+    "career_compdata_playerstats",
+    "career_compdata_clubnegotiations",
+    "career_rest_releaseclauses",
+
+    "career_calendar",
+    # "career_playercontract",
+    "career_users",
+    # "career_youthplayers",
+    # "career_managerinfo",
+    # "career_scouts",
+    # "career_precontract",
+    # "career_presignedcontract",
+    "career_transferoffer",
+    "career_squadranking",
+    # "career_youthplayerhistory",
+    # "career_playermatchratinghistory",
+    # "career_playerlastmatchhistory",
+    # "career_teamofweek",
+    # "career_playerawards",
+    # "career_managerawards",
+    # "career_managerhistory",
+    # "career_playergrowthuserseason",
+    # "career_trophies",
+    # "career_playasplayer",
+    # "career_playasplayerhistory",
+    # "career_managerpref",
+    # "teamstadiumlinks",
+    # "teamkits",
+    # "player_grudgelove",
+    "editedplayernames",
+    "dcplayernames",
+    "leagues",
+    "leagueteamlinks",
+    "manager",
+    "playerloans",
+    "teams",
+    # "competition",
+    # "rivals",
+    # "rowteamnationlinks",
+    # "teamnationlinks",
+    # "referee",
+    # "leaguerefereelinks",
+    # "fixtures",
+    # "playersuspensions",
+    # "bannerplayers",
+    # "playerformdiff",
+    # "teamformdiff",
+    # "version",
+    # "formations",
+    # "default_teamsheets",
+    # "previousteam",
+    "teamplayerlinks",
+    "players",
+]
+
 # Currency Conversion from cmsettings.ini
 '''
 [CONVERSION]

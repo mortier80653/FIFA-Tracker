@@ -1080,7 +1080,7 @@ class PlayerWage:
 
         try:
             return domestic_prestige_table[self.fifa_edition][leagueid][club_domestic_prestige]
-        except KeyError:
+        except (KeyError, IndexError):
             return domestic_prestige_table[self.fifa_edition][0][0]
 
     def _profitability(self, leagueid, club_profitability):
@@ -1205,7 +1205,7 @@ class PlayerWage:
 
         try:
             return profitability_table[self.fifa_edition][leagueid][club_profitability]
-        except KeyError:
+        except (KeyError, IndexError):
             return profitability_table[self.fifa_edition][0][0]
 
     def _round_to_player_wage(self, summed_wage):

@@ -6,6 +6,12 @@ from django.db import connection
 # python manage.py runscript import_data_from_csv --script-args nations19.csv datanations19
 # python manage.py runscript import_data_from_csv --script-args playernames19.csv dataplayernames19
 
+# python manage.py runscript import_data_from_csv --script-args nations18.csv datanations
+# python manage.py runscript import_data_from_csv --script-args playernames18.csv dataplayernames
+
+# python manage.py runscript import_data_from_csv --script-args nations17.csv datanations17
+# python manage.py runscript import_data_from_csv --script-args playernames17.csv dataplayernames17
+
 
 def run(*args):
     fname = args[0]

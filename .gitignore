@@ -108,7 +108,7 @@ ENV/
 # FIFATracker/Fifa_Tracker/settings/pro.py
 FIFATracker/static/img/assets/
 FIFATracker/media/
-# FIFATracker/players/migrations/
+FIFATracker/players/migrations/
 FIFATracker/core/migrations/
 FIFATracker/accounts/migrations/
 staticfiles/

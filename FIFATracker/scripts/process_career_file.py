@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from core.models import CareerSaveFileModel
 from django.utils.translation import ugettext_lazy as _
 
-from scripts.process_file_utils import ParseCareerSave
+from scripts.process_file_utils import parse_career_save
 from scripts.delete_user_data import delete_data
 
 
@@ -52,15 +52,16 @@ def run(*args):
 
     # Parse Career Save
     try:
-        parse_save = ParseCareerSave(
+        parse_career_save(
             career_file_fullpath=fpath,
-            careersave_data_path=careersave_data_path,
+            data_path=careersave_data_path,
             user=user,
-            xml_file=None,
+            slot='1',
+            xml_file='',
             fifa_edition=fifa_edition
         )
         user.profile.is_save_processed = True
-        user.profile.fifa_edition = str(parse_save.fifa_edition)
+        user.profile.fifa_edition = fifa_edition
         user.save()
     except FileNotFoundError as e:
         user.profile.is_save_processed = False

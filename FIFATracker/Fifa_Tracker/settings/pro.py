@@ -30,3 +30,15 @@ EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD', default='')
 EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL', default=False)
 EMAIL_PORT = env.int('EMAIL_PORT', default=25)
 DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', default='webmaster@localhost')
+
+# Django Debug Toolbar
+# https://django-debug-toolbar.readthedocs.io/en/stable/index.html#
+
+if DEBUG:
+    INTERNAL_IPS = ('127.0.0.1', )
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]

@@ -364,8 +364,7 @@ def get_fifaplayers(request, additional_filters=None, paginate=False, sort=True)
 
     # Current date according to in-game calendar
     try:
-        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[
-            0].currdate
+        current_date = DataUsersCareerCalendar.objects.for_user(current_user)[0].currdate
     except IndexError:
         messages.error(request, _(
             "Your career file hasn't been processed yet. Displaying default FIFA database data."))

@@ -1,4 +1,5 @@
 import re
+from django import db
 
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType

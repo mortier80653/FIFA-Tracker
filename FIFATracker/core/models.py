@@ -272,6 +272,8 @@ class DataUsersCareerSquadRanking(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='squadranking', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
     curroverall = models.IntegerField(blank=True, null=True)
     lastoverall = models.IntegerField(blank=True, null=True)

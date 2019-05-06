@@ -21,6 +21,8 @@ class DataUsersCareerCompdataPlayerStats(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='compdataplayerstats', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
 
     teamid = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
@@ -58,6 +60,8 @@ class DataUsersCareerRestReleaseClauses(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='releaseclauses', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
     teamid = models.IntegerField(blank=True, null=True)
     release_clause = models.IntegerField(blank=True, null=True)
@@ -74,6 +78,8 @@ class DataUsersCareerCalendar(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='calendar', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     transferwindowend1 = models.IntegerField(blank=True, null=True)
     transferwindowstart1 = models.IntegerField(blank=True, null=True)
     transferwindowend2 = models.IntegerField(blank=True, null=True)
@@ -97,6 +103,8 @@ class DataUsersCareerUsers(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='careerusers', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     firstname = models.CharField(max_length=64, blank=True, null=True)
     surname = models.CharField(max_length=64, blank=True, null=True)
     agentname = models.CharField(max_length=64, blank=True, null=True)
@@ -178,6 +186,8 @@ class DataUsersTeams(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='teams', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     assetid = models.IntegerField(blank=True, null=True)
     balltype = models.IntegerField(blank=True, null=True)
     teamcolor1g = models.IntegerField(blank=True, null=True)
@@ -310,6 +320,8 @@ class DataUsersLeagueteamlinks(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='leagueteamlinks', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     homega = models.IntegerField(blank=True, null=True)
     previousyeartableposition = models.IntegerField(blank=True, null=True)
     homegf = models.IntegerField(blank=True, null=True)
@@ -360,6 +372,8 @@ class DataUsersTeamplayerlinks(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='teamplayerlinks', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     leaguegoals = models.IntegerField(blank=True, null=True)
     isamongtopscorers = models.IntegerField(blank=True, null=True)
     yellows = models.IntegerField(blank=True, null=True)
@@ -459,6 +473,8 @@ class DataUsersDcplayernames(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='dcplayernames', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=77, blank=True, null=True)
     nameid = models.IntegerField(blank=True, null=True)
 
@@ -474,6 +490,8 @@ class DataUsersEditedplayernames(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='editedplayernames', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     firstname = models.CharField(max_length=45, blank=True, null=True)
     commonname = models.CharField(max_length=45, blank=True, null=True)
     playerjerseyname = models.CharField(max_length=45, blank=True, null=True)
@@ -492,6 +510,8 @@ class DataUsersLeagues(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='leagues', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     countryid = models.IntegerField(blank=True, null=True)
     leaguename = models.CharField(max_length=120, blank=True, null=True)
     level = models.IntegerField(blank=True, null=True)
@@ -519,6 +539,8 @@ class DataUsersManager(models.Model):
     # models.ForeignKey(FifaTrackerUsers, to_field='ft_userid', related_name='manager', on_delete=models.CASCADE, null=True,)
     ft_user = models.ForeignKey(
         User, related_name='manager', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     firstname = models.CharField(max_length=45, blank=True, null=True)
     surname = models.CharField(max_length=45, blank=True, null=True)
     managerid = models.IntegerField(blank=True, null=True)
@@ -551,6 +573,8 @@ class DataUsersPlayers19(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='players19', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     value_usd = models.IntegerField(blank=True, null=True)
     value_eur = models.IntegerField(blank=True, null=True)
     value_gbp = models.IntegerField(blank=True, null=True)
@@ -659,7 +683,8 @@ class DataUsersPlayers19(models.Model):
     headclasscode = models.IntegerField(blank=True, null=True)
     defensiveworkrate = models.IntegerField(blank=True, null=True)
     nationality = models.ForeignKey(
-        DataNations19, db_column='nationality', null=True, on_delete=models.CASCADE)
+        DataNations19, db_column='nationality', null=True, on_delete=models.CASCADE
+    )
     preferredfoot = models.IntegerField(blank=True, null=True)
     sideburnscode = models.IntegerField(blank=True, null=True)
     weakfootabilitytypecode = models.IntegerField(blank=True, null=True)
@@ -700,6 +725,7 @@ class DataUsersPlayers19(models.Model):
     class Meta:
         db_table = 'datausersplayers19'
 
+
 class DataUsersPlayers(models.Model):
     # Custom fields
     primary_key = models.BigAutoField(primary_key=True)
@@ -707,6 +733,10 @@ class DataUsersPlayers(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='players', on_delete=models.CASCADE, null=True,)
+
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
+
     value_usd = models.IntegerField(blank=True, null=True)
     value_eur = models.IntegerField(blank=True, null=True)
     value_gbp = models.IntegerField(blank=True, null=True)
@@ -855,6 +885,8 @@ class DataUsersPlayers17(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='players17', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     value_usd = models.IntegerField(blank=True, null=True)
     value_eur = models.IntegerField(blank=True, null=True)
     value_gbp = models.IntegerField(blank=True, null=True)
@@ -1002,6 +1034,8 @@ class DataUsersPlayerloans(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='playerloans', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     teamidloanedfrom = models.IntegerField(blank=True, null=True)
     playerid = models.IntegerField(blank=True, null=True)
     loandateend = models.IntegerField(blank=True, null=True)

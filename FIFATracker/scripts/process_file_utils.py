@@ -12,6 +12,8 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 
+from django.db import transaction, connection, reset_queries
+
 from core.consts import (
     DEFAULT_DATE,
     DEFAULT_FIFA_EDITION,
@@ -24,8 +26,8 @@ from core.fifa_utils import (
 )
 
 from players.models import (
-    DataUsersCareerCalendar,
     DataUsersCareerUsers,
+    DataUsersCareerCalendar,
     DataUsersTeams,
     DataUsersLeagueteamlinks,
     DataUsersTeamplayerlinks,
@@ -46,21 +48,44 @@ from core.models import (
 )
 
 
-class ReadBytesBase:
-    def read_int64(self, x):
-        return int(x[0] | x[1] << 8 | x[2] << 16 | x[3] << 24 | x[4] << 32 | x[5] << 40 | x[6] << 48 | x[7] << 56)
+class ReadBytesHelper:
+    """
+        Convert bytes helper class
+    """
+    def read_int64(self, x, as_string=False):
+        n = x[0] | x[1] << 8 | x[2] << 16 | x[3] << 24 | x[4] << 32 | x[5] << 40 | x[6] << 48 | x[7] << 56
+        if as_string:
+            return str(n)
+        else:
+            return int(n)
 
-    def read_int32(self, x):
-        return int(x[0] | x[1] << 8 | x[2] << 16 | x[3] << 24)
+    def read_int32(self, x, as_string=False):
+        n = x[0] | x[1] << 8 | x[2] << 16 | x[3] << 24
+        if as_string:
+            return str(n)
+        else:
+            return int(n)
 
-    def read_int16(self, x):
-        return int(x[0] | x[1] << 8)
+    def read_int16(self, x, as_string=False):
+        n = x[0] | x[1] << 8
+        if as_string:
+            return str(n)
+        else:
+            return int(n)
 
-    def read_int8(self, x):
-        return int(x[0])
+    def read_int8(self, x, as_string=False):
+        n = x[0]
+        if as_string:
+            return str(n)
+        else:
+            return int(n)
 
-    def read_float(self, x):
-        return float(self.read_int32(x))
+    def read_float(self, x, as_string=False):
+        n = self.read_int32(x)
+        if as_string:
+            return str(float(n))
+        else:
+            return float(n)
 
     def read_nullbyte_str(self, mm, str_len):
         start = mm.tell()
@@ -90,7 +115,7 @@ class ReadBytesBase:
             return ""
 
 
-class CalculateValues(ReadBytesBase):
+class CalculateValues(ReadBytesHelper):
     """ Calculate Values of all players and save it in "players.csv"
         Parameters
         ----------
@@ -98,14 +123,13 @@ class CalculateValues(ReadBytesBase):
             Path containing .csv files.
     """
 
-    def __init__(self, csv_path, fifa_edition=19):
-        self.fifa_edition = str(fifa_edition)
-        self.csv_path = csv_path
-
+    def __init__(self, currency, currdate, csv_dest_path, fifa_edition='19'):
         self.players_real_ovr = dict()
 
-        self.currdate = self._get_csv_val("career_calendar.csv", "currdate") or DEFAULT_DATE[self.fifa_edition]
-        self.currency = self._get_csv_val("career_managerpref.csv", "currency") or 1
+        self.fifa_edition = fifa_edition
+        self.currdate = currdate
+        self.currency = currency
+        self.csv_path = csv_dest_path
 
         self._calc()
         self._calc_teams_rating()
@@ -181,10 +205,16 @@ class CalculateValues(ReadBytesBase):
                 pot = row['potential']
                 age = PlayerAge(row['birthdate'], self.currdate).age
                 posid = row['preferredposition1']
-                pvalue_usd = PlayerValue(ovr, pot, age, posid, 0, fifa_edition=self.fifa_edition).value
-                pvalue_eur = PlayerValue(ovr, pot, age, posid, 1, fifa_edition=self.fifa_edition).value
-                pvalue_gbp = PlayerValue(ovr, pot, age, posid, 2, fifa_edition=self.fifa_edition).value
-                pwage = 0
+
+                pv = PlayerValue(ovr, pot, age, posid, 0, fifa_edition=self.fifa_edition)
+                pvalue_usd = pv.value
+
+                pv._set_currency(1)
+                pvalue_eur = pv._calculate_player_value()
+
+                pv._set_currency(2)
+                pvalue_gbp = pv._calculate_player_value()
+                pwage = '0'
                 calulcated_data.append(data[i][:-1] + ",{},{},{},{}\n".format(
                     pvalue_usd, pvalue_eur, pvalue_gbp, pwage
                 ))
@@ -614,1227 +644,1135 @@ class CalculateValues(ReadBytesBase):
         return int(sum(ovr))
 
 
-class RestToCSV(ReadBytesBase):
-    """Convert Data after .db section to .csv format.
+def delete_from_model(model, user_id):
+    """ delete data before update """
+    try:
+        model.objects.filter(ft_user_id=user_id).delete()
+    except Exception:
+        pass
+
+
+def copy_from_csv(csv_path, tables):
+    """ Populate data in table with content from csv file """
+    # Run "import_career_data.py"
+    s1 = time.time()
+    if settings.DEBUG:
+        python_ver = "python"  # My LocalHost
+    else:
+        python_ver = "python3.6"
+
+    # python manage.py runscript process_career_file --script-args 14 18
+    command = '{} manage.py runscript import_career_data --script-args "{}" "{}"'.format(
+        python_ver, csv_path, ','.join(tables)
+    )
+
+    args = shlex.split(command)
+    p = subprocess.Popen(args, close_fds=True)
+    p.wait()
+    logging.info('Tables imported in {}s.'.format(
+        round(time.time() - s1, 3)
+    ))
+
+
+def import_career_data(
+    user_id,
+    fifa_edition,
+    csv_path,
+):
+    """Import data from csv files to PostgreSQL database
+
         Parameters
         ----------
-        rest_path : str
-            Path containing rest file
-
-        user : obj
-            Django User model object.
-
-        dest_path : str
-            Path where csv files will be exported. Default="<rest_path>\\csv"
+        csv_path : str
+            Path to csv files. ex: media/<USERNAME>/data/csv
     """
 
-    def __init__(self, rest_path, user, dest_path=None):
-        self.path = rest_path
-        self.username = user.username
-        self.user_id = user.id
+    to_import = []
 
-        if dest_path:
-            self.dest_path = dest_path
-        else:
-            self.dest_path = os.path.join(self.path, "csv")
+    for csv in SUPPORTED_TABLES:
+        # example: media\<user>\data\csv\career_calendar.csv
+        full_csv_path = os.path.join(csv_path, csv) + ".csv"
 
-    def convert_to_csv(self):
-        rf_full_path = os.path.join(self.path, "rest")
+        if csv == "players":
+            if fifa_edition == '18':
+                csv = "players"
+            else:
+                csv = "players{}".format(fifa_edition)
 
-        # Check if file exists
-        if not os.path.isfile(rf_full_path):
-            return
+        model_name = "datausers{}".format(csv.replace("_", ""))
 
-        with open(rf_full_path, 'rb') as rf:
-            mm = mmap.mmap(rf.fileno(), length=0, access=mmap.ACCESS_READ)
-            self._release_clauses(mm)
-            self._players_stats(mm)
-            # self._club_neg(mm) TODO UNCOMMENT WHEN FIXED
+        ct = ContentType.objects.get(model=model_name)
+        model = ct.model_class()
+        delete_from_model(model=model, user_id=user_id)
 
-    def _club_neg(self, mm):
-        sign_clbneg = b"\x63\x6C\x62\x6E\x65\x67\x00"    # clbneg
-        mm.seek(0)
+        if os.path.exists(full_csv_path):
+            to_import.append(csv)
 
-        offsets = []
+    copy_from_csv(csv_path=csv_path, tables=to_import)
 
-        offset = mm.find(sign_clbneg)
-        while offset >= 0:
-            cur_pos = offset + len(sign_clbneg)
-            mm.seek(cur_pos, 0)
-            offsets.append(cur_pos)
-            offset = mm.find(sign_clbneg)
 
-        if len(offsets) != 4:
-            return
+def set_currency(user, currency):
+    user.profile.currency = currency
+    user.save()
 
-        # clbneg_1 all teams transfers?
-        # clbneg_2 all teams loans?
-        # clbneg_3 my team transfers?
-        # clbneg_4 my team loans?
-        clbneg_structs = {
-            'clbneg_1': {
-                'playerid': 4,
-                'offerteamid': 4,
-                'teamid': 4,
-                'unk1': 1,
-                'isusertransfer': 1,
-                'unk3': 8,
-                'unk4': 8,
-                'transfer_sum1': 4,
-                'transfer_sum2': 4,
-                'stage': 4,
-                'unk6': 60,
-                'unk7': 1,
-                'unk8': 1,
-                'isofferrejected': 1,
-                'unk10': 1,
-                'offer_history': {
-                    'num': 4,
-                    'size_of': 12,
-                },
-                'counter_offer_history': {
-                    'num': 4,
-                    'size_of': 16,
-                },
-            },
-            'clbneg_2': {
-                'playerid': 4,
-                'offerteamid': 4,
-                'teamid': 4,
-                'unk1': 1,
-                'isusertransfer': 1,
-                'unk3': 4,
-                'unk4': 4,
-                'unk5': 4,
-                'unk6': 60,
-                'unk7': 1,
-                'unk8': 1,
-                'unk9': 1,
-                'unk10': 1,
-                'unk11': {
-                    'num': 4,
-                    'size_of': 12,
-                },
-                'unk12': {
-                    'num': 4,
-                    'size_of': 12,
-                },
-            },
-            'clbneg_3': {
-                'playerid': 4,
-                'offerteamid': 4,
-                'teamid': 4,
-                'offer_history': {
-                    'num': 4,
-                    'size_of': 84,
-                },
-                'counter_offer_history': {
-                    'num': 4,
-                    'size_of': 88,
-                },
-                'status': {
-                    'num': 4,
-                    'size_of': 12,
-                },
-            },
-            'clbneg_4': {
-                'playerid': 4,
-                'offerteamid': 4,
-                'teamid': 4,
-                'unk1': {
-                    'num': 4,
-                    'size_of': 28,
-                },
-                'unk2': {
-                    'num': 4,
-                    'size_of': 28,
-                },
-                'unk3': {
-                    'num': 4,
-                    'size_of': 12,
-                },
-            },
-        }
-        clbneg_data = {}
-        try:
-            for i, off in enumerate(offsets):
-                mm.seek(off, 0)
-                length = self.read_int32(mm.read(4))
-                key = 'clbneg_{}'.format(i+1)
-                clbneg_struct = clbneg_structs[key]
-                clbneg_data[key] = []
-                for l in range(length):
-                    result = {}
-                    for k, v in clbneg_struct.items():
-                        if isinstance(v, dict):
-                            length_child = self.read_int32(mm.read(4))
-                            child_data = {}
-                            loops = int(v['size_of']/4)
-                            for j in range(length_child):
-                                child_data[j] = []
-                                for data in range(loops):
-                                    child_data[j].append(self.read_int32(mm.read(4)))
-                            val = child_data
-                        elif v == 1:
-                            val = bool(self.read_int8(mm.read(1)))
-                        elif v == 4:
-                            val = self.read_int32(mm.read(4))
-                        elif v == 8:
-                            val = self.read_int64(mm.read(8))
-                        else:
-                            loops = int(v/4)
-                            child_data = []
-                            for data in range(loops):
-                                child_data.append(self.read_int32(mm.read(4)))
-                            val = child_data
 
-                        result[k] = val
-                    clbneg_data[key].append(result)
-        except Exception as e:
-            logging.error("_club_neg error {}".format(str(e)))
-            return
+def get_csv_val(csv_dest_path, fname, fieldname):
+    fpath = os.path.join(csv_dest_path, fname)
+    ret_val = None
+    if not os.path.isfile(fpath):
+        return None
 
-        # Save to file
-        headers = [
-            'username',
-            'ft_user_id',
-            'playerid',
-            'teamid',
-            'offerteamid',
-            'stage',
-            'iscputransfer',
-            'isloanoffer',
-            'isofferrejected',
-            'offeredfee',
-        ]
-        with open(
-            os.path.join(self.dest_path, "career_compdata_clubnegotiations.csv"), 'w+', encoding='utf-8'
-        ) as f_csv:
-            # create columns
-            f_csv.write("{}\n".format(','.join(headers)))
-
-            for i in range(4):
-                for neg in clbneg_data['clbneg_{}'.format(i + 1)]:
-
-                    stage = 2
-                    isofferrejected = False
-                    offeredfee = 0
-
-                    if i == 0:
-                        stage = neg['stage']
-                        isofferrejected = neg['isofferrejected']
-
-                        offers = neg['offer_history']   # dict
-                        counter_offers = neg['counter_offer_history']  # dict
-                        if offers and counter_offers:
-                            merged_offers = []
-                            for k, v in offers.items():
-                                merged_offers.append(v)
-
-                            for k, v in counter_offers.items():
-                                merged_offers.append(v)
-
-                            # sort by offer date
-                            merged_offers.sort(key=lambda d: d[1])
-
-                            # last offer should be our offeredfee
-                            offeredfee = merged_offers[-1][0]
-                        else:
-                            continue
-                    elif i == 2:
-                        offers = neg['offer_history']   # dict
-                        counter_offers = neg['counter_offer_history'] # dict
-                        if offers and counter_offers:
-                            merged_offers = []
-                            for k, v in offers.items():
-                                amount = v[5]
-                                if amount == 4294967295:
-                                    continue
-                                merged_offers.append(amount)
-
-                            for k, v in counter_offers.items():
-                                amount = v[6]
-                                if amount == 4294967295:
-                                    continue
-                                merged_offers.append(amount)
-
-                            # max offer should be our offeredfee
-                            offeredfee = max(merged_offers)
-                        else:
-                            continue
-
-                    # is cpu transfer
-                    try:
-                        if neg['isusertransfer']:
-                            iscputransfer = False
-                        else:
-                            iscputransfer = True
-                    except KeyError:
-                        if i == 2 or i == 3:
-                            iscputransfer = False
-                        else:
-                            iscputransfer = True
-
-                    # isloanoffer
-                    if i == 1 or i == 3:
-                        isloanoffer = True
-                    else:
-                        isloanoffer = False
-
-                    to_write = [
-                        self.username,
-                        str(self.user_id),
-                        str(neg['playerid']),
-                        str(neg['teamid']),
-                        str(neg['offerteamid']),
-                        str(stage),
-                        str(iscputransfer),
-                        str(isloanoffer),
-                        str(isofferrejected),
-                        str(offeredfee),
-                    ]
-                    f_csv.write("{}\n".format(','.join(to_write)))
-
-    def _players_stats(self, mm):
-        """Current season players statistics"""
-        sign_mp002 = b"\x6D\x70\x30\x30\x32\x00"  # mp002 - MonitoredPlayers
-        sign_jo002 = b"\x6A\x6F\x30\x30\x32\x00"  # jo002 - JobOffers?
-        MP002_SIZE = 1616   # 0x650
-
-        mm.seek(0)
-        offset_start = mm.find(sign_mp002) + MP002_SIZE
-        if offset_start < MP002_SIZE:
-            # logging.error("_players_stats - mp002 not found")
-            return False
-
-        offset_end = mm.find(sign_jo002)
-        if offset_end < 0:
-            # logging.error("_players_stats - jo002 not found")
-            return False
-
-        stats_offset = self._get_stats_offset(mm, offset_end)
-
-        if stats_offset < 0:
-            # logging.error("_players_stats - stats_offset not found")
-            return False
-
-        # Save to file
-        with open(os.path.join(self.dest_path, "career_compdata_playerstats.csv"), 'w+', encoding='utf-8') as f_csv:
-            # create columns
-            headers = "username,ft_user_id,teamid,playerid,tournamentid,unk1,avg,app,goals,unk2,assists,unk3,yellowcards,redcards,unk6,unk7,cleansheets,unk9,unk10,unk11,unk12,unk13,date1,date2,date3\n"
-            f_csv.write(headers)
-
-            cur_pos = stats_offset
-            mm.seek(cur_pos, 0)
-
-            for p in range(7000):
-                mm.read(3)  # index
-                teamid = self.read_int32(mm.read(4))
-                playerid = self.read_int32(mm.read(4))
-                tournamentid = self.read_int16(mm.read(2))
-
-                if teamid == 4294967295 and playerid == 4294967295:
-                    break
-
-                unk1 = self.read_int16(mm.read(2))
-                avg = self.read_int16(mm.read(2))
-                app = self.read_int8(mm.read(1))
-                goals = self.read_int8(mm.read(1))
-                unk2 = self.read_int8(mm.read(1))
-                assists = self.read_int8(mm.read(1))
-                unk3 = self.read_int8(mm.read(1))
-                yellowcards = self.read_int8(mm.read(1))
-                redcards = self.read_int8(mm.read(1))
-                unk6 = self.read_int8(mm.read(1))
-                unk7 = self.read_int8(mm.read(1))
-                cleansheets = self.read_int8(mm.read(1))
-                unk9 = self.read_int8(mm.read(1))
-                unk10 = self.read_int32(mm.read(4))
-                unk11 = self.read_int8(mm.read(1))
-                unk12 = self.read_int16(mm.read(2))
-                unk13 = self.read_int8(mm.read(1))
-                date1 = self.read_int32(mm.read(4))
-                date2 = self.read_int32(mm.read(4))
-                date3 = self.read_int32(mm.read(4))
-
-                if app > 1:
-                    avg = int(avg / app)
-                f_csv.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(self.username, self.user_id, teamid, playerid, tournamentid,
-                                                                                                                  unk1, avg, app, goals, unk2, assists, unk3, yellowcards, redcards, unk6, unk7, cleansheets, unk9, unk10, unk11, unk12, unk13, date1, date2, date3))
-
-    def _release_clauses(self, mm):
-        """Players Release Clauses"""
-        sign = b"\x72\x6C\x63\x74\x72\x6B\x00"  # rlctrk - release clause sign (?)
-        mm.seek(0)
-        offset = mm.find(sign)
-
-        if offset < 0:
-            # release clause sign not found
-            return
-
-        # Validate signature
-        valid_offset = -1
-        while offset >= 0:
-            cur_pos = offset + len(sign)
-            mm.seek(cur_pos, 0)
-
-            # Number of players with release clause
-            num_of_players = self.read_int32(mm.read(4))
-
-            if num_of_players > 25000 or num_of_players < 0:
-                # invalid number of players
-                offset = mm.find(sign, offset + len(sign))
-                continue
-
-            playerid = self.read_int32(mm.read(4))
-            if playerid > 300000 or playerid < 0:
-                # invalid playerid
-                offset = mm.find(sign, offset + len(sign))
-                continue
-
-            # save valid offset
-            valid_offset = cur_pos
+    with open(fpath, encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            ret_val = row[fieldname]
             break
 
-        if valid_offset == -1:
-            # valid offset not found
-            return
+    return ret_val
 
-        mm.seek(valid_offset, 0)
-        num_of_players = self.read_int32(mm.read(4))
-        with open(os.path.join(self.dest_path, "career_rest_releaseclauses.csv"), 'w+', encoding='utf-8') as f_csv:
-            # create columns
-            headers = "username,ft_user_id,playerid,teamid,release_clause\n"
-            f_csv.write(headers)
+def rest_release_clauses_to_csv(
+    mm,
+    username,
+    user_id,
+    csv_dest_path,
+    rb,
+):
+    """Players Release Clauses"""
+    sign = b"\x72\x6C\x63\x74\x72\x6B\x00"  # rlctrk - release clause sign (?)
+    mm.seek(0)
+    offset = mm.find(sign)
+    if offset < 0:
+        # release clause sign not found
+        return
 
-            for p in range(num_of_players):
-                playerid = self.read_int32(mm.read(4))
-                teamid = self.read_int32(mm.read(4))
-                clause = self.read_int32(mm.read(4))
-                # fix problem with invalid release clause
-                if not (1 <= clause <= 2147483646):
-                    continue
+    # Validate signature
+    valid_offset = -1
+    while offset >= 0:
+        cur_pos = offset + len(sign)
+        mm.seek(cur_pos, 0)
 
-                f_csv.write("{},{},{},{},{}\n".format(
-                    self.username, self.user_id, playerid, teamid, clause))
+        # Number of players with release clause
+        num_of_players = rb.read_int32(mm.read(4))
+        if num_of_players > 25000 or num_of_players < 0:
+            # invalid number of players
+            offset = mm.find(sign, offset + len(sign))
+            continue
 
-    def _get_stats_offset(self, mm, compdata_end):
-        '''Return offset to stats at compdata'''
-        # stats
-        # Struct size   -   48         (0x30)
-        # Records       -   7000(?)    (0x1B58)
+        playerid = rb.read_int32(mm.read(4))
+        if playerid > 400000 or playerid < 0:
+            # invalid playerid
+            offset = mm.find(sign, offset + len(sign))
+            continue
 
-        struct_size = 48
+        # save valid offset
+        valid_offset = cur_pos
+        break
 
-        sign = b"\x00\x00\x01"
-        offset = mm.find(sign, mm.tell(), compdata_end)
+    if valid_offset == -1:
+        # valid offset not found
+        return
 
-        if offset < 0:
-            return -1
+    mm.seek(valid_offset, 0)
+    num_of_players = rb.read_int32(mm.read(4))
+    with open(os.path.join(csv_dest_path, "career_rest_releaseclauses.csv"), 'w+', encoding='utf-8') as f_csv:
+        # create columns
+        headers = "username,ft_user_id,playerid,teamid,release_clause\n"
+        f_csv.write(headers)
 
-        while offset >= 0:
-            if offset > compdata_end:
-                return -1
+        for p in range(num_of_players):
+            to_write = [
+                username, user_id,
+                rb.read_int32(mm.read(4)),  # playerid
+                rb.read_int32(mm.read(4)),  # teamid
+                rb.read_int32(mm.read(4)),  # clause
+            ]
 
-            # Set cursor at offset
-            mm.seek(offset, 0)
+            # fix problem with invalid release clause
+            # if not (1 <= clause <= 2147483646):
+            if not (1 <= to_write[4] <= 2147483646):
+                continue
 
-            # verify first 255 players
-            if self._verify_index(mm, struct_size, 255):
-                return offset
+            f_csv.write(','.join([str(x) for x in to_write]) + '\n')
 
-            offset = mm.find(sign, mm.tell() + 1, compdata_end)
 
+def get_stats_offset(mm, compdata_end):
+    '''Return offset to stats at compdata'''
+    # stats
+    # Struct size   -   48         (0x30)
+    # Records       -   7000(?)    (0x1B58)
+
+    struct_size = 48
+
+    sign = b"\x00\x00\x01"
+    offset = mm.find(sign, mm.tell(), compdata_end)
+
+    if offset < 0:
         return -1
 
-    def _verify_index(self, mm, struct_size, range_max):
-        """Verify compobj index"""
+    while offset >= 0:
+        if offset > compdata_end:
+            return -1
 
+        # Set cursor at offset
+        mm.seek(offset, 0)
+
+        # verify first 255 players
+        if verify_index(mm, struct_size, 255):
+            return offset
+
+        offset = mm.find(sign, mm.tell() + 1, compdata_end)
+
+    return -1
+
+
+def verify_index(mm, struct_size, range_max):
+    """Verify compobj index"""
+
+    mm.seek(struct_size, 1)
+    for x in range(1, range_max):
+        current_pos = mm.tell()
+        next_unit = bytes([x]) + b"\x00\x01"
+        find = mm.find(next_unit, current_pos, current_pos + struct_size)
+        if find != current_pos:
+            return False
         mm.seek(struct_size, 1)
-        for x in range(1, range_max):
-            current_pos = mm.tell()
-            next_unit = bytes([x]) + b"\x00\x01"
-            find = mm.find(next_unit, current_pos, current_pos + struct_size)
-            if find != current_pos:
-                return False
-            mm.seek(struct_size, 1)
 
-        return True
+    return True
 
 
-class DatabaseToCSV(ReadBytesBase):
-    """Convert FIFA .db to .csv format.
-        Parameters
-        ----------
-        dbs_path : str
-            Path containing FIFA .db files.
+def rest_players_stats_to_csv(
+    mm,
+    username,
+    user_id,
+    csv_dest_path,
+    rb
+):
+    """Current season players statistics"""
+    sign_mp002 = b"\x6D\x70\x30\x30\x32\x00"  # mp002 - MonitoredPlayers
+    sign_jo002 = b"\x6A\x6F\x30\x30\x32\x00"  # jo002 - JobOffers?
+    MP002_SIZE = 1616  # 0x650
 
-        user : obj
-            Django User model object.
+    mm.seek(0)
+    offset_start = mm.find(sign_mp002) + MP002_SIZE
+    if offset_start < MP002_SIZE:
+        # logging.error("_players_stats - mp002 not found")
+        return False
+    offset_end = mm.find(sign_jo002)
+    if offset_end < 0:
+        # logging.error("_players_stats - jo002 not found")
+        return False
 
-        db_name: str
-            Name of the db file
+    stats_offset = get_stats_offset(mm, offset_end)
 
-        num_of_db : int
-            Number of .db files in <dbs_path>
+    if stats_offset < 0:
+        # logging.error("_players_stats - stats_offset not found")
+        return False
 
-        xml_file : str
-            Full path to "fifa_ng_db-meta.xml" file
+    # Save to file
+    with open(os.path.join(csv_dest_path, "career_compdata_playerstats.csv"), 'w+', encoding='utf-8') as f_csv:
+        # create columns
+        headers = "username,ft_user_id,teamid,playerid,tournamentid,unk1,avg,app,goals,unk2,assists,unk3" \
+                  ",yellowcards,redcards,unk6,unk7,cleansheets,unk9,unk10,unk11,unk12,unk13,date1,date2,date3\n"
+        f_csv.write(headers)
 
-        dest_path : str
-            Path where csv files will be exported. Default="<dbs_path>\\csv"
+        cur_pos = stats_offset
+        mm.seek(cur_pos, 0)
 
-    """
+        for p in range(7000):
+            mm.read(3)  # index
+            to_write = [
+                username,
+                user_id,
+                rb.read_int32(mm.read(4)),  # teamid
+                rb.read_int32(mm.read(4)),  # playerid
+                rb.read_int16(mm.read(2)),  # tournamentid
+            ]
 
-    def __init__(
-        self,
-        dbs_path,
-        user,
-        db_name,
-        xml_table_names,
-        xml_field_names,
-        xml_field_range,
-        xml_field_pkeys,
-        dest_path=None
-    ):
-        self.path = dbs_path
-        self.username = user.username
-        self.user_id = user.id
-        self.db_name = db_name
+            # If teamid == -1 and playerid == -1
+            if to_write[2] == 4294967295 and to_write[3] == 4294967295:
+                break
 
-        self.xml_table_names = xml_table_names
-        self.xml_field_names = xml_field_names
-        self.xml_field_range = xml_field_range
-        self.xml_field_pkeys = xml_field_pkeys
+            to_write.extend([
+                rb.read_int16(mm.read(2)),  # unk1
+                rb.read_int16(mm.read(2)),  # avg
+                rb.read_int8(mm.read(1)),  # app
+                rb.read_int8(mm.read(1)),  # goals
+                rb.read_int8(mm.read(1)),  # unk2
+                rb.read_int8(mm.read(1)),  # assists
+                rb.read_int8(mm.read(1)),  # unk3
+                rb.read_int8(mm.read(1)),  # yellowcards
+                rb.read_int8(mm.read(1)),  # redcards
+                rb.read_int8(mm.read(1)),  # unk6
+                rb.read_int8(mm.read(1)),  # unk7
+                rb.read_int8(mm.read(1)),  # cleansheets
+                rb.read_int8(mm.read(1)),  # unk9
+                rb.read_int32(mm.read(4)),  # unk10
+                rb.read_int8(mm.read(1)),  # unk11
+                rb.read_int16(mm.read(2)),  # unk12
+                rb.read_int8(mm.read(1)),  # unk13
+                rb.read_int32(mm.read(4)),  # date1
+                rb.read_int32(mm.read(4)),  # date2
+                rb.read_int32(mm.read(4)),  # date3
+            ])
 
-        if dest_path:
-            self.dest_path = dest_path
-        else:
-            self.dest_path = os.path.join(self.path, "csv")
-            if os.path.exists(self.dest_path):
-                shutil.rmtree(self.dest_path)
+            # if app > 1
+            if to_write[7] > 1:
+                # avg = int(avg / app)
+                to_write[6] = to_write[6] // to_write[7]
 
-    def convert_to_csv(self):
-        """Export data from FIFA database tables to csv files."""
+            f_csv.write(','.join([str(x) for x in to_write]) + '\n')
 
-        database_path = self.path
-        csv_path = self.dest_path
+# def rest_clb_neg_to_csv(mm):
+#     sign_clbneg = b"\x63\x6C\x62\x6E\x65\x67\x00"    # clbneg
+#     mm.seek(0)
+#
+#     offsets = []
+#
+#     offset = mm.find(sign_clbneg)
+    # while offset >= 0:
+    #     cur_pos = offset + len(sign_clbneg)
+    #     mm.seek(cur_pos, 0)
+    #     offsets.append(cur_pos)
+    #     offset = mm.find(sign_clbneg)
+    #
+    # if len(offsets) != 4:
+    #     return
+    #
+    # # clbneg_1 all teams transfers?
+    # # clbneg_2 all teams loans?
+    # # clbneg_3 my team transfers?
+    # # clbneg_4 my team loans?
+    # clbneg_structs = {
+    #     'clbneg_1': {
+    #         'playerid': 4,
+    #         'offerteamid': 4,
+    #         'teamid': 4,
+    #         'unk1': 1,
+    #         'isusertransfer': 1,
+    #         'unk3': 8,
+    #         'unk4': 8,
+    #         'transfer_sum1': 4,
+    #         'transfer_sum2': 4,
+    #         'stage': 4,
+    #         'unk6': 60,
+    #         'unk7': 1,
+    #         'unk8': 1,
+    #         'isofferrejected': 1,
+    #         'unk10': 1,
+    #         'offer_history': {
+    #             'num': 4,
+    #             'size_of': 12,
+    #         },
+    #         'counter_offer_history': {
+    #             'num': 4,
+    #             'size_of': 16,
+    #         },
+    #     },
+    #     'clbneg_2': {
+    #         'playerid': 4,
+    #         'offerteamid': 4,
+    #         'teamid': 4,
+    #         'unk1': 1,
+    #         'isusertransfer': 1,
+    #         'unk3': 4,
+    #         'unk4': 4,
+    #         'unk5': 4,
+    #         'unk6': 60,
+    #         'unk7': 1,
+    #         'unk8': 1,
+    #         'unk9': 1,
+    #         'unk10': 1,
+    #         'unk11': {
+    #             'num': 4,
+    #             'size_of': 12,
+    #         },
+    #         'unk12': {
+    #             'num': 4,
+    #             'size_of': 12,
+    #         },
+    #     },
+    #     'clbneg_3': {
+    #         'playerid': 4,
+    #         'offerteamid': 4,
+    #         'teamid': 4,
+    #         'offer_history': {
+    #             'num': 4,
+    #             'size_of': 84,
+    #         },
+    #         'counter_offer_history': {
+    #             'num': 4,
+    #             'size_of': 88,
+    #         },
+    #         'status': {
+    #             'num': 4,
+    #             'size_of': 12,
+    #         },
+    #     },
+    #     'clbneg_4': {
+    #         'playerid': 4,
+    #         'offerteamid': 4,
+    #         'teamid': 4,
+    #         'unk1': {
+    #             'num': 4,
+    #             'size_of': 28,
+    #         },
+    #         'unk2': {
+    #             'num': 4,
+    #             'size_of': 28,
+    #         },
+    #         'unk3': {
+    #             'num': 4,
+    #             'size_of': 12,
+    #         },
+    #     },
+    # }
+    # clbneg_data = {}
+    # try:
+    #     for i, off in enumerate(offsets):
+    #         mm.seek(off, 0)
+    #         length = self.read_int32(mm.read(4))
+    #         key = 'clbneg_{}'.format(i+1)
+    #         clbneg_struct = clbneg_structs[key]
+    #         clbneg_data[key] = []
+    #         for l in range(length):
+    #             result = {}
+    #             for k, v in clbneg_struct.items():
+    #                 if isinstance(v, dict):
+    #                     length_child = self.read_int32(mm.read(4))
+    #                     child_data = {}
+    #                     loops = int(v['size_of']/4)
+    #                     for j in range(length_child):
+    #                         child_data[j] = []
+    #                         for data in range(loops):
+    #                             child_data[j].append(self.read_int32(mm.read(4)))
+    #                     val = child_data
+    #                 elif v == 1:
+    #                     val = bool(self.read_int8(mm.read(1)))
+    #                 elif v == 4:
+    #                     val = self.read_int32(mm.read(4))
+    #                 elif v == 8:
+    #                     val = self.read_int64(mm.read(8))
+    #                 else:
+    #                     loops = int(v/4)
+    #                     child_data = []
+    #                     for data in range(loops):
+    #                         child_data.append(self.read_int32(mm.read(4)))
+    #                     val = child_data
+    #
+    #                 result[k] = val
+    #             clbneg_data[key].append(result)
+    # except Exception as e:
+    #     logging.error("_club_neg error {}".format(str(e)))
+    #     return
+    #
+    # # Save to file
+    # headers = [
+    #     'username',
+    #     'ft_user_id',
+    #     'playerid',
+    #     'teamid',
+    #     'offerteamid',
+    #     'stage',
+    #     'iscputransfer',
+    #     'isloanoffer',
+    #     'isofferrejected',
+    #     'offeredfee',
+    # ]
+    # with open(
+    #     os.path.join(self.dest_path, "career_compdata_clubnegotiations.csv"), 'w+', encoding='utf-8'
+    # ) as f_csv:
+    #     # create columns
+    #     f_csv.write("{}\n".format(','.join(headers)))
+    #
+    #     for i in range(4):
+    #         for neg in clbneg_data['clbneg_{}'.format(i + 1)]:
+    #
+    #             stage = 2
+    #             isofferrejected = False
+    #             offeredfee = 0
+    #
+    #             if i == 0:
+    #                 stage = neg['stage']
+    #                 isofferrejected = neg['isofferrejected']
+    #
+    #                 offers = neg['offer_history']   # dict
+    #                 counter_offers = neg['counter_offer_history']  # dict
+    #                 if offers and counter_offers:
+    #                     merged_offers = []
+    #                     for k, v in offers.items():
+    #                         merged_offers.append(v)
+    #
+    #                     for k, v in counter_offers.items():
+    #                         merged_offers.append(v)
+    #
+    #                     # sort by offer date
+    #                     merged_offers.sort(key=lambda d: d[1])
+    #
+    #                     # last offer should be our offeredfee
+    #                     offeredfee = merged_offers[-1][0]
+    #                 else:
+    #                     continue
+    #             elif i == 2:
+    #                 offers = neg['offer_history']   # dict
+    #                 counter_offers = neg['counter_offer_history'] # dict
+    #                 if offers and counter_offers:
+    #                     merged_offers = []
+    #                     for k, v in offers.items():
+    #                         amount = v[5]
+    #                         if amount == 4294967295:
+    #                             continue
+    #                         merged_offers.append(amount)
+    #
+    #                     for k, v in counter_offers.items():
+    #                         amount = v[6]
+    #                         if amount == 4294967295:
+    #                             continue
+    #                         merged_offers.append(amount)
+    #
+    #                     # max offer should be our offeredfee
+    #                     offeredfee = max(merged_offers)
+    #                 else:
+    #                     continue
+    #
+    #             # is cpu transfer
+    #             try:
+    #                 if neg['isusertransfer']:
+    #                     iscputransfer = False
+    #                 else:
+    #                     iscputransfer = True
+    #             except KeyError:
+    #                 if i == 2 or i == 3:
+    #                     iscputransfer = False
+    #                 else:
+    #                     iscputransfer = True
+    #
+    #             # isloanoffer
+    #             if i == 1 or i == 3:
+    #                 isloanoffer = True
+    #             else:
+    #                 isloanoffer = False
+    #
+    #             to_write = [
+    #                 self.username,
+    #                 str(self.user_id),
+    #                 str(neg['playerid']),
+    #                 str(neg['teamid']),
+    #                 str(neg['offerteamid']),
+    #                 str(stage),
+    #                 str(iscputransfer),
+    #                 str(isloanoffer),
+    #                 str(isofferrejected),
+    #                 str(offeredfee),
+    #             ]
+    #             f_csv.write("{}\n".format(','.join(to_write)))
 
-        # Create csv path dir
-        if not os.path.exists(csv_path):
-            os.makedirs(csv_path)
 
-        if not self.username:
-            username = ""
-        else:
-            username = self.username
+def convert_rest_to_csv(
+    data_path,
+    user,
+    csv_dest_path,
+    rb,
+):
+    username = user.username
+    user_id = str(user.id)
 
-        if not self.user_id:
-            user_id = ""
-        else:
-            user_id = str(self.user_id)
+    rf_full_path = os.path.join(data_path, "rest")
+    # Check if file exists
+    if not os.path.isfile(rf_full_path):
+        return
 
-        database_full_path = os.path.join(
-            database_path, self.db_name
+    with open(rf_full_path, 'rb') as rf:
+        mm = mmap.mmap(rf.fileno(), length=0, access=mmap.ACCESS_READ)
+
+    rest_release_clauses_to_csv(mm, username, user_id, csv_dest_path, rb)
+    rest_players_stats_to_csv(mm, username, user_id, csv_dest_path, rb)
+
+
+def convert_db_to_csv(
+    data_path,
+    user,
+    meta,
+    db_name,
+    csv_path,
+    slot,
+    rb,
+    season='',
+    start_setupdate=0,
+):
+    username = user.username
+    user_id = str(user.id)
+
+    xml_table_names = meta['table_names']
+    xml_field_names = meta['field_names']
+    xml_field_range = meta['field_range']
+
+    # Create csv path dir
+    if not os.path.exists(csv_path):
+        os.makedirs(csv_path)
+
+    database_full_path = os.path.join(
+        data_path, db_name
+    )
+
+    if not os.path.isfile(database_full_path):
+        logging.error('File not found: {}'.format(database_full_path))
+        raise Exception('DB file not found.')
+    with open(database_full_path, 'rb') as f:
+        # FIFA Database file header
+        database_header = b"\x44\x42\x00\x08\x00\x00\x00\x00"
+
+        mm = mmap.mmap(f.fileno(), length=0, access=mmap.ACCESS_READ)
+    offset = mm.find(database_header)
+
+    if offset == -1:
+        logging.error("File header not matching")
+        return  # File header not matching
+    mm.seek(offset + len(database_header))
+    db_size = rb.read_int32(mm.read(4))  # 0x8
+
+    if db_size != mm.size():
+        logging.error("Invalid DBSize. {} != {}".format(db_size, mm.size()))
+        return  # Invalid file size
+
+    mm.seek(4, 1)  # Skip unknown 4 bytes, 0xC
+    # Num of tables in database
+    count_tables = rb.read_int32(mm.read(4))  # 0x10
+
+    # CRC32 (POLYNOMIAL = 0x04C11DB7)
+    mm.seek(4, 1)
+
+    # CrcHeader = self.ReadInt32(mm.read(4))     # CRC32, 0x14
+
+    table_names = []
+    table_offsets = []
+
+    for x in range(count_tables):
+        table_names.append(
+            mm.read(4).decode("utf-8")
         )
-        if os.path.exists(database_full_path):
-            # Open FIFA Database
-            with open(database_full_path, 'rb') as f:
-                database_header = b"\x44\x42\x00\x08\x00\x00\x00\x00"    # FIFA Database file header
-                mm = mmap.mmap(f.fileno(), length=0, access=mmap.ACCESS_READ)
-                offset = mm.find(database_header)
+        table_offsets.append(
+            rb.read_int32(mm.read(4))
+        )
 
-                if offset == -1:
-                    logging.error("File header not matching")
-                    return   # File header not matching
+    mm.seek(4, 1)
+    # CrcShortNames = self.ReadInt32(mm.read(4))   # CRC32
 
-                mm.seek(offset + len(database_header))
-                dbSize = self.read_int32(mm.read(4))  # 0x8
+    tables_start_offset = mm.tell()
+    all_shortnames = []
 
-                if dbSize != mm.size():
-                    logging.error("Invalid DBSize. {} != {}".format(dbSize, mm.size()))
-                    return     # Invalid file size
+    new_csv_content = {}
 
-                mm.seek(4, 1)  # Skip unknown 4 bytes, 0xC
-                # Num of tables in database
-                countTables = self.read_int32(mm.read(4))   # 0x10
+    s1 = time.time()
 
-                # CRC32 (POLYNOMIAL = 0x04C11DB7)
-                mm.seek(4, 1)
-                # CrcHeader = self.ReadInt32(mm.read(4))     # CRC32, 0x14
+    for t in range(count_tables):
+        # Skip invalid database tables (not stored in database meta)
+        # Most probably user picked wrong FIFA or it's save from console
+        try:
+            table_name = xml_table_names[table_names[t]]
+        except KeyError as e:
+            logging.warning("Invalid table {}".format(e))
+            continue
 
-                table_names = list()
-                TableOffsets = list()
+        # Ignore tables we don't use (faster file processing)
+        if table_name not in SUPPORTED_TABLES:
+            continue
 
-                for x in range(countTables):
-                    table_names.append(mm.read(4).decode("utf-8"))
-                    TableOffsets.append(self.read_int32(mm.read(4)))
+        mm.seek(tables_start_offset + table_offsets[t])
+        mm.seek(4, 1)  # unknown
+        record_size = rb.read_int32(mm.read(4))  # Size of the record
+        mm.seek(10, 1)  # Not needed atm.
+        # mm.seek(4, 1)  #
+        # mm.seek(4, 1)  #
+        # mm.seek(2, 1)  # Total record
+        num_of_valid_records = rb.read_int16(mm.read(2))  # Number of valid records
+        mm.seek(4, 1)  # Unknown
+        num_of_fields = rb.read_int8(mm.read(1))  # Number of fields
+        mm.seek(11, 1)  # Not needed atm.
+        # mm.seek(7, 1)  # Unknown
+        # mm.seek(4, 1)  # CRC32
 
-                mm.seek(4, 1)
-                # CrcShortNames = self.ReadInt32(mm.read(4))   # CRC32
+        if num_of_valid_records <= 0:
+            continue
 
-                TablesStartOffset = mm.tell()
-                allshortnames = list()
+        # Temporary (not sorted)
+        tmp_fieldtypes = []
+        tmp_bitoffsets = []
+        tmp_shortnames = []
+        tmp_bitdepth = []
+        str_field_index = []
 
-                for x in range(countTables):
-                    # Skip unsupported database tables
-                    try:
-                        table_name = self.xml_table_names[table_names[x]]
-                    except KeyError as e:
-                        logging.warning("Unsupported database table {}".format(e))
-                        continue
+        for y in range(num_of_fields):
+            # Fieldtypes
+            # DBOFIELDTYPE_STRING = 0
+            # DBOFIELDTYPE_STRING = 13 (Compressed)
+            # DBOFIELDTYPE_INTEGER = 3
+            # DBOFIELDTYPE_TIME = ??
+            # DBOFIELDTYPE_DATE = 3
+            # DBOFIELDTYPE_REAL = 4
 
-                    # Ignore tables we don't use
-                    if table_name not in SUPPORTED_TABLES:
-                        continue
+            fieldtype = rb.read_int32(mm.read(4))
 
-                    mm.seek(TablesStartOffset + TableOffsets[x])
-                    mm.seek(4, 1)  # unknown
-                    record_size = self.read_int32(mm.read(4))  # Size of the record
-                    mm.seek(10, 1)   # Don't need it right now
-                    # mm.seek(4, 1)  #
-                    # mm.seek(4, 1)  #
-                    # mm.seek(2, 1)  # Total record
-                    num_of_valid_records = self.read_int16(mm.read(2))  # Number of valid records
-                    mm.seek(4, 1)  # Unknown
-                    num_of_fields = self.read_int8(mm.read(1))  # Number of fields
-                    mm.seek(11, 1)  # Don't need it right now
-                    # mm.seek(7, 1)  # Unknown
-                    # mm.seek(4, 1)  # CRC32
+            # not sorted
+            tmp_fieldtypes.append(fieldtype)  # fieldtypes
+            tmp_bitoffsets.append(rb.read_int32(mm.read(4)))  # bitoffset
+            tmp_shortnames.append(mm.read(4).decode("utf-8"))  # shortname
+            tmp_bitdepth.append(rb.read_int32(mm.read(4)))  # depth
 
-                    if num_of_valid_records <= 0:
-                        continue
+            # String
+            if fieldtype == 0:
+                str_field_index.append(y)
 
-                    with open(os.path.join(csv_path, "{}.csv".format(table_name)), 'w+', encoding='utf-8') as f_csv:
-                        tmp_fieldtypes = list()
-                        tmp_bitoffsets = list()
-                        tmp_shortnames = list()
-                        tmp_bitdepth = list()
-                        str_field_index = list()
+        # Sort
+        sorted_bit_offsets = sorted(
+            range(len(tmp_bitoffsets)), key=tmp_bitoffsets.__getitem__
+        )
 
-                        for y in range(num_of_fields):
-                            # Fieldtypes
-                            # DBOFIELDTYPE_STRING = 0
-                            # DBOFIELDTYPE_STRING = 13 (Compressed)
-                            # DBOFIELDTYPE_INTEGER = 3
-                            # DBOFIELDTYPE_TIME = ??
-                            # DBOFIELDTYPE_DATE = 3
-                            # DBOFIELDTYPE_REAL = 4
+        # CSV - table headers
+        headers = ["username,ft_user_id,ft_slot"]
 
-                            fieldtype = self.read_int32(mm.read(4))
+        fieldtypes = list()
+        bitoffsets = list()
+        shortnames = list()
+        bitdepth = list()
 
-                            # not sorted
-                            tmp_fieldtypes.append(fieldtype)  # fieldtypes
-                            tmp_bitoffsets.append(self.read_int32(mm.read(4)))  # bitoffset
-                            tmp_shortnames.append(mm.read(4).decode("utf-8"))  # shortname
-                            tmp_bitdepth.append(self.read_int32(mm.read(4)))  # depth
+        for v in range(num_of_fields):
+            # [rdx]
+            fieldtypes.append(tmp_fieldtypes[sorted_bit_offsets[v]])
+            # [r10+4] (r10 == rdx)
+            bitoffsets.append(tmp_bitoffsets[sorted_bit_offsets[v]])
+            shortnames.append(tmp_shortnames[sorted_bit_offsets[v]])
+            # [r10+C]
+            bitdepth.append(tmp_bitdepth[sorted_bit_offsets[v]])
+            try:
+                headers.append(xml_field_names[shortnames[v]])
+            except KeyError:
+                # print("missing {}:{}\n".format(table_name, shortnames[v]))
+                # headers += str(shortnames[v]).lower() + ","
+                logging.exception()
+                raise KeyError(
+                    'Database contains invalid columns. Did you choose correct FIFA version?'
+                )
 
-                            # String
-                            if fieldtype == 0:
-                                str_field_index.append(y)
+        all_shortnames.append(shortnames)
+        new_csv_content[table_name] = {
+            'content': '',
+        }
+        new_content = [','.join(headers)]
+        ident = [username, user_id, slot]
+        # Read all records
+        for i in range(num_of_valid_records):
+            csv_line = ident.copy()
+            tmp_byte = 0
+            currentbitpos = 0
 
-                        # Sort
-                        sorted_bit_offsets = sorted(
-                            range(len(tmp_bitoffsets)), key=tmp_bitoffsets.__getitem__
-                        )
+            cur_position = mm.tell()
+            for j in range(num_of_fields):
+                fieldtype = fieldtypes[j]
+                if fieldtype == 0:
+                    # String
+                    tmp_byte = 0
+                    currentbitpos = 0
 
-                        # CSV - table headers
-                        if username and user_id:
-                            headers = "username,ft_user_id,"
-                        else:
-                            headers = ""
+                    mm.seek(cur_position + (bitoffsets[j] >> 3))
+                    writevalue = rb.read_nullbyte_str(
+                        mm, bitdepth[j] >> 3
+                    )
+                elif fieldtype == 3:
+                    # INTEGER
+                    val = 0
+                    startbit = 0
 
-                        fieldtypes = list()
-                        bitoffsets = list()
-                        shortnames = list()
-                        bitdepth = list()
+                    depth = bitdepth[j]
+                    if currentbitpos != 0:
+                        startbit = 8 - currentbitpos
+                        val = tmp_byte >> currentbitpos
 
-                        for v in range(num_of_fields):
-                            # [rdx]
-                            fieldtypes.append(tmp_fieldtypes[sorted_bit_offsets[v]])
-                            # [r10+4] (r10 == rdx)
-                            bitoffsets.append(tmp_bitoffsets[sorted_bit_offsets[v]])
-                            shortnames.append(tmp_shortnames[sorted_bit_offsets[v]])
-                            # [r10+C]
-                            bitdepth.append(tmp_bitdepth[sorted_bit_offsets[v]])
-                            try:
-                                headers += (self.xml_field_names[shortnames[v]] + ",")
-                            except KeyError:
-                                # print("missing {}:{}\n".format(table_name, shortnames[v]))
-                                # headers += str(shortnames[v]).lower() + ","
-                                raise KeyError(
-                                    'Database contains unsupported columns. Did you choose correct FIFA version?'
-                                )
+                    while startbit < depth:
+                        # Read single byte
+                        tmp_byte = rb.read_int8(mm.read(1))
+                        val += tmp_byte << startbit
+                        startbit += 8
 
-                        f_csv.write(headers.rstrip(',') + "\n")
+                    # Remember bit position for next iteration
+                    currentbitpos = (depth + 8 - startbit & 7)
+                    val &= (1 << depth) - 1
 
-                        allshortnames.append(shortnames)
-                        # Read all records
-                        for i in range(num_of_valid_records):
-                            tmp_byte = 0
-                            currentbitpos = 0
-                            values = username + "," + user_id + ","
+                    # Add range_low to the value
+                    range_low_key = xml_table_names[table_names[t]] + xml_field_names[shortnames[j]]
+                    writevalue = str(val + xml_field_range[range_low_key])
+                elif fieldtype == 4:
+                    # Float
+                    mm.seek(cur_position + (bitoffsets[j] >> 3))
+                    writevalue = str(rb.read_float(mm.read(4)))
+                else:
+                    # Unsupported
+                    raise KeyError(
+                        'Unsupported field type. {} = {}'.format(shortnames[j], fieldtype)
+                    )
+                csv_line.append(writevalue)
+            mm.seek(cur_position + record_size)
 
-                            cur_position = mm.tell()
-                            for j in range(num_of_fields):
-                                fieldtype = fieldtypes[j]
-                                if fieldtype == 0:
-                                    # String
-                                    tmp_byte = 0
-                                    currentbitpos = 0
+            new_content.append(
+                ','.join(csv_line)
+            )
 
-                                    mm.seek(cur_position + (bitoffsets[j] >> 3))
-                                    writevalue = self.read_nullbyte_str(
-                                        mm, bitdepth[j] >> 3
-                                    )
-                                elif fieldtype == 3:
-                                    # INTEGER
-                                    val = 0
-                                    startbit = 0
+        content_as_str = '\n'.join(new_content)
+        new_csv_content[table_name]['content'] = content_as_str
 
-                                    depth = bitdepth[j]
-                                    if currentbitpos != 0:
-                                        startbit = 8 - currentbitpos
-                                        val = tmp_byte >> currentbitpos
+    mm.close()  # Close mmap
+    logging.info('Tables processed in {}s.'.format(
+        round(time.time() - s1, 3)
+    ))
 
-                                    while startbit < depth:
-                                        # Read single byte
-                                        tmp_byte = self.read_int8(mm.read(1))
-                                        val += tmp_byte << startbit
-                                        startbit += 8
+    s1 = time.time()
+    # Save in CSV
 
-                                    # Remember bit position for next iteration
-                                    currentbitpos = (depth + 8 - startbit & 7)
-                                    val &= (1 << depth) - 1
+    if not season:
+        setupdate = int(new_csv_content['career_calendar']['content'].split('\n')[1].split(',')[len(ident) + 3][2:4])
+        season = str(setupdate - start_setupdate)
 
-                                    # Add range_low to the value
-                                    range_low_key = self.xml_table_names[table_names[x]] + self.xml_field_names[shortnames[j]]
-                                    writevalue = val + int(self.xml_field_range[range_low_key])
-                                elif fieldtype == 4:
-                                    # Float
-                                    mm.seek(cur_position + (bitoffsets[j] >> 3))
-                                    writevalue = self.read_float(mm.read(4))
-                                else:
-                                    # Unsupported
-                                    raise KeyError(
-                                        'Unsupported field type. {} = {}'.format(shortnames[j], fieldtype)
-                                    )
-                                values += (str(writevalue) + ",")
+    # anonymize_data
+    if 'career_users' in new_csv_content:
+        firstname_index = len(ident)
+        surname_index = firstname_index + 1
+        lines = new_csv_content['career_users']['content'].split('\n')
+        for i, line in enumerate(lines[1:]):
+            fields = line.split(',')
+            fields[firstname_index] = fields[firstname_index][0] + ('*' * 5)    # first name
+            fields[surname_index] = fields[surname_index][0] + ('*' * 5)        # surname
+            lines[i+1] = ','.join(fields)
+        new_csv_content['career_users']['content'] = '\n'.join(lines)
 
-                            f_csv.write(values.rstrip(',') + '\n')
-                            mm.seek(cur_position + record_size)
+    for table_name, content in new_csv_content.items():
+        # add season
+        lines = content['content'].split('\n')
+        lines[0] += ',ft_season'
+        for i, line in enumerate(lines[1:]):
+            lines[i+1] += ',{}'.format(season)
 
-                mm.close()  # Close mmap
-        # os.remove(database_full_path) # Remove FIFA database file
+        content['content'] = '\n'.join(lines)
+
+        with open(os.path.join(csv_path, "{}.csv".format(table_name)), 'w+', encoding='utf-8') as f_csv:
+            f_csv.write(content['content'])
+
+    logging.info('Files created in {}s.'.format(
+        round(time.time() - s1, 5)
+    ))
+    # os.remove(database_full_path)  # Remove FIFA database file
+    return season
 
 
-class ParseCareerSave(ReadBytesBase):
+def parse_fifa_db_xml(
+    xml_file,
+):
+    """ Read data from meta XML file for a FIFA database. """
+
+    meta = {
+        'table_names': {},
+        'field_names': {},
+        'field_range': {},
+        'pkeys': {},
+    }
+
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
+
+    for child in root:
+        try:
+            for node in child.getiterator():
+                try:
+                    meta['table_names'][node.attrib['shortname']] = node.attrib['name']
+                    for a in node.getiterator():
+                        if a.tag == 'field':
+                            meta['field_names'][a.attrib['shortname']] = a.attrib['name']
+                            if a.attrib['type'] == "DBOFIELDTYPE_INTEGER":
+                                meta['field_range'][node.attrib['name'] + a.attrib['name']] = \
+                                    int(a.attrib['rangelow'])
+                            else:
+                                meta['field_range'][node.attrib['name'] + a.attrib['name']] = 0
+
+                            if 'key' in a.attrib:
+                                if a.attrib['key'] == "True":
+                                    meta['pkeys'][node.attrib['name']] = a.attrib['name']
+                except ValueError:
+                    continue
+        except (KeyError, IndexError):
+            pass
+
+    return meta
+
+def remove_savefile(career_file_fullpath):
+    try:
+        if os.path.exists(career_file_fullpath):
+            os.remove(career_file_fullpath)
+            return True
+    except PermissionError:
+        logging.exception('PermissionError - remove_savefile')
+    except TypeError:
+        pass
+
+    return False
+
+
+def unpack_all_dbs(
+    career_file_fullpath,
+    data_path,
+    fifa_edition,
+    rb,
+):
+    # Recognize FIFA Edition basing on file size
+    fifa_signatures = {
+        b'\x6E\x40\x72\x00': '17',
+        b'\x63\x7D\xA9\x00': '18',
+        b'\x17\x5E\xC6\x00': '19',
+    }
+    unpacked_dbs = 0
+
+    with open(career_file_fullpath, 'rb') as f:
+        mm = mmap.mmap(f.fileno(), length=0, access=mmap.ACCESS_READ)
+
+    # FIFA Database file signature
+    database_header = b"\x44\x42\x00\x08\x00\x00\x00\x00"
+    offset = mm.find(database_header)
+
+    # Signature not found
+    if offset < 0:
+        return 0
+
+    cur_pos = mm.tell()  # Save cursor position
+    mm.seek(14)  # 0xE - FILE SIZE
+    fifa_sign = mm.read(4)  # Read sign (0x4 bytes)
+
+    if not fifa_edition:
+        try:
+            fifa_edition = fifa_signatures[fifa_sign]
+        except KeyError:
+            logging.warning("Unknown fifa_sign: {}".format(fifa_sign))
+            fifa_edition = str(DEFAULT_FIFA_EDITION)
+
+    # Restore cursor position
+    mm.seek(cur_pos)
+
+    # Data before databases section
+    with open(os.path.join(data_path, "data_before_db"), "wb") as data_before_db:
+        data_before_db.write(mm[:offset])
+
+    # Databases section
+    while offset >= 0:
+        cur_pos = offset + len(database_header)
+        mm.seek(cur_pos, 0)
+        dbSize = rb.read_int32(mm.read(4))
+        end_of_data = offset + dbSize
+
+        # Create .db file
+        with open(os.path.join(data_path, "{}.db".format(unpacked_dbs + 1)), "wb") as database_file:
+            # Write data to .db file
+            database_file.write(mm[offset:end_of_data])
+
+        offset = mm.find(database_header, end_of_data)
+        unpacked_dbs += 1
+
+        # Data after databases section
+        with open(os.path.join(data_path, "rest"), "wb") as rest:
+            rest.write(mm[end_of_data:])
+
+    return unpacked_dbs
+
+
+def update_savefile_model(cs_model, code, msg):
+    logging.info(msg)
+    cs_model.file_process_status_code = code
+    cs_model.file_process_status_msg = msg
+    cs_model.save()
+
+
+def parse_career_save(
+    career_file_fullpath,
+    data_path,
+    user,
+    slot,
+    xml_file=None,
+    fifa_edition=None,
+):
     """Parse FIFA Career Save.
         Parameters
         ----------
         career_file_fullpath : str
             Full path to save file. media/<USERNAME>/CareerData
 
-        careersave_data_path : str
+        data_path : str
             Path where data will be unpacked and stored. (csv files)
 
         user : obj
             Django User model object.
 
+        slot : str
+            Career Slot number
+
         xml_file : str
             Full path to "fifa_ng_db-meta.xml" file
+
+        fifa_edition : str
+            Which FIFA.
     """
-    def __init__(
-        self,
+
+    # Count time spent on processing save
+    reset_queries()
+    start = time.time()
+
+    # career save file model
+    cs_model = CareerSaveFileModel.objects.filter(
+        user_id=user.id
+    ).first()
+
+    if fifa_edition:
+        if not isinstance(fifa_edition, str):
+            fifa_edition = str(fifa_edition)
+
+    # Create Data Path
+    if not os.path.exists(data_path):
+        os.makedirs(data_path)
+
+    # Make copy of career save file
+    f_backup = os.path.join(data_path, "savefile")
+    if os.path.exists(f_backup):
+        os.remove(f_backup)
+
+    shutil.copy2(career_file_fullpath, f_backup)
+
+    # Unpack databases from career file.
+    update_savefile_model(
+        cs_model=cs_model, code=0, msg=_("Unpacking database from career file.")
+    )
+
+    read_b = ReadBytesHelper()
+    # Num of unpacked DB files
+    unpacked_dbs = unpack_all_dbs(
         career_file_fullpath,
-        careersave_data_path,
+        data_path,
+        fifa_edition,
+        rb=read_b,
+    )
+
+    if unpacked_dbs == 0:
+        remove_savefile(career_file_fullpath)
+        raise ValueError("No .db files in career save.")
+    elif unpacked_dbs > 3:
+        remove_savefile(career_file_fullpath)
+        raise ValueError("Too many .db files")
+
+    if not xml_file:
+        # Path to meta XML file for a FIFA database.
+        xml_file = os.path.join(
+            settings.BASE_DIR, "scripts", "Data", fifa_edition, "XML", "fifa_ng_db-meta.xml"
+        )
+
+    csv_dest_path = os.path.join(data_path, "csv")
+    if os.path.exists(csv_dest_path):
+        shutil.rmtree(csv_dest_path)
+
+    # Parse XML
+    meta = parse_fifa_db_xml(xml_file)
+
+    # Export data from FIFA database to csv files.
+    update_savefile_model(
+        cs_model=cs_model, code=0, msg=_("Exporting data from FIFA database to csv files.")
+    )
+
+    s1 = time.time()
+    try:
+        # Only:
+        # 1.db - carrer_*
+        # 2.db
+        # self.unpacked_dbs + 1 for all DBS
+        season = convert_db_to_csv(
+            data_path=data_path,
+            user=user,
+            meta=meta,
+            db_name="1.db",
+            csv_path=csv_dest_path,
+            slot=slot,
+            rb=read_b,
+            start_setupdate=int(fifa_edition) - 2,
+        )
+
+        for db in range(2, unpacked_dbs):
+            convert_db_to_csv(
+                data_path=data_path,
+                user=user,
+                meta=meta,
+                db_name="{}.db".format(db),
+                csv_path=csv_dest_path,
+                slot=slot,
+                rb=read_b,
+                season=season,
+            )
+
+    except Exception as e:
+        logging.exception('Traceback')
+        raise Exception(e)
+
+    logging.info('DB to CSV in {}s.'.format(
+        round(time.time() - s1, 3)
+    ))
+
+    s1 = time.time()
+    # Convert rest of the data to csv file format.
+    convert_rest_to_csv(
+        data_path=data_path,
+        user=user,
+        csv_dest_path=csv_dest_path,
+        rb=read_b,
+    )
+    logging.info('Rest to CSV in {}s.'.format(
+        round(time.time() - s1, 3)
+    ))
+
+    # Set current date
+    currdate = get_csv_val(csv_dest_path, "career_calendar.csv", "currdate") or DEFAULT_DATE[fifa_edition]
+
+    # Set Default Currency
+    currency = get_csv_val(csv_dest_path, "career_managerpref.csv", "currency") or 1    # or Euro
+    set_currency(
         user,
-        xml_file=None,
-        fifa_edition=None,
-    ):
-        # Count time spent on processing save
-        start = time.time()
-
-        # career save file model
-        self.cs_model = CareerSaveFileModel.objects.filter(
-            user_id=user.id
-        ).first()
-
-        self.career_file_fullpath = career_file_fullpath
-        self.data_path = careersave_data_path
-        self.user = user
-        self.xml_file = xml_file
-
-        if fifa_edition:
-            self.fifa_edition = int(fifa_edition)
-
-        # Create Data Path
-        if not os.path.exists(self.data_path):
-            os.makedirs(self.data_path)
-
-        # Make copy of career save file
-        f_backup = os.path.join(self.data_path, "savefile")
-        if os.path.exists(f_backup):
-            os.remove(f_backup)
-        shutil.copy2(self.career_file_fullpath, f_backup)
-
-        # Unpack databases from career file.
-        self._update_savefile_model(0, _("Unpacking database from career file."))
-        self.unpacked_dbs = self.unpack_all_dbs()
-
-        if self.unpacked_dbs == 0:
-            self._remove_savefile()
-            raise ValueError("No .db files in career save.")
-        elif self.unpacked_dbs > 3:
-            self._remove_savefile()
-            raise ValueError(
-                "Too many .db files"
-            )
-
-        if not self.xml_file:
-            # Path to meta XML file for a FIFA database.
-            self.xml_file = os.path.join(
-                settings.BASE_DIR, "scripts", "Data", str(self.fifa_edition), "XML", "fifa_ng_db-meta.xml"
-            )
-
-        csv_dest_path = os.path.join(self.data_path, "csv")
-        if os.path.exists(csv_dest_path):
-            shutil.rmtree(csv_dest_path)
-
-        # Parse XML
-        self.xml_table_names = dict()
-        self.xml_field_names = dict()
-        self.xml_field_range = dict()
-        self.xml_pkeys = dict()
-        self.parse_fifa_db_xml()
-
-        # Export data from FIFA database to csv files.
-        self._update_savefile_model(0, _("Exporting data from FIFA database to csv files."))
-
-        try:
-            # Only:
-            # 1.db - carrer_*
-            # 2.db
-            # self.unpacked_dbs + 1 for all DBS
-
-            for db in range(1, self.unpacked_dbs):
-                db_name = "{}.db".format(db)
-
-                db_to_csv = DatabaseToCSV(
-                    dbs_path=self.data_path,
-                    user=self.user,
-                    db_name=db_name,
-                    xml_table_names=self.xml_table_names,
-                    xml_field_names=self.xml_field_names,
-                    xml_field_range=self.xml_field_range,
-                    xml_field_pkeys=self.xml_pkeys,
-                    dest_path=csv_dest_path,
-                )
-                db_to_csv.convert_to_csv()
-        except Exception as e:
-            raise Exception(e)
-
-        # Convert rest of the data to csv file format.
-        RestToCSV(
-            rest_path=self.data_path,
-            user=self.user,
-            dest_path=csv_dest_path,
-        ).convert_to_csv()
-
-        # Calculate Values of all players and save it in "players.csv"
-        self._update_savefile_model(0, _("Calculating Players Values and Teams Ratings"))
-        currency = CalculateValues(csv_path=csv_dest_path, fifa_edition=self.fifa_edition).currency
-        # Set Default Currency
-        self._set_currency(currency=currency)
-
-        # Import data from csv to our PostgreSQL database
-        self._update_savefile_model(
-            0, _("Importing data to FIFA Tracker database.")
-        )
-        self.importCareerData(csv_path=csv_dest_path)
-        self.protectprivacy()
-
-        # Delete Files on production
-        if not settings.DEBUG:
-            if os.path.exists(self.data_path):
-                shutil.rmtree(self.data_path)
-
-            if os.path.isfile(self.career_file_fullpath):
-                os.remove(self.career_file_fullpath)
-
-        self._update_savefile_model(
-            2, _("Completed in {}s").format(round(time.time() - start, 3))
-        )
-
-    def parse_fifa_db_xml(self):
-        """ Read data from meta XML file for a FIFA database. """
-
-        tree = ET.parse(self.xml_file)
-        root = tree.getroot()
-
-        for child in root:
-            try:
-                for node in child.getiterator():
-                    try:
-                        self.xml_table_names[node.attrib['shortname']] = node.attrib['name']
-                        for a in node.getiterator():
-                            if a.tag == 'field':
-                                self.xml_field_names[a.attrib['shortname']] = a.attrib['name']
-                                if a.attrib['type'] == "DBOFIELDTYPE_INTEGER":
-                                    self.xml_field_range[node.attrib['name'] + a.attrib['name']] = a.attrib['rangelow']
-                                else:
-                                    self.xml_field_range[node.attrib['name'] + a.attrib['name']] = 0
-
-                                if 'key' in a.attrib:
-                                    if a.attrib['key'] == "True":
-                                        self.xml_pkeys[node.attrib['name']] = a.attrib['name']
-                    except (ValueError):
-                        continue
-            except (KeyError, IndexError):
-                pass
-
-    def unpack_all_dbs(self):
-        """
-        :return int: Number of unpacked .db files from FIFA Career Save.
-        """
-        # Recognize FIFA Edition basing on file size
-        fifa_signatures = {
-            b'\x6E\x40\x72\x00': '17',
-            b'\x63\x7D\xA9\x00': '18',
-            b'\x17\x5E\xC6\x00': '19',
-        }
-        unpacked_dbs = 0
-
-        with open(self.career_file_fullpath, 'rb') as f:
-            # FIFA Database file signature
-            database_header = b"\x44\x42\x00\x08\x00\x00\x00\x00"
-
-            mm = mmap.mmap(f.fileno(), length=0, access=mmap.ACCESS_READ)
-            offset = mm.find(database_header)
-
-            # Signature not found
-            if offset < 0:
-                return 0
-
-            cur_pos = mm.tell()         # Save cursor position
-            mm.seek(14)                 # 0xE - FILE SIZE
-            fifa_sign = mm.read(4)      # Read sign (0x4 bytes)
-
-            if not self.fifa_edition:
-                try:
-                    self.fifa_edition = fifa_signatures[fifa_sign]
-                except KeyError:
-                    logging.warning("Unknown size of save file (sign): {}".format(fifa_sign))
-                    self.fifa_edition = DEFAULT_FIFA_EDITION
-
-            # Restore cursor position
-            mm.seek(cur_pos)
-
-            # Data before databases section
-            with open(os.path.join(self.data_path, "data_before_db"), "wb") as data_before_db:
-                data_before_db.write(mm[:offset])
-
-            # Databases section
-            while offset >= 0:
-                cur_pos = offset + len(database_header)
-                mm.seek(cur_pos, 0)
-                dbSize = self.read_int32(mm.read(4))
-                end_of_data = offset + dbSize
-
-                # Create .db file
-                with open(os.path.join(self.data_path, "{}.db".format(unpacked_dbs + 1)), "wb") as database_file:
-                    # Write data to .db file
-                    database_file.write(mm[offset:end_of_data])
-
-                offset = mm.find(database_header, end_of_data)
-                unpacked_dbs += 1
-
-            # Data after databases section
-            with open(os.path.join(self.data_path, "rest"), "wb") as rest:
-                rest.write(mm[end_of_data:])
-
-        return unpacked_dbs
-
-    def protectprivacy(self):
-        ''' data in DataUsersCareerUsers may contain real user firstname and surname '''
-        user_careeruser = DataUsersCareerUsers.objects.filter(
-            ft_user_id=self.user.id
-        )
-        if user_careeruser:
-            for user in user_careeruser:
-                firstname = user.firstname
-                surname = user.surname
-
-                try:
-                    user.firstname = firstname.replace(
-                        firstname[1:], "*" * (len(firstname) - 1))
-                except AttributeError:
-                    # logging.exception("protectprivacy error")
-                    user.firstname = "Mr."
-
-                try:
-                    user.surname = surname.replace(
-                        surname[1:], "*" * (len(surname) - 1))
-                except AttributeError:
-                    # logging.exception("protectprivacy error")
-                    user.surname = "Manager"
-
-                user.save()
-
-    def _set_currency(self, currency):
-        self.user.profile.currency = currency
-        self.user.save()
-
-    def importCareerData(self, csv_path):
-        """Import data from csv files to PostgreSQL database
-
-            Parameters
-            ----------
-            csv_path : str
-                Path to csv files. ex: media/<USERNAME>/data/csv
-        """
-
-        to_import = []
-
-        # Get user id
-        user_id = self.user.id
-        for csv in SUPPORTED_TABLES:
-            # example: media\<user>\data\csv\career_calendar.csv
-            full_csv_path = os.path.join(csv_path, csv) + ".csv"
-
-            if csv == "players":
-                if self.fifa_edition == 18:
-                    csv = "players"
-                else:
-                    csv = "players{}".format(self.fifa_edition)
-
-            model_name = "datausers{}".format(csv.replace("_", ""))
-
-            ct = ContentType.objects.get(model=model_name)
-            model = ct.model_class()
-            self._delete_data(model=model, user_id=user_id)
-
-            if os.path.exists(full_csv_path):
-                to_import.append(csv)
-
-        self._copy_from_csv(csv_path=csv_path, tables=to_import)
-
-    def _update_table_from_csv(self, model, model_filter, table, full_csv_path, user_id):
-        """ Updates database model with content from csv file """
-
-        # Evaluate query to speed up the update process
-        models_data_list = list(model_filter.values().iterator())
-
-        # Enum start
-        self.enum_start = 0
-
-        # Prepare set of valid pkeys to update
-        valid_pkeys_set = set()
-        for i in range(len(models_data_list)):
-            valid_pkeys_set.add(
-                int(models_data_list[i][self.xml_pkeys[table]]))
-
-        # Prepare list for "bulk_create"
-        new_rows_array = list()
-
-        # updated = 0
-
-        with open(full_csv_path, encoding='utf-8') as csvfile:
-            reader = csv.DictReader(csvfile)
-            reader_sorted = sorted(
-                reader, key=lambda d: float(d[self.xml_pkeys[table]]))
-
-        for row in reader_sorted:
-            # create lookup
-            lookup = self._create_lookup(user_id, table, row)
-
-            # update fk_id
-            if table == "players":
-                row['nationality_id'] = row['nationality']
-                row['firstname_id'] = row['firstnameid']
-                row['lastname_id'] = row['lastnameid']
-                row['playerjerseyname_id'] = row['playerjerseynameid']
-                row['commonname_id'] = row['commonnameid']
-
-                del row['nationality'], row['firstnameid'], row['lastnameid'], row['playerjerseynameid'], row['commonnameid']
-
-            # find
-            valid_index = self._dict_filter(
-                models_data_list, lookup, table, valid_pkeys_set)
-
-            if valid_index < 0:
-                # create
-                new_rows_array.append(model(**row))
-            else:
-                # check if data has changed and update if needed
-                if self._is_update_needed(models_data_list[valid_index], row):
-                    obj = self._get_model_obj(
-                        model_filter, models_data_list[valid_index])
-                    if obj is not None:
-                        # updated += 1
-                        for key, value in row.items():
-                            setattr(obj, key, value)
-
-                        obj.save()
-                    else:
-                        new_rows_array.append(model(**row))
-
-                # delete checked data.
-                del models_data_list[valid_index]
-
-        # objects.bulk_create
-        if len(new_rows_array) > 0:
-            model.objects.bulk_create(new_rows_array)
-
-        # delete unused data
-        if len(models_data_list) > 0:
-            self._delete_unused(model, models_data_list)
-
-    def _delete_unused(self, model, models_data_list):
-        """ delete unused data. players from other save etc."""
-        d_len = len(models_data_list)
-
-        primary_keys = list()
-        for i in range(d_len):
-            primary_keys.append(models_data_list[i]['primary_key'])
-
-        model.objects.filter(primary_key__in=primary_keys).delete()
-
-    def _get_model_obj(self, model_filter, model_data):
-        ''' Return model to update '''
-
-        for i, m in enumerate(model_filter, self.enum_start - 1):
-            if int(model_data['primary_key']) == m.primary_key:
-                # start next iteration from i
-                self.enum_start = i
-                return m
-
-        return None
-
-    def _delete_data(self, model, user_id):
-        """ delete data before update """
-        try:
-            model.objects.filter(ft_user_id=user_id).delete()
-        except Exception:
-            pass
-
-    def _create_lookup(self, user_id, table, row):
-        lookup = {"ft_user_id": user_id,
-                  self.xml_pkeys[table]: row[self.xml_pkeys[table]]}
-
-        # tables with duplicated primary keys. lookup needs to be extended to find unique objects in model.
-        if table == "career_transferoffer":
-            lookup.update({
-                "offerteamid": row['offerteamid'],
-                "teamid": row['teamid'],
-                "playerid": row['playerid'],
-            })
-        elif table == "teamkits":
-            lookup.update({
-                "teamkittypetechid": row['teamkittypetechid'],
-                "teamkitid": row['teamkitid'],
-            })
-        elif table == "player_grudgelove":
-            lookup.update({
-                "emotional_teamid": row['emotional_teamid'],
-            })
-        elif table == "rivals":
-            lookup.update({
-                "teamid2": row['teamid2'],
-            })
-        elif table == "smrivals":
-            lookup.update({
-                "teamid2": row['teamid2'],
-            })
-        elif table == "leaguerefereelinks":
-            lookup.update({
-                "refereeid": row['refereeid'],
-            })
-        elif table == "bannerplayers":
-            lookup.update({
-                "teamtechid": row['teamtechid'],
-            })
-        elif table == "playerformdiff":
-            lookup.update({
-                "playerid": row['playerid'],
-            })
-        elif table == "career_playerlastmatchhistory":
-            lookup.update({
-                "playerid": row['playerid'],
-                "teamid": row['teamid'],
-            })
-
-        return lookup
-
-    def _copy_from_csv(self, csv_path, tables):
-        """ Populate data in table with content from csv file """
-        # Run "import_career_data.py"
-        if settings.DEBUG:
-            python_ver = "python"  # My LocalHost
-        else:
-            python_ver = "python3.6"
-
-        # python manage.py runscript process_career_file --script-args 14 18
-        command = '{} manage.py runscript import_career_data --script-args "{}" "{}"'.format(
-            python_ver, csv_path, ','.join(tables)
-        )
-
-        args = shlex.split(command)
-        p = subprocess.Popen(args, close_fds=True)
-        p.wait()
-
-    def _is_update_needed(self, model_dict, row):
-        """ Return true if we need to update data in database """
-
-        for key, value in row.items():
-            if str(model_dict[key]) != value:
-                return True
-
-        return False
-
-    def _dict_filter(self, dict_data, q, table, valid_pkeys_set):
-        """ return index of valid dict """
-
-        valid_index = -1
-        d_len = len(dict_data)
-        pkey = self.xml_pkeys[table]
-
-        # Check if model contains pkey from lookup
-        if int(q[pkey]) not in valid_pkeys_set:
-            return -1
-
-        # find
-        for i in range(d_len):
-            if self._check_model(dict_data[i], q):
-                return i
-
-        return valid_index
-
-    def _check_model(self, model_dict, q):
-        """ return true if model matches lookup """
-        for key, value in q.items():
-            if str(model_dict[key]) != str(value):
-                return False
-
-        return True
-
-    def _update_savefile_model(self, code, msg):
-        logging.info(msg)
-
-        cs_model = self.cs_model
-
-        cs_model.file_process_status_code = code
-        cs_model.file_process_status_msg = msg
-        cs_model.save()
-
-    def _remove_savefile(self):
-        try:
-            if os.path.exists(self.career_file_fullpath):
-                os.remove(self.career_file_fullpath)
-                return True
-        except PermissionError as e:
-            logging.warning("PermissionError: {}".format(e))
-        except TypeError:
-            pass
-
-        return False
+        currency
+    )
+
+    # Calculate Values of all players and save it in "players.csv"
+    update_savefile_model(
+        cs_model=cs_model, code=0, msg=_("Calculating Players Values and Teams Ratings")
+    )
+
+    s1 = time.time()
+    CalculateValues(
+        currency=currency, currdate=currdate, csv_dest_path=csv_dest_path,
+        fifa_edition=fifa_edition
+    )
+    logging.info('CalculateValues in {}s.'.format(
+        round(time.time() - s1, 3)
+    ))
+
+    # Import data from csv to our PostgreSQL database
+    update_savefile_model(
+        cs_model=cs_model, code=0, msg=_("Importing data to FIFA Tracker database.")
+    )
+
+    user_id = str(user.id)
+    import_career_data(
+        user_id=user_id,
+        fifa_edition=fifa_edition,
+        csv_path=csv_dest_path
+    )
+
+    # Delete Files on production
+    if not settings.DEBUG:
+        if os.path.exists(data_path):
+            shutil.rmtree(data_path)
+
+        if os.path.isfile(career_file_fullpath):
+            os.remove(career_file_fullpath)
+
+    update_savefile_model(
+        cs_model=cs_model, code=2,
+        msg=_("Completed in {}s").format(round(time.time() - start, 3))
+    )

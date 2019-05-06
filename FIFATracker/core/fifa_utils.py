@@ -9,6 +9,7 @@ from core.consts import (
 )
 
 
+
 def get_team_name(all_teams, teamid):
     for t in all_teams:
         if int(t['teamid']) == int(teamid):
@@ -79,16 +80,18 @@ class PlayerWage:
             print(self.club_domestic_prestige )
             print(self.club_profitability)
             '''
-
-            try:
-                self.currency = CURRENCY_CONVERSION[self.fifa_edition][currency]
-            except IndexError:
-                self.currency = CURRENCY_CONVERSION[self.fifa_edition][1]  # Euro
+            self._set_currency(currency)
 
             self.wage = self._calculate_player_wage()
         else:
             self.wage = 500
         self.formated_wage = "{:,}".format(self.wage)
+
+    def _set_currency(self, currency):
+        try:
+            self.currency = CURRENCY_CONVERSION[self.fifa_edition][currency]
+        except IndexError:
+            self.currency = CURRENCY_CONVERSION[self.fifa_edition][1]  # Euro
 
     def _calculate_player_wage(self):
         league_mod = self._ovr_factor(self.ovr) * self.currency * (self._league_factor(self.leagueid) * self._domestic_presitge(
@@ -1247,6 +1250,8 @@ class PlayerValue:
             self.age = int(age)
             self.posid = int(posid)
 
+            self._set_currency(currency)
+
             try:
                 self.currency = CURRENCY_CONVERSION[self.fifa_edition][currency]
             except IndexError:
@@ -1254,6 +1259,12 @@ class PlayerValue:
 
             self.value = self._calculate_player_value()
             self.formated_value = "{:,}".format(self.value)
+
+    def _set_currency(self, currency):
+        try:
+            self.currency = CURRENCY_CONVERSION[self.fifa_edition][currency]
+        except IndexError:
+            self.currency = CURRENCY_CONVERSION[self.fifa_edition][1]  # Euro
 
     def _calculate_player_value(self):
         basevalue = self._ovr_factor(self.ovr) * self.currency

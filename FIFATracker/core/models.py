@@ -1,6 +1,7 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import User
+
+User._meta.get_field('email')._unique = True
 
 
 class UserDataQuerySet(models.QuerySet):
@@ -14,31 +15,6 @@ class UserDataManager(models.Manager):
 
     def for_user(self, user):
         return self.get_queryset().for_user(user)
-
-
-def user_dir_path(instance, filename):
-    return '{0}/{1}'.format(instance.user.username, 'CareerData')
-
-
-class CareerSaveFileModel(models.Model):
-    def validate_size(filefield_obj):
-        filesize = filefield_obj.file.size
-        min_size = 6500000
-        max_size = 15000000
-        if filesize < min_size:
-            raise ValidationError("Your file is not a valid FIFA Career File.")
-        elif filesize > max_size:
-            raise ValidationError("Your file is not a valid FIFA Career File.")
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    uploadedfile = models.FileField(
-        verbose_name='FIFA 19 Career File', upload_to=user_dir_path, validators=[validate_size])
-    fifa_edition = models.IntegerField(blank=True, null=True, default=19)
-    file_process_status_code = models.IntegerField(
-        blank=True, null=True, default=0)
-    file_process_status_msg = models.CharField(
-        max_length=120, blank=True, null=True)
 
 
 class DataUsersCareerManagerpref(models.Model):
@@ -325,6 +301,8 @@ class DataUsersCareerManagerhistory(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='managerhistory', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     artificialkey = models.IntegerField(blank=True, null=True)
     leagueobjective = models.IntegerField(blank=True, null=True)
     continentalcuptrophies = models.IntegerField(blank=True, null=True)

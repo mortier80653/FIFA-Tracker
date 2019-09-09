@@ -17,6 +17,23 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': env.str('CACHE_BACKEND', default='django.core.cache.backends.dummy.DummyCache'),
+        'LOCATION': env.str('CACHE_LOCATION', default=None),
+    }
+}
+CELERY_BROKER_URL = env.str('CELERY_BROKER_URL', default=None)
+CELERY_RESULT_BACKEND = env.str('CELERY_BROKER_URL', default='django-db')
+CELERY_TASK_ROUTES = {
+    'app.tasks.process_file_task': {'queue': 'process_file_queue'},
+    'app.tasks.quick_task': {'queue': 'quick_queue'},
+}
+
+RABITMQ_API_URL = env.str('RABITMQ_API_URL', default=None)
+RABITMQ_API_USER = env.str('RABITMQ_API_USER', default=None)
+RABITMQ_API_PASS = env.str('RABITMQ_API_PASS', default=None)
+
 SECURE_PROXY_SSL_HEADER = env.tuple('SECURE_PROXY_SSL_HEADER', default=None)
 SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=False)
 SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', default=False)

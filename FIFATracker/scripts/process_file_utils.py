@@ -42,9 +42,13 @@ from players.models import (
 )
 
 from core.models import (
-    CareerSaveFileModel,
     DataUsersCareerTransferOffer,
     DataUsersCareerCompdataClubNegotiations,
+    DataUsersCareerManagerhistory,
+)
+
+from file_uploads.models import (
+    CareerSaveFileModel
 )
 
 
@@ -644,10 +648,18 @@ class CalculateValues(ReadBytesHelper):
         return int(sum(ovr))
 
 
-def delete_from_model(model, user_id):
+def delete_from_model(model, user_id, ft_slot, ft_season):
     """ delete data before update """
+    delete_filter = {
+        "ft_user_id": user_id,
+        "ft_slot": ft_slot,
+    }
+
+    if ft_season >= 0:
+        delete_filter['ft_season'] = ft_season
+
     try:
-        model.objects.filter(ft_user_id=user_id).delete()
+        model.objects.filter(**delete_filter).delete()
     except Exception:
         pass
 
@@ -676,6 +688,8 @@ def copy_from_csv(csv_path, tables):
 
 def import_career_data(
     user_id,
+    ft_slot,
+    ft_season,
     fifa_edition,
     csv_path,
 ):
@@ -703,7 +717,7 @@ def import_career_data(
 
         ct = ContentType.objects.get(model=model_name)
         model = ct.model_class()
-        delete_from_model(model=model, user_id=user_id)
+        delete_from_model(model=model, user_id=user_id, ft_slot=ft_slot, ft_season=ft_season)
 
         if os.path.exists(full_csv_path):
             to_import.append(csv)
@@ -1586,6 +1600,34 @@ def update_savefile_model(cs_model, code, msg):
     cs_model.save()
 
 
+def get_basic_cm_save_info(
+    career_file_fullpath
+):
+    with open(career_file_fullpath, 'rb') as rf:
+        mm = mmap.mmap(rf.fileno(), length=0, access=mmap.ACCESS_READ)
+
+    result = {}
+
+    rb = ReadBytesHelper()
+    mm.seek(0x12)
+    result['save_original_name'] = rb.read_nullbyte_str(mm, 96)
+
+    mm.seek(0x92)
+    result['teamid'] = rb.read_int32(mm.read(4))
+    result['last_game_home_teamid'] = rb.read_int32(mm.read(4))
+    result['last_game_away_teamid'] = rb.read_int32(mm.read(4))
+    result['ing_date'] = rb.read_int32(mm.read(4), as_string=True)
+    result['last_game_home_score'] = rb.read_int32(mm.read(4))
+    result['last_game_away_score'] = rb.read_int32(mm.read(4))
+    result['next_game_vs_teamid'] = rb.read_int32(mm.read(4))
+    result['unk1'] = rb.read_int32(mm.read(4))
+    result['unk2'] = rb.read_int32(mm.read(4))
+    result['unk3'] = rb.read_int32(mm.read(4))
+    result['save_type'] = rb.read_int32(mm.read(4))
+
+    return result
+
+
 def parse_career_save(
     career_file_fullpath,
     data_path,
@@ -1593,6 +1635,7 @@ def parse_career_save(
     slot,
     xml_file=None,
     fifa_edition=None,
+    cs_model=None
 ):
     """Parse FIFA Career Save.
         Parameters
@@ -1614,20 +1657,23 @@ def parse_career_save(
 
         fifa_edition : str
             Which FIFA.
+
+        cs_model : obj
+            CareerSaveFileModel
     """
 
     # Count time spent on processing save
     reset_queries()
     start = time.time()
+    logging.info(
+        "{}: Process Career Save Started, slot: {}".format(user.username, slot)
+    )
 
-    # career save file model
-    cs_model = CareerSaveFileModel.objects.filter(
-        user_id=user.id
-    ).first()
+    if cs_model.is_update:
+        fifa_edition = user.profile.slots_data[slot]['fifa_edition']
 
-    if fifa_edition:
-        if not isinstance(fifa_edition, str):
-            fifa_edition = str(fifa_edition)
+    if fifa_edition and (not isinstance(fifa_edition, str)):
+        fifa_edition = str(fifa_edition)
 
     # Create Data Path
     if not os.path.exists(data_path):
@@ -1680,6 +1726,7 @@ def parse_career_save(
     )
 
     s1 = time.time()
+    season = -1
     try:
         # Only:
         # 1.db - carrer_*
@@ -1712,9 +1759,12 @@ def parse_career_save(
         logging.exception('Traceback')
         raise Exception(e)
 
-    logging.info('DB to CSV in {}s.'.format(
-        round(time.time() - s1, 3)
-    ))
+    logging.info(
+        '{},{}: DB to CSV in {}s.'.format(
+            user.username, slot,
+            round(time.time() - s1, 3)
+        )
+    )
 
     s1 = time.time()
     # Convert rest of the data to csv file format.
@@ -1724,7 +1774,8 @@ def parse_career_save(
         csv_dest_path=csv_dest_path,
         rb=read_b,
     )
-    logging.info('Rest to CSV in {}s.'.format(
+    logging.info('{},{}: Rest to CSV in {}s.'.format(
+        user.username, slot,
         round(time.time() - s1, 3)
     ))
 
@@ -1748,7 +1799,8 @@ def parse_career_save(
         currency=currency, currdate=currdate, csv_dest_path=csv_dest_path,
         fifa_edition=fifa_edition
     )
-    logging.info('CalculateValues in {}s.'.format(
+    logging.info('{},{}: CalculateValues in {}s.'.format(
+        user.username, slot,
         round(time.time() - s1, 3)
     ))
 
@@ -1757,9 +1809,15 @@ def parse_career_save(
         cs_model=cs_model, code=0, msg=_("Importing data to FIFA Tracker database.")
     )
 
+    season_to_delete = -1
+    if cs_model.is_update:
+        season_to_delete = int(season)
+
     user_id = str(user.id)
     import_career_data(
         user_id=user_id,
+        ft_slot=slot,
+        ft_season=season_to_delete,
         fifa_edition=fifa_edition,
         csv_path=csv_dest_path
     )
@@ -1772,7 +1830,27 @@ def parse_career_save(
         if os.path.isfile(career_file_fullpath):
             os.remove(career_file_fullpath)
 
-    update_savefile_model(
-        cs_model=cs_model, code=2,
-        msg=_("Completed in {}s").format(round(time.time() - start, 3))
-    )
+    logging.info('{},{}: Rest to CSV in {}s.'.format(
+        user.username, slot,
+        round(time.time() - s1, 3)
+    ))
+
+    logging.info('{},{}: Completed in {}s'.format(
+        user.username, slot,
+        round(time.time() - start, 3)
+    ))
+
+    slots_data = user.profile.slots_data
+    slots_data[slot] = {
+        'last_season': season,
+        'fifa_edition': fifa_edition,
+    }
+    user.profile.slots_data = slots_data
+    user.save()
+
+    try:
+        cs_model.delete()
+    except AttributeError:
+        pass
+    except Exception:
+        logging.exception('cs_model.delete()')

@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import datetime
 from django.utils.translation import ugettext_lazy as _
 
 import environ
@@ -27,6 +28,9 @@ INSTALLED_APPS = [
 
     'widget_tweaks',
     'django_extensions',
+    'rest_framework',
+    'corsheaders',
+    'django_celery_results',
 
     'core.apps.CoreConfig',
     'account_settings.apps.AccountSettingsConfig',
@@ -35,6 +39,7 @@ INSTALLED_APPS = [
     'teams.apps.TeamsConfig',
     'transfer_history.apps.TransferHistoryConfig',
     'tools.apps.ToolsConfig',
+    'file_uploads.apps.FileUploadsConfig',
 ]
 
 MIDDLEWARE = [
@@ -46,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'accounts.middleware.LastUserActivityMiddleware',
 ]
 
@@ -130,7 +136,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
 ]
 
 LOGIN_REDIRECT_URL = 'home'
@@ -162,6 +168,29 @@ if RUN_MODE == 'test':
 
     MIGRATION_MODULES = DisableMigrations()
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+# CORSHEADERS
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    'http://dev.fifatracker.net:3000',
+)
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(hours=6),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=5),
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
 
 # LastUserActivityMiddleware
-LAST_ACTIVITY_INTERVAL_SECS = 30
+# Update every 5 min
+LAST_ACTIVITY_INTERVAL_SECS = 60 * 5

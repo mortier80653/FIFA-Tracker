@@ -3,6 +3,7 @@ from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.postgres.fields import JSONField
 
 
 class Profile(models.Model):
@@ -22,7 +23,8 @@ class Profile(models.Model):
     unit_system = models.BooleanField(default=0)  # 0 - Metric, 1 - Imperial
     is_public = models.BooleanField(default=1)
     is_save_processed = models.BooleanField(default=1)
-    fifa_edition = models.IntegerField(blank=True, null=True, default=18)
+    fifa_edition = models.IntegerField(blank=True, null=True, default=19)
+    slots_data = JSONField(blank=True, default=dict)
     last_activity = models.CharField(
         max_length=34,
         blank=True,

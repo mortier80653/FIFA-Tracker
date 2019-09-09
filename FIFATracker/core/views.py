@@ -6,6 +6,9 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 
+from django.views.generic import View
+from django.http import HttpResponse
+
 import logging
 import os
 import shutil
@@ -15,10 +18,37 @@ import subprocess
 from collections import Counter
 
 from core.session_utils import del_session_key, set_currency, get_current_user, get_fifa_edition, get_career_user
+# from core.tasks import process_career_file_task
 from .fifa_utils import get_team_name
-from players.models import DataUsersTeams
-from .models import CareerSaveFileModel
+from file_uploads.models import CareerSaveFileModel
 from .forms import CareerSaveFileForm
+from core.consts import (
+    SUPPORTED_TABLES,
+)
+from django.contrib.contenttypes.models import ContentType
+
+from scripts.process_file_utils import delete_from_model
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+from file_uploads.serializers import CareerSaveFileGetSerializer
+
+from .serializers import DataUsersCareerManagerhistorySerializer
+from .models import DataUsersCareerManagerhistory
+from players.serializers import (
+    DataUsersTeamsSerializer,
+    DataUsersManagerSerializer,
+    DataUsersCareerUsersSerializer,
+    DataUsersCareerCalendarSerializer
+)
+from players.models import (
+    DataUsersTeams,
+    DataUsersManager,
+    DataUsersCareerUsers,
+    DataUsersCareerCalendar
+)
 
 
 def upload_career_save_file(request):
@@ -69,17 +99,21 @@ def upload_career_save_file(request):
             user.profile.fifa_edition = fifa_edition
             user.save()
 
-            # Run "process_career_file.py"
-            if settings.DEBUG:
-                python_ver = "python"   # My LocalHost
-            else:
-                python_ver = "python3.6"
+            new_task = process_career_file_task.delay(user.pk, fifa_edition)
+            form.celery_task_id = new_task.id
+            form.save()
 
-            # python manage.py runscript process_career_file --script-args 14 18
-            command = "{} manage.py runscript process_career_file --script-args {} {}".format(
-                python_ver, request.user.id, fifa_edition)
-            args = shlex.split(command)
-            subprocess.Popen(args, close_fds=True)
+            # # Run "process_career_file.py"
+            # if settings.DEBUG:
+            #     python_ver = "python"   # My LocalHost
+            # else:
+            #     python_ver = "python3.6"
+            #
+            # # python manage.py runscript process_career_file --script-args 14 18
+            # command = "{} manage.py runscript process_career_file --script-args {} {}".format(
+            #     python_ver, request.user.id, fifa_edition)
+            # args = shlex.split(command)
+            # subprocess.Popen(args, close_fds=True)
 
             data = {'is_valid': True}
         else:
@@ -226,3 +260,228 @@ def home(request):
         'fifa_edition': fifa_edition,
     }
     return render(request, 'home.html', context=context)
+
+
+class CareerSaveDelete(APIView):
+    # authentication_classes = [JSONWebTokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if request.data['to_delete'] == "cs_model":
+            try:
+                save_file_model = CareerSaveFileModel.objects.get(pk=request.data['model_id'])
+                save_file_model.delete()
+            except Exception as e:
+                logging.exception("SaveFileDeleted before task?")
+                return
+
+            return Response({})
+
+        elif request.data['to_delete'] == "slot":
+            user_id = request.user.id
+            slot_id = request.data['slot_id']
+
+            try:
+                fifa_edition = request.user.profile.slots_data[slot_id]['fifa_edition']
+            except KeyError:
+                fifa_edition = "19"
+
+            for table in SUPPORTED_TABLES:
+                if table == "players":
+                    if fifa_edition == '18':
+                        table = "players"
+                    else:
+                        table = "players{}".format(fifa_edition)
+
+                model_name = "datausers{}".format(table.replace("_", ""))
+
+                ct = ContentType.objects.get(model=model_name)
+                model = ct.model_class()
+
+                # if ft_season == -1 then delete whole slot
+                delete_from_model(model=model, user_id=user_id, ft_slot=slot_id, ft_season=-1)
+
+            slots_data = request.user.profile.slots_data
+            slots_data.pop(slot_id, None)
+            request.user.profile.slots_data = slots_data
+            request.user.save()
+
+            return Response({})
+
+
+class CareerSavesGet(APIView):
+    # authentication_classes = [JSONWebTokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # In Progress
+        kwargs = {
+            'user_id': request.user.id,
+        }
+
+        serializer_in_progress = CareerSaveFileGetSerializer(
+            CareerSaveFileModel.objects.filter(**kwargs),
+            many=True
+        ).data
+
+        # Completed
+        kwargs = {
+            'ft_user_id': request.user.id,
+        }
+        serializer_completed = DataUsersCareerUsersSerializer(
+            DataUsersCareerUsers.objects.filter(**kwargs),
+            many=True
+        ).data
+
+        serializer_manager = DataUsersManagerSerializer(
+            DataUsersManager.objects.filter(**kwargs),
+            many=True
+        ).data
+
+        serializer_teams = DataUsersTeamsSerializer(
+            DataUsersTeams.objects.filter(**kwargs),
+            many=True
+        ).data
+
+        serializer_calendar = DataUsersCareerCalendarSerializer(
+            DataUsersCareerCalendar.objects.filter(**kwargs),
+            many=True
+        ).data
+
+        serializer_manager_hist = DataUsersCareerManagerhistorySerializer(
+            DataUsersCareerManagerhistory.objects.filter(**kwargs),
+            many=True
+        ).data
+
+        def get_data(
+            save_slot,
+            completed,
+            in_progress,
+            manager_hist,
+            calendar,
+            managers,
+            teams
+        ):
+            for save in in_progress:
+                if save_slot == save['ft_slot']:
+                    return save
+
+            max_season = 0
+            result = {}
+            # Data from latest season
+            for save in completed:
+                if save_slot != save['ft_slot']:
+                    continue
+                if save['ft_season'] <= max_season:
+                    continue
+                result = save
+            if not result:
+                return {}
+
+            for m in managers:
+                if save_slot != m['ft_slot']:
+                    continue
+                if result['ft_season'] != m['ft_season']:
+                    continue
+                if result['clubteamid'] != m['teamid']:
+                    continue
+
+                result['headid'] = m['headid']
+                break
+
+            for t in teams:
+                if save_slot != t['ft_slot']:
+                    continue
+                if result['ft_season'] != t['ft_season']:
+                    continue
+                if result['clubteamid'] != t['teamid']:
+                    continue
+                result.update({
+                    "team_power": {
+                        'ovr': t['overallrating'],
+                        'att': t['attackrating'],
+                        'mid': t['midfieldrating'],
+                        'def': t['defenserating'],
+                    }
+                })
+                break
+
+            keys = [
+                'games_played', 'goals_against',
+                'goals_for', 'wins', 'draws', 'losses'
+            ]
+
+            hist = {}
+            for k in keys:
+                hist[k] = 0
+
+            for f in manager_hist:
+                if result['ft_slot'] != f['ft_slot']:
+                    continue
+
+                for k in keys:
+                    hist[k] += f[k]
+
+            result.update({
+                "m_hist": hist
+            })
+
+            for f in calendar:
+                if result['ft_slot'] != f['ft_slot']:
+                    continue
+                if result['ft_season'] != f['ft_season']:
+                    continue
+
+                season_display = "{}/{}".format(
+                    str(f['setupdate'])[2:4],
+                    str(f['enddate'])[2:4],
+                )
+
+                result.update({
+                    "season_display": season_display
+                })
+                break
+
+            return result
+
+        filtered = []
+
+        MAX_SLOTS = 10
+        for slot in range(1, MAX_SLOTS+1):
+            data = get_data(
+                slot, serializer_completed, serializer_in_progress,
+                serializer_manager_hist, serializer_calendar, serializer_manager,
+                serializer_teams
+            )
+
+            filtered.append(
+                data
+            )
+
+        return Response({
+            'saves': filtered,
+            'in_progress': serializer_in_progress,
+            # 'completed': serializer_completed,
+        })
+
+
+class FrontendAppView(View):
+    """
+    Serves the compiled frontend entry point (only works if you have run `yarn
+    run build`).
+    """
+
+    def get(self, request):
+        try:
+            with open(os.path.join(settings.BASE_DIR, 'frontend', 'build', 'index.html')) as f:
+                return HttpResponse(f.read())
+        except FileNotFoundError:
+            logging.exception('Production build of app not found')
+            return HttpResponse(
+                """
+                This URL is only used when you have built the production
+                version of the app. Visit http://localhost:3000/ instead, or
+                run `yarn run build` to test the production version.
+                """,
+                status=501,
+            )

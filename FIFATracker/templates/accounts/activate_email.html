@@ -6,7 +6,7 @@
 {% trans 'Thanks for using FIFA Tracker!' %}
 {% trans 'Please click on the link below to activate your account:' %}
 
-https://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{{ scheme }}://{{ domain }}/activate/{{ uid }}/{{ token }}/
 
 {% trans 'If you did not sign up for a FIFA Tracker account please disregard this email.' %}
 

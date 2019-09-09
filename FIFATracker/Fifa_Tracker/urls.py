@@ -26,36 +26,42 @@ from tools import views as tools_views
 from editor import views as editor_views
 
 urlpatterns = [
-    url(r'^$', core_views.home, name='home'),
-    url(r'^about/$', core_views.about, name='about'),
-    url(r'^contact/$', core_views.contact, name='contact'),
-    url(r'^donate/$', core_views.donate, name='donate'),
-    url(r'^privacy-policy/$', core_views.privacypolicy, name='privacypolicy'),
-    url(r'^upload/$', core_views.upload_career_save_file,
-        name='upload_career_save_file'),
-    url(r'^upload/process_status/$',
-        core_views.process_status, name='process_status'),
-    url(r'^upload/abort/$', core_views.abort_upload, name='abort_upload'),
-    url(r'^login/$', accounts_views.login_view, name='login_view'),
-    url(r'^signup/$', accounts_views.signup, name='signup'),
-    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        accounts_views.activate, name='activate'),
-    url(r'^reset-password/$', accounts_views.password_reset,  name='reset_password'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        accounts_views.reset, name='reset'),
-    url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
-    url(r'^players/', include('players.urls')),
-    url(r'^transfers/', include('transfer_history.urls')),
-    url(r'^teams/', include('teams.urls')),
-    url(r'^tools/', include('tools.urls')),
-    url(r'^editor/', include('editor.urls')),
-    url(r'^settings/', include('account_settings.urls')),
-    url(r'^i18n/', include('django.conf.urls.i18n'), name='set_language'),
+    # url(r'^$', core_views.home, name='home'),
+    # url(r'^about/$', core_views.about, name='about'),
+    # url(r'^contact/$', core_views.contact, name='contact'),
+    # url(r'^donate/$', core_views.donate, name='donate'),
+    # url(r'^privacy-policy/$', core_views.privacypolicy, name='privacypolicy'),
+    # url(r'^upload/$', core_views.upload_career_save_file,
+    #     name='upload_career_save_file'),
+    # url(r'^upload/process_status/$',
+    #     core_views.process_status, name='process_status'),
+    # url(r'^upload/abort/$', core_views.abort_upload, name='abort_upload'),
+    # url(r'^login/$', accounts_views.login_view, name='login_view'),
+    # url(r'^signup/$', accounts_views.signup, name='signup'),
+    # url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    #     accounts_views.activate, name='activate'
+    # ),
+    # url(r'^reset-password/$', accounts_views.password_reset,  name='reset_password'),
+    # url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    #     accounts_views.reset, name='reset'),
+    # url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
+    # url(r'^players/', include('players.urls')),
+    # url(r'^transfers/', include('transfer_history.urls')),
+    # url(r'^teams/', include('teams.urls')),
+    # url(r'^tools/', include('tools.urls')),
+    # url(r'^editor/', include('editor.urls')),
+    # url(r'^settings/', include('account_settings.urls')),
+    # url(r'^i18n/', include('django.conf.urls.i18n'), name='set_language'),
+    url(r'^api/v1/', include('api.urls')),
     url(r'^admin/', admin.site.urls),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         url(r'^debug/', include(debug_toolbar.urls)),
     ]
+
+# React
+urlpatterns.append(url(r'^', core_views.FrontendAppView.as_view()))

@@ -1,0 +1,69 @@
+html.color-theme-in-transition,
+html.color-theme-in-transition *,
+html.color-theme-in-transition *:before,
+html.color-theme-in-transition *:after {
+  transition: all 750ms !important;
+  transition-delay: 0 !important;
+}
+
+html {
+  height: 100%;
+  /* global colors */
+  --primaryTheme: #eeeeee;
+  --primaryBg: #dedede;
+  --secondaryBg: #bcbcbc;
+  --primaryText: #222831;
+  --secondaryText: #14181d;
+  --link: #000080;
+  --tabsIndicator: #f50057;
+  --dividerColor: rgba(0, 0, 0, 0.12);
+  --primaryButtonText: #222831;
+  --primaryBorderBg: #dedede;
+  --activeSelectionBg: rgba(162, 162, 162, 0.1);
+  --primaryShadowBg: rgba(204, 204, 204, 0.7);
+  --primaryBoxShadow: red;
+  --progressBar: #000080;
+}
+
+html[data-theme="dark"] {
+  height: 100%;
+  /* global colors */
+  --primaryTheme: #0B0C10;
+  --primaryBg: #1F2833;
+  --secondaryBg: #0c0f13;
+  --primaryText: #66FCF1;
+  --secondaryText: #C5C6C7;
+  --link: #B3B3FF;
+  --tabsIndicator: #00CC00;
+  --dividerColor: rgba(151, 224, 27, 0.12);
+  --primaryButtonText: #66FCF1;
+  --primaryBorderBg: #1F2833;
+  --activeSelectionBg: rgba(0, 0, 0, 0.18);
+  --primaryShadowBg: rgba(8, 8, 8, 0.7);
+  --primaryBoxShadow: #67b993;
+  --progressBar: #B3B3FF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--primaryBg);
+  color: var(--primaryText);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}

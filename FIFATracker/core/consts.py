@@ -40,7 +40,7 @@ SUPPORTED_TABLES = [
     # "career_teamofweek",
     # "career_playerawards",
     # "career_managerawards",
-    # "career_managerhistory",
+    "career_managerhistory",
     # "career_playergrowthuserseason",
     # "career_trophies",
     # "career_playasplayer",

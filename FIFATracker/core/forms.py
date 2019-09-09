@@ -1,5 +1,5 @@
 from django import forms
-from .models import CareerSaveFileModel
+from file_uploads.models import CareerSaveFileModel
 
 
 class CareerSaveFileForm(forms.ModelForm):

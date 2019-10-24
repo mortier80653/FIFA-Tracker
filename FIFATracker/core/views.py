@@ -56,7 +56,7 @@ def upload_career_save_file(request):
             fifa_edition = int(request.POST.get('fifa_edition'))
 
             # Supported FIFA Editions.
-            valid_fifa_editions = (17, 18, 19)
+            valid_fifa_editions = (17, 18, 19, 20)
             if fifa_edition not in valid_fifa_editions:
                 data = {'is_valid': False}
                 return JsonResponse(data)

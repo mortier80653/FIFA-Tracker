@@ -723,9 +723,9 @@ function careerFileUpload() {
         },
         done: function (e, data) {  
             if (data.result.is_valid) {
-            $( "p:first" ).text("Upload completed. You will be redirected in a second.");
-            $('.progress').css('display', 'none');
-            location.reload();
+                $( "p:first" ).text("Upload completed. You will be redirected in a second.");
+                $('.progress').css('display', 'none');
+                location.reload();
             } else {
                 alert("data is not valid.");
                 $( "p:first" ).text("Uploading your FIFA career save: FAILED");
@@ -748,7 +748,7 @@ function selectizejs() {
     /* FIFA EDITION */
     let fifa_edition = $('.dumb_fifa_edition').text();
     if (fifa_edition == "") {
-        fifa_edition = "19";    /* DEFAULT FIFA EDITION (guest) */
+        fifa_edition = "20";    /* DEFAULT FIFA EDITION (guest) */
     }
 
     /* Calculator */

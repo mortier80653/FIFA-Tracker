@@ -1,13 +1,25 @@
+from struct import pack, unpack
 from datetime import date, timedelta
-from core.consts import (
-    DEFAULT_FIFA_EDITION,
-    DEFAULT_DATE,
-    UNUSED_TEAMS,
-    CURRENCY_CONVERSION,
-    BOOTS,
-    TRAITS,
-)
-
+try:
+    from core.consts import (
+        DEFAULT_FIFA_EDITION,
+        DEFAULT_DATE,
+        UNUSED_TEAMS,
+        CURRENCY_CONVERSION,
+        BOOTS,
+        TRAITS,
+    )
+    TEST_DEBUG = False
+except ModuleNotFoundError:
+    from consts import (
+        DEFAULT_FIFA_EDITION,
+        DEFAULT_DATE,
+        UNUSED_TEAMS,
+        CURRENCY_CONVERSION,
+        BOOTS,
+        TRAITS,
+    )
+    TEST_DEBUG = True
 
 
 def get_team_name(all_teams, teamid):
@@ -93,20 +105,36 @@ class PlayerWage:
         except IndexError:
             self.currency = CURRENCY_CONVERSION[self.fifa_edition][1]  # Euro
 
+    def _cfloat_mul(self, x, y):
+        # Single precision float as in assembler
+        return unpack('f', pack('f', x*y))[0]
+
     def _calculate_player_wage(self):
-        league_mod = self._ovr_factor(self.ovr) * self.currency * (self._league_factor(self.leagueid) * self._domestic_presitge(
-            self.leagueid, self.club_domestic_prestige) * self._profitability(self.leagueid, self.club_profitability))
-        age_mod = (league_mod * self._age_factor(self.age)) / 100.00
-        pos_mod = (league_mod * self._position_factor(self.posid)) / 100.00
+        league_mod = (
+                self._ovr_factor(self.ovr) * self.currency *
+                (
+                    self._league_factor(self.leagueid) *
+                    self._domestic_presitge(self.leagueid, self.club_domestic_prestige) *
+                    self._profitability(self.leagueid, self.club_profitability)
+                )
+        )
+        age_mod = self._cfloat_mul(league_mod, self._age_factor(self.age)) / 100.00
+        pos_mod = self._cfloat_mul(league_mod, self._position_factor(self.posid)) / 100.00
 
         player_wage = int(self._round_to_player_wage(
-            league_mod + age_mod + pos_mod))
+            league_mod + age_mod + pos_mod)
+        )
+        if TEST_DEBUG:
+            print("\nLeague_mod: {}\nage_mod: {}\npos_mod: {}\n player_wage raw: {}\n player_wage: {}\n".format(
+                league_mod, age_mod, pos_mod, league_mod + age_mod + pos_mod, player_wage
+            ))
 
         if player_wage < 500:
             player_wage = 500
         return player_wage
 
     def _league_factor(self, leagueid):
+        # playerswages.ini -> [WAGE_LEAGUE]
         factors = {
             '17': {
                 13: 70,     # England Premier League
@@ -219,6 +247,46 @@ class PlayerWage:
                 2076: 7,    # Germany 3. Liga
                 2012: 16,   # China Super League
             },
+            '20': {
+                13: 70,     # EnglandPremierLeague
+                53: 43,     # SpainPrimera
+                31: 45,     # ItalySerieA
+                19: 50,     # GermanyBundesliga1
+                16: 40,     # FranceLigue1
+                10: 22,     # Netherlands
+                14: 30,     # EnglandChampionship
+                20: 20,     # GermanyBundesliga2
+                32: 10,     # ItalySerieB
+                83: 8,      # Korea
+                308: 18,    # Portugal
+                54: 12,     # SpainSegundaA
+                56: 8,      # Sweden
+                189: 20,    # Switzerland
+                39: 15,     # MLS
+                17: 10,     # FranceLigue2
+                341: 25,    # Mexico
+                335: 6,     # Chile
+                336: 4,     # Colombia
+                67: 33,     # Russia
+                80: 22,     # Austria
+                4: 21,      # Belguim
+                1: 20,      # Denmark
+                41: 10,     # Norway
+                68: 32,     # Turkey
+                60: 8,      # EnglandLeagueOne
+                66: 13,     # Poland
+                350: 25,    # SaudiArabia
+                351: 8,     # Australia
+                353: 15,    # Argentina
+                61: 8,      # EnglandLeagueTwo
+                50: 10,     # Scotland
+                65: 3,      # Ireland
+                7: 15,      # Brazil
+                349: 14,    # JapanJ1
+                2076: 7,    # Germany3.Liga
+                2012: 16,   # ChinaSuperLeague
+                330: 12,    # RomaniaLiga1
+            }
         }
 
         try:
@@ -227,6 +295,7 @@ class PlayerWage:
             return 20   # Default League Modifier
 
     def _ovr_factor(self, ovr):
+        # playerswages.ini -> [WAGE_RATINGRANGE]
         factors = {
             '17': (
                 20,
@@ -536,6 +605,108 @@ class PlayerWage:
                 3000,
                 5000,
                 5000,
+            ),
+            '20': (
+                50,  # If ovr == 0
+                50,  # If ovr == 1
+                50,  # If ovr == 2
+                50,  # If ovr == 3
+                50,  # If ovr == 4
+                50,  # If ovr == 5
+                50,  # If ovr == 6
+                50,  # If ovr == 7
+                50,  # If ovr == 8
+                50,  # If ovr == 9
+                50,  # If ovr == 10
+                50,  # If ovr == 11
+                50,  # If ovr == 12
+                50,  # If ovr == 13
+                50,  # If ovr == 14
+                50,  # If ovr == 15
+                50,  # If ovr == 16
+                50,  # If ovr == 17
+                50,  # If ovr == 18
+                50,  # If ovr == 19
+                50,  # If ovr == 20
+                50,  # If ovr == 21
+                50,  # If ovr == 22
+                50,  # If ovr == 23
+                50,  # If ovr == 24
+                50,  # If ovr == 25
+                50,  # If ovr == 26
+                50,  # If ovr == 27
+                50,  # If ovr == 28
+                50,  # If ovr == 29
+                50,  # If ovr == 30
+                50,  # If ovr == 31
+                50,  # If ovr == 32
+                50,  # If ovr == 33
+                50,  # If ovr == 34
+                50,  # If ovr == 35
+                50,  # If ovr == 36
+                50,  # If ovr == 37
+                50,  # If ovr == 38
+                50,  # If ovr == 39
+                50,  # If ovr == 40
+                50,  # If ovr == 41
+                50,  # If ovr == 42
+                50,  # If ovr == 43
+                50,  # If ovr == 44
+                50,  # If ovr == 45
+                55,  # If ovr == 46
+                55,  # If ovr == 47
+                55,  # If ovr == 48
+                55,  # If ovr == 49
+                55,  # If ovr == 50
+                60,  # If ovr == 51
+                60,  # If ovr == 52
+                60,  # If ovr == 53
+                60,  # If ovr == 54
+                60,  # If ovr == 55
+                65,  # If ovr == 56
+                65,  # If ovr == 57
+                65,  # If ovr == 58
+                65,  # If ovr == 59
+                65,  # If ovr == 60
+                70,  # If ovr == 61
+                75,  # If ovr == 62
+                85,  # If ovr == 63
+                95,  # If ovr == 64
+                105,  # If ovr == 65
+                120,  # If ovr == 66
+                140,  # If ovr == 67
+                165,  # If ovr == 68
+                195,  # If ovr == 69
+                230,  # If ovr == 70
+                265,  # If ovr == 71
+                300,  # If ovr == 72
+                340,  # If ovr == 73
+                370,  # If ovr == 74
+                400,  # If ovr == 75
+                420,  # If ovr == 76
+                450,  # If ovr == 77
+                480,  # If ovr == 78
+                530,  # If ovr == 79
+                560,  # If ovr == 80
+                600,  # If ovr == 81
+                650,  # If ovr == 82
+                710,  # If ovr == 83
+                780,  # If ovr == 84
+                850,  # If ovr == 85
+                925,  # If ovr == 86
+                1000,  # If ovr == 87
+                1200,  # If ovr == 88
+                1250,  # If ovr == 89
+                1300,  # If ovr == 90
+                1600,  # If ovr == 91
+                1800,  # If ovr == 92
+                2000,  # If ovr == 93
+                2000,  # If ovr == 94
+                2500,  # If ovr == 95
+                2500,  # If ovr == 96
+                3000,  # If ovr == 97
+                3000,  # If ovr == 98
+                5000,  # If ovr == 99
             )
         }
 
@@ -545,6 +716,7 @@ class PlayerWage:
             return 0
 
     def _age_factor(self, age):
+        # playerswages.ini -> [WAGE_AGE]
         factors = {
             '17': (
                 -60,
@@ -854,6 +1026,48 @@ class PlayerWage:
                 -20,
                 -20,
                 -20,
+            ),
+            '20': (
+                -85,  # If age == 0
+                -85,  # If age == 1
+                -85,  # If age == 2
+                -85,  # If age == 3
+                -85,  # If age == 4
+                -85,  # If age == 5
+                -85,  # If age == 6
+                -85,  # If age == 7
+                -85,  # If age == 8
+                -85,  # If age == 9
+                -85,  # If age == 10
+                -85,  # If age == 11
+                -85,  # If age == 12
+                -85,  # If age == 13
+                -85,  # If age == 14
+                -85,  # If age == 15
+                -85,  # If age == 16
+                -85,  # If age == 17
+                -60,  # If age == 18
+                -35,  # If age == 19
+                -15,  # If age == 20
+                -15,  # If age == 21
+                0,  # If age == 22
+                0,  # If age == 23
+                0,  # If age == 24
+                10,  # If age == 25
+                15,  # If age == 26
+                15,  # If age == 27
+                20,  # If age == 28
+                20,  # If age == 29
+                15,  # If age == 30
+                15,  # If age == 31
+                15,  # If age == 32
+                15,  # If age == 33
+                15,  # If age == 34
+                -15,  # If age == 35
+                -15,  # If age == 36
+                -15,  # If age == 37
+                -15,  # If age == 38
+                      # For some reason age 38 is the max...
             )
         }
 
@@ -863,6 +1077,7 @@ class PlayerWage:
             return 0
 
     def _position_factor(self, posid):
+        # playerswages.ini -> [WAGE_POSITION]
         factors = {
             '17': (
                 -30,
@@ -953,6 +1168,38 @@ class PlayerWage:
                 10,
                 10,
                 10,
+            ),
+            '20': (
+                -30,  # If position == GK
+                -10,  # If position == SW
+                -10,  # If position == RWB
+                -10,  # If position == RB
+                -10,  # If position == RCB
+                -10,  # If position == CB
+                -10,  # If position == LCB
+                -10,  # If position == LB
+                -10,  # If position == LWB
+                -10,  # If position == RDM
+                -10,  # If position == CDM
+                -10,  # If position == LDM
+                0,  # If position == RM
+                0,  # If position == RCM
+                0,  # If position == CM
+                0,  # If position == LCM
+                0,  # If position == LM
+                0,  # If position == RAM
+                0,  # If position == CAM
+                0,  # If position == LAM
+                10,  # If position == RF
+                10,  # If position == CF
+                10,  # If position == LF
+                10,  # If position == RW
+                10,  # If position == RS
+                10,  # If position == ST
+                10,  # If position == LS
+                10,  # If position == LW
+                0,  # If position == SUB
+                0,  # If position == RES
             )
         }
 
@@ -1078,13 +1325,57 @@ class PlayerWage:
                 7: (0, 2, 2, 2, 2, 2.2, 2.6, 3, 3.2, 3.2, 3.2,),
                 349: (0, 1.2, 1.2, 1.2, 1.4, 1.4, 1.6, 1.8, 2, 2, 2,),
                 2076: (0, 1.2, 1.2, 1.4, 1.4, 1.5, 1.8, 1.8, 1.8, 2, 2,),
+            },
+            '20': {
+                0: (0, 1.2, 1.2, 1.4, 1.4, 1.5, 1.8, 1.8, 1.8, 2, 2),
+                13: (0, 1, 1, 1.1, 1.1, 1.3, 1.3, 1.5, 1.6, 1.6, 1.7),
+                53: (0, 0.8, 0.8, 0.8, 0.9, 0.9, 0.9, 1, 1, 1.5, 3.5),
+                31: (0, 0.7, 0.8, 1, 1, 1.5, 1.5, 1.6, 1.7, 1.7, 2),
+                19: (0, 1, 1, 1, 1.1, 1.1, 1.1, 1.4, 1.2, 1.6, 2),
+                16: (0, 1, 1, 1.2, 1.2, 1.3, 1.3, 1.4, 1.5, 1.6, 1.6),
+                10: (0, 1, 1, 1, 1, 1.1, 1.1, 1.2, 1.2, 1.5, 1.5),
+                14: (0, 0.8, 0.8, 1, 1, 1.8, 1.8, 1.8, 1.8, 2.2, 2.2),
+                20: (0, 1.2, 1.2, 1.4, 1.4, 1.5, 1.8, 1.8, 1.8, 2, 2),
+                32: (0, 1, 1, 1, 1.1, 1.1, 1.1, 1.2, 1.2, 1.2, 1.2),
+                83: (0, 1.4, 1.4, 1.5, 1.5, 1.5, 1.6, 1.6, 1.6, 2, 2),
+                308: (0, 1, 1, 1.1, 1.1, 1.2, 1.2, 1.3, 1.3, 1.4, 1.4),
+                54: (0, 1.1, 1.1, 1.2, 1.2, 1.3, 1.3, 1.4, 1.4, 1.5, 1.5),
+                56: (0, 1, 1, 1.2, 1.2, 1.4, 1.4, 1.5, 1.5, 2, 2),
+                189: (0, 1, 1, 1, 1, 1.3, 1.3, 1.6, 1.6, 1.8, 1.8),
+                39: (0, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5),
+                17: (0, 1.1, 1.1, 1.2, 1.2, 1.3, 1.3, 1.4, 1.4, 1.5, 1.5),
+                341: (0, 1, 1, 1, 1, 1.5, 1.5, 2, 2, 2.5, 2.5),
+                335: (0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.6, 1.8, 2, 2, 2.3),
+                336: (0, 1.2, 1.2, 1.2, 1.2, 1.4, 1.4, 2, 2.5, 2.5, 3),
+                67: (0, 1, 1, 1, 1.2, 1.2, 1.2, 1.4, 1.4, 1.6, 1.8),
+                80: (0, 1.2, 1.2, 1.2, 1.4, 1.4, 1.6, 1.7, 1.7, 1.8, 1.8),
+                4: (0, 1.2, 1.2, 1.2, 1.4, 1.4, 1.4, 1.5, 1.5, 2, 2),
+                1: (0, 1.2, 1.2, 1.2, 1.4, 1.4, 1.4, 1.5, 1.5, 2, 2),
+                41: (0, 1, 1, 1, 1.1, 1.1, 1.2, 1.2, 1.2, 1.5, 1.5),
+                68: (0, 1, 1, 1, 1, 1.2, 1.2, 1.6, 1.6, 2, 2),
+                60: (0, 1.8, 1.8, 1.8, 2.1, 2.1, 2.1, 2.3, 2.3, 2.5, 2.5),
+                66: (0, 1, 1, 1.2, 1.3, 1.3, 1.6, 1.6, 1.8, 1.8, 1.8),
+                350: (0, 1.2, 1.2, 1.2, 1.4, 1.4, 1.6, 1.8, 2, 2, 2),
+                351: (0, 1, 1, 1, 1, 1.2, 1.2, 1.4, 1.4, 1.4, 1.4),
+                353: (0, 2, 2, 2, 2, 2.2, 2.2, 2.4, 2.4, 2.6, 2.6),
+                61: (0, 2, 2, 2, 2.5, 2.5, 2.5, 3, 3, 3, 3),
+                50: (0, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5),
+                65: (0, 1.5, 1.5, 1.5, 1.7, 1.7, 1.7, 2, 2, 2, 2),
+                7: (0, 2, 2, 2, 2, 2.2, 2.6, 3, 3.2, 3.2, 3.2),
+                349: (0, 1.2, 1.2, 1.2, 1.4, 1.4, 1.6, 1.8, 2, 2, 2),
+                2076: (0, 1.2, 1.2, 1.4, 1.4, 1.5, 1.8, 1.8, 1.8, 2, 2),
             }
         }
+
+        if club_domestic_prestige > 10:
+            club_domestic_prestige = 10
+        elif club_domestic_prestige <= 0:
+            club_domestic_prestige = 0
 
         try:
             return domestic_prestige_table[self.fifa_edition][leagueid][club_domestic_prestige]
         except (KeyError, IndexError):
-            return domestic_prestige_table[self.fifa_edition][0][0]
+            return domestic_prestige_table[self.fifa_edition][0][club_domestic_prestige]
 
     def _profitability(self, leagueid, club_profitability):
         profitability_table = {
@@ -1203,13 +1494,57 @@ class PlayerWage:
                 7: (0, 1.5, 1.5, 1.5, 1.2, 1.2, 1.2, 1.2, 1, 1, 1,),
                 349: (0, 1, 1, 1, 1, 0.8, 0.8, 0.7, 0.7, 0.7, 0.7,),
                 2076: (0, 1.6, 1.6, 1.5, 1.5, 1.4, 1.2, 1.1, 0.8, 0.7, 0.7,),
+            },
+            '20': {
+                0: (0, 1.5, 1.5, 1.4, 1.4, 1.2, 1.2, 1.1, 1.1, 1, 1),
+                13: (0, 1.6, 1.6, 1.5, 1.5, 1.3, 1.3, 1, 1, 1, 1),
+                53: (0, 1.5, 1.5, 1.5, 1.4, 1.4, 1.2, 1.2, 1, 0.8, 0.8),
+                31: (0, 2, 1.8, 1.4, 1.4, 1.2, 1, 0.9, 0.8, 0.8, 0.7),
+                19: (0, 1.5, 1.5, 1.5, 1.2, 1.2, 1, 1, 1, 1, 1),
+                16: (0, 2, 1.8, 1.8, 1.5, 1.2, 1, 1, 1, 0.8, 0.8),
+                10: (0, 1.5, 1.5, 1.3, 1.2, 1.1, 1, 1, 0.9, 0.8, 0.8),
+                14: (0, 1.8, 1.8, 1.6, 1.6, 1.3, 1.3, 1.1, 1.1, 0.8, 0.8),
+                20: (0, 1.6, 1.6, 1.5, 1.5, 1.4, 1.2, 1.1, 0.8, 0.7, 0.7),
+                32: (0, 1.1, 1.1, 1, 1, 1, 0.9, 0.9, 0.8, 0.8, 0.8),
+                83: (0, 1.6, 1.6, 1.5, 1.5, 1.4, 1.4, 1.2, 1.2, 1, 1),
+                308: (0, 1.5, 1.5, 1.3, 1.3, 1.1, 1.1, 1, 1, 0.8, 0.8),
+                54: (0, 1.6, 1.6, 1.5, 1.5, 1.4, 1.4, 1.3, 1.3, 1.2, 1.2),
+                56: (0, 1.5, 1.5, 1.4, 1.4, 1.2, 1.2, 1.1, 1.1, 1, 1),
+                189: (0, 2, 2, 1.5, 1.5, 1.3, 1.3, 1, 1, 1, 1),
+                39: (0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5),
+                17: (0, 1.6, 1.6, 1.5, 1.5, 1.4, 1.4, 1.3, 1.3, 1.2, 1.2),
+                341: (0, 2, 1.8, 1.6, 1.4, 1.2, 1.2, 1, 1, 0.8, 0.8),
+                335: (0, 2, 2, 2, 2, 1.4, 1.4, 1.2, 1.2, 1, 1),
+                336: (0, 1.1, 1.1, 1.1, 1.1, 1, 1, 1, 0.8, 0.8, 0.8),
+                67: (0, 2, 2, 1.8, 1.8, 1.7, 1.7, 1.7, 1.4, 1.4, 1.4),
+                80: (0, 1.8, 1.8, 1.6, 1.4, 1.2, 1, 1, 1, 0.8, 0.8),
+                4: (0, 1.4, 1.4, 1.2, 1.1, 1.1, 1.1, 1.1, 1.1, 1, 1),
+                1: (0, 1.4, 1.4, 1.2, 1.1, 1.1, 1.1, 1.1, 1.1, 1, 1),
+                41: (0, 1.2, 1.2, 1.2, 1.1, 1.1, 1.1, 1, 1, 1, 1),
+                68: (0, 1.8, 1.8, 1.6, 1.4, 1.2, 1, 1, 1, 1, 1),
+                60: (0, 1.6, 1.6, 1.6, 1.5, 1.5, 1.5, 1.4, 1.4, 1, 1),
+                66: (0, 1.2, 1.2, 1, 1, 1, 1, 0.9, 0.9, 0.8, 0.8),
+                350: (0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.3, 1.2, 1, 1),
+                351: (0, 2.5, 2.5, 2, 2, 1.5, 1.5, 1, 1, 1, 1),
+                353: (0, 1.2, 1.2, 1.1, 1.1, 1, 1, 0.9, 0.9, 0.8, 0.8),
+                61: (0, 1.8, 1.8, 1.8, 1.8, 1.8, 1.5, 1.5, 1.5, 1.5, 1.5),
+                50: (0, 2, 2, 2, 2, 2, 1.8, 1.8, 1.8, 1.8, 1.8),
+                65: (0, 1.6, 1.6, 1.6, 1.5, 1.5, 1.5, 1.4, 1.4, 1.3, 1.3),
+                7: (0, 1.5, 1.5, 1.5, 1.2, 1.2, 1.2, 1.2, 1, 1, 1),
+                349: (0, 1, 1, 1, 1, 0.8, 0.8, 0.7, 0.7, 0.7, 0.7),
+                2076: (0, 1.6, 1.6, 1.5, 1.5, 1.4, 1.2, 1.1, 0.8, 0.7, 0.7),
             }
         }
+
+        if club_profitability > 10:
+            club_profitability = 10
+        elif club_profitability <= 0:
+            club_profitability = 0
 
         try:
             return profitability_table[self.fifa_edition][leagueid][club_profitability]
         except (KeyError, IndexError):
-            return profitability_table[self.fifa_edition][0][0]
+            return profitability_table[self.fifa_edition][0][club_profitability]
 
     def _round_to_player_wage(self, summed_wage):
         divisor = 0
@@ -1231,7 +1566,7 @@ class PlayerWage:
             divisor = 100000
 
         reminder = summed_wage % divisor
-        if reminder >= divisor / 2:
+        if reminder > divisor / 2:
             return summed_wage + (divisor - reminder)
         else:
             return summed_wage - reminder
@@ -1266,15 +1601,20 @@ class PlayerValue:
         except IndexError:
             self.currency = CURRENCY_CONVERSION[self.fifa_edition][1]  # Euro
 
+    def _cfloat_mul(self, x, y):
+        # Single precision float as in assembler
+        return unpack('f', pack('f', x*y))[0]
+
     def _calculate_player_value(self):
         basevalue = self._ovr_factor(self.ovr) * self.currency
-        pos_mod = basevalue * self._position_factor(self.posid)
-        pot_mod = basevalue * self._pot_factor(self.pot - self.ovr)
-        age_mod = basevalue * self._age_factor(self.age, self.posid)
+        pos_mod = (self._cfloat_mul(basevalue, self._position_factor(self.posid))) / 100
+        pot_mod = (self._cfloat_mul(basevalue, self._pot_factor(self.pot - self.ovr))) / 100
+        age_mod = (self._cfloat_mul(basevalue, self._age_factor(self.age, self.posid))) / 100
         player_value = self._sum_factors(basevalue, pos_mod, pot_mod, age_mod)
-        # print("\nbase value: {}\npos_mod: {}\npot_mod: {}\nage_mod: {}\nplayer_value: {}".format(basevalue, pos_mod, pot_mod, age_mod, player_value))
+        if TEST_DEBUG:
+            print("\nbase value: {}\npos_mod: {}\npot_mod: {}\nage_mod: {}\nplayer_value: {}".format(basevalue, pos_mod, pot_mod, age_mod, player_value))
 
-        if player_value < 0:
+        if player_value <= 0:
             player_value = 0
         elif player_value < 1000:
             player_value = 10000
@@ -1282,7 +1622,6 @@ class PlayerValue:
         return int(player_value)
 
     def _round_to_player_value(self, summed_value):
-        divisor = 0
         if summed_value <= 5000.00:
             divisor = 50
         elif summed_value <= 10000.00:
@@ -1299,12 +1638,13 @@ class PlayerValue:
             divisor = 500000
 
         reminder = summed_value % divisor
-        if reminder > divisor / 2:
-            return summed_value + (divisor - reminder)
-        else:
+        if reminder <= (divisor / 2):
             return summed_value - reminder
+        else:
+            return summed_value + (divisor - reminder)
 
     def _ovr_factor(self, ovr):
+        # playervalues.ini -> [RATINGRANGE]
         # 0-5  = 1000
         # 6-40 = 15000
         # 41-50 = 20000
@@ -1621,6 +1961,108 @@ class PlayerValue:
                 150000000,
                 200000000,
             ),
+            '20': (
+                1000,  # If ovr == 0
+                1000,  # If ovr == 1
+                1000,  # If ovr == 2
+                1000,  # If ovr == 3
+                1000,  # If ovr == 4
+                1000,  # If ovr == 5
+                15000,  # If ovr == 6
+                15000,  # If ovr == 7
+                15000,  # If ovr == 8
+                15000,  # If ovr == 9
+                15000,  # If ovr == 10
+                15000,  # If ovr == 11
+                15000,  # If ovr == 12
+                15000,  # If ovr == 13
+                15000,  # If ovr == 14
+                15000,  # If ovr == 15
+                15000,  # If ovr == 16
+                15000,  # If ovr == 17
+                15000,  # If ovr == 18
+                15000,  # If ovr == 19
+                15000,  # If ovr == 20
+                15000,  # If ovr == 21
+                15000,  # If ovr == 22
+                15000,  # If ovr == 23
+                15000,  # If ovr == 24
+                15000,  # If ovr == 25
+                15000,  # If ovr == 26
+                15000,  # If ovr == 27
+                15000,  # If ovr == 28
+                15000,  # If ovr == 29
+                15000,  # If ovr == 30
+                15000,  # If ovr == 31
+                15000,  # If ovr == 32
+                15000,  # If ovr == 33
+                15000,  # If ovr == 34
+                15000,  # If ovr == 35
+                15000,  # If ovr == 36
+                15000,  # If ovr == 37
+                15000,  # If ovr == 38
+                15000,  # If ovr == 39
+                15000,  # If ovr == 40
+                20000,  # If ovr == 41
+                20000,  # If ovr == 42
+                20000,  # If ovr == 43
+                20000,  # If ovr == 44
+                20000,  # If ovr == 45
+                20000,  # If ovr == 46
+                20000,  # If ovr == 47
+                20000,  # If ovr == 48
+                20000,  # If ovr == 49
+                20000,  # If ovr == 50
+                25000,  # If ovr == 51
+                34000,  # If ovr == 52
+                40000,  # If ovr == 53
+                46000,  # If ovr == 54
+                54000,  # If ovr == 55
+                61000,  # If ovr == 56
+                70000,  # If ovr == 57
+                86000,  # If ovr == 58
+                105000,  # If ovr == 59
+                140000,  # If ovr == 60
+                170000,  # If ovr == 61
+                205000,  # If ovr == 62
+                250000,  # If ovr == 63
+                305000,  # If ovr == 64
+                365000,  # If ovr == 65
+                435000,  # If ovr == 66
+                515000,  # If ovr == 67
+                605000,  # If ovr == 68
+                710000,  # If ovr == 69
+                1200000,  # If ovr == 70
+                1600000,  # If ovr == 71
+                2100000,  # If ovr == 72
+                2700000,  # If ovr == 73
+                3800000,  # If ovr == 74
+                4500000,  # If ovr == 75
+                5200000,  # If ovr == 76
+                6000000,  # If ovr == 77
+                7000000,  # If ovr == 78
+                8500000,  # If ovr == 79
+                10000000,  # If ovr == 80
+                12000000,  # If ovr == 81
+                15000000,  # If ovr == 82
+                17500000,  # If ovr == 83
+                21000000,  # If ovr == 84
+                26000000,  # If ovr == 85
+                30000000,  # If ovr == 86
+                34000000,  # If ovr == 87
+                40000000,  # If ovr == 88
+                45000000,  # If ovr == 89
+                52000000,  # If ovr == 90
+                60000000,  # If ovr == 91
+                68000000,  # If ovr == 92
+                75000000,  # If ovr == 93
+                83000000,  # If ovr == 94
+                90000000,  # If ovr == 95
+                110000000,  # If ovr == 96
+                120000000,  # If ovr == 97
+                140000000,  # If ovr == 98
+                150000000,  # If ovr == 99
+            )
         }
 
         try:
@@ -1629,6 +2071,7 @@ class PlayerValue:
             return factors[self.fifa_edition][-1]
 
     def _position_factor(self, posid):
+        # playervalues.ini -> [POSITION]
         factors = {
             '17': (
                 -15,
@@ -1713,15 +2156,49 @@ class PlayerValue:
                 15,
                 18,
                 18,
+            ),
+            '20': (
+                -35,  # If position == GK
+                0,  # If position == SW
+                -8,  # If position == RWB
+                -8,  # If position == RB
+                -5,  # If position == RCB
+                -5,  # If position == CB
+                -5,  # If position == LCB
+                -8,  # If position == LB
+                -8,  # If position == LWB
+                -3,  # If position == RDM
+                -3,  # If position == CDM
+                -3,  # If position == LDM
+                15,  # If position == RM
+                12,  # If position == RCM
+                12,  # If position == CM
+                12,  # If position == LCM
+                15,  # If position == LM
+                15,  # If position == RAM
+                15,  # If position == CAM
+                15,  # If position == LAM
+                0,  # If position == RF
+                18,  # If position == CF
+                0,  # If position == LF
+                15,  # If position == RW
+                18,  # If position == RS
+                18,  # If position == ST
+                18,  # If position == LS
+                15,  # If position == LW
+                0,  # If position == SUB
+                0,  # If position == RES
+
             )
         }
 
         try:
-            return (factors[self.fifa_edition][posid] / 100)
+            return (factors[self.fifa_edition][posid])
         except IndexError:
-            return (factors[self.fifa_edition][0] / 100)
+            return (factors[self.fifa_edition][0])
 
     def _pot_factor(self, remaining_potential):
+        # playervalues.ini -> [POTENTIAL]
         # The remaining potential for the player ( Overall Potential - current Overall )
         if remaining_potential <= 0:
             return 0
@@ -1885,18 +2362,121 @@ class PlayerValue:
                 235,
                 235,
                 235,
+            ),
+            '20': (
+                0,  # If pot-ovr == 0
+                15,  # If pot-ovr == 1
+                20,  # If pot-ovr == 2
+                25,  # If pot-ovr == 3
+                30,  # If pot-ovr == 4
+                35,  # If pot-ovr == 5
+                40,  # If pot-ovr == 6
+                45,  # If pot-ovr == 7
+                55,  # If pot-ovr == 8
+                65,  # If pot-ovr == 9
+                75,  # If pot-ovr == 10
+                90,  # If pot-ovr == 11
+                100,  # If pot-ovr == 12
+                120,  # If pot-ovr == 13
+                160,  # If pot-ovr == 14
+                160,  # If pot-ovr == 15
+                160,  # If pot-ovr == 16
+                160,  # If pot-ovr == 17
+                160,  # If pot-ovr == 18
+                160,  # If pot-ovr == 19
+                160,  # If pot-ovr == 20
+                190,  # If pot-ovr == 21
+                190,  # If pot-ovr == 22
+                190,  # If pot-ovr == 23
+                190,  # If pot-ovr == 24
+                190,  # If pot-ovr == 25
+                190,  # If pot-ovr == 26
+                190,  # If pot-ovr == 27
+                190,  # If pot-ovr == 28
+                190,  # If pot-ovr == 29
+                190,  # If pot-ovr == 30
+                235,  # If pot-ovr == 31
+                235,  # If pot-ovr == 32
+                235,  # If pot-ovr == 33
+                235,  # If pot-ovr == 34
+                235,  # If pot-ovr == 35
+                235,  # If pot-ovr == 36
+                235,  # If pot-ovr == 37
+                235,  # If pot-ovr == 38
+                235,  # If pot-ovr == 39
+                235,  # If pot-ovr == 40
+                235,  # If pot-ovr == 41
+                235,  # If pot-ovr == 42
+                235,  # If pot-ovr == 43
+                235,  # If pot-ovr == 44
+                235,  # If pot-ovr == 45
+                235,  # If pot-ovr == 46
+                235,  # If pot-ovr == 47
+                235,  # If pot-ovr == 48
+                235,  # If pot-ovr == 49
+                235,  # If pot-ovr == 50
+                235,  # If pot-ovr == 51
+                235,  # If pot-ovr == 52
+                235,  # If pot-ovr == 53
+                235,  # If pot-ovr == 54
+                235,  # If pot-ovr == 55
+                235,  # If pot-ovr == 56
+                235,  # If pot-ovr == 57
+                235,  # If pot-ovr == 58
+                235,  # If pot-ovr == 59
+                235,  # If pot-ovr == 60
+                235,  # If pot-ovr == 61
+                235,  # If pot-ovr == 62
+                235,  # If pot-ovr == 63
+                235,  # If pot-ovr == 64
+                235,  # If pot-ovr == 65
+                235,  # If pot-ovr == 66
+                235,  # If pot-ovr == 67
+                235,  # If pot-ovr == 68
+                235,  # If pot-ovr == 69
+                235,  # If pot-ovr == 70
+                235,  # If pot-ovr == 71
+                235,  # If pot-ovr == 72
+                235,  # If pot-ovr == 73
+                235,  # If pot-ovr == 74
+                235,  # If pot-ovr == 75
+                235,  # If pot-ovr == 76
+                235,  # If pot-ovr == 77
+                235,  # If pot-ovr == 78
+                235,  # If pot-ovr == 79
+                235,  # If pot-ovr == 80
+                235,  # If pot-ovr == 81
+                235,  # If pot-ovr == 82
+                235,  # If pot-ovr == 83
+                235,  # If pot-ovr == 84
+                235,  # If pot-ovr == 85
+                235,  # If pot-ovr == 86
+                235,  # If pot-ovr == 87
+                235,  # If pot-ovr == 88
+                235,  # If pot-ovr == 89
+                235,  # If pot-ovr == 90
+                235,  # If pot-ovr == 91
+                235,  # If pot-ovr == 92
+                235,  # If pot-ovr == 93
+                235,  # If pot-ovr == 94
+                235,  # If pot-ovr == 95
+                235,  # If pot-ovr == 96
+                235,  # If pot-ovr == 97
+                235,  # If pot-ovr == 98
+                235,  # If pot-ovr == 99
             )
         }
 
         if remaining_potential > len(factors[self.fifa_edition]):
-            return (factors[self.fifa_edition][-1] / 100)
+            return (factors[self.fifa_edition][-1])
 
         try:
-            return (factors[self.fifa_edition][remaining_potential] / 100)
+            return (factors[self.fifa_edition][remaining_potential])
         except IndexError:
-            return (factors[self.fifa_edition][-1] / 100)
+            return (factors[self.fifa_edition][-1])
 
     def _age_factor(self, age, posid):
+        # playervalues.ini -> [AGE]
         factors = {
             '17': (
                 5,
@@ -2207,6 +2787,108 @@ class PlayerValue:
                 -1000,
                 -1000,
             ),
+            '20': (
+                18,  # If age == 0
+                18,  # If age == 1
+                18,  # If age == 2
+                18,  # If age == 3
+                18,  # If age == 4
+                18,  # If age == 5
+                18,  # If age == 6
+                18,  # If age == 7
+                18,  # If age == 8
+                18,  # If age == 9
+                18,  # If age == 10
+                18,  # If age == 11
+                18,  # If age == 12
+                18,  # If age == 13
+                18,  # If age == 14
+                18,  # If age == 15
+                18,  # If age == 16
+                18,  # If age == 17
+                30,  # If age == 18
+                42,  # If age == 19
+                50,  # If age == 20
+                48,  # If age == 21
+                48,  # If age == 22
+                48,  # If age == 23
+                48,  # If age == 24
+                46,  # If age == 25
+                44,  # If age == 26
+                40,  # If age == 27
+                35,  # If age == 28
+                30,  # If age == 29
+                25,  # If age == 30
+                15,  # If age == 31
+                0,  # If age == 32
+                -25,  # If age == 33
+                -40,  # If age == 34
+                -50,  # If age == 35
+                -65,  # If age == 36
+                -75,  # If age == 37
+                -75,  # If age == 38
+                -75,  # If age == 39
+                -1000,  # If age == 40
+                -1000,  # If age == 41
+                -1000,  # If age == 42
+                -1000,  # If age == 43
+                -1000,  # If age == 44
+                -1000,  # If age == 45
+                -1000,  # If age == 46
+                -1000,  # If age == 47
+                -1000,  # If age == 48
+                -1000,  # If age == 49
+                -1000,  # If age == 50
+                -1000,  # If age == 51
+                -1000,  # If age == 52
+                -1000,  # If age == 53
+                -1000,  # If age == 54
+                -1000,  # If age == 55
+                -1000,  # If age == 56
+                -1000,  # If age == 57
+                -1000,  # If age == 58
+                -1000,  # If age == 59
+                -1000,  # If age == 60
+                -1000,  # If age == 61
+                -1000,  # If age == 62
+                -1000,  # If age == 63
+                -1000,  # If age == 64
+                -1000,  # If age == 65
+                -1000,  # If age == 66
+                -1000,  # If age == 67
+                -1000,  # If age == 68
+                -1000,  # If age == 69
+                -1000,  # If age == 70
+                -1000,  # If age == 71
+                -1000,  # If age == 72
+                -1000,  # If age == 73
+                -1000,  # If age == 74
+                -1000,  # If age == 75
+                -1000,  # If age == 76
+                -1000,  # If age == 77
+                -1000,  # If age == 78
+                -1000,  # If age == 79
+                -1000,  # If age == 80
+                -1000,  # If age == 81
+                -1000,  # If age == 82
+                -1000,  # If age == 83
+                -1000,  # If age == 84
+                -1000,  # If age == 85
+                -1000,  # If age == 86
+                -1000,  # If age == 87
+                -1000,  # If age == 88
+                -1000,  # If age == 89
+                -1000,  # If age == 90
+                -1000,  # If age == 91
+                -1000,  # If age == 92
+                -1000,  # If age == 93
+                -1000,  # If age == 94
+                -1000,  # If age == 95
+                -1000,  # If age == 96
+                -1000,  # If age == 97
+                -1000,  # If age == 98
+                -1000,  # If age == 99
+            )
         }
         gk_age_mod = {
             '17': {
@@ -2218,6 +2900,10 @@ class PlayerValue:
                 'GK_MIN_AGE_MOD': 28,
             },
             '19': {
+                'GK_AGE_MOD': -2,
+                'GK_MIN_AGE_MOD': 28,
+            },
+            '20': {
                 'GK_AGE_MOD': -2,
                 'GK_MIN_AGE_MOD': 28,
             },
@@ -2236,15 +2922,17 @@ class PlayerValue:
                 age += gk_age_mod[self.fifa_edition]['GK_AGE_MOD']
 
         try:
-            return (factors[self.fifa_edition][age] / 100)
+            return (factors[self.fifa_edition][age])
         except IndexError:
-            return (factors[self.fifa_edition][-1] / 100)
+            return (factors[self.fifa_edition][-1])
 
     def _sum_factors(self, basevalue, *args):
         summed_value = basevalue
         for a in args:
             summed_value += a
 
+        if TEST_DEBUG:
+            print("Before rounding: {}".format(summed_value))
         return int(self._round_to_player_value(summed_value))
 
 
@@ -2560,14 +3248,21 @@ class FifaPlayer():
         if self.player.playerid < 280000:
             return "heads/p{playerid}.png".format(playerid=self.player.playerid)
         else:
-            if self.player.headtypecode == 0:
-                return "youthheads/p{haircolorcode}.png".format(
-                    haircolorcode=self.player.haircolorcode
+            if self.fifa_edition == '20':
+                return "youthheads/p{skintonecode}{headtypecode:04d}{haircolorcode:02d}.png".format(
+                    skintonecode=self.player.skintonecode,
+                    headtypecode=self.player.headtypecode,
+                    haircolorcode=self.player.haircolorcode,
                 )
             else:
-                return "youthheads/p{headtypecode}{haircolorcode:02d}.png".format(
-                    headtypecode=self.player.headtypecode, haircolorcode=self.player.haircolorcode
-                )
+                if self.player.headtypecode == 0:
+                    return "youthheads/p{haircolorcode}.png".format(
+                        haircolorcode=self.player.haircolorcode
+                    )
+                else:
+                    return "youthheads/p{headtypecode}{haircolorcode:02d}.png".format(
+                        headtypecode=self.player.headtypecode, haircolorcode=self.player.haircolorcode
+                    )
 
     def update_positions(self):
         available_positions = ('GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM',
@@ -2660,3 +3355,41 @@ class FifaPlayer():
                         return self.leagues[j], self.league_team_links[i]
 
         return None
+
+
+if __name__ == '__main__':
+    available_positions = (
+        'GK', 'SW', 'RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB', 'RDM', 'CDM', 'LDM', 'RM',
+        'RCM', 'CM', 'LCM', 'LM', 'RAM', 'CAM', 'LAM', 'RF', 'CF', 'LF', 'RW', 'RS', 'ST', 'LS',
+        'LW', 'SUB', 'RES'
+    )
+
+    positions = dict()
+    for x,y in enumerate(available_positions):
+        positions[y] = x
+
+    # PV = PlayerValue(
+    #     ovr=89,
+    #     pot=89,
+    #     age=35,
+    #     posid=positions['CB'],
+    # )
+    # print("Value 0")
+    # print(PV._calculate_player_value())
+
+    PW = PlayerWage(
+        ovr=49,
+        age=40,
+        posid=positions['LB'],
+        player_team={
+            'league': {
+                'leagueid': 2012,
+            },
+            'team': {
+                'domesticprestige': 2,
+                'profitability': 1,
+            }
+        }
+    )
+    print("Wage")
+    print(PW._calculate_player_wage())

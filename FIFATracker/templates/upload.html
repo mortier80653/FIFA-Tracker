@@ -72,7 +72,7 @@
       <h3>{% trans 'Upload your FIFA Manager Mode Career File' %}</h3>
       {% if request.user.is_authenticated %}
       <div class="container">
-        <p>{% trans 'On PC you can find your save file in "Documents" -> "FIFA 19" -> "settings" -> "CareerXXX"' %}</p>
+        <p>{% trans 'On PC you can find your save file in "Documents" -> "FIFA 20" -> "settings" -> "CareerXXX"' %}</p>
         <p>Join <a href="https://discord.gg/3gdjKsY"><span class="fab fa-discord"></span>Discord</a> in case of any problems</p>
         <form method="post" action="{% url 'upload_career_save_file' %}" enctype="multipart/form-data">
           {% csrf_token %}
@@ -83,10 +83,11 @@
           <div class="progress" style="display: none;">
             <div class="upload-progress-bar progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
-          <select id="select-fifa" name="fifa_edition" placeholder="FIFA 19 PC" style="width: 164px;">
+          <select id="select-fifa" name="fifa_edition" placeholder="FIFA 20 PC" style="width: 164px;">
             <option value="17">FIFA 17 PC</option>
             <option value="18">FIFA 18 PC</option>
-            <option value="19" selected>FIFA 19 PC</option>
+            <option value="19">FIFA 19 PC</option>
+            <option value="20" selected>FIFA 20 PC</option>
           </select>
         </form>
       </div>

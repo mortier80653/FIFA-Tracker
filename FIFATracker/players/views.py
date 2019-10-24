@@ -18,6 +18,7 @@ from players.models import (
     DataUsersPlayers,
     DataUsersPlayers17,
     DataUsersPlayers19,
+    DataUsersPlayers20,
     DataUsersEditedplayernames,
     DataUsersTeams,
     DataUsersLeagues,

@@ -38,6 +38,7 @@ from players.models import (
     DataUsersPlayers,
     DataUsersPlayers17,
     DataUsersPlayers19,
+    DataUsersPlayers20,
     DataUsersPlayerloans,
 )
 
@@ -1525,6 +1526,7 @@ def unpack_all_dbs(
         b'\x6E\x40\x72\x00': '17',
         b'\x63\x7D\xA9\x00': '18',
         b'\x17\x5E\xC6\x00': '19',
+        b'\xD6\xA2\xD1\x00': '20',
     }
     unpacked_dbs = 0
 

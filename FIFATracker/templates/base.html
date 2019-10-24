@@ -8,7 +8,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Track your progress in FIFA Career Mode">
-	<meta name="keywords" content="FIFA 17, FIFA 18, FIFA 19, Career Mode, youth, players, database, FIFA Tracker,">
+	<meta name="keywords" content="FIFA 17, FIFA 18, FIFA 19, FIFA 20, Career Mode, youth, players, database, FIFA Tracker,">
 	<link rel="shortcut icon" href="{%  static 'favicon/favicon.ico' %}">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/solid.css" integrity="sha384-wnAC7ln+XN0UKdcPvJvtqIH3jOjs9pnKnq9qX68ImXvOGz2JuFoEiCjT8jyZQX2z" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/brands.css" integrity="sha384-nT8r1Kzllf71iZl81CdFzObMsaLOhqBU1JD2+XoAALbdtWaXDOlWOZTR4v1ktjPE" crossorigin="anonymous">
@@ -51,9 +51,11 @@
 				<li class="nav-item ft-nav-item-dark">
 					<a class="nav-link ft-nav-link-dark" href="{% url 'teams' %}">{% trans 'Teams' %}</a>
 				</li>
-				<li class="nav-item ft-nav-item-dark">
-					<a class="nav-link ft-nav-link-dark" href="{% url 'transfers' %}">{% trans 'Transfers' %}</a>
-				</li>
+				{% if user.profile.fifa_edition == 17 or user.profile.fifa_edition == 18  %}
+					<li class="nav-item ft-nav-item-dark">
+						<a class="nav-link ft-nav-link-dark" href="{% url 'transfers' %}">{% trans 'Transfers' %}</a>
+					</li>
+				{% endif %}
 				<li class="nav-item ft-nav-item-dark dropdown">
 					<a class="nav-link ft-nav-link-dark dropdown-toggle" href="#" id="toolsdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Tools' %}</a>
 					<div class="dropdown-menu ft-dropdown-menu-dark" aria-labelledby="toolsdropdown">
@@ -163,7 +165,9 @@
 					<ul class="list-unstyled">
 						<li><a href="{% url 'players' %}"><span class="fas fa-users"></span>{% trans 'Players' %}</a></li>
 						<li><a href="{% url 'teams' %}"><span class="fas fa-tshirt"></span>{% trans 'Teams' %}</a></li>
-						<li><a href="{% url 'transfers' %}"><span class="fas fa-exchange-alt"></span>{% trans 'Transfers' %}</a></li>
+						{% if user.profile.fifa_edition == 17 or user.profile.fifa_edition == 18  %}
+							<li><a href="{% url 'transfers' %}"><span class="fas fa-exchange-alt"></span>{% trans 'Transfers' %}</a></li>
+						{% endif %}
 						<li><a href="{% url 'upload_career_save_file' %}"><span class="fas fa-file-upload"></span>{% trans 'Upload' %}</a></li>
 					</ul>
 				</div>

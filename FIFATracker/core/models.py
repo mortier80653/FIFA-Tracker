@@ -210,6 +210,8 @@ class DataUsersCareerTransferOffer(models.Model):
         db_index=True, max_length=150, blank=True, null=True)
     ft_user = models.ForeignKey(
         User, related_name='transferoffer', on_delete=models.CASCADE, null=True,)
+    ft_slot = models.IntegerField(blank=True, null=True)
+    ft_season = models.IntegerField(blank=True, null=True)
     offerid = models.IntegerField(blank=True, null=True)
     offeredfee = models.IntegerField(blank=True, null=True)
     snipedteamid = models.IntegerField(blank=True, null=True)

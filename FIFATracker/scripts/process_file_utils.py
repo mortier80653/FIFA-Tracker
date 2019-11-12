@@ -1439,8 +1439,13 @@ def convert_db_to_csv(
         lines = new_csv_content['career_users']['content'].split('\n')
         for i, line in enumerate(lines[1:]):
             fields = line.split(',')
-            fields[firstname_index] = fields[firstname_index][0] + ('*' * 5)    # first name
-            fields[surname_index] = fields[surname_index][0] + ('*' * 5)        # surname
+            fname = fields[firstname_index]
+            if fname:
+                fields[firstname_index] = fname[0] + ('*' * 5)  # first name
+
+            surname = fields[surname_index]
+            if surname:
+                fields[surname_index] = surname[0] + ('*' * 5)        # surname
             lines[i+1] = ','.join(fields)
         new_csv_content['career_users']['content'] = '\n'.join(lines)
 

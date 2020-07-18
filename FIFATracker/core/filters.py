@@ -1227,6 +1227,14 @@ class DataUsersPlayersFilter(BaseFilter):
             pass
 
         try:
+            if 'headclasscode' in self.request_dict and int(
+                    self.request_dict['headclasscode']) in range(0, 2):
+                queryset = queryset.filter(
+                    Q(headclasscode=self.request_dict['headclasscode']))
+        except ValueError:
+            pass
+
+        try:
             if 'shoetypecode' in self.request_dict:
                 value = list(self.request_dict['shoetypecode'].split(','))
                 queryset = queryset.filter(Q(shoetypecode__in=value))

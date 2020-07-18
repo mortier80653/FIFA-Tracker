@@ -25,24 +25,21 @@ def signup(request):
     form = SignUpForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         user = form.save(commit=False)
-        user.is_active = False
-        # user.is_active = True
+        # user.is_active = False
+        user.is_active = True
         user.save()
 
-        current_site = get_current_site(request)
-        subject = _('FIFA Tracker - Account activation')
-        message = render_to_string('accounts/activate_email.html', {
-            'user': user,
-            'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-            'token': account_activation_token.make_token(user),
-        })
-        user.email_user(subject, message)
-        messages.success(
-            request,
-            _('Confirmation link has been sent to {}. Make sure to check your spam folder')
-            .format(form.cleaned_data['email'])
-        )
+        # current_site = get_current_site(request)
+        # subject = _('FIFA Tracker - Account activation')
+        # message = render_to_string('accounts/activate_email.html', {
+        #     'user': user,
+        #     'domain': current_site.domain,
+        #     'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+        #     'token': account_activation_token.make_token(user),
+        # })
+        # user.email_user(subject, message)
+        messages.success(request, _(
+            "Account activated! You can upload your FIFA career save now."))
         return redirect('home')
 
     return render(

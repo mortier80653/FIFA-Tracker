@@ -1,0 +1,16 @@
+FROM alpine:3.12
+# install Python
+RUN apk add python3-dev py3-pip musl-dev gcc postgresql-dev
+RUN pip3 install --ignore-installed virtualenv
+
+# setup virtualenv
+RUN mkdir -p /app/
+WORKDIR /app/
+RUN virtualenv FT_ENV
+RUN source FT_ENV/bin/activate
+
+# install python reqs
+COPY requirements.txt /requirements.txt
+RUN pip3 install --ignore-installed -r /requirements.txt
+
+RUN ln -s /usr/bin/python3 /usr/bin/python

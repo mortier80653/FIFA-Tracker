@@ -1,0 +1,52 @@
+# Configures a db container and a web container to run FIFA Tracker
+# 
+# After it's all running do this:
+#    docker exec fifatracker-docker_db_1 sh /load_csvs.sh
+ 
+version: "3"
+services:
+    db:
+        image: postgres:10-alpine
+        ports: 
+            -  "5432:5432"   
+        volumes:
+            - ./Database Data:/Database Data
+            - ./docker/install_extension.sql:/docker-entrypoint-initdb.d/install_extension.sql
+            - ./docker/load_csvs.sh:/load_csvs.sh
+            - db-data:/var/lib/postgresql/data
+        # make sure to update the database password here
+        environment: 
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=
+            - POSTGRES_DB=FIFA_TRACKER
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile-webapp
+        image: webapp
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./FIFATracker:/app
+            - ./docker/.env:/app/.env
+            - ./docker/manage_migrations.sh:/app/manage_migrations.sh
+            - ./docker/manage_datausersplayers.sh:/app/manage_datausersplayers.sh
+        depends_on: 
+            - db
+        working_dir: /app
+        command: sh -cx "
+            python manage.py runserver 0.0.0.0:8000"
+        restart: unless-stopped
+        healthcheck:
+            test: curl --fail -s http://localhost:8000/ || exit 1
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+volumes:
+    db-data:

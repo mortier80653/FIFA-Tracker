@@ -1,7 +1,4 @@
 # Configures a db container and a web container to run FIFA Tracker
-# 
-# After it's all running do this:
-#    docker exec fifatracker-docker_db_1 sh /load_csvs.sh
  
 version: "3"
 services:

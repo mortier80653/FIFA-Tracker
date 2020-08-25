@@ -107,8 +107,8 @@ The database stores all of it's data on the `db-data` volume that persists acros
 It needs to be at the root of the repo so it can reference files at the root. 
 
 ## Dockerfile-webapp
-This file sets up the environment for the web container. They need to be at the root of the repo so they can reference files at the root. 
-No Dockerfile is needed for the database since there are no environment changes needed to the image (besides adding a few files that docker-compose volumes handles.)
+This file sets up the environment for the web container. It needs to be at the root of the repo so it can reference files at the root. 
+No Dockerfile is needed for the database since there are no environment changes needed to the image (besides adding a few files that docker-compose volumes handles)
 
 ## install_extension.sql
 When the postgres container starts for the first time it will look in `docker-entrypoint-initdb.d/` for any sql files to execute. The `install_extension.sql` will then get executed to add the `unaccent` extension. 
@@ -116,9 +116,9 @@ When the postgres container starts for the first time it will look in `docker-en
 ## post-run bash scripts
 A few bash scripts are need to run after the first start of containers to initialize data. These will need to be manually run. The order is as follows. 
 
-1. `manage_migrations.sh`: This will initialize the django webapp and add some tables the database. Run this inside the web container. 
-2. `manage_datausersplayers.sh`: This initializes a few more fields in django and the database. Run this inside the web container. 
-3. `load_csvs.sh`: This loads in default data into the database. 
+1. `manage_migrations.sh`: This will initialize the django webapp and add some tables the database. Run this inside the web container via `docker exec`. 
+2. `manage_datausersplayers.sh`: This initializes a few more fields in django and the database. Run this inside the web container via `docker exec`. 
+3. `load_csvs.sh`: This loads in default data into the database via `docker exec`.
 
 ## .env
 Stores configuration information about the webapp. Ideally we should be using `secret_settings.py` but that was not being referenced, so we fall back to using `.env`. 
